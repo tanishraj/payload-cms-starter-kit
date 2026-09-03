@@ -47,17 +47,20 @@ export const canReadFeature = (user: unknown, key: AdminFeatureKey): boolean =>
 
 export const adminOnlyAccess: Access = ({ req }) => isAdmin(req.user)
 
-export const adminOrFirstUserAccess: Access = async ({ req }) => {
-  if (isAdmin(req.user)) return true
+export const adminOrFirstUserAccess =
+  (allowFirstAdminCreation: boolean): Access =>
+  async ({ req }) => {
+    if (isAdmin(req.user)) return true
+    if (!allowFirstAdminCreation) return false
 
-  const { totalDocs } = await req.payload.count({
-    collection: 'users',
-    overrideAccess: true,
-    where: {},
-  })
+    const { totalDocs } = await req.payload.count({
+      collection: 'users',
+      overrideAccess: true,
+      where: {},
+    })
 
-  return totalDocs === 0
-}
+    return totalDocs === 0
+  }
 
 export const requireFeature =
   (key: AdminFeatureKey): Access =>

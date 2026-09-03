@@ -1,6 +1,9 @@
+import { readFileSync } from 'node:fs'
+
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { getRuntimeConfig } from '@/config/runtime'
+import { buildLivePreviewURL, getApplicationOrigin } from '@/lib/siteUrl'
 
 const ORIGINAL_ENV = { ...process.env }
 
@@ -16,6 +19,7 @@ describe('runtime config', () => {
       PAYLOAD_SECRET: 'test-secret',
       EMAIL_PROVIDER: 'none',
       MEDIA_PROVIDER: 'localDisk',
+      RESEND_OVERRIDE_TO_EMAIL: '',
       VERCEL: '',
     }
 
@@ -28,10 +32,170 @@ describe('runtime config', () => {
       isProduction: false,
       isVercel: false,
     })
+    expect(config.application.origin).toBe('http://localhost:3000')
+    expect(config.auth.allowFirstAdminCreation).toBe(true)
     expect(config.email.provider).toBe('none')
+    expect(config.email.overrideRecipientAddress).toBeNull()
     expect(config.media).toEqual({
       provider: 'localDisk',
     })
+    expect(config.operations.mediaReconcileToken).toBeNull()
+  })
+
+  it('normalizes the canonical application origin and builds live-preview urls', () => {
+    const config = getRuntimeConfig({
+      ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: 'none',
+      MEDIA_PROVIDER: 'localDisk',
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      NEXT_PUBLIC_SERVER_URL: 'https://preview.example.test/',
+      PAYLOAD_SECRET: 'test-secret',
+      RESEND_OVERRIDE_TO_EMAIL: '',
+    })
+
+    expect(getApplicationOrigin(config)).toBe('https://preview.example.test')
+    expect(buildLivePreviewURL('/articles/example?preview=true', config)).toBe(
+      'https://preview.example.test/articles/example?preview=true',
+    )
+  })
+
+  it('accepts loopback http only outside production', () => {
+    const baseEnv: NodeJS.ProcessEnv = {
+      ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: 'none',
+      MEDIA_PROVIDER: 'localDisk',
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      PAYLOAD_SECRET: 'test-secret',
+      RESEND_OVERRIDE_TO_EMAIL: '',
+    }
+
+    expect(
+      getRuntimeConfig({ ...baseEnv, NEXT_PUBLIC_SERVER_URL: 'http://127.0.0.1:3000/' }).application
+        .origin,
+    ).toBe('http://127.0.0.1:3000')
+    expect(() =>
+      getRuntimeConfig({ ...baseEnv, NEXT_PUBLIC_SERVER_URL: 'http://preview.example.test' }),
+    ).toThrow('Invalid NEXT_PUBLIC_SERVER_URL')
+  })
+
+  it('rejects a non-https canonical origin in production', () => {
+    expect(() =>
+      getRuntimeConfig({
+        ...ORIGINAL_ENV,
+        EMAIL_PROVIDER: 'none',
+        MEDIA_PROVIDER: 'localDisk',
+        MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+        NEXT_PUBLIC_SERVER_URL: 'http://localhost:3000',
+        NODE_ENV: 'production',
+        PAYLOAD_SECRET: '4f3a8db96b7240b4a6fbd84585f9bb21',
+        RESEND_OVERRIDE_TO_EMAIL: '',
+      }),
+    ).toThrow('Invalid production NEXT_PUBLIC_SERVER_URL. Use an HTTPS origin.')
+  })
+
+  it('requires an explicit production opt-in for recipient overrides', () => {
+    const overrideAddress = 'qa-inbox@example.test'
+    const productionEnv: NodeJS.ProcessEnv = {
+      ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: 'resend',
+      MEDIA_PROVIDER: 'localDisk',
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      NEXT_PUBLIC_SERVER_URL: 'https://www.example.test',
+      NODE_ENV: 'production',
+      PAYLOAD_SECRET: '4f3a8db96b7240b4a6fbd84585f9bb21',
+      RESEND_API_KEY: 'resend-test-key',
+      RESEND_FROM_EMAIL: 'hello@example.test',
+      RESEND_OVERRIDE_TO_EMAIL: overrideAddress,
+    }
+
+    expect(() => getRuntimeConfig(productionEnv)).toThrow(
+      'Production recipient override is disabled. Set ALLOW_PRODUCTION_EMAIL_OVERRIDE=true to enable it explicitly.',
+    )
+
+    try {
+      getRuntimeConfig(productionEnv)
+    } catch (error) {
+      expect(String(error)).not.toContain(overrideAddress)
+    }
+
+    const config = getRuntimeConfig({
+      ...productionEnv,
+      ALLOW_PRODUCTION_EMAIL_OVERRIDE: 'true',
+    })
+    expect(config.email.overrideRecipientAddress).toBe(overrideAddress)
+  })
+
+  it('defaults first-admin creation by environment and parses explicit policy strictly', () => {
+    const baseEnv: NodeJS.ProcessEnv = {
+      ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: 'none',
+      MEDIA_PROVIDER: 'localDisk',
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      NEXT_PUBLIC_SERVER_URL: 'https://www.example.test',
+      PAYLOAD_SECRET: '4f3a8db96b7240b4a6fbd84585f9bb21',
+      RESEND_OVERRIDE_TO_EMAIL: '',
+    }
+
+    expect(getRuntimeConfig(baseEnv).auth.allowFirstAdminCreation).toBe(true)
+    expect(
+      getRuntimeConfig({ ...baseEnv, NODE_ENV: 'production' }).auth.allowFirstAdminCreation,
+    ).toBe(false)
+    expect(
+      getRuntimeConfig({ ...baseEnv, ALLOW_FIRST_ADMIN_CREATION: 'false' }).auth
+        .allowFirstAdminCreation,
+    ).toBe(false)
+    expect(() => getRuntimeConfig({ ...baseEnv, ALLOW_FIRST_ADMIN_CREATION: 'sometimes' })).toThrow(
+      'Invalid boolean value',
+    )
+  })
+
+  it('parses the media reconciliation token without including it in errors', () => {
+    const mediaReconcileToken = 'media-reconcile-secret-value'
+    const config = getRuntimeConfig({
+      ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: 'none',
+      MEDIA_PROVIDER: 'localDisk',
+      MEDIA_RECONCILE_TOKEN: `  ${mediaReconcileToken}  `,
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      PAYLOAD_SECRET: 'test-secret',
+      RESEND_OVERRIDE_TO_EMAIL: '',
+    })
+
+    expect(config.operations.mediaReconcileToken).toBe(mediaReconcileToken)
+    expect(() =>
+      getRuntimeConfig({
+        ...ORIGINAL_ENV,
+        ALLOW_FIRST_ADMIN_CREATION: mediaReconcileToken,
+        MEDIA_RECONCILE_TOKEN: mediaReconcileToken,
+        MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+        PAYLOAD_SECRET: 'test-secret',
+      }),
+    ).toThrow('Invalid boolean value')
+
+    try {
+      getRuntimeConfig({
+        ...ORIGINAL_ENV,
+        ALLOW_FIRST_ADMIN_CREATION: mediaReconcileToken,
+        MEDIA_RECONCILE_TOKEN: mediaReconcileToken,
+        MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+        PAYLOAD_SECRET: 'test-secret',
+      })
+    } catch (error) {
+      expect(String(error)).not.toContain(mediaReconcileToken)
+    }
+  })
+
+  it('keeps collection live-preview configuration behind the shared runtime helper', () => {
+    for (const filePath of [
+      'src/collections/Pages.ts',
+      'src/collections/Articles.ts',
+      'src/collections/NewsEvents.ts',
+      'src/collections/Reviews.ts',
+    ]) {
+      const source = readFileSync(filePath, 'utf8')
+      expect(source, filePath).toContain('buildLivePreviewURL(')
+      expect(source, filePath).not.toContain('process.env.NEXT_PUBLIC_SERVER_URL')
+    }
   })
 
   it('accepts mongodb srv urls for hosted deployments', () => {
@@ -40,6 +204,8 @@ describe('runtime config', () => {
       MONGODB_URI: 'mongodb+srv://starter:secret@cluster.example.com/payload',
       NODE_ENV: 'production',
       PAYLOAD_SECRET: '4f3a8db96b7240b4a6fbd84585f9bb21',
+      NEXT_PUBLIC_SERVER_URL: 'https://www.example.test',
+      RESEND_OVERRIDE_TO_EMAIL: '',
       VERCEL: '1',
     }
 
@@ -252,7 +418,9 @@ describe('runtime config', () => {
     const baseEnv: NodeJS.ProcessEnv = {
       ...ORIGINAL_ENV,
       MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      NEXT_PUBLIC_SERVER_URL: 'https://www.example.test',
       NODE_ENV: 'production',
+      RESEND_OVERRIDE_TO_EMAIL: '',
     }
 
     for (const secret of ['YOUR_PAYLOAD_CMS_SECRET_HERE', 'change-me', 'too-short']) {
@@ -268,7 +436,9 @@ describe('runtime config', () => {
       ...ORIGINAL_ENV,
       MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       NODE_ENV: 'production',
+      NEXT_PUBLIC_SERVER_URL: 'https://www.example.test',
       PAYLOAD_SECRET: secret,
+      RESEND_OVERRIDE_TO_EMAIL: '',
     })
 
     expect(config.payload.secret).toBe(secret)

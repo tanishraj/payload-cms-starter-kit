@@ -1,6 +1,12 @@
 import { normalizeMediaPublicURL } from './mediaPublicURL'
 
 export type RuntimeConfig = {
+  application: {
+    origin: string
+  }
+  auth: {
+    allowFirstAdminCreation: boolean
+  }
   database: {
     url: string
   }
@@ -13,6 +19,7 @@ export type RuntimeConfig = {
     apiKey: string | null
     fromAddress: string | null
     fromName: string
+    overrideRecipientAddress: string | null
   }
   media:
     | {
@@ -33,12 +40,21 @@ export type RuntimeConfig = {
   payload: {
     secret: string
   }
+  operations: {
+    mediaReconcileToken: string | null
+  }
 }
+
+const fallbackApplicationOrigin = 'http://localhost:3000'
 
 const isMongoConnectionString = (value: string): boolean =>
   value.startsWith('mongodb://') || value.startsWith('mongodb+srv://')
 
-const parseBooleanEnv = (value: string | undefined, defaultValue: boolean): boolean => {
+const parseBooleanEnv = (
+  value: string | undefined,
+  defaultValue: boolean,
+  variableName: string,
+): boolean => {
   if (value == null || value.trim() === '') {
     return defaultValue
   }
@@ -53,7 +69,39 @@ const parseBooleanEnv = (value: string | undefined, defaultValue: boolean): bool
     return false
   }
 
-  throw new Error(`Invalid boolean value "${value}". Use true/false.`)
+  throw new Error(`Invalid boolean value for ${variableName}. Use true/false.`)
+}
+
+const loopbackHostnames = new Set(['127.0.0.1', '[::1]', 'localhost'])
+
+const parseApplicationOrigin = (env: NodeJS.ProcessEnv, isProduction: boolean): string => {
+  const configuredOrigin = env.NEXT_PUBLIC_SERVER_URL?.trim() || fallbackApplicationOrigin
+  let url: URL
+
+  try {
+    url = new URL(configuredOrigin)
+  } catch {
+    throw new Error('Invalid NEXT_PUBLIC_SERVER_URL. Use an absolute HTTPS origin.')
+  }
+
+  if (url.username || url.password) {
+    throw new Error('Invalid NEXT_PUBLIC_SERVER_URL. Credentials are not allowed.')
+  }
+
+  if (isProduction && url.protocol !== 'https:') {
+    throw new Error('Invalid production NEXT_PUBLIC_SERVER_URL. Use an HTTPS origin.')
+  }
+
+  const isDevelopmentLoopbackHTTP =
+    !isProduction && url.protocol === 'http:' && loopbackHostnames.has(url.hostname)
+
+  if (url.protocol !== 'https:' && !isDevelopmentLoopbackHTTP) {
+    throw new Error(
+      'Invalid NEXT_PUBLIC_SERVER_URL. Use HTTPS, or loopback HTTP outside production.',
+    )
+  }
+
+  return url.origin
 }
 
 const getMediaProvider = (env: NodeJS.ProcessEnv): 'localDisk' | 's3' => {
@@ -74,16 +122,25 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
   const isVercel = Boolean(env.VERCEL)
   const mongodbURI = env.MONGODB_URI?.trim() || ''
   const payloadSecret = env.PAYLOAD_SECRET?.trim() || ''
+  const applicationOrigin = parseApplicationOrigin(env, isProduction)
+  const allowFirstAdminCreation = parseBooleanEnv(
+    env.ALLOW_FIRST_ADMIN_CREATION,
+    !isProduction,
+    'ALLOW_FIRST_ADMIN_CREATION',
+  )
+  const allowProductionEmailOverride = parseBooleanEnv(
+    env.ALLOW_PRODUCTION_EMAIL_OVERRIDE,
+    false,
+    'ALLOW_PRODUCTION_EMAIL_OVERRIDE',
+  )
+  const overrideRecipientAddress = env.RESEND_OVERRIDE_TO_EMAIL?.trim() || null
+  const mediaReconcileToken = env.MEDIA_RECONCILE_TOKEN?.trim() || null
 
   if (!payloadSecret) {
     throw new Error('Missing PAYLOAD_SECRET. Set a unique secret for this environment.')
   }
 
-  const placeholderSecrets = new Set([
-    'YOUR_PAYLOAD_CMS_SECRET_HERE',
-    'change-me',
-    'changeme',
-  ])
+  const placeholderSecrets = new Set(['YOUR_PAYLOAD_CMS_SECRET_HERE', 'change-me', 'changeme'])
 
   if (isProduction && (payloadSecret.length < 32 || placeholderSecrets.has(payloadSecret))) {
     throw new Error(
@@ -111,6 +168,12 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
   if (emailProvider === 'resend' && (!env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL)) {
     throw new Error(
       'Incomplete Resend configuration. Set RESEND_API_KEY and RESEND_FROM_EMAIL or use EMAIL_PROVIDER=none.',
+    )
+  }
+
+  if (isProduction && overrideRecipientAddress && !allowProductionEmailOverride) {
+    throw new Error(
+      'Production recipient override is disabled. Set ALLOW_PRODUCTION_EMAIL_OVERRIDE=true to enable it explicitly.',
     )
   }
 
@@ -145,9 +208,9 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
             acl,
             accessKeyId,
             bucket,
-            clientUploads: parseBooleanEnv(env.S3_CLIENT_UPLOADS, false),
+            clientUploads: parseBooleanEnv(env.S3_CLIENT_UPLOADS, false, 'S3_CLIENT_UPLOADS'),
             endpoint,
-            forcePathStyle: parseBooleanEnv(env.S3_FORCE_PATH_STYLE, true),
+            forcePathStyle: parseBooleanEnv(env.S3_FORCE_PATH_STYLE, true, 'S3_FORCE_PATH_STYLE'),
             publicURL: normalizeMediaPublicURL(env.S3_PUBLIC_URL),
             region,
             secretAccessKey,
@@ -158,6 +221,12 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
         }
 
   return {
+    application: {
+      origin: applicationOrigin,
+    },
+    auth: {
+      allowFirstAdminCreation,
+    },
     database: {
       url: mongodbURI,
     },
@@ -170,10 +239,16 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
       apiKey: env.RESEND_API_KEY || null,
       fromAddress: env.RESEND_FROM_EMAIL || null,
       fromName: env.RESEND_FROM_NAME || 'Website',
+      overrideRecipientAddress,
     },
     media,
     payload: {
       secret: payloadSecret,
     },
+    operations: {
+      mediaReconcileToken,
+    },
   }
 }
+
+export const runtimeConfig = getRuntimeConfig()

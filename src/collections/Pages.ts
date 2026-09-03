@@ -9,12 +9,14 @@ import {
   requireFeature,
 } from '@/access/featureAccess'
 import { buildSEOFields } from '@/fields/buildSEOFields'
+import { runtimeConfig } from '@/config/runtime'
 import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { createPageFromRecipeEndpoint } from '@/endpoints/createPageFromRecipe'
 import { projectSlugField } from '@/fields/projectSlugField'
 import { enforcePublicationPolicy } from '@/hooks/enforcePublicationPolicy'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
+import { buildLivePreviewURL } from '@/lib/siteUrl'
 
 import { createRedirectsForChangedPagePath } from '../hooks/createRedirectsForChangedPagePath'
 import { populatePageUrlPreview } from '../hooks/populatePageUrlPreview'
@@ -129,9 +131,7 @@ export const Pages: CollectionConfig = {
           return null
         }
 
-        const appURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
-
-        return `${appURL}/preview/page/${data.id}`
+        return buildLivePreviewURL(`/preview/page/${data.id}`, runtimeConfig)
       },
     },
   },

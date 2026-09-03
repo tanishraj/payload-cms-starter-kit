@@ -16,7 +16,7 @@ immediately. The last active Admin cannot be demoted, trashed, or permanently de
 ## Site Manager Features
 
 Each checkbox corresponds to one Payload Admin destination. A grant controls both navigation and
-server-side access through Admin, REST, GraphQL, preview, and user-scoped Local API calls.
+server-side access through Admin, REST, preview, and user-scoped Local API calls. GraphQL is disabled.
 
 | Admin group    | Feature               | Included Site Manager actions                                               |
 | -------------- | --------------------- | --------------------------------------------------------------------------- |

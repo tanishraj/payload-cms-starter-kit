@@ -26,6 +26,7 @@ import {
   isAdmin,
 } from '@/access/featureAccess'
 import { recordOperationalAuditEvent } from '@/lib/operationalAudit'
+import { runtimeConfig } from '@/config/runtime'
 
 type UserAccessDocument = {
   deletedAt?: string | null
@@ -299,9 +300,19 @@ export const Users: CollectionConfig = {
     hidden: hideFromNonAdmin,
     useAsTitle: 'email',
   },
-  auth: true,
+  auth: {
+    cookies: {
+      sameSite: 'Lax',
+      secure: runtimeConfig.deployment.isProduction,
+    },
+    lockTime: 10 * 60 * 1000,
+    maxLoginAttempts: 5,
+    removeTokenFromResponses: true,
+    tokenExpiration: 2 * 60 * 60,
+    useSessions: true,
+  },
   access: {
-    create: adminOrFirstUserAccess,
+    create: adminOrFirstUserAccess(runtimeConfig.auth.allowFirstAdminCreation),
     delete: adminOnlyAccess,
     read: adminSelfOrAssignmentRead,
     readVersions: adminOnlyAccess,

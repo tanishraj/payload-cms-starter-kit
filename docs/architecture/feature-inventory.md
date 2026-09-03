@@ -12,7 +12,7 @@ This is the maintained technical map of the starter. It records what is register
 - Uploads use local disk or an S3-compatible provider. Production on Vercel rejects local-disk media at startup.
 - Public fonts use `next/font`-hosted Inter, Playfair Display, and IBM Plex Mono assets rather than runtime Google stylesheet imports.
 - Email is disabled or delivered through Resend.
-- Payload REST, GraphQL, admin, generated types, and generated import-map support are enabled.
+- Payload REST, Admin, generated types, and generated import-map support are enabled. GraphQL is disabled because the repository has no consumer.
 - The local plugin `withTrash()` enables Payload Trash on every collection.
 
 ## Payload Collections
@@ -61,7 +61,7 @@ Globals with versions retain history. Relevant changes invalidate cached fronten
 
 ## Roles, Features, And Publication Governance
 
-- The only roles are Admin and Site Manager. The first user is promoted to Admin, and the last active Admin cannot be demoted or deleted.
+- The only roles are Admin and Site Manager. Anonymous first-user creation requires an empty Users collection and the explicit bootstrap policy; an accepted first user is promoted to Admin, and the last active Admin cannot be demoted or deleted.
 - Admins implicitly hold every feature and may create additional Admins or Site Managers. New Site Managers receive no features until an Admin grants them.
 - The registry exposes 29 features corresponding to Admin destinations. Each grant controls sidebar visibility and server access; missing grants fail closed.
 - Pages, Articles, News & Events, Reviews, and System Pages use Payload's native `_status` as their only draft/publication state. Publishing stamps user/time metadata.
@@ -191,7 +191,7 @@ Maintenance and coming-soon overrides are applied to the homepage and catch-all 
 | `/admin`                                       | Payload admin UI with dashboard and session bar integration                                                                  |
 | `GET /api/frontend-session`                    | Private no-store email/role projection used by the deferred public editor toolbar                                            |
 | `/api/[...slug]`                               | Payload REST API                                                                                                             |
-| `/api/graphql` and `/api/graphql-playground`   | Payload GraphQL API and playground                                                                                           |
+| `/api/graphql` and `/api/graphql-playground`   | Generated route files remain, but Payload disables GraphQL and the Playground                                                |
 | `POST /api/forms/[slug]/submit`                | Published-form validation, honeypot, best-effort in-memory throttling, storage, email, events, and optional review promotion |
 | `GET /api/search`                              | Debounced dialog search; six results/type; 20 requests/IP/10 seconds in memory                                               |
 | `GET /api/review-feed`                         | Validated paginated published Review data for load-more behavior                                                             |
@@ -200,7 +200,7 @@ Maintenance and coming-soon overrides are applied to the homepage and catch-all 
 | `POST /api/operations/media/reconcile-storage` | Token-protected local/S3 media health reconciliation                                                                         |
 | `/my-route`                                    | Public example custom route returning a static JSON message; replace or remove before client handoff                         |
 
-The redirect proxy excludes Next.js internals, APIs, Admin, and common static/metadata routes. It keeps an in-process map per origin for 60 seconds and safely falls back to its previous map on API failure.
+The redirect proxy excludes Next.js internals, APIs, Admin, and common static/metadata routes. It loads the map only from the validated canonical application origin, keeps it in process for 60 seconds, rejects unsupported destination schemes and self-loops, and safely falls back to its previous map on API failure.
 
 ## Forms, Notifications, And Review Promotion
 

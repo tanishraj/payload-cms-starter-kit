@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from 'next/server'
 
 import type { RedirectEntry, RedirectsResponse } from './app/api/redirects/route'
+import { runtimeConfig } from './config/runtime'
+import { getApplicationOrigin } from './lib/siteUrl'
 
 // In-process cache: keyed by base URL so a multi-origin deployment is safe.
 const cacheByOrigin = new Map<string, { map: Map<string, RedirectEntry>; at: number }>()
@@ -31,16 +33,26 @@ async function loadRedirects(baseUrl: string): Promise<Map<string, RedirectEntry
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`
+  const baseUrl = getApplicationOrigin(runtimeConfig)
 
   const redirects = await loadRedirects(baseUrl)
   const entry = redirects.get(pathname)
 
   if (entry) {
-    const destination = entry.to.startsWith('http') ? entry.to : `${baseUrl}${entry.to}`
-    return NextResponse.redirect(destination, {
-      status: entry.permanent ? 301 : 302,
-    })
+    try {
+      const destination = new URL(entry.to, `${baseUrl}/`)
+      const isSupportedScheme =
+        destination.protocol === 'http:' || destination.protocol === 'https:'
+      const isSelfLoop = destination.origin === baseUrl && destination.pathname === pathname
+
+      if (isSupportedScheme && !isSelfLoop) {
+        return NextResponse.redirect(destination, {
+          status: entry.permanent ? 301 : 302,
+        })
+      }
+    } catch {
+      // Invalid destinations fail closed to the normal route response below.
+    }
   }
 
   return NextResponse.next()

@@ -15,7 +15,7 @@ The repository has eight practical layers:
 7. Maintained architecture, operator, and runbook documentation.
 8. Package, Next.js, Docker, lint, and build tooling.
 
-React Server Components load public CMS data. Focused client components own interaction such as carousels, tabs, dialogs, consent, forms, and galleries. Payload Admin, REST, GraphQL, and the public frontend run in the same application.
+React Server Components load public CMS data. Focused client components own interaction such as carousels, tabs, dialogs, consent, forms, and galleries. Payload Admin, REST, and the public frontend run in the same application; GraphQL is disabled because the repository has no application consumer.
 
 ## Public and Administrative Delivery
 
@@ -51,7 +51,7 @@ React Server Components load public CMS data. Focused client components own inte
   Action Queue counts query only destinations granted to the authenticated user with
   `overrideAccess: false`. Counts and quick actions for ungranted features are absent, and failed
   operational counts remain visibly unavailable instead of becoming zero.
-- `/admin`, Payload REST, GraphQL, and GraphQL Playground live under the Payload route group.
+- `/admin` and Payload REST live under the Payload route group. The generated GraphQL route files remain present, but Payload disables GraphQL and its Playground at configuration level.
 - Development-only block thumbnail previews live under their own route group.
 - The public frontend layout mounts one theme-aware Back to Top control outside the content shell.
   It appears after `64px` of scrolling, stays below consent and modal layers, and switches from
@@ -64,10 +64,10 @@ Exact current route paths live in [project-inventory.json](project-inventory.jso
 
 ## Providers and Runtime Contract
 
-[runtime.ts](../../../../src/config/runtime.ts) reads environment behavior, [starterContract.ts](../../../../src/config/starterContract.ts) rejects unsupported deployment combinations, and [providers.ts](../../../../src/config/providers.ts) constructs MongoDB, optional Resend email, and local/S3 storage. S3-compatible storage can supply a validated public HTTPS origin: Payload then generates encoded direct-media URLs and Next.js allows that exact remote image host, while authenticated uploads, deletes, and reconciliation continue through the private S3 endpoint. Direct-origin objects bypass Payload media access checks and are restricted to public-safe content.
+[runtime.ts](../../../../src/config/runtime.ts) reads environment behavior once, validates the canonical application origin and explicit bootstrap/email-override policies, and owns operational tokens. [starterContract.ts](../../../../src/config/starterContract.ts) rejects unsupported deployment combinations, and [providers.ts](../../../../src/config/providers.ts) constructs MongoDB, optional Resend email, and local/S3 storage only from typed runtime configuration. Payload uses the canonical origin for server URL, CORS, CSRF, live preview, and redirect-map loading; the request Host is never a proxy fetch target. S3-compatible storage can supply a validated public HTTPS origin: Payload then generates encoded direct-media URLs and Next.js allows that exact remote image host, while authenticated uploads, deletes, and reconciliation continue through the private S3 endpoint. Direct-origin objects bypass Payload media access checks and are restricted to public-safe content.
 
 MongoDB is the supported database. Local Docker Compose pins MongoDB 8.0.29 and isolates its files in the version-specific
-`mongo_data_8_0` volume so Atlas dump and restore workflows do not cross MongoDB server versions. Local development may use local-disk media. Vercel production must use durable S3-compatible storage. Email is either disabled or delivered through Resend. Production requires a non-placeholder Payload secret of at least 32 characters and disables GraphQL introspection and Playground. Upload limits live in [uploadLimits.ts](../../../../src/config/uploadLimits.ts).
+`mongo_data_8_0` volume so Atlas dump and restore workflows do not cross MongoDB server versions. Local development may use local-disk media. Vercel production must use durable S3-compatible storage. Email is either disabled or delivered through Resend; a production recipient override requires an explicit allow flag. Production requires a canonical HTTPS origin, a non-placeholder Payload secret of at least 32 characters, and disables GraphQL completely. Anonymous first-Admin creation also requires the Users collection to be empty and the environment-specific bootstrap flag to be enabled. Payload caps relationship depth at three and uses session authentication with five-attempt/ten-minute lockout, two-hour tokens, token-free auth responses, and secure SameSite=Lax cookies in production. Upload limits live in [uploadLimits.ts](../../../../src/config/uploadLimits.ts).
 
 ## Caching and Delivery Safety
 

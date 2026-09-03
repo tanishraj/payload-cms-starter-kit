@@ -3,9 +3,10 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
 import { reconcileMediaStorage } from '@/lib/mediaStorage'
+import { runtimeConfig } from '@/config/runtime'
 
 const isAuthorized = (request: Request): boolean => {
-  const configuredToken = process.env.MEDIA_RECONCILE_TOKEN?.trim()
+  const configuredToken = runtimeConfig.operations.mediaReconcileToken
 
   if (!configuredToken) {
     return false
@@ -21,7 +22,7 @@ const isAuthorized = (request: Request): boolean => {
 }
 
 export const POST = async (request: Request) => {
-  if (!process.env.MEDIA_RECONCILE_TOKEN?.trim()) {
+  if (!runtimeConfig.operations.mediaReconcileToken) {
     return NextResponse.json(
       {
         error: 'MEDIA_RECONCILE_TOKEN is not configured.',

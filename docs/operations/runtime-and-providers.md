@@ -10,36 +10,64 @@
 
 The application validates this contract while loading `src/payload.config.ts` and fails fast on missing or unsupported configuration.
 
+Payload's REST API and Admin remain enabled. GraphQL is disabled because a fresh repository scan found
+no application query or mutation consumer. That evidence covers this repository only; confirm unknown
+external consumers before changing an already deployed application's API contract.
+
 ## Environment Variables
 
-| Variable                   | Required           | Purpose                                                                                     |
-| -------------------------- | ------------------ | ------------------------------------------------------------------------------------------- |
-| `MONGODB_URI`              | yes                | MongoDB connection string                                                                   |
-| `PAYLOAD_SECRET`           | yes                | Unique authentication/encryption secret; production requires 32+ non-placeholder characters |
-| `NEXT_PUBLIC_SERVER_URL`   | production/preview | Absolute site URL used by metadata and live-preview links                                   |
-| `EMAIL_PROVIDER`           | no                 | `none` by default, or `resend`                                                              |
-| `RESEND_API_KEY`           | with Resend        | Resend API key                                                                              |
-| `RESEND_FROM_EMAIL`        | with Resend        | Default sender address                                                                      |
-| `RESEND_FROM_NAME`         | no                 | Sender label; defaults to `Website`                                                         |
-| `RESEND_OVERRIDE_TO_EMAIL` | no                 | Redirect every recipient in staging/QA                                                      |
-| `MEDIA_PROVIDER`           | no                 | `localDisk` by default, or `s3`                                                             |
-| `S3_BUCKET`                | with S3            | Object-storage bucket                                                                       |
-| `S3_ENDPOINT`              | with S3            | S3-compatible HTTPS endpoint                                                                |
-| `S3_REGION`                | with S3            | Storage region                                                                              |
-| `S3_ACCESS_KEY_ID`         | with S3            | Storage access key                                                                          |
-| `S3_SECRET_ACCESS_KEY`     | with S3            | Storage secret                                                                              |
-| `S3_PUBLIC_URL`            | no                 | HTTPS origin for direct public/CDN delivery                                                 |
-| `S3_ACL`                   | no                 | `none` default, `public-read`, or `private`                                                 |
-| `S3_FORCE_PATH_STYLE`      | no                 | Boolean, defaults to `true`                                                                 |
-| `S3_CLIENT_UPLOADS`        | no                 | Boolean, defaults to `false`; requires bucket CORS for browser PUT                          |
-| `MEDIA_RECONCILE_TOKEN`    | for reconciliation | Secret accepted as Bearer or `x-media-reconcile-token`                                      |
-| `SHADCNBLOCKS_API_KEY`     | optional tooling   | Used only by external Shadcn Blocks tooling, not the CMS runtime                            |
+| Variable                          | Required           | Purpose                                                                                       |
+| --------------------------------- | ------------------ | --------------------------------------------------------------------------------------------- |
+| `MONGODB_URI`                     | yes                | MongoDB connection string                                                                     |
+| `PAYLOAD_SECRET`                  | yes                | Unique authentication/encryption secret; production requires 32+ non-placeholder characters   |
+| `NEXT_PUBLIC_SERVER_URL`          | production         | Canonical HTTPS application origin; local development defaults to `http://localhost:3000`     |
+| `ALLOW_FIRST_ADMIN_CREATION`      | no                 | Strict boolean; defaults off in production and on outside production                          |
+| `EMAIL_PROVIDER`                  | no                 | `none` by default, or `resend`                                                                |
+| `RESEND_API_KEY`                  | with Resend        | Resend API key                                                                                |
+| `RESEND_FROM_EMAIL`               | with Resend        | Default sender address                                                                        |
+| `RESEND_FROM_NAME`                | no                 | Sender label; defaults to `Website`                                                           |
+| `RESEND_OVERRIDE_TO_EMAIL`        | no                 | Redirect every recipient in staging/QA; blocked in production without the explicit allow flag |
+| `ALLOW_PRODUCTION_EMAIL_OVERRIDE` | no                 | Strict boolean acknowledgement required for a production recipient override                   |
+| `MEDIA_PROVIDER`                  | no                 | `localDisk` by default, or `s3`                                                               |
+| `S3_BUCKET`                       | with S3            | Object-storage bucket                                                                         |
+| `S3_ENDPOINT`                     | with S3            | S3-compatible HTTPS endpoint                                                                  |
+| `S3_REGION`                       | with S3            | Storage region                                                                                |
+| `S3_ACCESS_KEY_ID`                | with S3            | Storage access key                                                                            |
+| `S3_SECRET_ACCESS_KEY`            | with S3            | Storage secret                                                                                |
+| `S3_PUBLIC_URL`                   | no                 | HTTPS origin for direct public/CDN delivery                                                   |
+| `S3_ACL`                          | no                 | `none` default, `public-read`, or `private`                                                   |
+| `S3_FORCE_PATH_STYLE`             | no                 | Boolean, defaults to `true`                                                                   |
+| `S3_CLIENT_UPLOADS`               | no                 | Boolean, defaults to `false`; requires bucket CORS for browser PUT                            |
+| `MEDIA_RECONCILE_TOKEN`           | for reconciliation | Secret accepted as Bearer or `x-media-reconcile-token`                                        |
+| `SHADCNBLOCKS_API_KEY`            | optional tooling   | Used only by external Shadcn Blocks tooling, not the CMS runtime                              |
 
 Boolean variables accept `true/false`, `1/0`, `yes/no`, or `on/off` case-insensitively.
+
+`NEXT_PUBLIC_SERVER_URL` is parsed once into a canonical origin. Production accepts HTTPS only.
+Outside production, HTTPS remains valid and HTTP is accepted only for `localhost`, `127.0.0.1`, or
+`::1`. Payload uses this one origin for `serverURL`, CORS, CSRF, live-preview links, and redirect-map
+loading; an incoming request Host is never used as a server-side fetch target.
 
 ## Local Development
 
 Use `MEDIA_PROVIDER=localDisk` and either `docker compose up -d mongo` or another reachable MongoDB. Do not leave the placeholder S3 credentials active in a copied `.env`.
+
+### First Admin Bootstrap
+
+Anonymous user creation is permitted only when the Users collection is empty and
+`ALLOW_FIRST_ADMIN_CREATION=true`. The runtime default is `true` outside production and `false` in
+production, while `.env.example` chooses the safer explicit `false` value.
+
+For a new environment:
+
+1. Confirm that the target Users collection is empty and that the database is the intended environment.
+2. Set `ALLOW_FIRST_ADMIN_CREATION=true` and deploy or restart the application.
+3. Create the first account through Payload Admin; it is normalized to the Admin role.
+4. Immediately remove the variable or set it to `false`, then deploy or restart again.
+5. Sign in as that Admin and create all later Admin or Site Manager accounts while authenticated.
+
+Never leave the bootstrap flag enabled as an operational convenience. It does not permit anonymous
+creation after a user exists, but immediate removal keeps the production policy explicit.
 
 ## Production Docker Image
 
@@ -127,7 +155,7 @@ redeploy. DNS may remain on Cloudflare while the media provider configuration is
 
 ## Email
 
-`EMAIL_PROVIDER=none` keeps form storage and workflows active without sending email. Resend configuration creates Payload's email adapter. `RESEND_OVERRIDE_TO_EMAIL` is useful for staging but dangerous in production if forgotten because it reroutes all recipients.
+`EMAIL_PROVIDER=none` keeps form storage and workflows active without sending email. Resend configuration creates Payload's email adapter. `RESEND_OVERRIDE_TO_EMAIL` is useful for staging but dangerous in production because it reroutes every recipient. Production refuses to start when an override is present unless `ALLOW_PRODUCTION_EMAIL_OVERRIDE=true`; remove both values immediately after the controlled test.
 
 ## Deployment Notes
 
@@ -135,6 +163,8 @@ redeploy. DNS may remain on Cloudflare while the media provider configuration is
   placeholder, and shorter-than-32-character values
 - use durable MongoDB and object storage for hosted production
 - set `NEXT_PUBLIC_SERVER_URL` to the externally reachable HTTPS origin
+- keep `ALLOW_FIRST_ADMIN_CREATION` unset or `false` after the one-time Admin bootstrap
+- keep `ALLOW_PRODUCTION_EMAIL_OVERRIDE=false` unless a controlled production delivery test is active
 - never expose reconciliation or provider secrets to client-side variables
 - keep database archives in approved encrypted external storage, never in Git or Docker contexts
 - GitHub Actions verifies project context, generated types, TypeScript, lint, integration tests,

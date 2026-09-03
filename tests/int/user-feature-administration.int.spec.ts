@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import { ADMIN_FEATURE_KEYS } from '@/access/adminFeatures'
+import { adminOrFirstUserAccess } from '@/access/featureAccess'
 import {
   Users,
   normalizeFeatureGrants,
@@ -49,6 +50,18 @@ describe('two-role user administration', () => {
     expect(first?.role).toBe('admin')
     expect(later?.role).toBe('siteManager')
     expect(later?.features).toEqual(normalizeFeatureGrants(null))
+  })
+
+  it('allows anonymous first-admin creation only when bootstrap policy is enabled and users are empty', async () => {
+    const allowBootstrap = adminOrFirstUserAccess(true)
+    const denyBootstrap = adminOrFirstUserAccess(false)
+
+    await expect(allowBootstrap({ req: reqWithCount(0, null) } as never)).resolves.toBe(true)
+    await expect(allowBootstrap({ req: reqWithCount(1, null) } as never)).resolves.toBe(false)
+    await expect(denyBootstrap({ req: reqWithCount(0, null) } as never)).resolves.toBe(false)
+    await expect(denyBootstrap({ req: reqWithCount(0, { role: 'admin' }) } as never)).resolves.toBe(
+      true,
+    )
   })
 
   it('preserves explicit Site Manager grants and clears active sessions when grants change', async () => {

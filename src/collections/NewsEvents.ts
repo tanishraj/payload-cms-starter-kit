@@ -7,6 +7,7 @@ import {
   requireFeature,
 } from '@/access/featureAccess'
 import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
+import { runtimeConfig } from '@/config/runtime'
 import { projectEditor } from '@/fields/bodyEditorConfig'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
@@ -18,6 +19,7 @@ import { resolveNewsEventClassification } from '@/hooks/resolveNewsEventClassifi
 import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMembership'
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { NEWS_EVENT_CLASSIFICATIONS } from '@/lib/newsEventClassifications'
+import { buildLivePreviewURL } from '@/lib/siteUrl'
 import {
   revalidateDeletedNewsEventCache,
   revalidateNewsEventsCache,
@@ -49,9 +51,7 @@ export const NewsEvents: CollectionConfig = {
           return null
         }
 
-        const appURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
-
-        return `${appURL}/news-events/${data.slug}?preview=true`
+        return buildLivePreviewURL(`/news-events/${data.slug}?preview=true`, runtimeConfig)
       },
     },
   },
