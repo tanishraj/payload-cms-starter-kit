@@ -150,6 +150,30 @@ describe('runtime config', () => {
     )
   })
 
+  it.each(['test', 'development'] as const)(
+    'ignores FIRST_ADMIN_EMAIL in %s bootstrap policy',
+    (nodeEnv) => {
+      const config = getRuntimeConfig({
+        ...ORIGINAL_ENV,
+        ALLOW_FIRST_ADMIN_CREATION: 'true',
+        EMAIL_PROVIDER: 'none',
+        FIRST_ADMIN_EMAIL: 'private-non-production-value',
+        MEDIA_PROVIDER: 'localDisk',
+        MONGODB_URI: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+        NEXT_PUBLIC_SERVER_URL: 'http://localhost:3000',
+        NODE_ENV: nodeEnv,
+        PAYLOAD_SECRET: 'test-secret',
+        RESEND_OVERRIDE_TO_EMAIL: '',
+        VERCEL: '',
+      })
+
+      expect(config.auth).toEqual({
+        allowFirstAdminCreation: true,
+        firstAdminEmail: null,
+      })
+    },
+  )
+
   it('requires and normalizes the configured first-admin email for production bootstrap', () => {
     const productionEnv: NodeJS.ProcessEnv = {
       ...ORIGINAL_ENV,

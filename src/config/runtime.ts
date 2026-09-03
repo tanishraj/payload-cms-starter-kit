@@ -141,7 +141,7 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
     !isProduction,
     'ALLOW_FIRST_ADMIN_CREATION',
   )
-  const firstAdminEmail = parseFirstAdminEmail(env.FIRST_ADMIN_EMAIL)
+  const firstAdminEmail = isProduction ? parseFirstAdminEmail(env.FIRST_ADMIN_EMAIL) : null
   const allowProductionEmailOverride = parseBooleanEnv(
     env.ALLOW_PRODUCTION_EMAIL_OVERRIDE,
     false,

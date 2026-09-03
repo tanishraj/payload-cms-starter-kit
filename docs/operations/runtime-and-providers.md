@@ -60,7 +60,8 @@ trashed records, and `ALLOW_FIRST_ADMIN_CREATION=true`. The runtime default is `
 production and `false` in production, while `.env.example` chooses the safer explicit `false`
 value. Production additionally requires `FIRST_ADMIN_EMAIL`; the submitted address must match it
 after trimming and case normalization. Payload's unique email index allows only one of two raced
-requests for that pinned address to win.
+requests for that pinned address to win. Outside production, `FIRST_ADMIN_EMAIL` is ignored and the
+bootstrap policy remains flag-only.
 
 For a new environment:
 
