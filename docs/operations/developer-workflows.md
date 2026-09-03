@@ -21,7 +21,20 @@ Run type and import-map generation after changing collections, globals, fields, 
 
 ## Test Safety
 
-Tests load environment configuration. Use an isolated MongoDB database: E2E helpers seed and delete known test users and homepage content. Never point the test commands at a production or irreplaceable staging database.
+E2E loads only the committed, non-secret `test.env` defaults plus explicitly exported process
+variables. It refuses Atlas, non-loopback hosts, reserved databases, and database names that do not
+end in `_test` or `-test`. The default requires a local MongoDB replica set named `rs0`; MongoDB
+transactions require replica-set support. E2E starts its own development server and never reuses an
+arbitrary server already listening on port 3000.
+
+The E2E helpers seed and delete known test users and homepage content only after copying the
+validated `TEST_MONGODB_URI` to the application's `MONGODB_URI`. Do not add credentials to
+`test.env`. To use a different test database, export an explicit loopback test URI before invoking
+Playwright:
+
+```bash
+TEST_MONGODB_URI='mongodb://127.0.0.1:27017/my-project_test?replicaSet=rs0' pnpm test:e2e
+```
 
 Install a browser before the first E2E run:
 

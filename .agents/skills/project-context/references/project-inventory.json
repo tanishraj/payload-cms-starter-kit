@@ -2651,6 +2651,7 @@
       "tests/helpers/seedHomepage.ts",
       "tests/helpers/seedUser.ts",
       "tests/helpers/server-only.ts",
+      "tests/helpers/testDatabaseSafety.ts",
       "tests/int/about-section.int.spec.tsx",
       "tests/int/academic-programmes-client.int.spec.tsx",
       "tests/int/academic-programmes.int.spec.tsx",
@@ -2707,6 +2708,7 @@
       "tests/int/department-profiles.int.spec.tsx",
       "tests/int/docker-standalone.int.spec.ts",
       "tests/int/download-list.int.spec.tsx",
+      "tests/int/e2e-config.int.spec.ts",
       "tests/int/editorial-reasons.int.spec.tsx",
       "tests/int/editorial-workflow.int.spec.ts",
       "tests/int/event-gallery-data.int.spec.ts",
@@ -2840,6 +2842,7 @@
       "tests/int/tabs-content-active-color.int.spec.ts",
       "tests/int/taxonomy.int.spec.ts",
       "tests/int/team-showcase-hover-surface.int.spec.tsx",
+      "tests/int/test-database-safety.int.spec.ts",
       "tests/int/testimonial-spotlight-config.int.spec.ts",
       "tests/int/testimonial-spotlight-render.int.spec.tsx",
       "tests/int/theme-block-outliers.int.spec.tsx",
@@ -2851,7 +2854,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "6136806f7336729df59ad4ea96fc0cb449d2423977b0f034fd28262dfebb9245"
+    "sha256": "0c51df0777615185eb3c9821de1b630d8791402da32aeaba18fa4bbae931d33f"
   },
   "surfaces": {
     "access": [
@@ -3054,6 +3057,7 @@
       "tests/int/department-profiles.int.spec.tsx",
       "tests/int/docker-standalone.int.spec.ts",
       "tests/int/download-list.int.spec.tsx",
+      "tests/int/e2e-config.int.spec.ts",
       "tests/int/editorial-reasons.int.spec.tsx",
       "tests/int/editorial-workflow.int.spec.ts",
       "tests/int/event-gallery-data.int.spec.ts",
@@ -3186,6 +3190,7 @@
       "tests/int/tabs-content-active-color.int.spec.ts",
       "tests/int/taxonomy.int.spec.ts",
       "tests/int/team-showcase-hover-surface.int.spec.tsx",
+      "tests/int/test-database-safety.int.spec.ts",
       "tests/int/testimonial-spotlight-config.int.spec.ts",
       "tests/int/testimonial-spotlight-render.int.spec.tsx",
       "tests/int/theme-block-outliers.int.spec.tsx",

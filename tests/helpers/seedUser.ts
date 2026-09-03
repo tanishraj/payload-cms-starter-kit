@@ -1,5 +1,15 @@
-import { getPayload } from 'payload'
-import config from '../../src/payload.config.js'
+import { getRequiredTestDatabaseURI } from './testDatabaseSafety'
+
+async function getTestPayload() {
+  process.env.MONGODB_URI = getRequiredTestDatabaseURI()
+
+  const [{ getPayload }, { default: config }] = await Promise.all([
+    import('payload'),
+    import('../../src/payload.config.js'),
+  ])
+
+  return getPayload({ config })
+}
 
 export const testUser = {
   email: 'dev@payloadcms.com',
@@ -11,7 +21,7 @@ export const testUser = {
  * Seeds a test user for e2e admin tests.
  */
 export async function seedTestUser(): Promise<void> {
-  const payload = await getPayload({ config })
+  const payload = await getTestPayload()
   const existing = await payload.find({
     collection: 'users',
     depth: 0,
@@ -46,7 +56,7 @@ export async function getTestUserDocument(): Promise<{
   id: number | string
   role: string
 }> {
-  const payload = await getPayload({ config })
+  const payload = await getTestPayload()
   const result = await payload.find({
     collection: 'users',
     depth: 0,
@@ -77,7 +87,7 @@ export async function getTestUserDocument(): Promise<{
  * Cleans up test user after tests
  */
 export async function cleanupTestUser(): Promise<void> {
-  const payload = await getPayload({ config })
+  const payload = await getTestPayload()
   const existing = await payload.find({
     collection: 'users',
     depth: 0,

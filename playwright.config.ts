@@ -1,10 +1,17 @@
-import { defineConfig, devices } from '@playwright/test'
+import { existsSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-import 'dotenv/config'
+import { defineConfig, devices } from '@playwright/test'
+import { config as loadEnv } from 'dotenv'
+
+import { getRequiredTestDatabaseURI } from './tests/helpers/testDatabaseSafety'
+
+const testEnvPath = fileURLToPath(new URL('./test.env', import.meta.url))
+if (existsSync(testEnvPath)) {
+  loadEnv({ override: false, path: testEnvPath })
+}
+
+const testDatabaseURI = getRequiredTestDatabaseURI()
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -15,15 +22,13 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Serialize browser workers because local e2e setup shares one SQLite database. */
+  /* Serialize browser workers because local e2e setup shares one MongoDB replica-set database. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://localhost:3000',
-
+    baseURL: 'http://127.0.0.1:3000',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
@@ -35,7 +40,14 @@ export default defineConfig({
   ],
   webServer: {
     command: 'pnpm dev',
-    reuseExistingServer: true,
-    url: 'http://localhost:3000/admin',
+    env: {
+      ...process.env,
+      MONGODB_URI: testDatabaseURI,
+      PAYLOAD_SECRET: process.env.PAYLOAD_SECRET ?? 'e2e-only-payload-secret-32-characters',
+      EMAIL_PROVIDER: 'none',
+      MEDIA_PROVIDER: 'localDisk',
+    },
+    reuseExistingServer: false,
+    url: 'http://127.0.0.1:3000/admin',
   },
 })

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-const calendarPreviewURL = 'http://localhost:3000/block-thumbnail-previews/calendar'
+const calendarPreviewURL = '/block-thumbnail-previews/calendar'
 
 test.describe('Calendar block', () => {
   test('uses the month grid on desktop and the timeline on mobile', async ({ page }) => {
