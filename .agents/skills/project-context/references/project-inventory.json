@@ -2530,6 +2530,7 @@
       "src/config/uploadLimits.ts",
       "src/domains/forms/rateLimiter.ts",
       "src/domains/forms/requestLimits.ts",
+      "src/domains/media/uploadPolicy.ts",
       "src/domains/reviews/publicReviewAccess.ts",
       "src/domains/reviews/publicReviewQueries.ts",
       "src/endpoints/createPageFromRecipe.ts",
@@ -2757,7 +2758,9 @@
       "tests/int/media-public-url.int.spec.ts",
       "tests/int/media-storage.int.spec.ts",
       "tests/int/media-upload-limits.int.spec.ts",
+      "tests/int/media-upload-policy.int.spec.ts",
       "tests/int/media-url.int.spec.ts",
+      "tests/int/media.int.spec.ts",
       "tests/int/mongodb-uri-contract.int.spec.ts",
       "tests/int/news-event-classifications.int.spec.ts",
       "tests/int/news-event-share-actions.int.spec.tsx",
@@ -2858,7 +2861,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "10849f522efc9a3229fd95a1290f26f857f6fe87339b9a55ac89356103e206e7"
+    "sha256": "378d75edf0f722e2a515bfeb9b612eaebabfd84f20b1f2fa8cb097e4540fae7f"
   },
   "surfaces": {
     "access": [
@@ -3107,7 +3110,9 @@
       "tests/int/media-public-url.int.spec.ts",
       "tests/int/media-storage.int.spec.ts",
       "tests/int/media-upload-limits.int.spec.ts",
+      "tests/int/media-upload-policy.int.spec.ts",
       "tests/int/media-url.int.spec.ts",
+      "tests/int/media.int.spec.ts",
       "tests/int/mongodb-uri-contract.int.spec.ts",
       "tests/int/news-event-classifications.int.spec.ts",
       "tests/int/news-event-share-actions.int.spec.tsx",

@@ -2,7 +2,7 @@
 
 ## Runtime and Layers
 
-This is one editorial marketing application: Payload CMS 3.85.2 and Next.js 16 share the App Router process, with React 19, Tailwind CSS 4, MongoDB, and TypeScript. The main entry points are [Payload configuration](../../../../src/payload.config.ts) and the [App Router](../../../../src/app).
+This is one editorial marketing application: Payload CMS 3.85.2 and Next.js 16 share a Node.js 22-or-newer App Router process, with React 19, Tailwind CSS 4, MongoDB, and TypeScript. The main entry points are [Payload configuration](../../../../src/payload.config.ts) and the [App Router](../../../../src/app).
 
 The repository has eight practical layers:
 
@@ -10,7 +10,7 @@ The repository has eight practical layers:
 2. Payload content model and governance under collections, globals, fields, access, hooks, and plugins.
 3. CMS block schemas, renderers, previews, and thumbnails.
 4. Frontend UI and the semantic design system under components and styles.
-5. Domain services and runtime adapters under `src/lib` and `src/config`.
+5. Domain services and runtime adapters under `src/domains`, `src/lib`, and `src/config`.
 6. Vitest, Playwright, fixtures, and helpers under `tests`.
 7. Maintained architecture, operator, and runbook documentation.
 8. Package, Next.js, Docker, lint, and build tooling.

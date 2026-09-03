@@ -1,7 +1,8 @@
-import type {
-  CollectionAfterReadHook,
-  CollectionBeforeValidateHook,
-  CollectionConfig,
+import {
+  APIError,
+  type CollectionAfterReadHook,
+  type CollectionBeforeValidateHook,
+  type CollectionConfig,
 } from 'payload'
 
 import {
@@ -12,6 +13,8 @@ import {
   hideUnlessFeature,
   requireFeature,
 } from '@/access/featureAccess'
+import { ALLOWED_MEDIA_MIME_TYPES } from '@/config/uploadLimits'
+import { validateUploadedMedia } from '@/domains/media/uploadPolicy'
 import {
   buildMediaUsageSummary,
   findMediaUsage,
@@ -52,9 +55,20 @@ const imageOnlyAssetTypes = new Set(['hero', 'logo', 'seo'])
 const isImageMimeType = (value: unknown): value is string =>
   typeof value === 'string' && value.startsWith('image/')
 
-const beforeValidate: CollectionBeforeValidateHook = async ({ data, operation, originalDoc }) => {
+const beforeValidate: CollectionBeforeValidateHook = async ({
+  data,
+  operation,
+  originalDoc,
+  req,
+}) => {
   if (!data || (operation !== 'create' && operation !== 'update')) {
     return data
+  }
+
+  if (req?.file) {
+    await validateUploadedMedia(req.file)
+  } else if (req && operation === 'create') {
+    throw new APIError('A media file is required when creating an asset.', 400)
   }
 
   const assetType = typeof data.assetType === 'string' ? data.assetType : originalDoc?.assetType
@@ -296,5 +310,7 @@ export const Media: CollectionConfig = {
     },
     ...mediaUsageAdminFieldConfig,
   ],
-  upload: true,
+  upload: {
+    mimeTypes: [...ALLOWED_MEDIA_MIME_TYPES],
+  },
 }

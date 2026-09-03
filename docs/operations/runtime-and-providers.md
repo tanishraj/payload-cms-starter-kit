@@ -4,6 +4,7 @@
 
 | Concern  | Supported values  | Notes                                                |
 | -------- | ----------------- | ---------------------------------------------------- |
+| Node.js  | 22 or newer       | Docker and CI use Node 22                            |
 | Database | MongoDB           | URL must begin with `mongodb://` or `mongodb+srv://` |
 | Email    | `none`, `resend`  | Resend requires API key and from address             |
 | Media    | `localDisk`, `s3` | Vercel production rejects local disk                 |
@@ -92,6 +93,13 @@ The Payload S3 plugin attaches only to `media`. Verify endpoint, credentials, op
 style, and public/private delivery behavior with the actual provider. Blank `S3_ACL` and
 `S3_ACL=none` both omit the ACL request field for providers such as Cloudflare R2. Explicit
 `public-read` and `private` values remain available for compatible providers.
+
+The `media` collection is a public-marketing-asset trust class. It accepts only AVIF, GIF, JPEG,
+PNG, WebP, and PDF files whose filename extension, declared MIME type, and detected file signature
+agree. This format validation rejects disguised or unsupported file types before persistence, but
+it is not antivirus or malware scanning. Do not accept arbitrary or private documents through this
+collection. Private submissions require a separate collection and private bucket path, with an
+external malware-scanning and quarantine workflow in place before document intake is enabled.
 
 When `S3_PUBLIC_URL` is absent, Payload retains its normal file-handler URL behavior. When it is
 present, it must be an HTTPS origin without credentials, a path, query, or fragment. Payload emits
