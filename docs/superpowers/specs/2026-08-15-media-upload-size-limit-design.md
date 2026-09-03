@@ -10,9 +10,7 @@ The CMS will allow media files up to 10 MiB (`10 * 1024 * 1024` bytes).
 
 - `next.config.ts` will set `experimental.serverActions.bodySizeLimit` to `12mb`. This is a transport allowance, not the editor-facing file limit. The additional capacity covers multipart form fields and request framing for a 10 MiB file.
 - `src/payload.config.ts` will set Payload's global upload limit to 10 MiB and enable `abortOnLimit`. Payload remains the authoritative file-size validator and returns an HTTP 413 response for oversized files.
-- Local-disk and S3 uploads continue through Payload so binary policy runs before persistence. A
-  hosting provider's lower upstream request-body limit still wins over the application's 10 MiB
-  limit; direct browser uploads are not supported for this public collection.
+- Existing storage behavior remains unchanged. Local-disk uploads continue through Payload. S3 deployments may still use the existing `S3_CLIENT_UPLOADS` option for direct uploads.
 
 ## Error Handling
 

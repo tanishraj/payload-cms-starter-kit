@@ -61,9 +61,10 @@ Make S3 ACL behavior explicit and optional:
 - `private` and `public-read` remain available for other S3-compatible providers; and
 - the example R2 configuration uses `S3_ACL=none`.
 
-Local-disk behavior and non-R2 S3 support remain intact. Media uploads stay server-side so format
-validation completes before storage writes. Runtime configuration rejects `S3_CLIENT_UPLOADS=true`;
-direct browser uploads are not a supported future switch for this public collection.
+Local-disk behavior and non-R2 S3 support remain intact. Server-side uploads remain the initial
+default (`S3_CLIENT_UPLOADS=false`), avoiding a browser CORS dependency during the migration. A
+future switch to direct browser uploads requires a narrowly scoped R2 CORS rule for the production
+and preview admin origins.
 
 ## Payload and Next.js Integration
 
