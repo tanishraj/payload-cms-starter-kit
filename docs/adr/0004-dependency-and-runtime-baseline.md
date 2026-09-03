@@ -41,11 +41,12 @@ reports `0 critical / 0 high / 14 moderate / 4 low`, all residual findings follo
 Monaco Editor to DOMPurify path.
 
 Local Compose pins MongoDB `8.0.29`, initializes one writable `rs0` member advertising
-`mongo:27017`, and publishes the normal developer endpoint only on `127.0.0.1`. Host, container,
-test, and build URIs use explicit replica-set/direct-connection semantics. The Docker verifiers use
-only isolated `_test` databases, a fixed isolated project/network/image/builder namespace, one
-atomic owner-only lock, owner-marked resources, absolute Compose paths, an allowlisted child
-environment, and bounded ownership-checked cleanup.
+`mongo:27017`, and publishes the normal developer endpoint only on `127.0.0.1`. Local host, Compose
+container, E2E/transaction test, and Docker build-verifier URIs use explicit
+replica-set/direct-connection semantics; the current CI exception is described below. The Docker
+verifiers use only isolated `_test` databases, a fixed isolated project/network/image/builder
+namespace, one atomic owner-only lock, owner-marked resources, absolute Compose paths, an allowlisted
+child environment, and bounded ownership-checked cleanup.
 
 The production image uses Node `22.17.0`, pnpm `11.17.0`, a frozen install, and a non-root Next.js
 standalone runner. Only `NEXT_PUBLIC_SERVER_URL` is a build argument. Required server-only build
