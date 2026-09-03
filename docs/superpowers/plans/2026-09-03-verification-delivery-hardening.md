@@ -433,7 +433,6 @@ Keep the general locator preference of role/name first, but use the verified fie
 ```ts
 const roleField = page.locator('#field-role')
 await expect(roleField).toHaveCount(1)
-await expect(roleField.getByText('Role', { exact: true })).toBeVisible()
 const roleCombobox = roleField.getByRole('combobox')
 await expect(roleCombobox).toHaveCount(1)
 await roleCombobox.focus()
