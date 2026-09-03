@@ -1,9 +1,26 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+
+const mongoMemoryMocks = vi.hoisted(() => ({
+  create: vi.fn(),
+  getUri: vi.fn(),
+  stop: vi.fn(),
+}))
+
+vi.mock('mongodb-memory-server', () => ({
+  MongoMemoryReplSet: {
+    create: mongoMemoryMocks.create,
+  },
+}))
 
 import {
   assertSafeTestDatabaseURI,
   getRequiredTestDatabaseURI,
 } from '../helpers/testDatabaseSafety'
+import { createTestMongoServer, MEMORY_TEST_DATABASE_NAME } from '../helpers/mongoMemoryServer'
+
+afterEach(() => {
+  vi.clearAllMocks()
+})
 
 const accepted = [
   'mongodb://127.0.0.1:27017/payload_cms_test',
@@ -21,6 +38,45 @@ const rejected = [
 ]
 
 describe('test database safety', () => {
+  it('creates an exact-version one-member replica with an explicit safe database name', async () => {
+    mongoMemoryMocks.getUri.mockReturnValue(
+      'mongodb://127.0.0.1:27017/payload-memory_test?replicaSet=testset',
+    )
+    mongoMemoryMocks.create.mockResolvedValue({
+      getUri: mongoMemoryMocks.getUri,
+      stop: mongoMemoryMocks.stop,
+    })
+
+    const server = await createTestMongoServer()
+
+    expect(MEMORY_TEST_DATABASE_NAME).toBe('payload-memory_test')
+    expect(mongoMemoryMocks.create).toHaveBeenCalledWith({
+      binary: {
+        downloadDir: expect.stringContaining('payload-mongodb-binary-'),
+        version: '8.0.29',
+      },
+      replSet: {
+        count: 1,
+        storageEngine: 'wiredTiger',
+      },
+    })
+    expect(mongoMemoryMocks.getUri).toHaveBeenCalledWith(MEMORY_TEST_DATABASE_NAME)
+    expect(server.uri).toBe('mongodb://127.0.0.1:27017/payload-memory_test?replicaSet=testset')
+
+    await server.stop()
+    expect(mongoMemoryMocks.stop).toHaveBeenCalledOnce()
+  })
+
+  it('rejects an unsafe generated memory URI before returning it', async () => {
+    mongoMemoryMocks.getUri.mockReturnValue('mongodb://mongo:27017/payload-memory_test')
+    mongoMemoryMocks.create.mockResolvedValue({
+      getUri: mongoMemoryMocks.getUri,
+      stop: mongoMemoryMocks.stop,
+    })
+
+    await expect(createTestMongoServer()).rejects.toThrow(/loopback/)
+  })
+
   it.each(accepted)('accepts an explicit loopback test database: %s', (uri) => {
     expect(assertSafeTestDatabaseURI(uri).href).toBe(new URL(uri).href)
   })

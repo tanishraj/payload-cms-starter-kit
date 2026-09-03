@@ -9,6 +9,8 @@
   "scripts": {
     "audit:prod": "tsx scripts/audit-production-dependencies.ts",
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "ci:mongodb:start": "tsx scripts/ci-mongodb-replica.ts start",
+    "ci:mongodb:stop": "tsx scripts/ci-mongodb-replica.ts stop",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:block-thumbnails": "tsx scripts/generate-block-thumbnails.ts",

@@ -11,36 +11,53 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    services:
-      mongo:
-        image: mongo:8.0
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
+    timeout-minutes: 45
     env:
+      ALLOW_FIRST_ADMIN_CREATION: 'false'
+      ALLOW_PRODUCTION_EMAIL_OVERRIDE: 'false'
+      CI_MONGO_CONTAINER: payload-hardening-ci-${{ github.run_id }}-${{ github.run_attempt }}
+      CI_MONGO_OWNER: ${{ github.run_id }}:${{ github.run_attempt }}
       EMAIL_PROVIDER: none
+      FIRST_ADMIN_EMAIL: ''
       MEDIA_PROVIDER: localDisk
-      MONGODB_URI: mongodb://127.0.0.1:27017/payload-cms-starter-kit
+      MEDIA_RECONCILE_TOKEN: ''
+      MONGODB_URI: mongodb://127.0.0.1:27017/payload-hardening-ci_test?replicaSet=rs0&directConnection=true
+      MONGOMS_VERSION: 8.0.29
+      NEXT_PUBLIC_SERVER_URL: https://ci.example.invalid
       PAYLOAD_SECRET: ci-only-payload-secret-32-characters
+      RESEND_API_KEY: ''
+      RESEND_FROM_EMAIL: ''
+      RESEND_FROM_NAME: ''
+      RESEND_OVERRIDE_TO_EMAIL: ''
+      S3_ACCESS_KEY_ID: ''
+      S3_ACL: ''
+      S3_BUCKET: ''
+      S3_CLIENT_UPLOADS: ''
+      S3_ENDPOINT: ''
+      S3_FORCE_PATH_STYLE: ''
+      S3_PUBLIC_URL: ''
+      S3_REGION: ''
+      S3_SECRET_ACCESS_KEY: ''
+      TEST_MONGODB_URI: mongodb://127.0.0.1:27017/payload-cms-starter-kit_test?replicaSet=rs0&directConnection=true
+      VERCEL: ''
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
         with:
           version: 11.17.0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22.17.0
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm audit:prod
+      - run: pnpm ci:mongodb:start
       - run: pnpm generate:types
       - run: git diff --exit-code -- src/payload-types.ts
       - run: pnpm exec tsc --noEmit
       - run: pnpm lint
       - run: pnpm test:int
       - run: pnpm build
+      - name: Stop isolated MongoDB replica
+        if: always()
+        run: pnpm ci:mongodb:stop
