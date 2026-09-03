@@ -2033,7 +2033,7 @@
   "project": {
     "frameworks": {
       "next": "16.3.4",
-      "payload": "3.85.2",
+      "payload": "3.88.0",
       "react": "19.2.7",
       "tailwindcss": "^4.3.2",
       "typescript": "5.7.3",
@@ -2867,7 +2867,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "662f537c4c883c3f331e552e7f88094dcad719b2ffb53d0300d667793f87f1ca"
+    "sha256": "00f5003732d4f453dd61ee01808aa6e83aadf792dc602d1159f5abffe8b3e92d"
   },
   "surfaces": {
     "access": [

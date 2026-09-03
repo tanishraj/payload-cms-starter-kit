@@ -19,6 +19,20 @@ const compatibilityGroups = [
     packages: ['next', '@next/third-parties', 'eslint-config-next'],
     version: '16.3.4',
   },
+  {
+    name: 'Payload',
+    packages: [
+      'payload',
+      '@payloadcms/db-mongodb',
+      '@payloadcms/email-resend',
+      '@payloadcms/live-preview-react',
+      '@payloadcms/next',
+      '@payloadcms/richtext-lexical',
+      '@payloadcms/storage-s3',
+      '@payloadcms/ui',
+    ],
+    version: '3.88.0',
+  },
 ] as const
 
 const exactDirectDependencyTargets = [
