@@ -36,8 +36,11 @@ describe('repository toolchain contract', () => {
 
   it('uses the supported Node and pnpm releases in the current quality workflow', () => {
     const workflow = readFileSync('.github/workflows/quality.yml', 'utf8')
+    const pnpmSetupStep = workflow.match(
+      /- uses:\s*pnpm\/action-setup@[^\n]+\n\s+with:\s*\n\s+version:\s*([^\s#]+)/,
+    )
 
-    expect(workflow).toMatch(/version:\s*11\.17\.0/)
+    expect(pnpmSetupStep?.[1]).toBe('11.17.0')
     expect(workflow).toMatch(/node-version:\s*22\.17\.0/)
   })
 

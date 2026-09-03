@@ -10,7 +10,10 @@
 | Email    | `none`, `resend`  | Resend requires API key and from address                 |
 | Media    | `localDisk`, `s3` | Vercel production rejects local disk                     |
 
-The application validates this contract while loading `src/payload.config.ts` and fails fast on missing or unsupported configuration.
+Payload startup validates the runtime and provider configuration while loading
+`src/payload.config.ts` and fails fast on missing or unsupported environment values. The Node and
+pnpm toolchain contract is declared by `package.json` and `.nvmrc`, then selected explicitly by
+Docker and CI.
 
 Payload's REST API and Admin remain enabled. GraphQL is disabled because a fresh repository scan found
 no application query or mutation consumer. That evidence covers this repository only; confirm unknown
