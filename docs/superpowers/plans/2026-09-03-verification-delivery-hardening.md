@@ -255,31 +255,36 @@ git commit -m "ci: isolate MongoDB replica lifecycle"
 
 - Create: `tests/helpers/governanceFixtures.ts`
 - Create: `tests/e2e/governance.e2e.spec.ts`
+- Create: `tests/int/governance-fixtures.int.spec.ts`
 - Modify: `tests/int/e2e-config.int.spec.ts`
 
 **Interfaces:**
 
 - Produces `type GovernanceAccount = { email: string; password: string; role: 'admin' | 'siteManager'; features?: AdminFeatureGrants }`.
+- Produces `type GovernanceQueueSource = { sourceCollection: 'form-submissions' | 'reviews'; sourceID: string; dedupeKeys: readonly string[] }` and `type GovernanceFixture = { admin: GovernanceAccount; pendingReview: { id: string; slug: string; title: string }; reviewManager: GovernanceAccount; queueSources: readonly GovernanceQueueSource[] }`.
 - Produces fixed non-personal accounts `governanceAdmin`, `governanceSecondAdmin`, `accessManager`, and `reviewManager`, all under `@example.test`.
-- Produces `seedGovernanceBase(): Promise<{ admin: GovernanceAccount; pendingReview: { id: string; slug: string; title: string }; reviewManager: GovernanceAccount }>`.
-- Produces `cleanupGovernanceFixtures(): Promise<void>`, which validates `TEST_MONGODB_URI` before importing Payload, removes only records with the exact fixed governance emails/slugs, clears Review/Form Submission relationships in dependency order, and never drops a collection or database.
+- Produces `seedGovernanceBase(): Promise<GovernanceFixture>`.
+- Produces `cleanupGovernanceFixtures(fixture?: Pick<GovernanceFixture, 'queueSources'>): Promise<void>`, which validates `TEST_MONGODB_URI` before importing Payload, recovers source IDs from exact fixture records when no snapshot is supplied, deletes exact matching Work Queue document IDs before their Review/Form Submission sources, removes only records with the fixed governance emails/slugs, and never drops a collection or database.
+- Produces guarded `deleteGovernanceQueueItems(queueSources): Promise<void>` as a separately testable mutator backed by a private `deleteGovernanceQueueItemsWithPayload(payload, queueSources)`: every lookup combines an exact `dedupeKey`, `sourceCollection`, and string `sourceID`, and every delete supplies the returned Work Queue `id` plus `overrideAccess: true` because public Work Queue delete access is intentionally false.
 - The Playwright file contains exactly two tests: `Admin grants and revokes a Site Manager feature` and `Reviews Site Manager approves a submitted Review`.
 
 - [ ] **Step 1: Add fail-closed helper contract tests**
 
-Extend `tests/int/e2e-config.int.spec.ts` to import the new helper under an unsafe `TEST_MONGODB_URI` and assert both `seedGovernanceBase` and `cleanupGovernanceFixtures` reject before `payload.config` loads or `getPayload` runs. Add a source contract asserting every exported mutator calls `getRequiredTestDatabaseURI()` before the dynamic imports and that the helper contains no `dropDatabase`, `deleteMany({})`, `.env`, `.env.atlas.local`, `mongodb+srv`, or non-loopback URI.
+Extend `tests/int/e2e-config.int.spec.ts` to import the new helper under an unsafe `TEST_MONGODB_URI` and assert `seedGovernanceBase`, `cleanupGovernanceFixtures`, and `deleteGovernanceQueueItems` reject before `payload.config` loads or `getPayload` runs. Add a source contract asserting every exported mutator calls `getRequiredTestDatabaseURI()` before the dynamic imports and that the helper contains no `dropDatabase`, `deleteMany({})`, `.env`, `.env.atlas.local`, `mongodb+srv`, or non-loopback URI.
+
+Create `tests/int/governance-fixtures.int.spec.ts` with two RED contracts. First, set a safe loopback `_test` URI, mock the dynamically imported Payload boundary so `getPayload` returns `find`/`delete` spies, call `deleteGovernanceQueueItems`, and require each lookup to use `limit: 1`, `overrideAccess: true`, and an `and` predicate containing exact equality for `dedupeKey`, `sourceCollection`, and `sourceID`; require every Work Queue delete to be `{ collection: 'work-queue', id: queueDocument.id, overrideAccess: true }` for the concrete document returned by the corresponding mocked find, with no `where` delete. Use `vi.resetModules()` and restore the real modules before the runtime case so mock state cannot mask database behavior. Second, boot the existing Mongo memory replica through `createTestMongoServer`, set its loopback `_test` URI before dynamically importing Payload/config, run `seedGovernanceBase()` then `cleanupGovernanceFixtures(first)` twice, and query the exact dedupe keys from each returned snapshot with `overrideAccess: true`: the active form-submission and Review queue items must exist immediately after each seed and zero fixture queue documents may remain after each cleanup. Seed one unrelated sentinel Work Queue record through `overrideAccess: true` with exact data `{ dedupeKey: 'governance-sentinel:unrelated:system_issue:test', feature: 'maintenanceModes', firstOpenedAt: '2026-09-03T00:00:00.000Z', lastSyncedAt: '2026-09-03T00:00:00.000Z', priority: 'normal', queueType: 'system_issue', reasonCode: 'test', sourceCollection: 'governance-sentinel', sourceID: 'unrelated', sourceTitle: 'Unrelated queue sentinel', status: 'open', summary: 'Unrelated queue sentinel' }` through `overrideAccess: true` and require that exact ID still exists after both cycles, proving cleanup never broad-deletes; delete only that sentinel ID in the test's final teardown with `overrideAccess: true`.
 
 Run:
 
 ```bash
-pnpm exec vitest run --config ./vitest.config.mts tests/int/e2e-config.int.spec.ts
+pnpm exec vitest run --config ./vitest.config.mts tests/int/e2e-config.int.spec.ts tests/int/governance-fixtures.int.spec.ts
 ```
 
-Expected: FAIL because `tests/helpers/governanceFixtures.ts` does not exist.
+Expected RED: the governance helper and runtime fixture test do not exist; after the file compiles, the exact lookup/delete assertions and repeated seed/cleanup sentinel assertion remain failing until the lifecycle below is implemented.
 
 - [ ] **Step 2: Implement deterministic real-worker fixtures**
 
-At the start of both mutators, execute:
+At the start of each public mutator (`seedGovernanceBase`, `cleanupGovernanceFixtures`, and `deleteGovernanceQueueItems`), execute:
 
 ```ts
 const testDatabaseURI = getRequiredTestDatabaseURI()
@@ -321,9 +326,46 @@ export const governanceReview = {
 }
 ```
 
-`cleanupGovernanceFixtures` first finds exact records by those values, deletes the exact Review, then the exact Form Submission and Form, then the exact Category, and finally the three non-bootstrap users. It deletes the bootstrap Admin only if another active Admin exists, preserving the collection invariant; otherwise it leaves that one exact fixture Admin for the next idempotent seed. Every call states `overrideAccess: true`; deletes use IDs returned by exact queries, never a broad unqualified delete.
+`cleanupGovernanceFixtures` must preserve identifiers before deleting sources. With a supplied fixture snapshot, use its `queueSources`. Without one (startup/crash recovery), first find the Review by exact slug, retain its ID and `sourceSubmission` ID, then find the exact Form by slug and its submission by both Form ID and fixed `submittedAt`; do not delete anything yet. Build these exact source contracts with `buildWorkQueueDedupeKey`:
 
-`seedGovernanceBase` calls cleanup, finds the exact `governanceAdmin` email, and either updates that fixture account or creates it with `overrideAccess: true`; this makes recovery idempotent even when cleanup correctly retained the last Admin. It creates `reviewManager` through that Admin with `overrideAccess: false`, then creates one Category, one review-intent Form, one Form Submission, and one pending draft Review. Create the submitted Review through Payload with:
+```ts
+const queueSources: readonly GovernanceQueueSource[] = [
+  {
+    sourceCollection: 'form-submissions',
+    sourceID: String(submission.id),
+    dedupeKeys: [
+      buildWorkQueueDedupeKey({
+        queueType: 'follow_up',
+        reasonCode: 'submission-new',
+        sourceCollection: 'form-submissions',
+        sourceID: String(submission.id),
+      }),
+      buildWorkQueueDedupeKey({
+        queueType: 'follow_up',
+        reasonCode: 'submission-in-review',
+        sourceCollection: 'form-submissions',
+        sourceID: String(submission.id),
+      }),
+    ],
+  },
+  {
+    sourceCollection: 'reviews',
+    sourceID: String(review.id),
+    dedupeKeys: [
+      buildWorkQueueDedupeKey({
+        queueType: 'moderation',
+        reasonCode: 'review-moderation-required',
+        sourceCollection: 'reviews',
+        sourceID: String(review.id),
+      }),
+    ],
+  },
+]
+```
+
+The public `deleteGovernanceQueueItems` runs the same database guard and dynamic Payload/config imports shown above, then delegates to the private with-Payload helper; `cleanupGovernanceFixtures` delegates to that same private helper after discovery so it does not weaken or duplicate the boundary. `seedGovernanceBase` completes its own guard/import first, invokes a private cleanup-with-Payload routine rather than recursively invoking a public mutator, and then seeds through that already-validated Payload instance. For each source/key pair, the private queue helper performs an exact `payload.find` using `limit: 1`, `overrideAccess: true`, and equality on all three fields. It deletes only each returned document ID with `overrideAccess: true`; it never calls collection delete with a `where`, and it ignores a missing exact match so partial cleanup remains idempotent. Complete all queue lookups/deletes successfully **before** deleting the exact Review or Form Submission, so a failure leaves the source IDs recoverable for retry. Then delete the exact Review, exact Form Submission and Form, exact Category, and finally the three non-bootstrap users. Delete the bootstrap Admin only if another active Admin exists, preserving the collection invariant; otherwise leave that exact fixture Admin for the next idempotent seed. Every call states `overrideAccess: true`; deletes use IDs returned by exact queries, never a broad unqualified delete.
+
+After its private cleanup completes, `seedGovernanceBase` finds the exact `governanceAdmin` email and either updates that fixture account or creates it with `overrideAccess: true`; this makes recovery idempotent even when cleanup correctly retained the last Admin. It creates `reviewManager` through that Admin with `overrideAccess: false`, then creates one Category, one review-intent Form, one Form Submission, and one pending draft Review. Create the submitted Review through Payload with:
 
 ```ts
 const category = await payload.create({
@@ -380,11 +422,38 @@ overrideAccess: false,
 user: governanceAdminDocument,
 ```
 
-Return string IDs and public-safe values only. Do not return raw Payload configuration, cookies, session tokens, or submission data.
+Return string IDs and public-safe values only, including `queueSources` built from the created submission and Review IDs. After creation, verify the active `submission-new` and `review-moderation-required` keys each resolve to exactly one Work Queue item so a hook failure is surfaced at seed time; the dormant `submission-in-review` key remains in the cleanup contract for retry safety. Do not return raw Payload configuration, cookies, session tokens, or submission data.
 
 - [ ] **Step 3: Write the failing access-governance journey**
 
-In the first Playwright test, call `seedGovernanceBase()` in `beforeEach` and `cleanupGovernanceFixtures()` in `afterEach`. Log in as `governanceAdmin`, open `/admin/collections/users/create`, and use accessible labels plus stable field names to create `governanceSecondAdmin`. Repeat the user creation screen for `accessManager`, select `Site Manager`, check `input[name="features.pages"]`, and save.
+In the first Playwright test, retain the `GovernanceFixture` returned by `seedGovernanceBase()` in `beforeEach` and pass it to `cleanupGovernanceFixtures(fixture)` in `afterEach`, so queue source IDs survive browser operations and assertion failures. Log in as `governanceAdmin` and open `/admin/collections/users/create`. Current `Users.ts` defines role as a Payload `select` with accessible label `Role`, `Admin`/`Site Manager` options, and default `siteManager`; Payload's installed `SelectInput` associates `FieldLabel` with the `react-select` input, so select Admin using only:
+
+```ts
+const role = page.getByRole('combobox', { name: 'Role', exact: true })
+await role.click()
+await page.getByRole('option', { name: 'Admin', exact: true }).click()
+```
+
+Do not assert the searchable react-select's transient text-input value: after choosing an option that input can be empty. Do not use `.rs-*`, `.field-type`, generated IDs, CSS hashes, or `nth()`.
+
+Fill the exact second-admin email/password and save with the accessible `Save` button while waiting for the successful `POST /api/users` response. Match the response by `new URL(response.url()).pathname === '/api/users'` plus request method `POST`, not by a substring. Require an OK response and use this exact persisted-record check:
+
+```ts
+const createdAdmin = (await createResponse.json()).doc
+expect(createdAdmin.email).toBe(governanceSecondAdmin.email)
+expect(createdAdmin.role).toBe('admin')
+await page.waitForURL((url) =>
+  url.pathname === `/admin/collections/users/${String(createdAdmin.id)}`,
+)
+const readBack = await page.request.get(`/api/users/${String(createdAdmin.id)}?depth=0`)
+expect(readBack.status()).toBe(200)
+expect(await readBack.json()).toMatchObject({
+  email: governanceSecondAdmin.email,
+  role: 'admin',
+})
+```
+
+The successful response, redirect, and authenticated read-back are the save confirmation; do not proceed to create the Site Manager or rely on this account for last-admin-safe cleanup until all three pass. Repeat the user creation screen for `accessManager`, explicitly select `Site Manager` through the same accessible combobox/option contract, check `input[name="features.pages"]`, and save.
 
 Open a fresh browser context, log in as `accessManager`, and assert:
 
@@ -427,16 +496,16 @@ Use Playwright locators in this order: accessible role/name, associated label, t
 Run:
 
 ```bash
-pnpm exec vitest run --config ./vitest.config.mts tests/int/e2e-config.int.spec.ts tests/int/user-feature-administration.int.spec.ts tests/int/feature-access-matrix.int.spec.ts tests/int/review-moderation.int.spec.ts tests/int/public-review-access.int.spec.ts
+pnpm exec vitest run --config ./vitest.config.mts tests/int/e2e-config.int.spec.ts tests/int/governance-fixtures.int.spec.ts tests/int/user-feature-administration.int.spec.ts tests/int/feature-access-matrix.int.spec.ts tests/int/review-moderation.int.spec.ts tests/int/public-review-access.int.spec.ts
 pnpm exec playwright test --config=playwright.config.ts tests/e2e/governance.e2e.spec.ts
 ```
 
-Expected GREEN: all focused Vitest assertions pass; Playwright reports exactly two passed Chromium tests; both `afterEach` cleanups complete even if an assertion fails.
+Expected GREEN: all focused Vitest assertions pass, including two complete fixture cycles with both exact queue side effects removed and the unrelated sentinel retained; Playwright reports exactly two passed Chromium tests; both `afterEach` cleanups complete even if an assertion fails.
 
 - [ ] **Step 6: Commit Task 2**
 
 ```bash
-git add tests/helpers/governanceFixtures.ts tests/e2e/governance.e2e.spec.ts tests/int/e2e-config.int.spec.ts
+git add tests/helpers/governanceFixtures.ts tests/e2e/governance.e2e.spec.ts tests/int/e2e-config.int.spec.ts tests/int/governance-fixtures.int.spec.ts
 git commit -m "test(governance): cover critical admin flows"
 ```
 
