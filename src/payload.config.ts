@@ -47,6 +47,7 @@ const starterContract = getStarterContract(runtimeConfig)
 assertSupportedStarterContract(starterContract)
 const email = createEmailAdapter(runtimeConfig)
 const storagePlugins = createStoragePlugins(runtimeConfig)
+const s3ClientUploadHandlerPath = '@payloadcms/storage-s3/client#S3ClientUploadHandler'
 
 if (runtimeConfig.deployment.isProduction && !email && runtimeConfig.email.provider === 'resend') {
   throw new Error('Missing production email configuration.')
@@ -55,6 +56,12 @@ if (runtimeConfig.deployment.isProduction && !email && runtimeConfig.email.provi
 export default buildConfig({
   admin: {
     user: Users.slug,
+    dependencies: {
+      [s3ClientUploadHandlerPath]: {
+        path: s3ClientUploadHandlerPath,
+        type: 'function',
+      },
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },

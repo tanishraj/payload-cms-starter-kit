@@ -2798,6 +2798,7 @@
       "tests/int/page-routing.int.spec.ts",
       "tests/int/page-settings-system-mode.int.spec.ts",
       "tests/int/payload-security-config.int.spec.ts",
+      "tests/int/payload-storage-admin-compatibility.int.spec.ts",
       "tests/int/pg-fee-structure.int.spec.tsx",
       "tests/int/preview-access.int.spec.ts",
       "tests/int/profile-carousel.int.spec.ts",
@@ -2867,7 +2868,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "00f5003732d4f453dd61ee01808aa6e83aadf792dc602d1159f5abffe8b3e92d"
+    "sha256": "460b984f10d037627ccdf2922b143047074fd9cc74ca8309ab9b813900fdd102"
   },
   "surfaces": {
     "access": [
@@ -3156,6 +3157,7 @@
       "tests/int/page-routing.int.spec.ts",
       "tests/int/page-settings-system-mode.int.spec.ts",
       "tests/int/payload-security-config.int.spec.ts",
+      "tests/int/payload-storage-admin-compatibility.int.spec.ts",
       "tests/int/pg-fee-structure.int.spec.tsx",
       "tests/int/preview-access.int.spec.ts",
       "tests/int/profile-carousel.int.spec.ts",
