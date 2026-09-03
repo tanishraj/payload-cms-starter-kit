@@ -2860,12 +2860,13 @@
       "tests/int/theme-contracts.int.spec.ts",
       "tests/int/theme-settings.int.spec.ts",
       "tests/int/theme-value-migration.int.spec.ts",
+      "tests/int/toolchain-contract.int.spec.ts",
       "tests/int/two-role-feature-permissions-migration.int.spec.ts",
       "tests/int/user-feature-administration.int.spec.ts",
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "ddec44b39cab4147a2ce1c04374bb83bc8d1e541845314d43f1f48ac4cc68696"
+    "sha256": "c2c14e0d29b1d506a592f1d5915ad1f00afa4d20fcc2dadc05de0e0d56f7a0c6"
   },
   "surfaces": {
     "access": [
@@ -3216,6 +3217,7 @@
       "tests/int/theme-contracts.int.spec.ts",
       "tests/int/theme-settings.int.spec.ts",
       "tests/int/theme-value-migration.int.spec.ts",
+      "tests/int/toolchain-contract.int.spec.ts",
       "tests/int/two-role-feature-permissions-migration.int.spec.ts",
       "tests/int/user-feature-administration.int.spec.ts",
       "tests/int/work-queue.int.spec.ts"

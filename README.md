@@ -192,8 +192,8 @@ Optional tooling:
 
 ## Tooling
 
-- `Node.js`: `>=22.0.0`
-- `pnpm`: `^9 || ^10 || ^11`
+- `Node.js`: `22.17.0` (`>=22.13.0 <23`)
+- `pnpm`: `11.17.0`
 
 ## Testing
 

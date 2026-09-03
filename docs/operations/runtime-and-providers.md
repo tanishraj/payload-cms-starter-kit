@@ -2,12 +2,13 @@
 
 ## Supported Contract
 
-| Concern  | Supported values  | Notes                                                |
-| -------- | ----------------- | ---------------------------------------------------- |
-| Node.js  | 22 or newer       | Docker and CI use Node 22                            |
-| Database | MongoDB           | URL must begin with `mongodb://` or `mongodb+srv://` |
-| Email    | `none`, `resend`  | Resend requires API key and from address             |
-| Media    | `localDisk`, `s3` | Vercel production rejects local disk                 |
+| Concern  | Supported values  | Notes                                                    |
+| -------- | ----------------- | -------------------------------------------------------- |
+| Node.js  | `22.17.0`         | Supported engine range is `>=22.13.0 <23`; CI matches it |
+| pnpm     | `11.17.0`         | Corepack uses the exact package-manager pin              |
+| Database | MongoDB           | URL must begin with `mongodb://` or `mongodb+srv://`     |
+| Email    | `none`, `resend`  | Resend requires API key and from address                 |
+| Media    | `localDisk`, `s3` | Vercel production rejects local disk                     |
 
 The application validates this contract while loading `src/payload.config.ts` and fails fast on missing or unsupported configuration.
 

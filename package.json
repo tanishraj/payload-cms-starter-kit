@@ -1,8 +1,10 @@
 {
   "name": "payload-cms-next-tailwind-shadcn-starter-kit",
   "version": "1.0.0",
+  "private": true,
   "description": "Editorial marketing CMS starter built with Payload CMS and Next.js",
-  "license": "MIT",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@11.17.0",
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
@@ -85,7 +87,7 @@
     "vitest": "4.0.18"
   },
   "engines": {
-    "node": ">=22.0.0",
-    "pnpm": "^9 || ^10 || ^11"
+    "node": ">=22.13.0 <23",
+    "pnpm": "11.17.0"
   }
 }

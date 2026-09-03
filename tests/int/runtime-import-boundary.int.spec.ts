@@ -86,8 +86,8 @@ describe('runtime import boundary', () => {
     }
     const readme = readFileSync('README.md', 'utf8')
 
-    expect(packageJSON.engines?.node).toBe('>=22.0.0')
-    expect(readme).toContain('- `Node.js`: `>=22.0.0`')
+    expect(packageJSON.engines?.node).toBe('>=22.13.0 <23')
+    expect(readme).toContain('- `Node.js`: `22.17.0` (`>=22.13.0 <23`)')
     expect(readme).not.toContain('^18.20.2 || >=20.9.0')
   })
 })
