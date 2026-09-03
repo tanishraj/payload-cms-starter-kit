@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.invalid/schemas/dependency-audit-exceptions.schema.json",
+  "title": "Production dependency audit exceptions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "exceptions"],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "advisoryId",
+          "packageName",
+          "vulnerableRange",
+          "installedVersions",
+          "reachability",
+          "mitigation",
+          "owner",
+          "createdAt",
+          "expiresAt"
+        ],
+        "properties": {
+          "advisoryId": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "packageName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "vulnerableRange": {
+            "type": "string",
+            "minLength": 1
+          },
+          "installedVersions": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "reachability": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mitigation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "createdAt": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "expiresAt": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        }
+      }
+    }
+  }
+}

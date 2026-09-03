@@ -110,6 +110,10 @@ so moving that Page beneath a parent does not leave consent UI pointing at its l
 ## Verification
 
 - Run focused Vitest files while iterating, then `pnpm test:int`.
+- Run `pnpm audit:prod` as the sole exception-aware production dependency audit gate; raw pnpm
+  audit output is diagnostic and must not be used as an independent pass/fail result. The exception
+  schema, approval workflow, and narrow lock refresh procedure live in
+  [dependency-management.md](../../../../docs/operations/dependency-management.md).
 - Run `pnpm test:e2e` for affected Admin or browser journeys. Playwright loads its isolated
   `test.env`, accepts only explicit loopback MongoDB database names ending in `_test` or `-test`,
   copies that validated URI into the application environment, and starts a fresh development server.

@@ -37,6 +37,10 @@ const compatibilityGroups = [
 
 const exactDirectDependencyTargets = [
   {
+    name: 'postcss',
+    version: '8.5.26',
+  },
+  {
     name: 'sharp',
     version: '0.35.4',
   },
@@ -57,7 +61,10 @@ describe.each(compatibilityGroups)('$name compatibility group', ({ packages, ver
 })
 
 describe('independent direct dependency targets', () => {
-  it.each(exactDirectDependencyTargets)('pins $name to exact version $version', ({ name, version }) => {
-    expect(directDependencies[name], name).toBe(version)
-  })
+  it.each(exactDirectDependencyTargets)(
+    'pins $name to exact version $version',
+    ({ name, version }) => {
+      expect(directDependencies[name], name).toBe(version)
+    },
+  )
 })
