@@ -426,15 +426,27 @@ Return string IDs and public-safe values only, including `queueSources` built fr
 
 - [ ] **Step 3: Write the failing access-governance journey**
 
-In the first Playwright test, retain the `GovernanceFixture` returned by `seedGovernanceBase()` in `beforeEach` and pass it to `cleanupGovernanceFixtures(fixture)` in `afterEach`, so queue source IDs survive browser operations and assertion failures. Log in as `governanceAdmin` and open `/admin/collections/users/create`. Current `Users.ts` defines role as a Payload `select` with accessible label `Role`, `Admin`/`Site Manager` options, and default `siteManager`; Payload's installed `SelectInput` associates `FieldLabel` with the `react-select` input, so select Admin using only:
+In the first Playwright test, retain the `GovernanceFixture` returned by `seedGovernanceBase()` in `beforeEach` and pass it to `cleanupGovernanceFixtures(fixture)` in `afterEach`, so queue source IDs survive browser operations and assertion failures. Log in as `governanceAdmin` and open `/admin/collections/users/create`. Current `Users.ts` defines role as a Payload `select` with `Admin`/`Site Manager` options and default `siteManager`. In this installed Payload UI version, `SelectInput` renders the stable schema-path wrapper `id="field-role"`, but its `FieldLabel` `htmlFor` does not connect to the nested ReactSelect input; therefore the combobox has no accessible name and `getByRole('combobox', { name: 'Role' })` is invalid for this field.
+
+Keep the general locator preference of role/name first, but use the verified field-wrapper boundary for this known Payload accessibility limitation. Make the following assertions at the start of the real journey as a focused rendered-UI preflight, then choose Admin:
 
 ```ts
-const role = page.getByRole('combobox', { name: 'Role', exact: true })
-await role.click()
-await page.getByRole('option', { name: 'Admin', exact: true }).click()
+const roleField = page.locator('#field-role')
+await expect(roleField).toHaveCount(1)
+await expect(roleField.getByText('Role', { exact: true })).toBeVisible()
+const roleCombobox = roleField.getByRole('combobox')
+await expect(roleCombobox).toHaveCount(1)
+await roleCombobox.focus()
+await roleCombobox.click()
+const adminOption = page.getByRole('option', { name: 'Admin', exact: true })
+await expect(adminOption).toHaveCount(1)
+await expect(adminOption).toBeVisible()
+await adminOption.click()
+await expect(roleField.getByText('Admin', { exact: true })).toHaveCount(1)
+await expect(roleField.getByText('Admin', { exact: true })).toBeVisible()
 ```
 
-Do not assert the searchable react-select's transient text-input value: after choosing an option that input can be empty. Do not use `.rs-*`, `.field-type`, generated IDs, CSS hashes, or `nth()`.
+The wrapper-scoped visible `Admin` assertion is the control-value assertion; do not assert the searchable ReactSelect text input's transient value because it can be empty after option selection. `#field-role` is the stable Payload field-path wrapper verified for this schema, not a generated ReactSelect instance ID. Do not use ReactSelect IDs such as `react-select-*`, `.rs-*`, `.field-type`, CSS hashes, or `nth()`. If this preflight fails, inspect the rendered accessibility tree and installed Payload SelectInput implementation, update this explicit wrapper contract and its plan evidence, and keep the test failing until the real control is operable; do not fall back to arbitrary DOM traversal.
 
 Fill the exact second-admin email/password and save with the accessible `Save` button while waiting for the successful `POST /api/users` response. Match the response by `new URL(response.url()).pathname === '/api/users'` plus request method `POST`, not by a substring. Require an OK response and use this exact persisted-record check:
 
@@ -453,7 +465,7 @@ expect(await readBack.json()).toMatchObject({
 })
 ```
 
-The successful response, redirect, and authenticated read-back are the save confirmation; do not proceed to create the Site Manager or rely on this account for last-admin-safe cleanup until all three pass. Repeat the user creation screen for `accessManager`, explicitly select `Site Manager` through the same accessible combobox/option contract, check `input[name="features.pages"]`, and save.
+The visible wrapper-scoped control value, successful response, redirect, and authenticated read-back are the save confirmation; do not proceed to create the Site Manager or rely on this account for last-admin-safe cleanup until all four pass. Repeat the user creation screen for `accessManager`, explicitly select `Site Manager` through the same `#field-role` wrapper plus role-option contract, assert the wrapper-scoped visible value, check `input[name="features.pages"]`, and save.
 
 Open a fresh browser context, log in as `accessManager`, and assert:
 
