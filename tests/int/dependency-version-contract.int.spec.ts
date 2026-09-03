@@ -21,6 +21,13 @@ const compatibilityGroups = [
   },
 ] as const
 
+const exactDirectDependencyTargets = [
+  {
+    name: 'sharp',
+    version: '0.35.4',
+  },
+] as const
+
 describe.each(compatibilityGroups)('$name compatibility group', ({ packages, version }) => {
   it(`pins every direct package to exact version ${version}`, () => {
     for (const packageName of packages) {
@@ -32,5 +39,11 @@ describe.each(compatibilityGroups)('$name compatibility group', ({ packages, ver
     const resolvedVersions = packages.map((packageName) => directDependencies[packageName])
 
     expect(new Set(resolvedVersions)).toEqual(new Set([version]))
+  })
+})
+
+describe('independent direct dependency targets', () => {
+  it.each(exactDirectDependencyTargets)('pins $name to exact version $version', ({ name, version }) => {
+    expect(directDependencies[name], name).toBe(version)
   })
 })
