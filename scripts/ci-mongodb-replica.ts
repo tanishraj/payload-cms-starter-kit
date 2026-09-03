@@ -12,7 +12,7 @@ export const CI_MONGO_URI =
 const COMMAND_TIMEOUT_MS = 120_000
 const INSPECT_TIMEOUT_MS = 30_000
 const READINESS_TIMEOUT_MS = 90_000
-const READINESS_INTERVAL_MS = 1_000
+const READINESS_INTERVAL_MS = 250
 const MAX_DOCKER_OUTPUT_BYTES = 1024 * 1024
 
 export type DockerRunner = (args: readonly string[], timeoutMs: number) => SpawnSyncReturns<string>
@@ -82,38 +82,67 @@ function removeOwnedContainer(run: DockerRunner, identity: CIMongoIdentity): voi
   )
 }
 
-function waitForReadiness(run: DockerRunner, containerName: string): void {
+function initializeAndWaitForReadiness(run: DockerRunner, containerName: string): void {
+  const initiateExpression = `
+try {
+  rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: '127.0.0.1:27017' }] })
+} catch (error) {
+  if (error.codeName !== 'AlreadyInitialized') quit(2)
+}
+`.trim()
   const readinessExpression = `
 try {
   const ping = db.runCommand({ ping: 1 })
   const hello = db.hello()
   const members = rs.conf().members
+  const correctVersion = db.version() === '8.0.29'
+  const correctMember =
+    members.length === 1 && members[0].host === '127.0.0.1:27017'
+
+  if (!correctVersion || !correctMember) quit(3)
   if (
     ping.ok === 1 &&
-    db.version() === '8.0.29' &&
-    hello.isWritablePrimary === true &&
-    members.length === 1 &&
-    members[0].host === '127.0.0.1:27017'
+    hello.isWritablePrimary === true
   ) quit(0)
 } catch (_) {}
-quit(2)
+quit(1)
 `.trim()
   const deadline = Date.now() + READINESS_TIMEOUT_MS
   const waitBuffer = new Int32Array(new SharedArrayBuffer(4))
+  let initialized = false
 
   while (Date.now() < deadline) {
-    const commandTimeoutMs = Math.max(1, Math.min(INSPECT_TIMEOUT_MS, deadline - Date.now()))
-    const readiness = run(
-      ['exec', containerName, 'mongosh', '--quiet', '--eval', readinessExpression],
-      commandTimeoutMs,
-    )
+    let commandTimeoutMs = Math.max(1, Math.min(INSPECT_TIMEOUT_MS, deadline - Date.now()))
 
-    if (isExecutionFailure(readiness)) {
-      throw controllerError('readiness check failed without forwarding command output')
+    if (!initialized) {
+      const initialization = run(
+        ['exec', containerName, 'mongosh', '--quiet', '--eval', initiateExpression],
+        commandTimeoutMs,
+      )
+
+      if (isExecutionFailure(initialization)) {
+        throw controllerError('replica initialization failed without forwarding command output')
+      }
+      if (initialization.status === 0) initialized = true
+      else if (initialization.status !== 1) {
+        throw controllerError('replica initialization failed without forwarding command output')
+      }
     }
-    if (readiness.status === 0) return
-    if (readiness.status !== 1 && readiness.status !== 2) {
-      throw controllerError('readiness check failed without forwarding command output')
+
+    if (initialized && Date.now() < deadline) {
+      commandTimeoutMs = Math.max(1, Math.min(INSPECT_TIMEOUT_MS, deadline - Date.now()))
+      const readiness = run(
+        ['exec', containerName, 'mongosh', '--quiet', '--eval', readinessExpression],
+        commandTimeoutMs,
+      )
+
+      if (isExecutionFailure(readiness)) {
+        throw controllerError('readiness check failed without forwarding command output')
+      }
+      if (readiness.status === 0) return
+      if (readiness.status !== 1) {
+        throw controllerError('readiness check failed without forwarding command output')
+      }
     }
 
     const remainingMs = deadline - Date.now()
@@ -193,22 +222,7 @@ export function startCIMongoReplica(
     )
     assertOwnedContainer(run, identity)
 
-    const initiateExpression = `
-try {
-  rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: '127.0.0.1:27017' }] })
-} catch (error) {
-  if (error.codeName !== 'AlreadyInitialized') quit(2)
-}
-`.trim()
-    requireSuccess(
-      run(
-        ['exec', identity.containerName, 'mongosh', '--quiet', '--eval', initiateExpression],
-        INSPECT_TIMEOUT_MS,
-      ),
-      'replica initialization',
-    )
-
-    waitForReadiness(run, identity.containerName)
+    initializeAndWaitForReadiness(run, identity.containerName)
   } catch {
     if (creationAttempted) {
       try {

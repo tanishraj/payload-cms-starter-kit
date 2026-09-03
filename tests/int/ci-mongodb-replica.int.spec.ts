@@ -3,7 +3,7 @@
 import type { SpawnSyncReturns } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import {
   CI_MONGO_IMAGE,
@@ -55,6 +55,10 @@ function successfulStartRunner(): ReturnType<typeof vi.fn<DockerRunner>> {
     return result(2)
   })
 }
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 describe('CI MongoDB replica controller', () => {
   it('exports the exact immutable database contract', () => {
@@ -118,6 +122,95 @@ describe('CI MongoDB replica controller', () => {
     )
   })
 
+  it('retries a transient initialization connection failure within the readiness window', () => {
+    let initializationAttempts = 0
+    const run = vi.fn<DockerRunner>((args) => {
+      if (args[0] === 'container') return result(1)
+      if (args[0] === 'run') return result(0)
+      if (args[0] === 'inspect') return result(0, '123:2\n')
+      if (args[0] === 'exec') {
+        const expression = args.at(-1)
+        if (expression?.includes('rs.initiate')) {
+          initializationAttempts += 1
+          return result(initializationAttempts === 1 ? 1 : 0)
+        }
+        return result(0)
+      }
+      return result(2)
+    })
+
+    startCIMongoReplica({ env: validEnvironment(), run })
+
+    expect(initializationAttempts).toBe(2)
+    expect(run.mock.calls.filter(([args]) => args[0] === 'exec')).toHaveLength(3)
+  })
+
+  it.each(['wrong version', 'wrong member'])(
+    'fails closed and cleans up after a permanent %s readiness result',
+    () => {
+      let created = false
+      const run = vi.fn<DockerRunner>((args) => {
+        if (args[0] === 'container') return result(created ? 0 : 1)
+        if (args[0] === 'run') {
+          created = true
+          return result(0)
+        }
+        if (args[0] === 'inspect') return result(0, '123:2\n')
+        if (args[0] === 'exec') {
+          return result(args.at(-1)?.includes('rs.initiate') ? 0 : 3, 'private readiness detail')
+        }
+        if (args[0] === 'rm') return result(0)
+        return result(2)
+      })
+
+      expect(() => startCIMongoReplica({ env: validEnvironment(), run })).toThrow(
+        /^CI MongoDB replica startup failed without forwarding command output\.$/,
+      )
+      expect(run).toHaveBeenCalledWith(['rm', '--force', 'payload-hardening-ci-123-2'], 120_000)
+    },
+  )
+
+  it('fails closed and cleans up when initialization is terminated by a signal', () => {
+    let created = false
+    const run = vi.fn<DockerRunner>((args) => {
+      if (args[0] === 'container') return result(created ? 0 : 1)
+      if (args[0] === 'run') {
+        created = true
+        return result(0)
+      }
+      if (args[0] === 'inspect') return result(0, '123:2\n')
+      if (args[0] === 'exec') return result(null, 'private signal detail', { signal: 'SIGTERM' })
+      if (args[0] === 'rm') return result(0)
+      return result(2)
+    })
+
+    expect(() => startCIMongoReplica({ env: validEnvironment(), run })).toThrow(
+      /^CI MongoDB replica startup failed without forwarding command output\.$/,
+    )
+    expect(run).toHaveBeenCalledWith(['rm', '--force', 'payload-hardening-ci-123-2'], 120_000)
+  })
+
+  it('uses one bounded deadline for initialization and readiness before cleanup', () => {
+    vi.spyOn(Date, 'now').mockReturnValueOnce(0).mockReturnValue(90_000)
+    let created = false
+    const run = vi.fn<DockerRunner>((args) => {
+      if (args[0] === 'container') return result(created ? 0 : 1)
+      if (args[0] === 'run') {
+        created = true
+        return result(0)
+      }
+      if (args[0] === 'inspect') return result(0, '123:2\n')
+      if (args[0] === 'rm') return result(0)
+      return result(2)
+    })
+
+    expect(() => startCIMongoReplica({ env: validEnvironment(), run })).toThrow(
+      /^CI MongoDB replica startup failed without forwarding command output\.$/,
+    )
+    expect(run.mock.calls.filter(([args]) => args[0] === 'exec')).toHaveLength(0)
+    expect(run).toHaveBeenCalledWith(['rm', '--force', 'payload-hardening-ci-123-2'], 120_000)
+  })
+
   it.each([
     ['missing CI marker', { CI: undefined }],
     ['missing GitHub marker', { GITHUB_ACTIONS: undefined }],
@@ -171,7 +264,7 @@ describe('CI MongoDB replica controller', () => {
     expect(run).toHaveBeenCalledTimes(1)
   })
 
-  it('verifies ownership and removes a partial start before rethrowing a sanitized error', () => {
+  it('removes a partial start after a permanent initialization error', () => {
     let created = false
     const run = vi.fn<DockerRunner>((args) => {
       if (args[0] === 'container') return result(created ? 0 : 1)
@@ -186,7 +279,7 @@ describe('CI MongoDB replica controller', () => {
     })
 
     expect(() => startCIMongoReplica({ env: validEnvironment(), run })).toThrow(
-      /failed without forwarding command output/,
+      /^CI MongoDB replica startup failed without forwarding command output\.$/,
     )
     expect(run).toHaveBeenCalledWith(['rm', '--force', 'payload-hardening-ci-123-2'], 120_000)
   })
@@ -241,7 +334,9 @@ describe('CI MongoDB replica controller', () => {
       return result(2)
     })
 
-    expect(() => stopCIMongoReplica({ env: validEnvironment(), run })).toThrow(/ownership/)
+    expect(() => stopCIMongoReplica({ env: validEnvironment(), run })).toThrow(
+      /^CI MongoDB replica container ownership verification failed\.$/,
+    )
     expect(run).not.toHaveBeenCalledWith(
       ['rm', '--force', 'payload-hardening-ci-123-2'],
       expect.any(Number),
