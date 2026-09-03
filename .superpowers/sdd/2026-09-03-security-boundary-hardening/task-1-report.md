@@ -139,3 +139,31 @@ access-enforcement requirement, so no narrative update was needed.
   `18ac3f6`, repository baseline `62cff08`). The maintained project inventory itself is current.
 - The in-memory Mongo suite requires permission to bind a local port in the execution sandbox. Its
   final permitted run passed.
+
+## Fix Round 1
+
+Added the runtime test `enforces anonymous Review access when rendering the Review route image` to
+`tests/int/open-graph-image-renderer.int.spec.tsx`. The test invokes `ReviewOgImage` with mocked
+Payload and fallback-image dependencies, keeps the real public Review query wrapper in the call
+path, and asserts the observed Review query includes `draft: false` and `overrideAccess: false`.
+
+Exact command:
+
+```bash
+pnpm exec vitest run --config ./vitest.config.mts tests/int/open-graph-image-renderer.int.spec.tsx
+```
+
+Output:
+
+```text
+RUN  v4.0.18 /Users/tanishraj/Tanishraj/Personal Projects/payload-cms-starter-kit
+
+✓ tests/int/open-graph-image-renderer.int.spec.tsx (3 tests) 45ms
+
+Test Files  1 passed (1)
+Tests       3 passed (3)
+Duration    565ms
+```
+
+The project-context update/check loop also passed. It refreshed only the generated inventory hash
+and repeated the pre-existing stale knowledge-graph warning.
