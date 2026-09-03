@@ -1,8 +1,11 @@
 import Ajv, { type AnySchema, type ErrorObject } from 'ajv'
 
 const severities = ['info', 'low', 'moderate', 'high', 'critical'] as const
+const emittedSeverities = ['low', 'moderate', 'high', 'critical'] as const
 const blockingSeverities = new Set<DependencySeverity>(['high', 'critical'])
 const millisecondsPerDay = 24 * 60 * 60 * 1_000
+
+export const productionAuditArguments = ['audit', '--prod', '--json', '--audit-level=low'] as const
 
 export type DependencySeverity = (typeof severities)[number]
 
@@ -150,7 +153,8 @@ const parseAuditReport = (
   }
 
   const findings: DependencyAuditFinding[] = []
-  for (const advisoryValue of Object.values(report.advisories)) {
+  const advisoryIdentities = new Set<string>()
+  for (const [advisoryKey, advisoryValue] of Object.entries(report.advisories)) {
     if (
       !isRecord(advisoryValue) ||
       !Number.isInteger(advisoryValue.id) ||
@@ -163,6 +167,16 @@ const parseAuditReport = (
       advisoryValue.findings.length === 0
     ) {
       return { error: 'Audit execution failed: pnpm returned an unsupported report shape.' }
+    }
+
+    const canonicalIdentity = String(advisoryValue.id)
+    if (advisoryIdentities.has(canonicalIdentity)) {
+      return { error: 'Audit execution failed: pnpm returned duplicate advisory identities.' }
+    }
+    advisoryIdentities.add(canonicalIdentity)
+
+    if (advisoryKey !== canonicalIdentity) {
+      return { error: 'Audit execution failed: pnpm returned a mismatched advisory identity.' }
     }
 
     const installedVersions = new Set<string>()
@@ -190,8 +204,15 @@ const parseAuditReport = (
 
   const derivedCounts = emptyCounts()
   for (const finding of findings) derivedCounts[finding.severity] += 1
-  if (severities.some((severity) => derivedCounts[severity] !== counts[severity])) {
+  if (emittedSeverities.some((severity) => derivedCounts[severity] !== counts[severity])) {
     return { error: 'Audit execution failed: pnpm returned inconsistent severity counts.' }
+  }
+
+  const hasEmittedFinding = findings.some(({ severity }) => severity !== 'info')
+  if ((audit.status === 0 && hasEmittedFinding) || (audit.status === 1 && !hasEmittedFinding)) {
+    return {
+      error: 'Audit execution failed: pnpm exit code did not match the low audit threshold.',
+    }
   }
 
   return { counts, findings }

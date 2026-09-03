@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 import {
   evaluateDependencyAudit,
   formatDependencyAuditResult,
+  productionAuditArguments,
   type AuditCommandResult,
   type DependencyAuditException,
   type DependencyAuditExceptionDocument,
@@ -64,11 +65,31 @@ const auditReport = (...entries: ReturnType<typeof advisory>[]) => {
   })
 }
 
+const auditReportFromMap = (
+  advisories: Record<string, ReturnType<typeof advisory>>,
+  countOverrides: Partial<Record<'info' | 'low' | 'moderate' | 'high' | 'critical', number>> = {},
+) => {
+  const entries = Object.values(advisories)
+  const counts = { info: 0, low: 0, moderate: 0, high: 0, critical: 0 }
+  for (const entry of entries) counts[entry.severity] += 1
+
+  return JSON.stringify({
+    advisories,
+    metadata: {
+      vulnerabilities: { ...counts, ...countOverrides },
+      dependencies: 100,
+      devDependencies: 20,
+      optionalDependencies: 0,
+      totalDependencies: 120,
+    },
+  })
+}
+
 const command = (
   stdout: string,
   overrides: Partial<AuditCommandResult> = {},
 ): AuditCommandResult => ({
-  status: 1,
+  status: 0,
   signal: null,
   stdout,
   error: undefined,
@@ -110,15 +131,21 @@ const evaluate = ({
   })
 
 describe('production dependency audit execution contract', () => {
+  it('pins the CLI to a low threshold so moderate and low findings stay visible', () => {
+    expect(productionAuditArguments).toEqual(['audit', '--prod', '--json', '--audit-level=low'])
+  })
+
   it('accepts a clean report with exit code zero', () => {
-    const result = evaluate({ audit: command(auditReport(), { status: 0 }) })
+    const result = evaluate({ audit: command(auditReport()) })
 
     expect(result.ok).toBe(true)
     expect(result.counts).toEqual({ info: 0, low: 0, moderate: 0, high: 0, critical: 0 })
   })
 
-  it('treats exit code one as parseable advisory data and keeps moderate findings visible', () => {
-    const result = evaluate({ audit: command(auditReport(advisory({ severity: 'moderate' }))) })
+  it('keeps parseable exit-one moderate findings visible without failing policy', () => {
+    const result = evaluate({
+      audit: command(auditReport(advisory({ severity: 'moderate' })), { status: 1 }),
+    })
 
     expect(result.ok).toBe(true)
     expect(result.counts.moderate).toBe(1)
@@ -129,6 +156,78 @@ describe('production dependency audit execution contract', () => {
         severity: 'moderate',
       }),
     ])
+  })
+
+  it('treats exit code one as parseable advisory data when a high advisory is emitted', () => {
+    const result = evaluate({
+      audit: command(auditReport(advisory()), { status: 1 }),
+    })
+
+    expect(result.ok).toBe(false)
+    expect(result.errors).toContain(
+      'Unexcepted high advisory 1158521 affects fast-uri 3.1.3 (>=3.1.3 <3.1.6).',
+    )
+    expect(result.errors).not.toContainEqual(expect.stringMatching(/^Audit execution failed:/))
+  })
+
+  it('accepts exit zero when metadata has omitted info advisories', () => {
+    const result = evaluate({
+      audit: command(auditReportFromMap({}, { info: 2 })),
+    })
+
+    expect(result.ok).toBe(true)
+    expect(result.counts.info).toBe(2)
+    expect(result.findings).toEqual([])
+  })
+
+  it('rejects exit zero when an excepted high advisory is emitted', () => {
+    const result = evaluate({
+      audit: command(auditReport(advisory())),
+      exceptions: { schemaVersion: 1, exceptions: [validException()] },
+    })
+
+    expect(result.ok).toBe(false)
+    expect(result.errors).toContain(
+      'Audit execution failed: pnpm exit code did not match the low audit threshold.',
+    )
+  })
+
+  it('rejects exit one without an advisory at the selected threshold', () => {
+    const result = evaluate({ audit: command(auditReport(), { status: 1 }) })
+
+    expect(result.ok).toBe(false)
+    expect(result.errors).toContain(
+      'Audit execution failed: pnpm exit code did not match the low audit threshold.',
+    )
+  })
+
+  it('rejects an advisory whose map key does not match its canonical identity', () => {
+    const result = evaluate({
+      audit: command(auditReportFromMap({ 'not-the-advisory-id': advisory() }), { status: 1 }),
+    })
+
+    expect(result.ok).toBe(false)
+    expect(result.errors).toContain(
+      'Audit execution failed: pnpm returned a mismatched advisory identity.',
+    )
+  })
+
+  it('rejects duplicate canonical advisory identities', () => {
+    const duplicate = advisory()
+    const result = evaluate({
+      audit: command(
+        auditReportFromMap({
+          '1158521': advisory(),
+          duplicate,
+        }),
+        { status: 1 },
+      ),
+    })
+
+    expect(result.ok).toBe(false)
+    expect(result.errors).toContain(
+      'Audit execution failed: pnpm returned duplicate advisory identities.',
+    )
   })
 
   it.each([
@@ -157,7 +256,9 @@ describe('production dependency audit execution contract', () => {
 
 describe('high and critical production audit policy', () => {
   it.each(['high', 'critical'] as const)('rejects an unexcepted %s advisory', (severity) => {
-    const result = evaluate({ audit: command(auditReport(advisory({ severity }))) })
+    const result = evaluate({
+      audit: command(auditReport(advisory({ severity })), { status: 1 }),
+    })
 
     expect(result.ok).toBe(false)
     expect(result.errors).toContain(
@@ -167,7 +268,7 @@ describe('high and critical production audit policy', () => {
 
   it('accepts exactly one fully matching exception', () => {
     const result = evaluate({
-      audit: command(auditReport(advisory())),
+      audit: command(auditReport(advisory()), { status: 1 }),
       exceptions: { schemaVersion: 1, exceptions: [validException()] },
     })
 
@@ -189,7 +290,7 @@ describe('high and critical production audit policy', () => {
     (_name, overrides) => {
       const versions = _name === 'missing installed version' ? ['3.1.3', '3.1.4'] : ['3.1.3']
       const result = evaluate({
-        audit: command(auditReport(advisory({ versions }))),
+        audit: command(auditReport(advisory({ versions })), { status: 1 }),
         exceptions: { schemaVersion: 1, exceptions: [validException(overrides)] },
       })
 
@@ -201,7 +302,7 @@ describe('high and critical production audit policy', () => {
   it('rejects duplicate and therefore ambiguous exception entries', () => {
     const duplicate = validException({ mitigation: 'A second proposed mitigation.' })
     const result = evaluate({
-      audit: command(auditReport(advisory())),
+      audit: command(auditReport(advisory()), { status: 1 }),
       exceptions: { schemaVersion: 1, exceptions: [validException(), duplicate] },
     })
 
@@ -214,7 +315,7 @@ describe('high and critical production audit policy', () => {
 
   it('rejects unused and overly broad exception entries', () => {
     const result = evaluate({
-      audit: command(auditReport(advisory({ severity: 'moderate' }))),
+      audit: command(auditReport(advisory({ severity: 'moderate' })), { status: 1 }),
       exceptions: {
         schemaVersion: 1,
         exceptions: [validException({ installedVersions: ['3.1.3', '99.0.0'] })],
@@ -276,7 +377,9 @@ describe('sanitized policy output', () => {
     }
     Object.values(report.advisories)[0]!.findings[0]!.paths = [privatePath]
 
-    const auditResult = evaluate({ audit: command(JSON.stringify(report)) })
+    const auditResult = evaluate({
+      audit: command(JSON.stringify(report), { status: 1 }),
+    })
     const executionResult = evaluate({
       audit: command('', { status: null, error: new Error('/private/workspace secret-token') }),
     })

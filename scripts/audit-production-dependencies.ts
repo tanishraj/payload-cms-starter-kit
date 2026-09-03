@@ -5,6 +5,7 @@ import path from 'node:path'
 import {
   evaluateDependencyAudit,
   formatDependencyAuditResult,
+  productionAuditArguments,
 } from '../src/domains/governance/dependencyAudit'
 
 const root = process.cwd()
@@ -26,7 +27,7 @@ const run = (): number => {
   }
 
   const command = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm'
-  const audit = spawnSync(command, ['audit', '--prod', '--json'], {
+  const audit = spawnSync(command, [...productionAuditArguments], {
     cwd: root,
     encoding: 'utf8',
     maxBuffer: 16 * 1024 * 1024,
