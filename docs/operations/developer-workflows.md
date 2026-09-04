@@ -15,7 +15,10 @@
 | `pnpm generate:importmap`                                   | Regenerate the Payload admin import map                          |
 | `pnpm test:int`                                             | Run Vitest integration/component tests                           |
 | `pnpm test:e2e`                                             | Run Playwright Admin/frontend journeys                           |
+| `pnpm test:e2e:governance`                                  | Run the two critical authorization/moderation journeys           |
 | `pnpm test`                                                 | Run integration tests, then E2E tests                            |
+| `pnpm ci:mongodb:start`                                     | Start the current GitHub run's isolated MongoDB replica          |
+| `pnpm ci:mongodb:stop`                                      | Remove the current GitHub run's owned MongoDB replica            |
 | `pnpm verify:docker-local`                                  | Verify the isolated local replica and Payload transactions       |
 | `pnpm verify:docker-image`                                  | Verify the production image and build-secret boundary            |
 | `pnpm project-context:update`                               | Refresh generated repository context                             |
@@ -90,6 +93,17 @@ Install a browser before the first E2E run:
 ```bash
 pnpm exec playwright install chromium
 ```
+
+`pnpm test:e2e` remains the complete local browser suite. GitHub CI installs bundled Chromium with
+its Linux dependencies and runs only `pnpm test:e2e:governance`, which contains exactly the critical
+feature-grant/revocation and submitted-Review approval journeys.
+
+`pnpm ci:mongodb:start` and `pnpm ci:mongodb:stop` are GitHub-only controller commands, not local
+database helpers. They reject non-GitHub or mismatched run identity, validate both mutation URIs as
+loopback `_test` databases, and operate only on the exact current-run container after checking its
+owner label. Do not forge their CI markers or redirect them at a developer database. Local
+transaction checks use `pnpm verify:docker-local`; ordinary E2E requires the committed `test.env`
+endpoint to already be a writable one-member `rs0` replica.
 
 ## Security Boundary Decisions
 

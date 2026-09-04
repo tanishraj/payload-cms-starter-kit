@@ -86,8 +86,14 @@ GitHub verification uses one read-only, bounded job with immutable setup-action 
 non-secret environment fixtures. After the frozen install and production dependency audit, its
 CI-only controller creates an owner-labeled MongoDB 8.0.29 container on loopback, configures the sole
 `rs0` member as `127.0.0.1:27017`, and waits for the exact version and writable-primary state. The
-controller accepts only a matching GitHub run identity and safe `_test` database URIs, and the final
-workflow step always verifies ownership before removing the exact container.
+controller accepts only a matching GitHub run identity and safe `_test` database URIs. The job
+installs bundled Chromium, regenerates Payload types and the Admin import map and rejects either
+drift, runs TypeScript, lint, the complete integration suite, exactly two critical Admin/Site
+Manager feature-governance and Review-moderation browser journeys, and the Node 22 Vercel production
+build. It loads no repository environment file or production secret, and its final step always
+verifies ownership before removing the exact container. Project-context maintenance stays local;
+the ownership-checked production-image verifier is a local/release portability and build-secret
+inspection gate rather than a GitHub job.
 
 ## Caching and Delivery Safety
 
@@ -135,14 +141,15 @@ so moving that Page beneath a parent does not leave consent UI pointing at its l
   option with the fixed Payload/TypeScript import flags, and starts a fresh development server.
   The focused runtime-import config proves that boundary in a real worker without a server or
   database connection.
+- Run `pnpm test:e2e:governance` for the two critical feature-grant/revocation and submitted-Review
+  moderation journeys. GitHub CI runs exactly this browser file; the full E2E suite remains local.
 - Run `pnpm generate:types` after schema changes.
 - Run `pnpm generate:importmap` after custom Admin component changes.
 - Run `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` in proportion to risk.
 - Finish every implementation with `pnpm project-context:update` and `pnpm project-context:check`.
 - Project-context update/check remains a local repository-maintenance loop and does not run in
-  GitHub Actions. CI uses a frozen dependency installation, runs the exception-aware production
-  audit gate, and verifies generated Payload type drift, TypeScript, lint, integration tests, and
-  the production build on pull requests and protected branch pushes. Mongo-backed tests use a
-  single-node in-memory replica set so transaction behavior matches the supported adapter.
+  GitHub Actions. CI uses the exact one-job contract described above on pull requests and pushes to
+  `develop` or `main`. Memory-backed tests pin MongoDB 8.0.29 as a one-member replica so transaction
+  behavior matches the supported adapter.
 
 Use the maintained [feature inventory](../../../../docs/architecture/feature-inventory.md), [content model map](../../../../docs/architecture/content-model-map.md), [runtime/provider runbook](../../../../docs/operations/runtime-and-providers.md), and [developer workflows](../../../../docs/operations/developer-workflows.md) for deeper operational context.

@@ -272,14 +272,22 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 - `pnpm audit:prod` is the exception-aware production dependency gate. It blocks unexcepted high or
   critical findings; raw `pnpm audit --prod --json` is advisory evidence only. The maintained
   exception ledger is empty.
-- Vitest covers schema, hooks, helpers, route behavior, rendering, providers, and documentation vocabulary; Playwright covers core Admin and frontend journeys.
-- GitHub Actions uses a frozen dependency installation, requires `pnpm audit:prod` to report zero
-  unexcepted high or critical production advisories, and verifies generated Payload type drift,
-  TypeScript, lint, integration tests, and the production build. Project-context update/check remains
-  a local repository-maintenance loop and does not run in GitHub Actions. Mongo-backed tests use a
-  single-node replica set. The supplied Dockerfile builds a non-root Next.js standalone production
-  image; production containers require durable MongoDB and S3-compatible media storage.
+- Vitest covers schema, hooks, helpers, route behavior, rendering, providers, and documentation vocabulary; the full local Playwright command covers core Admin and frontend journeys.
+- GitHub Actions has one mandatory, bounded `verify` job with read-only checkout and immutable setup
+  actions. It performs a frozen install, the sole exception-aware production audit gate, bundled
+  Chromium setup, both Payload generators and a combined drift check, TypeScript, lint, the complete
+  integration suite, exactly two critical Admin/Site Manager governance journeys, and the Node 22
+  Vercel production build.
+- CI creates an owner-labeled MongoDB `8.0.29` container, configures its only `rs0` member on
+  loopback, requires the exact version and writable PRIMARY state, and removes only that current-run
+  container in the final unconditional step. All mutation targets are explicit loopback `_test`
+  databases; the workflow loads no repository environment file or production secret and accesses no
+  live service. Project-context update/check remains a local repository-maintenance loop.
 - Local Compose pins MongoDB `8.0.29`, initializes a writable one-member `rs0`, and publishes its
   normal developer port on loopback only. The repository Docker verifiers use isolated `_test`
   databases and ownership-checked temporary resources; image verification scans runner environment
   and filesystem layers for persisted build secrets before bounded cleanup.
+- `pnpm verify:docker-image` is a local/release portability gate, not a GitHub Actions job, because
+  Vercel is the supported production delivery path. The supplied Dockerfile builds a non-root
+  Next.js standalone image; production containers require durable MongoDB and S3-compatible media
+  storage.

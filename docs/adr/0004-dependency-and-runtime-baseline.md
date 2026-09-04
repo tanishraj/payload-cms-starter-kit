@@ -42,28 +42,41 @@ Monaco Editor to DOMPurify path.
 
 Local Compose pins MongoDB `8.0.29`, initializes one writable `rs0` member advertising
 `mongo:27017`, and publishes the normal developer endpoint only on `127.0.0.1`. Local host, Compose
-container, E2E/transaction test, and Docker build-verifier URIs use explicit
-replica-set/direct-connection semantics; the current CI exception is described below. The Docker
-verifiers use only isolated `_test` databases, a fixed isolated project/network/image/builder
-namespace, one atomic owner-only lock, owner-marked resources, absolute Compose paths, an allowlisted
-child environment, and bounded ownership-checked cleanup.
+container, E2E/transaction test, CI, and Docker build-verifier URIs use explicit
+replica-set/direct-connection semantics. GitHub CI creates an ephemeral MongoDB `8.0.29` container,
+advertises `127.0.0.1:27017` as its sole `rs0` member, and requires the exact version and writable
+PRIMARY state before database-backed gates run. The Docker verifiers use only isolated `_test`
+databases, a fixed isolated project/network/image/builder namespace, one atomic owner-only lock,
+owner-marked resources, absolute Compose paths, an allowlisted child environment, and bounded
+ownership-checked cleanup.
 
 The production image uses Node `22.17.0`, pnpm `11.17.0`, a frozen install, and a non-root Next.js
 standalone runner. Only `NEXT_PUBLIC_SERVER_URL` is a build argument. Required server-only build
 configuration is mounted as the BuildKit secret `payload_build_env`; the verifier checks both
 runner `Config.Env` and exported filesystem layers for secret names and values.
 
-GitHub Actions retains only the current mandatory release gates. Local project-context checks stay
-out of CI. Action SHA pinning, replica-set CI initialization, critical Admin/Site Manager browser
-journeys, secret/dependency-review jobs, and the already-proven production image verifier are
-explicit handoff items for the separate Verification and Delivery phase.
+GitHub Actions has one bounded mandatory job named `verify` for pull requests and pushes to
+`develop` or `main`. It uses read-only repository permissions, immutable official action revisions,
+and checkout with persisted credentials disabled. After a frozen install and `pnpm audit:prod`, CI
+installs bundled Chromium, starts its isolated replica, regenerates both Payload artifacts and
+rejects drift, then runs TypeScript, lint, the complete integration suite, exactly two critical
+Admin/Site Manager governance journeys, and the Node 22 Vercel production build. Its final
+`if: always()` step verifies the current run's owner label before removing only that exact MongoDB
+container. The job uses fixed non-secret values and explicit loopback `_test` databases; it never
+loads a repository environment file or receives a production secret. Project-context maintenance
+stays local.
+
+`pnpm verify:docker-image` remains a documented local/release portability and build-secret
+inspection gate, not a GitHub Actions job, because the supported production delivery path is
+Vercel.
 
 Rejected alternatives were upgrading Next or Payload packages independently; leaving direct
 framework versions as floating ranges; accepting two Sharp/libvips bindings; dropping the
 `react-server` CLI condition; treating raw pnpm audit exit status as the repository policy; using a
-standalone local MongoDB; passing server secrets as Docker build arguments; loading developer env
-files during verification; reusing the default Compose project; and adding optional external
-controls to the mandatory-only workflow during this phase.
+standalone local or CI MongoDB; passing server secrets as Docker build arguments; loading repository
+environment files during verification; reusing the developer/default Compose project; mutable
+action tags; separate dependency-review or secret-scan jobs; a Docker-image CI job; and adding
+optional external controls to the mandatory-only workflow.
 
 ## Consequences
 
@@ -75,8 +88,11 @@ health guarantees startup ordering only, not recovery after a later database out
 The exception-aware gate permits visible moderate and low residuals while failing closed on invalid
 audit data or unapproved high/critical findings. Docker image verification requires a working Docker
 daemon with Compose and Buildx and deliberately stops on any fixed-identity or lock collision. The
-current CI Mongo service remains a non-replica service until the separate delivery phase implements
-replica-set initialization without expanding this phase's workflow.
+ephemeral CI replica requires Docker on the GitHub-hosted runner. The mandatory browser gate is
+intentionally limited to the two critical authorization and Review-moderation journeys; the full
+Playwright suite remains a local command. Vulnerability alerts, Dependabot, private reporting,
+rulesets, protected-branch configuration, backups, deployment, and other external platform controls
+remain operator responsibilities.
 
 ## Rollback
 
@@ -89,12 +105,23 @@ temporary package overrides, audit exceptions, standalone MongoDB data files, or
 arguments. Preserve or explicitly migrate any local MongoDB data before changing the pinned server
 version or its version-specific volume.
 
+Rollback the delivery changes in reverse implementation order while retaining the prior mandatory
+workflow until its replacement passes the workflow/E2E contracts, TypeScript, lint, and the complete
+integration suite. Do not prune Docker or remove a developer/default Compose project. If an
+interrupted GitHub run leaves its exact CI container, verify that
+`com.payloadcms.hardening.ci-owner` matches that run before removing only the named container. No
+data migration or external rollback is required because the delivery fixtures use ephemeral
+loopback `_test` data.
+
 ## Verification
 
-Use only the explicit safe `_test` configuration below. Do not load a developer environment file.
-`pnpm verify:docker-image` is the production-build gate: it performs the build in the isolated Node
-22 Docker verifier and inspects the resulting image secret boundary. A host `pnpm build` is not an
-authoritative hardening check because Next.js can auto-detect repository environment files.
+Use only explicit safe `_test` configuration. Do not load a repository environment file. The
+mandatory GitHub job is the authoritative Vercel-path check: it runs `pnpm build` on Node 22 after
+the complete repository gate. Locally, run config-loading commands from a tracked-files workspace
+that contains neither ignored environment file. `pnpm verify:docker-image` separately performs the
+build in the isolated Node 22 Docker verifier and inspects the image secret boundary; it is the
+local/release portability check, not a second CI delivery path. A host build on an unsupported Node
+release is not authoritative.
 
 ```bash
 pnpm install --frozen-lockfile
@@ -104,8 +131,10 @@ git diff --exit-code -- src/payload-types.ts 'src/app/(payload)/admin/importMap.
 pnpm exec tsc --noEmit
 pnpm lint
 pnpm test:int
+pnpm test:e2e:governance
 pnpm audit:prod
 docker compose config --quiet --no-interpolate --no-env-resolution
+pnpm verify:docker-local
 pnpm verify:docker-image
 pnpm project-context:update
 pnpm project-context:check

@@ -150,6 +150,9 @@ resources, including removal of that builder before its network. For stale-lock 
 no verifier is running and all fixed Docker identities are absent, then remove only the exact lock
 path named by the error.
 
+`pnpm verify:docker-image` is a documented local/release portability and build-secret inspection
+gate, not a GitHub Actions job, because the supported production delivery path is Vercel.
+
 ## S3-Compatible Storage
 
 The Payload S3 plugin attaches only to `media`. Verify endpoint, credentials, optional ACL, path
@@ -249,9 +252,15 @@ redeploy. DNS may remain on Cloudflare while the media provider configuration is
 - keep `ALLOW_PRODUCTION_EMAIL_OVERRIDE=false` unless a controlled production delivery test is active
 - never expose reconciliation or provider secrets to client-side variables
 - keep database archives in approved encrypted external storage, never in Git or Docker contexts
-- GitHub Actions uses a frozen dependency installation, requires `pnpm audit:prod` to report zero
-  unexcepted high or critical production advisories, and verifies generated Payload type drift,
-  TypeScript, lint, integration tests, and the production build
+- GitHub Actions has one required `verify` job with read-only repository access and persisted
+  checkout credentials disabled. It installs frozen dependencies, enforces `pnpm audit:prod`,
+  installs bundled Chromium, starts an owner-labeled exact MongoDB `8.0.29` writable one-member
+  `rs0` on loopback, regenerates Payload types and the Admin import map and rejects either drift,
+  runs TypeScript, lint, the complete integration suite, exactly two critical governance browser
+  journeys, and the Node 22 Vercel production build. Its final unconditional step removes only the
+  exact current-run container after ownership verification.
+- CI supplies fixed non-secret values and explicit loopback `_test` database URIs. It does not load
+  `.env` or `.env.atlas.local`, receive production secrets, or access Atlas or another live service.
 - `pnpm project-context:update` and `pnpm project-context:check` remain local repository-maintenance
   checks and do not run in GitHub Actions
 
@@ -259,6 +268,7 @@ redeploy. DNS may remain on Cloudflare while the media provider configuration is
 
 ```bash
 pnpm test:int
+pnpm test:e2e:governance
 pnpm build
 pnpm verify:docker-local
 pnpm verify:docker-image
