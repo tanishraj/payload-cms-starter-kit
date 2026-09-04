@@ -33,15 +33,15 @@ const validEnvironment = (): NodeJS.ProcessEnv => ({
 function result(
   status: number | null,
   stdout = '',
-  options: { error?: Error; signal?: NodeJS.Signals } = {},
+  options: { error?: Error; signal?: NodeJS.Signals; stderr?: string } = {},
 ): SpawnSyncReturns<string> {
   return {
     error: options.error,
-    output: [null, stdout, ''],
+    output: [null, stdout, options.stderr ?? ''],
     pid: 1,
     signal: options.signal ?? null,
     status,
-    stderr: '',
+    stderr: options.stderr ?? '',
     stdout,
   }
 }
@@ -143,6 +143,72 @@ describe('CI MongoDB replica controller', () => {
 
     expect(initializationAttempts).toBe(2)
     expect(run.mock.calls.filter(([args]) => args[0] === 'exec')).toHaveLength(3)
+  })
+
+  it.each([
+    ['initialization error', 'initialization-error'],
+    ['readiness timeout', 'readiness-timeout'],
+    ['wrong MongoDB version', 'wrong-version'],
+    ['non-primary state', 'non-primary'],
+    ['malformed replica membership', 'malformed-membership'],
+  ] as const)('verifies ownership and removes the exact container after %s', (_label, mode) => {
+    let created = false
+    let now = 0
+    vi.spyOn(Date, 'now').mockImplementation(() => now)
+
+    const run = vi.fn<DockerRunner>((args) => {
+      if (args[0] === 'container') return result(created ? 0 : 1)
+      if (args[0] === 'run') {
+        created = true
+        return result(0)
+      }
+      if (args[0] === 'inspect') return result(0, '123:2\n')
+      if (args[0] === 'exec') {
+        const isInitialization = args.at(-1)?.includes('rs.initiate')
+        if (isInitialization) {
+          return mode === 'initialization-error'
+            ? result(2, 'private initialization output', { stderr: 'private initialization error' })
+            : result(0)
+        }
+
+        if (mode === 'readiness-timeout' || mode === 'non-primary') {
+          now = 90_000
+          return result(1, 'private transient readiness output', {
+            stderr: 'private transient readiness error',
+          })
+        }
+
+        return result(3, 'private permanent readiness output', {
+          stderr: 'private permanent readiness error',
+        })
+      }
+      if (args[0] === 'rm') return result(0)
+      return result(2)
+    })
+
+    let thrown: Error | undefined
+    try {
+      startCIMongoReplica({ env: validEnvironment(), run })
+    } catch (error) {
+      thrown = error as Error
+    }
+
+    expect(thrown?.message).toBe(
+      'CI MongoDB replica startup failed without forwarding command output.',
+    )
+    expect(thrown?.message).not.toContain('private')
+    expect(run.mock.calls.slice(-2)).toEqual([
+      [
+        [
+          'inspect',
+          '--format',
+          '{{ index .Config.Labels "com.payloadcms.hardening.ci-owner" }}',
+          'payload-hardening-ci-123-2',
+        ],
+        30_000,
+      ],
+      [['rm', '--force', 'payload-hardening-ci-123-2'], 120_000],
+    ])
   })
 
   it.each(['wrong version', 'wrong member'])(
@@ -314,13 +380,24 @@ describe('CI MongoDB replica controller', () => {
         created = true
         return result(0)
       }
-      if (args[0] === 'inspect') return result(0, 'different:owner\n')
+      if (args[0] === 'inspect') {
+        return result(0, 'different:owner\n', { stderr: 'private Docker error' })
+      }
       return result(2)
     })
 
-    expect(() => startCIMongoReplica({ env: validEnvironment(), run })).toThrow(
-      /owned cleanup could not be completed/,
+    let thrown: Error | undefined
+    try {
+      startCIMongoReplica({ env: validEnvironment(), run })
+    } catch (error) {
+      thrown = error as Error
+    }
+
+    expect(thrown?.message).toBe(
+      'CI MongoDB replica startup failed and owned cleanup could not be completed.',
     )
+    expect(thrown?.message).not.toContain('different:owner')
+    expect(thrown?.message).not.toContain('private Docker error')
     expect(run).not.toHaveBeenCalledWith(
       ['rm', '--force', 'payload-hardening-ci-123-2'],
       expect.any(Number),

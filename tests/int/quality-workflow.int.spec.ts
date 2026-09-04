@@ -2,6 +2,62 @@ import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
 
+import { assertSafeTestDatabaseURI } from '../helpers/testDatabaseSafety'
+
+const expectedRunSteps = [
+  ['Install dependencies', 'pnpm install --frozen-lockfile'],
+  ['Audit production dependencies', 'pnpm audit:prod'],
+  ['Start isolated MongoDB replica', 'pnpm ci:mongodb:start'],
+  ['Generate Payload types', 'pnpm generate:types'],
+  ['Generate Payload Admin import map', 'pnpm generate:importmap'],
+  [
+    'Reject generated artifact drift',
+    "git diff --exit-code -- src/payload-types.ts 'src/app/(payload)/admin/importMap.js'",
+  ],
+  ['Check TypeScript', 'pnpm exec tsc --noEmit'],
+  ['Lint', 'pnpm lint'],
+  ['Run integration tests', 'pnpm test:int'],
+  ['Run critical governance journeys', 'pnpm test:e2e:governance'],
+  ['Build the Vercel production application', 'pnpm build'],
+  ['Stop isolated MongoDB replica', 'pnpm ci:mongodb:stop'],
+] as const
+
+const safeCIEnvironment = {
+  ALLOW_FIRST_ADMIN_CREATION: 'false',
+  ALLOW_PRODUCTION_EMAIL_OVERRIDE: 'false',
+  CI_MONGO_CONTAINER: 'payload-hardening-ci-${{ github.run_id }}-${{ github.run_attempt }}',
+  CI_MONGO_OWNER: '${{ github.run_id }}:${{ github.run_attempt }}',
+  EMAIL_PROVIDER: 'none',
+  FIRST_ADMIN_EMAIL: '',
+  MEDIA_PROVIDER: 'localDisk',
+  MEDIA_RECONCILE_TOKEN: '',
+  MONGODB_URI:
+    'mongodb://127.0.0.1:27017/payload-hardening-ci_test?replicaSet=rs0&directConnection=true',
+  MONGOMS_VERSION: '8.0.29',
+  NEXT_PUBLIC_SERVER_URL: 'https://ci.example.invalid',
+  PAYLOAD_SECRET: 'ci-only-payload-secret-32-characters',
+  RESEND_API_KEY: '',
+  RESEND_FROM_EMAIL: '',
+  RESEND_FROM_NAME: '',
+  RESEND_OVERRIDE_TO_EMAIL: '',
+  S3_ACCESS_KEY_ID: '',
+  S3_ACL: '',
+  S3_BUCKET: '',
+  S3_CLIENT_UPLOADS: '',
+  S3_ENDPOINT: '',
+  S3_FORCE_PATH_STYLE: '',
+  S3_PUBLIC_URL: '',
+  S3_REGION: '',
+  S3_SECRET_ACCESS_KEY: '',
+  TEST_MONGODB_URI:
+    'mongodb://127.0.0.1:27017/payload-cms-starter-kit_test?replicaSet=rs0&directConnection=true',
+  VERCEL: '',
+} as const
+
+function unquoteYAMLValue(value: string): string {
+  return value.startsWith("'") && value.endsWith("'") ? value.slice(1, -1) : value
+}
+
 describe('quality workflow contract', () => {
   it('keeps one bounded read-only job with immutable setup actions and replica cleanup', () => {
     const source = readFileSync('.github/workflows/quality.yml', 'utf8')
@@ -25,20 +81,87 @@ describe('quality workflow contract', () => {
 
   it('runs only the mandatory release commands in order', () => {
     const workflow = readFileSync('.github/workflows/quality.yml', 'utf8')
-    const runCommands = [...workflow.matchAll(/^\s*- run:\s*(.+)$/gm)].map((match) => match[1])
+    const runCommands = [...workflow.matchAll(/^\s+run:\s*(.+)$/gm)].map((match) => match[1])
+    const namedRunSteps = [
+      ...workflow.matchAll(/^\s+- name:\s*(.+)\n(?:\s+if:\s*.+\n)?\s+run:\s*(.+)$/gm),
+    ].map((match) => [match[1], match[2]])
 
-    expect(runCommands).toEqual([
-      'pnpm install --frozen-lockfile',
-      'pnpm audit:prod',
-      'pnpm ci:mongodb:start',
-      'pnpm generate:types',
-      'git diff --exit-code -- src/payload-types.ts',
-      'pnpm exec tsc --noEmit',
-      'pnpm lint',
-      'pnpm test:int',
-      'pnpm build',
+    expect(runCommands).toEqual(expectedRunSteps.map(([, command]) => command))
+    expect(namedRunSteps).toEqual(expectedRunSteps)
+
+    const importMapIndex = runCommands.indexOf('pnpm generate:importmap')
+    const driftIndex = runCommands.indexOf(
+      "git diff --exit-code -- src/payload-types.ts 'src/app/(payload)/admin/importMap.js'",
+    )
+    expect(importMapIndex).toBeGreaterThan(-1)
+    expect(driftIndex).toBe(importMapIndex + 1)
+    expect(runCommands.filter((command) => command.includes('test:e2e'))).toEqual([
+      'pnpm test:e2e:governance',
     ])
-    expect(workflow).not.toContain('pnpm project-context:check')
+
+    for (const forbidden of [
+      'project-context:check',
+      'project-context:update',
+      'dependency-review-action',
+      'gitleaks',
+      'trufflehog',
+      'verify:docker-image',
+      'pnpm audit --prod',
+      '.env.atlas.local',
+      'cat .env',
+      'source .env',
+      'secrets.',
+    ]) {
+      expect(workflow).not.toContain(forbidden)
+    }
+  })
+
+  it('keeps the exact safe CI environment and fail-closed final cleanup', () => {
+    const source = readFileSync('.github/workflows/quality.yml', 'utf8')
+    const envStart = source.indexOf('    env:\n')
+    const stepsStart = source.indexOf('    steps:\n', envStart)
+    const envSource = source.slice(envStart + '    env:\n'.length, stepsStart)
+    const environment = Object.fromEntries(
+      [...envSource.matchAll(/^      ([A-Z][A-Z0-9_]+):(?: (.*))?$/gm)].map((match) => [
+        match[1],
+        unquoteYAMLValue(match[2] ?? ''),
+      ]),
+    )
+    const jobSource = source.slice(source.indexOf('  verify:\n'))
+    const stepsSource = source.slice(stepsStart + '    steps:\n'.length)
+    const stepBlocks = stepsSource.split(/(?=^      - )/m).filter(Boolean)
+
+    expect(environment).toEqual(safeCIEnvironment)
+    expect(() => assertSafeTestDatabaseURI(environment.MONGODB_URI)).not.toThrow()
+    expect(() => assertSafeTestDatabaseURI(environment.TEST_MONGODB_URI)).not.toThrow()
+    expect(jobSource).not.toMatch(/^    environment:/m)
+    expect(jobSource).not.toMatch(/^    services:/m)
+    expect(source).not.toMatch(/^\s+[^#\n]*write(?:-all)?:/m)
+    expect(source).not.toContain('continue-on-error')
+    expect(stepBlocks.at(-1)).toMatch(
+      /^      - name: Stop isolated MongoDB replica\n        if: always\(\)\n        run: pnpm ci:mongodb:stop\n?$/,
+    )
+    expect(source).not.toMatch(/^\s+run:\s*.*(?:cat|source).*\.env/m)
+  })
+
+  it('maps the focused governance command to only the two-test browser file', () => {
+    const packageJSON = JSON.parse(readFileSync('package.json', 'utf8')) as {
+      scripts?: Record<string, string>
+    }
+
+    expect(packageJSON.scripts?.['test:e2e:governance']).toBe(
+      'cross-env NODE_OPTIONS="--no-deprecation --conditions=react-server --import=tsx/esm" playwright test --config=playwright.config.ts tests/e2e/governance.e2e.spec.ts',
+    )
+  })
+
+  it('clears caller-controlled public origin and bootstrap policy for integration tests', () => {
+    const packageJSON = JSON.parse(readFileSync('package.json', 'utf8')) as {
+      scripts?: Record<string, string>
+    }
+
+    expect(packageJSON.scripts?.['test:int']).toBe(
+      'cross-env NODE_OPTIONS=--no-deprecation NEXT_PUBLIC_SERVER_URL= ALLOW_FIRST_ADMIN_CREATION= vitest run --config ./vitest.config.mts',
+    )
   })
 
   it('keeps project-context checking available for local maintenance', () => {

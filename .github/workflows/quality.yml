@@ -49,15 +49,28 @@ jobs:
         with:
           node-version: 22.17.0
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm audit:prod
-      - run: pnpm ci:mongodb:start
-      - run: pnpm generate:types
-      - run: git diff --exit-code -- src/payload-types.ts
-      - run: pnpm exec tsc --noEmit
-      - run: pnpm lint
-      - run: pnpm test:int
-      - run: pnpm build
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Audit production dependencies
+        run: pnpm audit:prod
+      - name: Start isolated MongoDB replica
+        run: pnpm ci:mongodb:start
+      - name: Generate Payload types
+        run: pnpm generate:types
+      - name: Generate Payload Admin import map
+        run: pnpm generate:importmap
+      - name: Reject generated artifact drift
+        run: git diff --exit-code -- src/payload-types.ts 'src/app/(payload)/admin/importMap.js'
+      - name: Check TypeScript
+        run: pnpm exec tsc --noEmit
+      - name: Lint
+        run: pnpm lint
+      - name: Run integration tests
+        run: pnpm test:int
+      - name: Run critical governance journeys
+        run: pnpm test:e2e:governance
+      - name: Build the Vercel production application
+        run: pnpm build
       - name: Stop isolated MongoDB replica
         if: always()
         run: pnpm ci:mongodb:stop
