@@ -4,6 +4,8 @@ import { describe, expect, it } from 'vitest'
 
 import { assertSafeTestDatabaseURI } from '../helpers/testDatabaseSafety'
 
+const leastPrivilegePermissions = 'permissions:\n  contents: read'
+
 const expectedRunSteps = [
   ['Install dependencies', 'pnpm install --frozen-lockfile'],
   ['Audit production dependencies', 'pnpm audit:prod'],
@@ -58,6 +60,28 @@ function unquoteYAMLValue(value: string): string {
   return value.startsWith("'") && value.endsWith("'") ? value.slice(1, -1) : value
 }
 
+function getTopLevelPermissionsBlock(source: string): string | undefined {
+  return source.match(/^permissions:[^\n]*(?:\n {2}[^\n]*)*/m)?.[0]
+}
+
+function getPermissionContractViolations(source: string): string[] {
+  const violations: string[] = []
+  const jobsStart = source.indexOf('\njobs:\n')
+  const jobsSource = jobsStart >= 0 ? source.slice(jobsStart + 1) : source
+
+  if (getTopLevelPermissionsBlock(source) !== leastPrivilegePermissions) {
+    violations.push('top-level permissions are not exactly contents: read')
+  }
+  if (/^    permissions:(?:[ \t]+[^\n]+)?[ \t]*$/m.test(jobsSource)) {
+    violations.push('verify job overrides top-level permissions')
+  }
+  if (/^[ \t]+[a-z][a-z-]*:[ \t]*write[ \t]*$/m.test(source)) {
+    violations.push('workflow grants a write-capable permission scope')
+  }
+
+  return violations
+}
+
 describe('quality workflow contract', () => {
   it('keeps one bounded read-only job with immutable setup actions and replica cleanup', () => {
     const source = readFileSync('.github/workflows/quality.yml', 'utf8')
@@ -65,7 +89,8 @@ describe('quality workflow contract', () => {
     const jobNames = [...jobsSource.matchAll(/^  ([a-z][a-z0-9_-]*):$/gm)].map((match) => match[1])
 
     expect(jobNames).toEqual(['verify'])
-    expect(source).toMatch(/^permissions:\n  contents: read$/m)
+    expect(getTopLevelPermissionsBlock(source)).toBe(leastPrivilegePermissions)
+    expect(getPermissionContractViolations(source)).toEqual([])
     expect(jobsSource).toMatch(/^    timeout-minutes: 45$/m)
     expect(jobsSource).not.toMatch(/^    services:$/m)
 
@@ -116,6 +141,36 @@ describe('quality workflow contract', () => {
     }
   })
 
+  it.each([
+    [
+      'top-level scalar write-all',
+      'permissions: write-all\n',
+      'top-level permissions are not exactly contents: read',
+    ],
+    [
+      'top-level contents write',
+      'permissions:\n  contents: write\n',
+      'workflow grants a write-capable permission scope',
+    ],
+    [
+      'job-level scalar override',
+      'permissions:\n  contents: read\n\njobs:\n  verify:\n    permissions: read-all\n',
+      'verify job overrides top-level permissions',
+    ],
+    [
+      'job-level mapping override',
+      'permissions:\n  contents: read\n\njobs:\n  verify:\n    permissions:\n      contents: read\n',
+      'verify job overrides top-level permissions',
+    ],
+    [
+      'job-level pull-request write',
+      'permissions:\n  contents: read\n\njobs:\n  verify:\n    permissions:\n      pull-requests: write\n',
+      'workflow grants a write-capable permission scope',
+    ],
+  ])('rejects an invalid permission contract: %s', (_label, invalidSource, expectedViolation) => {
+    expect(getPermissionContractViolations(invalidSource)).toContain(expectedViolation)
+  })
+
   it('keeps the exact safe CI environment and fail-closed final cleanup', () => {
     const source = readFileSync('.github/workflows/quality.yml', 'utf8')
     const envStart = source.indexOf('    env:\n')
@@ -136,7 +191,6 @@ describe('quality workflow contract', () => {
     expect(() => assertSafeTestDatabaseURI(environment.TEST_MONGODB_URI)).not.toThrow()
     expect(jobSource).not.toMatch(/^    environment:/m)
     expect(jobSource).not.toMatch(/^    services:/m)
-    expect(source).not.toMatch(/^\s+[^#\n]*write(?:-all)?:/m)
     expect(source).not.toContain('continue-on-error')
     expect(stepBlocks.at(-1)).toMatch(
       /^      - name: Stop isolated MongoDB replica\n        if: always\(\)\n        run: pnpm ci:mongodb:stop\n?$/,
