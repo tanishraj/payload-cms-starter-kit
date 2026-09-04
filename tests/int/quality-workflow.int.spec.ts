@@ -5,10 +5,16 @@ import { describe, expect, it } from 'vitest'
 import { assertSafeTestDatabaseURI } from '../helpers/testDatabaseSafety'
 
 const leastPrivilegePermissions = 'permissions:\n  contents: read'
+const approvedActions = [
+  'actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4',
+  'pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4',
+  'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4',
+] as const
 
 const expectedRunSteps = [
   ['Install dependencies', 'pnpm install --frozen-lockfile'],
   ['Audit production dependencies', 'pnpm audit:prod'],
+  ['Install Playwright Chromium', 'pnpm exec playwright install --with-deps chromium'],
   ['Start isolated MongoDB replica', 'pnpm ci:mongodb:start'],
   ['Generate Payload types', 'pnpm generate:types'],
   ['Generate Payload Admin import map', 'pnpm generate:importmap'],
@@ -82,6 +88,27 @@ function getPermissionContractViolations(source: string): string[] {
   return violations
 }
 
+function collectWorkflowActions(source: string): string[] {
+  return [
+    ...source.matchAll(/^[ \t]*(?:-[ \t]+)?uses:[ \t]+([^ \t#\n]+)(?:[ \t]+#[ \t]*(.+))?[ \t]*$/gm),
+  ].map((match) => `${match[1]}${match[2] ? ` # ${match[2].trim()}` : ''}`)
+}
+
+function collectWorkflowRunCommands(source: string): string[] {
+  return [...source.matchAll(/^[ \t]*(?:-[ \t]+)?run:[ \t]*(.*)$/gm)].map((match) => {
+    const command = match[1]?.trim() ?? ''
+
+    if (/^[|>][+-]?$/.test(command)) {
+      throw new Error('Block-scalar run commands are unsupported by this workflow contract.')
+    }
+    if (!command) {
+      throw new Error('Every run command must use a non-empty inline scalar.')
+    }
+
+    return command
+  })
+}
+
 describe('quality workflow contract', () => {
   it('keeps one bounded read-only job with immutable setup actions and replica cleanup', () => {
     const source = readFileSync('.github/workflows/quality.yml', 'utf8')
@@ -94,19 +121,50 @@ describe('quality workflow contract', () => {
     expect(jobsSource).toMatch(/^    timeout-minutes: 45$/m)
     expect(jobsSource).not.toMatch(/^    services:$/m)
 
-    const actionReferences = source.matchAll(
-      /^\s*- uses: (actions\/checkout|pnpm\/action-setup|actions\/setup-node)@([0-9a-f]{40}) # (v4)$/gm,
+    const checkoutStep = source.match(
+      /^      - uses: actions\/checkout@[0-9a-f]{40} # v4\n(?: {8,}.+\n)*/m,
+    )?.[0]
+    const persistCredentialValues = [
+      ...(checkoutStep ?? '').matchAll(/^ {10}persist-credentials:[ \t]*(.+)$/gm),
+    ].map((match) => match[1])
+
+    expect(collectWorkflowActions(source)).toEqual(approvedActions)
+    expect(persistCredentialValues).toEqual(['false'])
+    expect(approvedActions).toEqual(
+      approvedActions.filter((action) =>
+        /^(actions\/checkout|pnpm\/action-setup|actions\/setup-node)@[0-9a-f]{40} # v4$/.test(
+          action,
+        ),
+      ),
     )
-    expect([...actionReferences]).toHaveLength(3)
     expect(source).not.toMatch(/@(main|master|v\d+)(?:\s|$)/)
     expect(source).toContain('pnpm ci:mongodb:start')
     expect(source).toMatch(/if:\s*always\(\)[\s\S]*pnpm ci:mongodb:stop/)
     expect(source).not.toContain('services:')
   })
 
+  it('detects every action and block-scalar run command in mutation fixtures', () => {
+    const source = readFileSync('.github/workflows/quality.yml', 'utf8')
+    const extraActionSource = source.replace(
+      '    steps:\n',
+      `    steps:\n      - uses: example/unsupported@${'a'.repeat(40)} # v1\n`,
+    )
+    const blockRunSource = source.replace(
+      '    steps:\n',
+      '    steps:\n      - name: Unsupported block command\n        run: |\n          echo unsupported\n',
+    )
+
+    expect(collectWorkflowActions(extraActionSource)).toEqual([
+      `example/unsupported@${'a'.repeat(40)} # v1`,
+      ...approvedActions,
+    ])
+    expect(collectWorkflowActions(extraActionSource)).not.toEqual(approvedActions)
+    expect(() => collectWorkflowRunCommands(blockRunSource)).toThrow(/Block-scalar run commands/)
+  })
+
   it('runs only the mandatory release commands in order', () => {
     const workflow = readFileSync('.github/workflows/quality.yml', 'utf8')
-    const runCommands = [...workflow.matchAll(/^\s+run:\s*(.+)$/gm)].map((match) => match[1])
+    const runCommands = collectWorkflowRunCommands(workflow)
     const namedRunSteps = [
       ...workflow.matchAll(/^\s+- name:\s*(.+)\n(?:\s+if:\s*.+\n)?\s+run:\s*(.+)$/gm),
     ].map((match) => [match[1], match[2]])
