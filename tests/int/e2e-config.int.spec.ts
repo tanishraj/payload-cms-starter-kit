@@ -1,5 +1,7 @@
 // @vitest-environment node
 
+import { readFileSync } from 'node:fs'
+
 import type { Page } from '@playwright/test'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -8,7 +10,10 @@ const mocks = vi.hoisted(() => ({
   getPayload: vi.fn(),
 }))
 
-vi.mock('payload', () => ({ getPayload: mocks.getPayload }))
+vi.mock('payload', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('payload')>()
+  return { ...actual, getPayload: mocks.getPayload }
+})
 vi.mock('@playwright/test', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@playwright/test')>()
   return {
@@ -142,12 +147,17 @@ describe('E2E mutation helpers', () => {
   it('rejects unsafe databases before importing Payload configuration or calling getPayload', async () => {
     process.env.TEST_MONGODB_URI = 'mongodb://mongo:27017/e2e_test'
 
-    const [{ cleanupPageRecipeDraft }, { cleanupHomepage, seedHomepage }, seedUser] =
-      await Promise.all([
-        import('../helpers/pageRecipeDraft'),
-        import('../helpers/seedHomepage'),
-        import('../helpers/seedUser'),
-      ])
+    const [
+      { cleanupPageRecipeDraft },
+      { cleanupHomepage, seedHomepage },
+      governanceFixtures,
+      seedUser,
+    ] = await Promise.all([
+      import('../helpers/pageRecipeDraft'),
+      import('../helpers/seedHomepage'),
+      import('../helpers/governanceFixtures'),
+      import('../helpers/seedUser'),
+    ])
 
     expect(mocks.configModuleLoaded).not.toHaveBeenCalled()
 
@@ -158,6 +168,9 @@ describe('E2E mutation helpers', () => {
       seedUser.seedTestUser,
       seedUser.getTestUserDocument,
       seedUser.cleanupTestUser,
+      governanceFixtures.seedGovernanceBase,
+      governanceFixtures.cleanupGovernanceFixtures,
+      () => governanceFixtures.deleteGovernanceQueueItems([]),
     ]
 
     for (const mutate of mutations) {
@@ -166,6 +179,89 @@ describe('E2E mutation helpers', () => {
 
     expect(mocks.configModuleLoaded).not.toHaveBeenCalled()
     expect(mocks.getPayload).not.toHaveBeenCalled()
+  })
+
+  it('guards every governance mutator before dynamic Payload imports', () => {
+    const source = readFileSync('tests/helpers/governanceFixtures.ts', 'utf8')
+    const functionSource = (name: string): string => {
+      const declaration = `export async function ${name}`
+      const start = source.indexOf(declaration)
+      expect(start, `${name} declaration`).toBeGreaterThanOrEqual(0)
+
+      const openingBrace = source.indexOf('{', start)
+      let depth = 0
+
+      for (let index = openingBrace; index < source.length; index += 1) {
+        if (source[index] === '{') depth += 1
+        if (source[index] === '}') depth -= 1
+        if (depth === 0) return source.slice(start, index + 1)
+      }
+
+      throw new Error(`Could not isolate ${name}.`)
+    }
+
+    for (const name of [
+      'seedGovernanceBase',
+      'cleanupGovernanceFixtures',
+      'deleteGovernanceQueueItems',
+    ]) {
+      const mutator = functionSource(name)
+      const guardIndex = mutator.indexOf('const testDatabaseURI = getRequiredTestDatabaseURI()')
+      const payloadImportIndex = mutator.indexOf("import('payload')")
+      const configImportIndex = mutator.indexOf("import('../../src/payload.config.js')")
+
+      expect(guardIndex, `${name} database guard`).toBeGreaterThanOrEqual(0)
+      expect(payloadImportIndex, `${name} Payload import`).toBeGreaterThan(guardIndex)
+      expect(configImportIndex, `${name} config import`).toBeGreaterThan(guardIndex)
+    }
+
+    expect(source).not.toContain('dropDatabase')
+    expect(source).not.toMatch(/deleteMany\s*\(\s*\{\s*\}\s*\)/)
+    expect(source.replaceAll('process.env', '')).not.toContain('.env')
+    expect(source).not.toContain('mongodb+srv')
+    expect(source).not.toMatch(/mongodb:\/\//)
+  })
+
+  it('uses stable Payload field IDs for governance user credentials', () => {
+    const source = readFileSync('tests/e2e/governance.e2e.spec.ts', 'utf8')
+
+    expect(source).toContain("page.locator('#field-email')")
+    expect(source).toContain("page.locator('#field-password')")
+    expect(source).toContain("page.locator('#field-confirm-password')")
+    expect(source).not.toMatch(/getByLabel\('(Email|Password|Confirm Password)'/)
+    expect(source).toContain('const field = page.locator(fieldID)')
+    expect(source).toContain("const combobox = field.getByRole('combobox')")
+    expect(source).toContain('await expect(combobox).toHaveCount(1)')
+    expect(source).toContain("const roleField = page.locator('#field-role')")
+    expect(source).toContain("const roleCombobox = roleField.getByRole('combobox')")
+    expect(source).toContain("name: 'Publish changes', exact: true")
+    expect(source).not.toMatch(/react-select|\.rs-|\.nth\(|waitForTimeout/)
+    expect(source).toContain('let reviewPublishedForCleanup = false')
+    expect(source).toContain('if (fixture && reviewPublishedForCleanup)')
+    expect(source).toContain("data: { _status: 'draft', moderationStatus: 'rejected' }")
+    expect(source).toContain('finally {\n      await cleanupGovernanceFixtures(fixture)')
+    expect(source).toContain("getByRole('main').getByText('Published', { exact: true })")
+    expect(source).toContain("cookie.name === 'payload-token'")
+    expect(source).toContain('payloadCookies.length !== 1')
+    expect(source).toContain('const pageURL = new URL(page.url())')
+    expect(source).toContain('Origin: pageURL.origin')
+    expect(source).toContain('Referer: pageURL.href')
+    expect(source).toContain('headers: await getPayloadAuthHeaders(')
+    expect(source).not.toContain("credentials: 'include'")
+    expect(source.match(/testInfo\.setTimeout\(180_000\)/g)).toHaveLength(2)
+
+    for (const step of [
+      'verify the Review is unavailable anonymously',
+      'log in and open the pending Review',
+      'verify the moderation controls are ready',
+      'select Approved moderation status',
+      'submit the approval PATCH',
+      'verify the Review is published after save',
+      'read back the persisted approval',
+      'verify the published Review is available anonymously',
+    ]) {
+      expect(source).toContain(`test.step('${step}'`)
+    }
   })
 })
 

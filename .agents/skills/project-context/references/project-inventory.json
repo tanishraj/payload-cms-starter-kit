@@ -2658,6 +2658,8 @@
       "tests/e2e/admin.e2e.spec.ts",
       "tests/e2e/calendar.e2e.spec.ts",
       "tests/e2e/frontend.e2e.spec.ts",
+      "tests/e2e/governance.e2e.spec.ts",
+      "tests/helpers/governanceFixtures.ts",
       "tests/helpers/login.ts",
       "tests/helpers/mongoMemoryServer.ts",
       "tests/helpers/oklchContrast.ts",
@@ -2754,6 +2756,7 @@
       "tests/int/global-announcement.int.spec.ts",
       "tests/int/global-footer.int.spec.ts",
       "tests/int/global-header.int.spec.ts",
+      "tests/int/governance-fixtures.int.spec.ts",
       "tests/int/header-navbar-render.int.spec.ts",
       "tests/int/header-presets.int.spec.ts",
       "tests/int/helpers/generatedPayloadInterface.ts",
@@ -2883,7 +2886,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "1c9993c808dd096b8a1face3b8fcfb86b49906ba7fe4b8dbe3566224f362646c"
+    "sha256": "c85efe3eb695bb5daea5720e7bb34d13277e170377fd48dd15eded4db0ec05cd"
   },
   "surfaces": {
     "access": [
@@ -3034,6 +3037,7 @@
       "tests/e2e/admin.e2e.spec.ts",
       "tests/e2e/calendar.e2e.spec.ts",
       "tests/e2e/frontend.e2e.spec.ts",
+      "tests/e2e/governance.e2e.spec.ts",
       "tests/int/about-section.int.spec.tsx",
       "tests/int/academic-programmes-client.int.spec.tsx",
       "tests/int/academic-programmes.int.spec.tsx",
@@ -3121,6 +3125,7 @@
       "tests/int/global-announcement.int.spec.ts",
       "tests/int/global-footer.int.spec.ts",
       "tests/int/global-header.int.spec.ts",
+      "tests/int/governance-fixtures.int.spec.ts",
       "tests/int/header-navbar-render.int.spec.ts",
       "tests/int/header-presets.int.spec.ts",
       "tests/int/hero-banner-preload.int.spec.tsx",
