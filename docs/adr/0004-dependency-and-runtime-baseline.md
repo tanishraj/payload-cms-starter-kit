@@ -63,8 +63,9 @@ rejects drift, then runs TypeScript, lint, the complete integration suite, exact
 Admin/Site Manager governance journeys, and the Node 22 Vercel production build. Its final
 `if: always()` step verifies the current run's owner label before removing only that exact MongoDB
 container. The job uses fixed non-secret values and explicit loopback `_test` databases; it never
-loads a repository environment file or receives a production secret. Project-context maintenance
-stays local.
+loads an ignored developer or production environment file or receives a production secret. The
+isolated browser configuration may load only the tracked non-secret `test.env` fixture, which
+overrides its test URI and Payload secret. Project-context maintenance stays local.
 
 `pnpm verify:docker-image` remains a documented local/release portability and build-secret
 inspection gate, not a GitHub Actions job, because the supported production delivery path is
@@ -73,10 +74,10 @@ Vercel.
 Rejected alternatives were upgrading Next or Payload packages independently; leaving direct
 framework versions as floating ranges; accepting two Sharp/libvips bindings; dropping the
 `react-server` CLI condition; treating raw pnpm audit exit status as the repository policy; using a
-standalone local or CI MongoDB; passing server secrets as Docker build arguments; loading repository
-environment files during verification; reusing the developer/default Compose project; mutable
-action tags; separate dependency-review or secret-scan jobs; a Docker-image CI job; and adding
-optional external controls to the mandatory-only workflow.
+standalone local or CI MongoDB; passing server secrets as Docker build arguments; loading ignored
+developer or production environment files during verification; reusing the developer/default
+Compose project; mutable action tags; separate dependency-review or secret-scan jobs; a Docker-image
+CI job; and adding optional external controls to the mandatory-only workflow.
 
 ## Consequences
 
@@ -105,21 +106,24 @@ temporary package overrides, audit exceptions, standalone MongoDB data files, or
 arguments. Preserve or explicitly migrate any local MongoDB data before changing the pinned server
 version or its version-specific volume.
 
-Rollback the delivery changes in reverse implementation order while retaining the prior mandatory
-workflow until its replacement passes the workflow/E2E contracts, TypeScript, lint, and the complete
-integration suite. Do not prune Docker or remove a developer/default Compose project. If an
-interrupted GitHub run leaves its exact CI container, verify that
+Rollback the delivery implementation in this exact order: revert Task 3, then Task 2, then Task 1.
+Keep the Task 4 maintained documentation and project context in place while that implementation
+rollback passes the workflow/E2E contracts, TypeScript, lint, and the complete integration suite;
+only then revert Task 4 documentation/context. Do not prune Docker or remove a developer/default
+Compose project. If an interrupted GitHub run leaves its exact CI container, verify that
 `com.payloadcms.hardening.ci-owner` matches that run before removing only the named container. No
 data migration or external rollback is required because the delivery fixtures use ephemeral
 loopback `_test` data.
 
 ## Verification
 
-Use only explicit safe `_test` configuration. Do not load a repository environment file. The
-mandatory GitHub job is the authoritative Vercel-path check: it runs `pnpm build` on Node 22 after
-the complete repository gate. Locally, run config-loading commands from a tracked-files workspace
-that contains neither ignored environment file. `pnpm verify:docker-image` separately performs the
-build in the isolated Node 22 Docker verifier and inspects the image secret boundary; it is the
+Use only explicit safe `_test` configuration. Isolated browser configuration may load the tracked
+non-secret `test.env` fixture; no verification command may load ignored developer `.env` or
+`.env.atlas.local`, another production environment file, or a production secret. The mandatory
+GitHub job is the authoritative Vercel-path check: it runs `pnpm build` on Node 22 after the complete
+repository gate. Locally, run other config-loading commands from a tracked-files workspace that
+contains neither ignored environment file. `pnpm verify:docker-image` separately performs the build
+in the isolated Node 22 Docker verifier and inspects the image secret boundary; it is the
 local/release portability check, not a second CI delivery path. A host build on an unsupported Node
 release is not authoritative.
 

@@ -90,10 +90,12 @@ controller accepts only a matching GitHub run identity and safe `_test` database
 installs bundled Chromium, regenerates Payload types and the Admin import map and rejects either
 drift, runs TypeScript, lint, the complete integration suite, exactly two critical Admin/Site
 Manager feature-governance and Review-moderation browser journeys, and the Node 22 Vercel production
-build. It loads no repository environment file or production secret, and its final step always
-verifies ownership before removing the exact container. Project-context maintenance stays local;
-the ownership-checked production-image verifier is a local/release portability and build-secret
-inspection gate rather than a GitHub job.
+build. The job supplies fixed non-secret values; isolated browser configuration may load only the
+tracked non-secret `test.env` fixture, never ignored developer `.env` or `.env.atlas.local`, a
+production environment file, or a production secret. Its final step always verifies ownership
+before removing the exact container. Project-context maintenance stays local; the ownership-checked
+production-image verifier is a local/release portability and build-secret inspection gate rather
+than a GitHub job.
 
 ## Caching and Delivery Safety
 

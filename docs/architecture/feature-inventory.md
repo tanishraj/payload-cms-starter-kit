@@ -281,13 +281,15 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 - CI creates an owner-labeled MongoDB `8.0.29` container, configures its only `rs0` member on
   loopback, requires the exact version and writable PRIMARY state, and removes only that current-run
   container in the final unconditional step. All mutation targets are explicit loopback `_test`
-  databases; the workflow loads no repository environment file or production secret and accesses no
-  live service. Project-context update/check remains a local repository-maintenance loop.
+  databases. The job uses fixed non-secret environment values; isolated browser configuration may
+  load only tracked non-secret `test.env`, never ignored developer `.env` or `.env.atlas.local`, a
+  production environment file, or a production secret. CI accesses no live service. Project-context
+  update/check remains a local repository-maintenance loop.
 - Local Compose pins MongoDB `8.0.29`, initializes a writable one-member `rs0`, and publishes its
   normal developer port on loopback only. The repository Docker verifiers use isolated `_test`
   databases and ownership-checked temporary resources; image verification scans runner environment
   and filesystem layers for persisted build secrets before bounded cleanup.
 - `pnpm verify:docker-image` is a local/release portability gate, not a GitHub Actions job, because
-  Vercel is the supported production delivery path. The supplied Dockerfile builds a non-root
-  Next.js standalone image; production containers require durable MongoDB and S3-compatible media
-  storage.
+  Vercel is the supported production delivery path.
+- The Dockerfile builds a non-root Next.js standalone production image; production containers
+  require durable MongoDB and S3-compatible media storage.
