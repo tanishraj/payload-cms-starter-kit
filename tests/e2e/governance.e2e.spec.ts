@@ -87,6 +87,14 @@ async function getPayloadAuthHeaders(
   }
 }
 
+async function expectDeniedCollectionRoute(page: Page, path: string): Promise<void> {
+  const response = await page.goto(path)
+
+  expect(response?.status()).toBe(404)
+  expect(new URL(page.url()).pathname).toBe(path)
+  await expect(page.getByRole('heading', { name: 'Nothing found', exact: true })).toBeVisible()
+}
+
 test.describe('governance browser journeys', () => {
   let fixture: GovernanceFixture | undefined
   let reviewPublishedForCleanup = false
@@ -197,8 +205,7 @@ test.describe('governance browser journeys', () => {
         await expect(managerPage.getByRole('link', { name: 'Articles', exact: true })).toHaveCount(
           0,
         )
-        await managerPage.goto('/admin/collections/articles')
-        await expect(managerPage.getByRole('heading', { name: 'Articles' })).toHaveCount(0)
+        await expectDeniedCollectionRoute(managerPage, '/admin/collections/articles')
         expect(
           (
             await managerPage.request.get('/api/articles?limit=1', {
@@ -237,8 +244,7 @@ test.describe('governance browser journeys', () => {
 
         await expect(managerPage.getByRole('link', { name: 'Reviews', exact: true })).toBeVisible()
         await expect(managerPage.getByRole('link', { name: 'Pages', exact: true })).toHaveCount(0)
-        await managerPage.goto('/admin/collections/pages')
-        await expect(managerPage.getByRole('heading', { name: 'Pages' })).toHaveCount(0)
+        await expectDeniedCollectionRoute(managerPage, '/admin/collections/pages')
         expect(
           (
             await managerPage.request.get('/api/pages?limit=1', {
@@ -246,13 +252,33 @@ test.describe('governance browser journeys', () => {
             })
           ).status(),
         ).toBe(403)
-        expect(
-          (
-            await managerPage.request.get('/api/reviews?limit=1', {
-              headers: await getPayloadAuthHeaders(managerPage),
-            })
-          ).status(),
-        ).not.toBe(403)
+        const reviewQuery = new URLSearchParams({
+          depth: '0',
+          draft: 'true',
+          limit: '1',
+          'where[slug][equals]': currentFixture.pendingReview.slug,
+        })
+        const reviewsResponse = await managerPage.request.get(`/api/reviews?${reviewQuery}`, {
+          headers: await getPayloadAuthHeaders(managerPage),
+        })
+        expect(reviewsResponse.status()).toBe(200)
+        const reviewsPayload = (await reviewsResponse.json()) as {
+          docs: Array<Record<string, unknown>>
+          totalDocs: number
+        }
+        expect(Array.isArray(reviewsPayload.docs)).toBe(true)
+        expect(reviewsPayload).toMatchObject({
+          docs: [
+            {
+              _status: 'draft',
+              id: currentFixture.pendingReview.id,
+              moderationStatus: 'pending',
+              slug: currentFixture.pendingReview.slug,
+              title: currentFixture.pendingReview.title,
+            },
+          ],
+          totalDocs: 1,
+        })
       })
     } finally {
       await managerContext.close()

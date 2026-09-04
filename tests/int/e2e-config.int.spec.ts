@@ -249,6 +249,16 @@ describe('E2E mutation helpers', () => {
     expect(source).toContain('headers: await getPayloadAuthHeaders(')
     expect(source).not.toContain("credentials: 'include'")
     expect(source.match(/testInfo\.setTimeout\(180_000\)/g)).toHaveLength(2)
+    expect(source).toContain('async function expectDeniedCollectionRoute(')
+    expect(source).toContain('expect(response?.status()).toBe(404)')
+    expect(source).toContain('expect(new URL(page.url()).pathname).toBe(path)')
+    expect(source).toContain("name: 'Nothing found', exact: true")
+    expect(source).not.toMatch(
+      /getByRole\('heading', \{ name: '(Articles|Pages)' \}\)\)\.toHaveCount\(0\)/,
+    )
+    expect(source).toContain('expect(reviewsResponse.status()).toBe(200)')
+    expect(source).toContain('expect(reviewsPayload).toMatchObject({')
+    expect(source).not.toContain('.status()).not.toBe(403)')
 
     for (const step of [
       'verify the Review is unavailable anonymously',

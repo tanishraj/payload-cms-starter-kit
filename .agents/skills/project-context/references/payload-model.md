@@ -65,5 +65,8 @@ Payload access layer. Submitted Reviews additionally require approved moderation
 Form/Media fields require an appropriate feature grant. Payload Local API calls bypass access
 by default. Use `overrideAccess: false` when acting for a user. Pass `req` into nested operations so
 they share transactions. Use request context flags when a hook writes data that could trigger itself.
+Page and Review cache-revalidation hooks honor `SKIP_CACHE_REVALIDATION_CONTEXT` only when it is
+explicitly `true`, allowing trusted request-external maintenance writes to avoid calling Next cache
+APIs without a request store; ordinary content writes continue to revalidate normally.
 Run `pnpm generate:types` after schema changes and keep
 [payload-types.ts](../../../../src/payload-types.ts) synchronized.

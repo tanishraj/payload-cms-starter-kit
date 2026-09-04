@@ -3,6 +3,8 @@
 import type { Payload } from 'payload'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+import { SKIP_CACHE_REVALIDATION_CONTEXT } from '@/hooks/revalidateCmsContent'
+
 import { createTestMongoServer } from '../helpers/mongoMemoryServer'
 
 const ORIGINAL_ENV = { ...process.env }
@@ -137,12 +139,38 @@ describe('governance fixture queue cleanup', () => {
       for (let cycle = 0; cycle < 2; cycle += 1) {
         latestFixture = await governanceFixtures.seedGovernanceBase()
 
-        for (const source of latestFixture.queueSources) {
-          const activeKeys = source.dedupeKeys.filter(
-            (dedupeKey) => !dedupeKey.endsWith(':submission-in-review'),
-          )
+        if (cycle === 0) {
+          const reviewManagerResult = await payload.find({
+            collection: 'users',
+            depth: 0,
+            limit: 1,
+            overrideAccess: true,
+            where: { email: { equals: latestFixture.reviewManager.email } },
+          })
+          const reviewManagerDocument = reviewManagerResult.docs[0]
 
-          for (const dedupeKey of activeKeys) {
+          if (!reviewManagerDocument) throw new Error('Expected the governance Review manager.')
+
+          await expect(
+            payload.update({
+              collection: 'reviews',
+              context: { [SKIP_CACHE_REVALIDATION_CONTEXT]: true },
+              data: { _status: 'published', moderationStatus: 'approved' },
+              draft: false,
+              id: latestFixture.pendingReview.id,
+              overrideAccess: false,
+              user: reviewManagerDocument,
+            }),
+          ).resolves.toMatchObject({
+            _status: 'published',
+            moderationStatus: 'approved',
+          })
+        }
+
+        const fixtureQueueIDs: string[] = []
+
+        for (const source of latestFixture.queueSources) {
+          for (const dedupeKey of source.dedupeKeys) {
             const result = await payload.find({
               collection: 'work-queue',
               limit: 2,
@@ -155,11 +183,44 @@ describe('governance fixture queue cleanup', () => {
                 ],
               },
             })
-            expect(result.totalDocs, `${dedupeKey} after seed ${cycle + 1}`).toBe(1)
+            if (!dedupeKey.endsWith(':submission-in-review')) {
+              expect(result.totalDocs, `${dedupeKey} after seed ${cycle + 1}`).toBe(1)
+            }
+            fixtureQueueIDs.push(...result.docs.map((document) => String(document.id)))
           }
         }
 
-        await governanceFixtures.cleanupGovernanceFixtures(latestFixture)
+        const deleteOrder: Array<{ collection: string; id: string }> = []
+        const deleteAPI = payload as unknown as {
+          delete: (options: {
+            collection: string
+            id?: number | string
+            [key: string]: unknown
+          }) => Promise<unknown>
+        }
+        const originalDelete = deleteAPI.delete.bind(payload)
+        const deleteSpy = vi.spyOn(deleteAPI, 'delete').mockImplementation(async (options) => {
+          deleteOrder.push({ collection: options.collection, id: String(options.id) })
+          return originalDelete(options)
+        })
+
+        try {
+          await governanceFixtures.cleanupGovernanceFixtures(latestFixture)
+        } finally {
+          deleteSpy.mockRestore()
+        }
+
+        const reviewDeleteIndex = deleteOrder.findIndex(
+          (entry) => entry.collection === 'reviews' && entry.id === latestFixture?.pendingReview.id,
+        )
+        expect(reviewDeleteIndex, `Review delete in cleanup ${cycle + 1}`).toBeGreaterThanOrEqual(0)
+        for (const queueID of fixtureQueueIDs) {
+          const queueDeleteIndex = deleteOrder.findIndex(
+            (entry) => entry.collection === 'work-queue' && entry.id === queueID,
+          )
+          expect(queueDeleteIndex).toBeGreaterThanOrEqual(0)
+          expect(queueDeleteIndex).toBeLessThan(reviewDeleteIndex)
+        }
 
         for (const source of latestFixture.queueSources) {
           for (const dedupeKey of source.dedupeKeys) {

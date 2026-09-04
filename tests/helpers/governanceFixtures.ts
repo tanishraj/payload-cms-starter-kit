@@ -2,6 +2,7 @@ import type { Payload } from 'payload'
 
 import type { AdminFeatureGrants } from '@/access/adminFeatures'
 import { TRUSTED_REVIEW_PROMOTION_CONTEXT } from '@/hooks/enforceReviewModeration'
+import { SKIP_CACHE_REVALIDATION_CONTEXT } from '@/hooks/revalidateCmsContent'
 import { buildWorkQueueDedupeKey } from '@/lib/workQueue'
 
 import { getRequiredTestDatabaseURI } from './testDatabaseSafety'
@@ -292,11 +293,13 @@ async function deleteExactDocument(
   payload: Payload,
   collection: 'categories' | 'forms' | 'form-submissions' | 'reviews' | 'users',
   document: FixtureDocument | undefined,
+  context?: Record<string, unknown>,
 ): Promise<void> {
   if (!document) return
 
   await payload.delete({
     collection,
+    context,
     id: document.id,
     overrideAccess: true,
     trash: true,
@@ -319,7 +322,9 @@ async function cleanupGovernanceFixturesWithPayload(
 
   await deleteGovernanceQueueItemsWithPayload(payload, recoveredQueueSources)
 
-  await deleteExactDocument(payload, 'reviews', records.review)
+  await deleteExactDocument(payload, 'reviews', records.review, {
+    [SKIP_CACHE_REVALIDATION_CONTEXT]: true,
+  })
   await deleteExactDocument(payload, 'form-submissions', records.submission)
   await deleteExactDocument(payload, 'forms', records.form)
   await deleteExactDocument(payload, 'categories', records.category)

@@ -63,6 +63,15 @@ describe('CMS cache revalidation', () => {
     expect(mocks.revalidateTag).not.toHaveBeenCalled()
   })
 
+  it('skips Review cache invalidation for explicitly marked maintenance writes', () => {
+    const context = { [SKIP_CACHE_REVALIDATION_CONTEXT]: true }
+
+    afterChange(revalidateReviewsCache as never, 'published', 'draft', context)
+    revalidateDeletedReviewCache({ context, doc: { _status: 'published' } } as never)
+
+    expect(mocks.revalidateTag).not.toHaveBeenCalled()
+  })
+
   it.each([
     ['Article', revalidateArticlesCache, CMS_CACHE_TAGS.articles],
     ['Review', revalidateReviewsCache, CMS_CACHE_TAGS.reviews],
@@ -75,7 +84,11 @@ describe('CMS cache revalidation', () => {
   })
 
   it('does not invalidate editorial caches for draft-only updates', () => {
-    for (const hook of [revalidateArticlesCache, revalidateReviewsCache, revalidateNewsEventsCache]) {
+    for (const hook of [
+      revalidateArticlesCache,
+      revalidateReviewsCache,
+      revalidateNewsEventsCache,
+    ]) {
       afterChange(hook as never, 'draft', 'draft')
     }
 
