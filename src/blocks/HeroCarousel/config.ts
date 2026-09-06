@@ -1,18 +1,7 @@
-import type {
-  ArrayField,
-  Block,
-  CheckboxField,
-  Field,
-  RadioField,
-  SelectField,
-  TabsField,
-} from 'payload'
+import type { ArrayField, Block, CheckboxField, Field, SelectField, TabsField } from 'payload'
 
 import { getBlockThumbnailAdmin } from '@/block-thumbnails/definitions'
-import {
-  buttonVariantDescription,
-  buttonVariantWithLinkOptions,
-} from '@/blocks/shared/contentActionsFields'
+import { createContentActionsField } from '@/blocks/shared/contentActionsFields'
 import {
   createMediaOverlayCoverageField,
   createMediaOverlayDirectionField,
@@ -20,95 +9,13 @@ import {
   createMediaOverlayToneField,
 } from '@/blocks/shared/mediaOverlayFields'
 
-type LinkType = 'page' | 'custom'
-
-const pageCondition = (_data: unknown, siblingData: { linkType?: LinkType | null }) =>
-  siblingData?.linkType === 'page'
-
-const customUrlCondition = (_data: unknown, siblingData: { linkType?: LinkType | null }) =>
-  siblingData?.linkType === 'custom'
-
-const buttonArrowCondition = (_data: unknown, siblingData: { variant?: string | null }) =>
-  siblingData?.variant !== 'link'
-
-const createLinkFields = (): Field[] => [
-  {
-    name: 'label',
-    type: 'text',
-    required: true,
-  },
-  {
-    name: 'linkType',
-    type: 'radio',
-    defaultValue: 'page',
-    options: [
-      { label: 'Page', value: 'page' },
-      { label: 'Custom URL', value: 'custom' },
-    ],
-    admin: { layout: 'horizontal' },
-  } satisfies RadioField,
-  {
-    name: 'page',
-    type: 'relationship',
-    relationTo: 'pages',
-    admin: { condition: pageCondition },
-  },
-  {
-    name: 'url',
-    label: 'Custom URL',
-    type: 'text',
-    admin: {
-      condition: customUrlCondition,
-      description:
-        'Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.',
-      placeholder: '#admissions or /programmes#mbbs',
-    },
-  },
-  {
-    name: 'openInNewTab',
-    type: 'checkbox',
-    defaultValue: false,
-  } satisfies CheckboxField,
-]
-
-const buttonsField: ArrayField = {
-  name: 'buttons',
+const buttonsField = createContentActionsField({
+  defaultMode: 'button',
+  defaultVariant: 'secondary',
   label: 'Buttons',
-  type: 'array',
   maxRows: 2,
-  admin: { initCollapsed: true },
-  fields: [
-    {
-      type: 'tabs',
-      tabs: [
-        { label: 'Content', fields: createLinkFields() },
-        {
-          label: 'Style',
-          fields: [
-            {
-              name: 'variant',
-              type: 'select',
-              defaultValue: 'secondary',
-              options: buttonVariantWithLinkOptions,
-              required: true,
-              admin: { description: buttonVariantDescription },
-            } satisfies SelectField,
-            {
-              name: 'showArrow',
-              label: 'Show arrow',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                condition: buttonArrowCondition,
-                description: 'Adds a trailing arrow to this button.',
-              },
-            } satisfies CheckboxField,
-          ],
-        },
-      ],
-    } satisfies TabsField,
-  ],
-}
+  name: 'buttons',
+})
 
 const slideFields: Field[] = [
   {

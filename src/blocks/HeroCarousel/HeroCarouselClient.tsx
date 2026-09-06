@@ -12,12 +12,7 @@ import { useControllableMotion } from '@/components/motion/useControllableMotion
 import { Button } from '@/components/ui/button'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import {
-  getCmsActionAnchorProps,
-  type CmsActionIndicator,
-  type CmsActionIndicatorPosition,
-  type CmsActionVariant,
-} from '@/lib/cmsLinks'
+import { getCmsActionAnchorProps, type ResolvedCmsAction } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 import {
   resolveMediaOverlay,
@@ -31,16 +26,7 @@ export type CarouselSlide = {
   backgroundImageAlt?: string
   backgroundImageSrc?: string
   backgroundVideoUrl?: string
-  buttons?: Array<{
-    download?: string | true
-    href: string
-    indicator?: CmsActionIndicator
-    indicatorPosition?: CmsActionIndicatorPosition
-    label: string
-    openInNewTab?: boolean
-    showArrow: boolean
-    variant?: CmsActionVariant
-  }>
+  buttons?: ResolvedCmsAction[]
   description?: string | null
   eyebrow?: string | null
   id?: string
@@ -278,7 +264,7 @@ export function HeroCarouselClient({
                         )}
                       >
                         {slide.buttons.map((button) =>
-                          button.variant === 'link' ? (
+                          button.mode === 'link' || button.variant === 'link' ? (
                             <ContentLink
                               className={overlay.text.link}
                               download={button.download}
