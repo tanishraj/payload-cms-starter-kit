@@ -7390,7 +7390,7 @@ export interface User {
    */
   role: 'admin' | 'siteManager';
   /**
-   * Choose the Admin destinations this Site Manager may use. New Site Managers start with no access.
+   * Choose editable Admin destinations. Required supporting destinations receive read-only access without appearing in navigation. After changed access is saved, the Site Manager is signed out of active sessions.
    */
   features?: {
     /**

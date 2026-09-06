@@ -2452,11 +2452,16 @@
       "src/components/SectionEyebrow.tsx",
       "src/components/admin/AdminSessionBar.tsx",
       "src/components/admin/AdminUserMenu.tsx",
+      "src/components/admin/DashboardOverview.scss",
       "src/components/admin/DashboardOverview.tsx",
+      "src/components/admin/DashboardView.tsx",
       "src/components/admin/DeferredAdminSessionBar.tsx",
+      "src/components/admin/FeatureAccessControls.scss",
+      "src/components/admin/FeatureAccessControls.tsx",
       "src/components/admin/PageCreateView.tsx",
       "src/components/admin/PageRecipeSetup.scss",
       "src/components/admin/PageRecipeSetup.tsx",
+      "src/components/admin/featureAccessPresentation.ts",
       "src/components/analytics/ConsentAwareAnalytics.tsx",
       "src/components/announcement/AnnouncementBar.tsx",
       "src/components/announcement/MarqueeAnnouncementContent.tsx",
@@ -2762,6 +2767,7 @@
       "tests/int/event-gallery-render.int.spec.tsx",
       "tests/int/event-gallery-selection.int.spec.tsx",
       "tests/int/event-gallery-viewer.int.spec.tsx",
+      "tests/int/feature-access-controls.int.spec.ts",
       "tests/int/feature-access-matrix.int.spec.ts",
       "tests/int/feature-matrix.int.spec.ts",
       "tests/int/feature-spotlight.int.spec.ts",
@@ -2910,7 +2916,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "db21e5ec80c11211cd83ce69d9fc788101c73388571e85bfb2ec3bf7054892db"
+    "sha256": "f469d31e7db0979ca704ae25c2d25eb17928d5183a624b5d26265a9541c073c2"
   },
   "surfaces": {
     "access": [
@@ -3133,6 +3139,7 @@
       "tests/int/event-gallery-render.int.spec.tsx",
       "tests/int/event-gallery-selection.int.spec.tsx",
       "tests/int/event-gallery-viewer.int.spec.tsx",
+      "tests/int/feature-access-controls.int.spec.ts",
       "tests/int/feature-access-matrix.int.spec.ts",
       "tests/int/feature-matrix.int.spec.ts",
       "tests/int/feature-spotlight.int.spec.ts",

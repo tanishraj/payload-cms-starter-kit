@@ -1,4 +1,4 @@
-import type { TextField } from 'payload'
+import type { CollapsibleField } from 'payload'
 
 export const BLOCK_ANCHOR_ID_MAX_LENGTH = 80
 
@@ -33,17 +33,26 @@ export const validateBlockAnchorID = (value: unknown): true | string => {
   )
 }
 
-export const createBlockAnchorField = (): TextField => ({
-  name: 'anchorId',
-  label: 'Section Anchor ID',
-  type: 'text',
-  maxLength: BLOCK_ANCHOR_ID_MAX_LENGTH,
-  validate: validateBlockAnchorID,
+export const createBlockAnchorField = (): CollapsibleField => ({
+  label: 'Advanced',
+  type: 'collapsible',
   admin: {
-    description:
-      'Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.',
-    placeholder: 'admissions',
+    initCollapsed: true,
   },
+  fields: [
+    {
+      name: 'anchorId',
+      label: 'Section Anchor ID',
+      type: 'text',
+      maxLength: BLOCK_ANCHOR_ID_MAX_LENGTH,
+      validate: validateBlockAnchorID,
+      admin: {
+        description:
+          'Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.',
+        placeholder: 'admissions',
+      },
+    },
+  ],
 })
 
 export const validateUniqueBlockAnchorIDs = (value: unknown): true | string => {

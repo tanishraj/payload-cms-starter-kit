@@ -54,6 +54,19 @@ Nine globals are registered:
 
 The only roles are Admin and Site Manager. Anonymous first-Admin creation requires both a literally empty Users collection, including trashed records, and the explicit runtime bootstrap policy; production defaults that policy off and additionally pins bootstrap to one normalized configured email. Payload's unique email index selects the atomic winner if same-address bootstrap requests race. Non-production ignores the email pin and remains flag-only. Admins implicitly hold every registered feature and may grant any subset of the 29 Admin destinations to Site Managers. A missing grant fails closed in the sidebar and at the Payload access layer. Relationship dependencies receive bounded read access without exposing the destination or permitting mutation.
 
+The Users editor keeps those grants as native `features.<key>` checkboxes. It presents an effective-
+access summary and unsaved global/group bulk controls, while the ten sidebar-aligned groups begin
+collapsed with their feature counts. Dependency access is identified as read-only, and the editor
+warns that saving authorization changes invalidates the Site Manager's active sessions. These controls
+only update Payload form state; normalization, authorization, session invalidation, and audit hooks
+remain authoritative on save.
+
+The Payload dashboard uses one custom dashboard body instead of inserting content before Payload's
+default collection/global cards. It consumes the already-authenticated dashboard user, creates only
+feature-authorized Local API queries with `overrideAccess: false`, reports failed authorized counts as
+unavailable, includes Reviews in recent edits, and distinguishes a zero-grant account from an account
+whose grants do not have dashboard metrics. Payload continues to own the surrounding Admin shell.
+
 Governed content uses Payload's native `_status` as its only draft/publication state. Open or blocked approval/publish-issue queue items prevent publishing; in-progress items do not. Publishing stamps actor and time metadata. Public review submissions additionally remain draft and pending until an Admin or Reviews-granted Site Manager approves or rejects them.
 
 Read [adminFeatures.ts](../../../../src/access/adminFeatures.ts), [featureAccess.ts](../../../../src/access/featureAccess.ts), [enforcePublicationPolicy.ts](../../../../src/hooks/enforcePublicationPolicy.ts), [enforceReviewModeration.ts](../../../../src/hooks/enforceReviewModeration.ts), and the [editorial governance runbook](../../../../docs/operations/editorial-governance.md) together before changing this model.

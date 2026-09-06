@@ -20,8 +20,12 @@ import { EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT } from '@/lib/newsEventsPreviewShare
 import { EMPTY_REVIEW_PREVIEW_SNAPSHOT } from '@/lib/reviewPreviewShared'
 import type { Page } from '@/payload-types'
 
-const hasAnchorField = (fields: Field[]): boolean =>
-  fields.some((field) => 'name' in field && field.name === 'anchorId' && field.type === 'text')
+const findAnchorFields = (fields: Field[]): Field[] =>
+  fields.flatMap((field) => {
+    const matches =
+      'name' in field && field.name === 'anchorId' && field.type === 'text' ? [field] : []
+    return 'fields' in field ? [...matches, ...findAnchorFields(field.fields)] : matches
+  })
 
 const announcementBlock = (anchorId: string, description: string) => ({
   anchorId,
@@ -37,19 +41,21 @@ describe('Page block anchor navigation', () => {
       reusableSectionBuilderBlocks,
       newsEventsDetailBuilderBlocks,
     ]) {
-      expect(registry.every((block) => hasAnchorField(block.fields))).toBe(true)
-      expect(
-        registry.every(
-          (block) =>
-            block.fields.filter((field) => 'name' in field && field.name === 'anchorId').length ===
-            1,
-        ),
-      ).toBe(true)
+      expect(registry.every((block) => findAnchorFields(block.fields).length === 1)).toBe(true)
     }
 
-    const anchorField = pageBuilderBlocks[0]?.fields.find(
-      (field) => 'name' in field && field.name === 'anchorId',
+    const advancedField = pageBuilderBlocks[0]?.fields.find(
+      (field) => field.type === 'collapsible' && findAnchorFields(field.fields).length === 1,
     )
+    const anchorField =
+      advancedField && 'fields' in advancedField ? findAnchorFields(advancedField.fields)[0] : null
+
+    expect(advancedField).toMatchObject({
+      admin: { initCollapsed: true },
+      label: 'Advanced',
+      type: 'collapsible',
+    })
+    expect(advancedField && 'name' in advancedField).toBe(false)
 
     expect(anchorField).toMatchObject({
       admin: {

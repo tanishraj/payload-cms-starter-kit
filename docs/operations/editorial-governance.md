@@ -13,6 +13,12 @@ An Admin may create any number of Admins and Site Managers. New Site Managers be
 grants. Changing a role or feature grant clears that user's active sessions so revocation takes effect
 immediately. The last active Admin cannot be demoted, trashed, or permanently deleted.
 
+When editing a Site Manager, the feature summary shows direct grants and any supporting read-only
+access implied by them. Use Select all/Clear all for the complete checklist or the corresponding
+controls inside an expanded group. These controls update the unsaved form only: review the resulting
+selection and use Payload's normal Save action. Feature groups start collapsed and show their total
+feature count so access can be reviewed without scanning all 29 checkboxes at once.
+
 ## Site Manager Features
 
 Each checkbox corresponds to one Payload Admin destination. A grant controls both navigation and
@@ -50,8 +56,10 @@ server-side access through Admin, REST, preview, and user-scoped Local API calls
 | Configuration  | Search Settings       | Edit suggested-search configuration                                         |
 | Configuration  | Maintenance & Modes   | Configure normal, maintenance, and coming-soon behavior                     |
 
-Dashboard and My Account are available to every authenticated user. Users, role assignment, feature
-assignment, unlocking accounts, and permanent deletion are never grantable.
+Dashboard and My Account are available to every authenticated user. The dashboard is the complete
+capability-aware landing view: it shows only authorized data and actions, reports unavailable counts
+without presenting them as zero, and links non-widget grants to their Admin destinations. Users, role
+assignment, feature assignment, unlocking accounts, and permanent deletion are never grantable.
 
 ## Dependency Reads
 

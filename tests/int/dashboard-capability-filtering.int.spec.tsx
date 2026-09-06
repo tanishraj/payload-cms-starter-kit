@@ -2,16 +2,9 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mocks = vi.hoisted(() => ({
-  auth: vi.fn(),
   count: vi.fn(),
   find: vi.fn(),
-  getPayload: vi.fn(),
-  headers: vi.fn(),
 }))
-
-vi.mock('@payload-config', () => ({ default: Promise.resolve({}) }))
-vi.mock('next/headers', () => ({ headers: mocks.headers }))
-vi.mock('payload', () => ({ getPayload: mocks.getPayload }))
 
 import { DashboardOverview } from '@/components/admin/DashboardOverview'
 
@@ -29,39 +22,29 @@ const reviewManager = {
   role: 'siteManager',
 }
 
+const renderDashboard = async (user: unknown) =>
+  renderToStaticMarkup(
+    await DashboardOverview({
+      payload: { count: mocks.count, find: mocks.find } as never,
+      user: user as never,
+    }),
+  )
+
 describe('dashboard capability filtering', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mocks.headers.mockResolvedValue(new Headers())
-    mocks.getPayload.mockResolvedValue({
-      auth: mocks.auth,
-      count: mocks.count,
-      find: mocks.find,
-    })
     mocks.count.mockResolvedValue({ totalDocs: 2 })
     mocks.find.mockResolvedValue({ docs: [] })
   })
 
   it('runs no collection queries for an unauthenticated request', async () => {
-    mocks.auth.mockResolvedValue({ user: null })
-
-    expect(renderToStaticMarkup(await DashboardOverview())).toBe('')
-    expect(mocks.count).not.toHaveBeenCalled()
-    expect(mocks.find).not.toHaveBeenCalled()
-  })
-
-  it('does not fall back to privileged queries when authentication fails', async () => {
-    mocks.auth.mockRejectedValue(new Error('authentication unavailable'))
-
-    expect(renderToStaticMarkup(await DashboardOverview())).toBe('')
+    expect(await renderDashboard(null)).toBe('')
     expect(mocks.count).not.toHaveBeenCalled()
     expect(mocks.find).not.toHaveBeenCalled()
   })
 
   it('runs only authorized queries with access enforcement', async () => {
-    mocks.auth.mockResolvedValue({ user: articleManager })
-
-    await DashboardOverview()
+    await renderDashboard(articleManager)
 
     const calls = [...mocks.count.mock.calls, ...mocks.find.mock.calls]
     expect(calls.length).toBeGreaterThan(0)
@@ -88,7 +71,6 @@ describe('dashboard capability filtering', () => {
   })
 
   it('renders only an article manager’s authorized areas', async () => {
-    mocks.auth.mockResolvedValue({ user: articleManager })
     mocks.find.mockResolvedValue({
       docs: [
         {
@@ -100,7 +82,7 @@ describe('dashboard capability filtering', () => {
       ],
     })
 
-    const html = renderToStaticMarkup(await DashboardOverview())
+    const html = await renderDashboard(articleManager)
 
     expect(html).toContain('Articles')
     expect(html).toContain('+ New Article')
@@ -114,11 +96,7 @@ describe('dashboard capability filtering', () => {
   })
 
   it('gives a zero-grant Site Manager a non-leaking empty state', async () => {
-    mocks.auth.mockResolvedValue({
-      user: { features: {}, id: 'new-manager', role: 'siteManager' },
-    })
-
-    const html = renderToStaticMarkup(await DashboardOverview())
+    const html = await renderDashboard({ features: {}, id: 'new-manager', role: 'siteManager' })
 
     expect(html).toContain('No features assigned yet')
     expect(html).not.toContain('Content Overview')
@@ -127,10 +105,23 @@ describe('dashboard capability filtering', () => {
     expect(mocks.find).not.toHaveBeenCalled()
   })
 
-  it('preserves all quick actions for an administrator', async () => {
-    mocks.auth.mockResolvedValue({ user: { id: 'admin', role: 'admin' } })
+  it('recognizes grants that do not have dashboard metrics', async () => {
+    const html = await renderDashboard({
+      features: { appearance: true },
+      id: 'appearance-manager',
+      role: 'siteManager',
+    })
 
-    const html = renderToStaticMarkup(await DashboardOverview())
+    expect(html).not.toContain('No features assigned yet')
+    expect(html).toContain('1 feature assigned')
+    expect(html).toContain('Appearance')
+    expect(html).toContain('/admin/globals/theme-settings')
+    expect(mocks.count).not.toHaveBeenCalled()
+    expect(mocks.find).not.toHaveBeenCalled()
+  })
+
+  it('preserves all quick actions for an administrator', async () => {
+    const html = await renderDashboard({ id: 'admin', role: 'admin' })
 
     for (const label of [
       '+ New Page',
@@ -144,10 +135,9 @@ describe('dashboard capability filtering', () => {
   })
 
   it('shows only pending public reviews as moderation work', async () => {
-    mocks.auth.mockResolvedValue({ user: reviewManager })
     mocks.count.mockResolvedValue({ totalDocs: 3 })
 
-    const html = renderToStaticMarkup(await DashboardOverview())
+    const html = await renderDashboard(reviewManager)
 
     expect(mocks.count).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -169,24 +159,48 @@ describe('dashboard capability filtering', () => {
   })
 
   it('keeps an authorized dashboard usable when moderation counts fail', async () => {
-    mocks.auth.mockResolvedValue({ user: reviewManager })
     mocks.count.mockRejectedValue(new Error('review count unavailable'))
 
-    const html = renderToStaticMarkup(await DashboardOverview())
+    const html = await renderDashboard(reviewManager)
 
     expect(html).toContain('Reviews awaiting moderation')
     expect(html).toContain('Count unavailable')
   })
 
   it('isolates an authorized query failure', async () => {
-    mocks.auth.mockResolvedValue({ user: articleManager })
     mocks.count.mockRejectedValue(new Error('count unavailable'))
     mocks.find.mockRejectedValue(new Error('recent data unavailable'))
 
-    const html = renderToStaticMarkup(await DashboardOverview())
+    const html = await renderDashboard(articleManager)
 
     expect(html).toContain('Articles')
+    expect(html).toContain('Count unavailable')
     expect(html).toContain('+ New Article')
     expect(html).not.toContain('Recent Submissions')
+  })
+
+  it('includes authorized Reviews in Recently Edited', async () => {
+    mocks.find.mockResolvedValue({
+      docs: [
+        {
+          _status: 'draft',
+          id: 'review-1',
+          title: 'A recent review',
+          updatedAt: '2026-09-07T10:00:00.000Z',
+        },
+      ],
+    })
+
+    const html = await renderDashboard(reviewManager)
+
+    expect(mocks.find).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'reviews',
+        overrideAccess: false,
+        user: reviewManager,
+      }),
+    )
+    expect(html).toContain('A recent review')
+    expect(html).toContain('/admin/collections/reviews/review-1')
   })
 })

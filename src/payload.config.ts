@@ -66,7 +66,11 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     components: {
-      beforeDashboard: ['@/components/admin/DashboardOverview#DashboardOverview'],
+      views: {
+        dashboard: {
+          Component: '@/components/admin/DashboardView#DashboardView',
+        },
+      },
     },
   },
   collections: [

@@ -71,7 +71,7 @@ const createFeatureRows = (keys: readonly (typeof ADMIN_FEATURE_KEYS)[number][])
     label: ADMIN_FEATURES[key].label,
     admin: {
       description: ADMIN_FEATURES[key].description,
-      width: '33.33%',
+      width: '50%',
     },
   }))
 
@@ -86,9 +86,23 @@ export const adminFeatureCheckboxFields: Field[] = ADMIN_FEATURE_GROUPS.map((gro
   const keys = ADMIN_FEATURE_KEYS.filter((key) => ADMIN_FEATURES[key].group === group)
   return {
     type: 'collapsible',
-    label: group,
-    admin: { initCollapsed: false },
-    fields: createFeatureRows(keys),
+    label: `${group} (${keys.length})`,
+    admin: { initCollapsed: true },
+    fields: [
+      {
+        name: `featureGroup${group.replace(/[^a-z0-9]+/gi, '')}Controls`,
+        type: 'ui',
+        admin: {
+          components: {
+            Field: {
+              path: '@/components/admin/FeatureAccessControls#FeatureGroupControls',
+              clientProps: { featureKeys: keys, groupLabel: group },
+            },
+          },
+        },
+      },
+      ...createFeatureRows(keys),
+    ],
   }
 })
 
@@ -351,9 +365,22 @@ export const Users: CollectionConfig = {
       admin: {
         condition: showFeatureAccess,
         description:
-          'Choose the Admin destinations this Site Manager may use. New Site Managers start with no access.',
+          'Choose editable Admin destinations. Required supporting destinations receive read-only access without appearing in navigation. After changed access is saved, the Site Manager is signed out of active sessions.',
       },
-      fields: adminFeatureCheckboxFields,
+      fields: [
+        {
+          name: 'featureAccessOverview',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: {
+                path: '@/components/admin/FeatureAccessControls#FeatureAccessOverview',
+              },
+            },
+          },
+        },
+        ...adminFeatureCheckboxFields,
+      ],
     },
   ],
 }
