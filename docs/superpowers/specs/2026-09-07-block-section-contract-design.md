@@ -2,8 +2,7 @@
 
 ## Status
 
-Awaiting written-spec review. The user approved the compatibility-first direction described in the
-block consistency audit on 2026-09-07.
+Implemented and verified on 2026-09-07.
 
 ## Objective
 
@@ -37,8 +36,10 @@ The profiles are:
    same destination and presentation semantics as other CMS actions.
 3. **Content-Only Section** — Rich Text, Stats Strip, and Quote retain specialized content-first
    anatomy and opt into only the common settings they can render meaningfully.
-4. **Structural or Utility Section** — Reusable Section, Breadcrumb, and Announcement retain their
-   structural roles and are explicitly exempt from irrelevant introduction fields.
+4. **Structural Section** — Reusable Section composes other blocks and is explicitly exempt from
+   presentation fields that would create a second section wrapper.
+5. **Utility Section** — Breadcrumb and Announcement retain their compact utility roles and expose
+   only the controls they can render meaningfully.
 
 This avoids both extremes: duplicating the current contracts block by block, and forcing decorative
 or structural fields into blocks where they have no visitor-facing meaning.
@@ -225,4 +226,3 @@ inconsistent. It is insufficient.
 Catalog-wide tests could freeze the desired behavior while leaving each block independently
 implemented. This would detect drift but preserve duplication and make every contract adjustment
 expensive. Tests are required, but they support rather than replace shared primitives.
-

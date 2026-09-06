@@ -44,6 +44,37 @@ Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block 
 
 ## Shared Configuration and Presentation
 
+Every Page-compatible block has one catalog-owned section profile in
+`blockSectionProfiles.ts`:
+
+- `standard` blocks use the complete section authoring and presentation contract;
+- `hero` blocks keep their deliberate full-bleed composition while sharing action semantics;
+- `contentOnly` blocks render authored content without inventing a second section introduction;
+- `utility` blocks expose only controls meaningful to their compact structural purpose; and
+- `structural` blocks compose other blocks rather than presenting their own section chrome.
+
+For `standard` blocks, `sectionSchemaContract.ts` derives one predictable Payload Admin anatomy from
+the catalog: eyebrow, title/accent title, description or equivalent introductory copy, Introduction
+Actions, block-owned content, and Footer Actions in the Content tab; then Appearance, Section Content
+Alignment, Section Padding, and block-specific controls in Theme Settings. Required titles match
+runtime visibility instead of being declared independently by each config. The one shared alignment
+controls only the introduction and its two section-level action groups; card grids, tables, calendars,
+galleries, forms, carousels, and other body geometry retain their own layout contract.
+
+`sectionFields.ts` owns the reusable field factories and Left/Center/Right plus padding options.
+`SectionIntro.tsx`, `SectionShell.tsx`, `contentStyles.ts`, and `BlockFooterActions.tsx` own the matching
+server-safe presentation primitives. Footer alignment is always explicit at each call site; it has no
+hidden center fallback. Catalog-derived schema and presentation tests cover every profile so adding a
+block requires an intentional classification and cannot silently omit the standard controls.
+
+Compatibility stays at established storage paths. Media Carousel authors canonical introduction
+actions at `actions`, retains hidden `sectionActions` as a read fallback, and prefers a non-empty
+canonical list. Testimonial Spotlight keeps its outer alignment at `sectionContentAlignment` rather
+than introducing a duplicate stored field. Hero Banner and Hero Carousel keep `buttons`, but those
+rows now come from the shared action factory with Button as the missing-mode fallback; historical
+`variant: 'link'` rows remain editorial links. Regenerated Payload types include both canonical and
+retained compatibility fields, and production/live-preview parity tests exercise the same values.
+
 - `blockAppearanceFields.ts` and `blockAppearance.ts`: page/subtle/brand surfaces, gradients, borders, legacy normalization, and foreground resolution.
 - `blockAnchor.ts` and `BlockAnchorWrapper.tsx`: the centrally decorated optional Section Anchor ID,
   presented inside an unnamed collapsed Advanced field so its top-level `anchorId` storage path stays
@@ -52,7 +83,7 @@ Production Page blocks are wrapped in `BlockErrorBoundary`, so one broken block 
   Custom URL actions use `#anchor-id` on the current Page or `/page-path#anchor-id` across Pages.
 - `blockSpacing.ts`: regular container and responsive vertical spacing contracts.
 - `cardThemeFields.ts` and `cardSurface.ts`: Default/Primary/Secondary/Muted/Accent card semantics.
-- `contentActionsFields.ts` and `BlockFooterActions.tsx`: per-action links/buttons, variants, arrows, and footer actions. Shared actions support Page, Custom URL, and Media File destinations. File actions choose View or Download independently from Button/Link presentation; View has a file-specific new-tab preference, while Download forwards the Media filename through the anchor `download` attribute. Download defaults to an animated Lucide down arrow on the left, which editors can move right or hide without changing File View or navigation-arrow behavior. Keep schema changes in `contentActionsFields.ts`, destination resolution in `src/lib/cmsLinks.ts`, and rendering semantics in `src/components/ContentActions.tsx` plus guarded specialized consumers.
+- `contentActionsFields.ts` and `BlockFooterActions.tsx`: per-action links/buttons, variants, arrows, and explicitly aligned footer actions. Shared actions support Page, Custom URL, and Media File destinations. File actions choose View or Download independently from Button/Link presentation; View has a file-specific new-tab preference, while Download forwards the Media filename through the anchor `download` attribute. Download defaults to an animated Lucide down arrow on the left, which editors can move right or hide without changing File View or navigation-arrow behavior. The field factory accepts a caller-specific missing-mode default: normal section actions remain editorial Links, while Hero `buttons` default to Buttons. Keep schema changes in `contentActionsFields.ts`, destination resolution in `src/lib/cmsLinks.ts`, and rendering semantics in `src/components/ContentActions.tsx` plus guarded specialized consumers.
 - `FeeDocumentDownload.tsx`: canonical official fee-document panel, Link/Button presentation, download semantics, and brand-surface contrast shared by Fee Structure and PG Fee Structure.
 - `contentStyles.ts`: shared section/card typography and link classes.
 - `src/styles/globals.css`: the public semantic radius contract. Block cards and media frames use
@@ -112,7 +143,8 @@ responsive 18–20px size with one normalized pair of curly double quotation mar
 markup, while absent copy leaves the image, title, description, and attribution visible without empty
 quotation elements. The person name and designation retain distinct body and metadata sizes.
 An optional outer section layer adds prefixed eyebrow/title/description fields, shared section and
-footer actions, and Left/Center header alignment without renaming the existing inner message fields.
+footer actions, and Left/Center/Right header alignment on the established `sectionContentAlignment`
+storage path without renaming the existing inner message fields.
 The outer eyebrow follows the section appearance; the existing inner eyebrow follows the container
 surface. Documents without valid outer content retain the legacy render branch.
 
