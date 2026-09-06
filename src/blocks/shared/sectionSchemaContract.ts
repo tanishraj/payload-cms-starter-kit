@@ -70,10 +70,7 @@ const isNamedField = (field: Field): field is NamedField => 'name' in field
 
 const nameOf = (field: Field): string | undefined => (isNamedField(field) ? field.name : undefined)
 
-const normalizeContentFields = (
-  slug: ProfiledPageBlockSlug,
-  fields: Field[],
-): Field[] => {
+const normalizeContentFields = (slug: ProfiledPageBlockSlug, fields: Field[]): Field[] => {
   let normalized = fields.map((field): Field => {
     if (!isNamedField(field)) return field
 
@@ -82,6 +79,13 @@ const normalizeContentFields = (
     }
     if (field.name === 'footerActions' && field.type === 'array') {
       return { ...field, label: 'Footer Actions' }
+    }
+    if (slug === 'mediaCarousel' && field.name === 'sectionActions' && field.type === 'array') {
+      return {
+        ...field,
+        label: 'Legacy Section Actions',
+        admin: { ...field.admin, hidden: true },
+      }
     }
     if (field.name === 'title' && field.type === 'text' && requiredTitleBlocks.has(slug)) {
       return { ...field, required: true }
@@ -110,8 +114,12 @@ const normalizeContentFields = (
     const name = nameOf(field)
     return name !== 'actions' && name !== 'footerActions'
   })
-  const introNames =
-    introductionFieldNames[slug] ?? ['eyebrow', 'title', 'accentTitle', 'description']
+  const introNames = introductionFieldNames[slug] ?? [
+    'eyebrow',
+    'title',
+    'accentTitle',
+    'description',
+  ]
   const introIndex = bodyFields.reduce(
     (lastIndex, field, index) => (introNames.includes(nameOf(field) ?? '') ? index : lastIndex),
     -1,
@@ -127,10 +135,7 @@ const normalizeContentFields = (
   return normalized
 }
 
-const normalizeThemeFields = (
-  slug: ProfiledPageBlockSlug,
-  fields: Field[],
-): Field[] => {
+const normalizeThemeFields = (slug: ProfiledPageBlockSlug, fields: Field[]): Field[] => {
   const alignmentName =
     slug === 'testimonialSpotlight' ? 'sectionContentAlignment' : 'contentAlignment'
   const appearance = fields.find((field) => nameOf(field) === 'appearance')
