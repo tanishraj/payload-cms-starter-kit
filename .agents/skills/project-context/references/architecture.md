@@ -120,6 +120,8 @@ Layout globals, the News & Events detail template, Pages, fixed Calendar month p
 CMS-backed remote images resolved through the shared media image-props helper append a validated
 Payload `updatedAt` version query. Replacing an object under the same public filename therefore gives
 the Next.js image optimizer a new cache key without disabling resizing or AVIF/WebP negotiation.
+Absolute same-origin Payload `/api/media/file/` URLs are normalized to root-relative paths so local
+image policy remains consistent when Payload expands relationships using the canonical server URL.
 Root-relative media paths and canonical URLs used outside that image-props boundary remain unchanged.
 
 Trusted CLI migrations that create Pages mark their writes to skip Next.js cache revalidation,
