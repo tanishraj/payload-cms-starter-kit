@@ -19,7 +19,7 @@ export type ContentActionFileBehavior = 'download' | 'view'
 export type ContentActionButtonVariant =
   'default' | 'outline' | 'primary' | 'secondary' | 'white' | 'whiteOutline'
 
-type CreateContentActionsFieldOptions = {
+export type CreateContentActionsFieldOptions = {
   actionLabel?: string
   allowedLinkTypes?: readonly ContentActionLinkType[]
   defaultVariant?: ContentActionButtonVariant

@@ -1,0 +1,74 @@
+export type BlockSectionProfile =
+  | 'contentOnly'
+  | 'hero'
+  | 'standard'
+  | 'structural'
+  | 'utility'
+
+/**
+ * Catalog-owned metadata describing which section contract each Page block uses.
+ *
+ * Keep this module free of block-config imports so it is safe to consume from
+ * schema tests, server renderers, and future Admin UI helpers.
+ */
+export const blockSectionProfiles = {
+  pageHeader: 'standard',
+  heroBanner: 'hero',
+  reusableSection: 'structural',
+  richText: 'contentOnly',
+  aboutSection: 'standard',
+  featureSpotlight: 'standard',
+  contentHighlights: 'standard',
+  academicProgrammes: 'standard',
+  newsEventsTabs: 'standard',
+  calendar: 'standard',
+  annualCalendar: 'standard',
+  departmentProfiles: 'standard',
+  galleryAlbumTabs: 'standard',
+  qaAccordion: 'standard',
+  statsStrip: 'contentOnly',
+  testimonialSpotlight: 'standard',
+  accreditationCards: 'standard',
+  bannerCta: 'standard',
+  contact24: 'standard',
+  downloadList: 'standard',
+  announcement: 'utility',
+  newsGrid: 'standard',
+  cta39: 'standard',
+  heroCarousel: 'hero',
+  galleryCoverflow: 'standard',
+  featureMatrix: 'standard',
+  editorialReasons: 'standard',
+  leadershipProfiles: 'standard',
+  newsEventsHighlights: 'standard',
+  profileCarousel: 'standard',
+  galleryShowcase: 'standard',
+  eventGallery: 'standard',
+  imageMosaic: 'standard',
+  studentExperience: 'standard',
+  ratingSpotlight: 'standard',
+  reviewFeed: 'standard',
+  reviewSubmission: 'standard',
+  contact33: 'standard',
+  teamShowcase: 'standard',
+  services21: 'standard',
+  videoEmbed: 'standard',
+  mediaCarousel: 'standard',
+  programMatrix: 'standard',
+  logoStrip: 'standard',
+  breadcrumb: 'utility',
+  timeline: 'standard',
+  iconCardShowcase: 'standard',
+  iconGrid: 'standard',
+  quoteBlock: 'contentOnly',
+  tabsContent: 'standard',
+  feeStructure: 'standard',
+  pgFeeStructure: 'standard',
+  bankDetails: 'standard',
+  numberedSteps: 'standard',
+  bentoGrid: 'standard',
+  testimonialGrid: 'standard',
+  awardsList: 'standard',
+} as const satisfies Record<string, BlockSectionProfile>
+
+export type ProfiledPageBlockSlug = keyof typeof blockSectionProfiles
