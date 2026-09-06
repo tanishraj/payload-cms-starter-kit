@@ -16,6 +16,26 @@ describe('media URL resolution', () => {
     )
   })
 
+  it('normalizes an absolute same-origin Payload media URL to a local path', () => {
+    expect(
+      getMediaAbsoluteUrl(mediaWithURL('http://localhost:3000/api/media/file/social-image.png')),
+    ).toBe('/api/media/file/social-image.png')
+  })
+
+  it('preserves query and fragment components when normalizing local Payload media', () => {
+    expect(
+      getMediaAbsoluteUrl(
+        mediaWithURL('http://localhost:3000/api/media/file/social-image.png?width=1200#preview'),
+      ),
+    ).toBe('/api/media/file/social-image.png?width=1200#preview')
+  })
+
+  it('does not normalize a same-origin URL outside the Payload media endpoint', () => {
+    expect(getMediaAbsoluteUrl(mediaWithURL('http://localhost:3000/static/logo.png'))).toBe(
+      'http://localhost:3000/static/logo.png',
+    )
+  })
+
   it('preserves absolute media URLs', () => {
     expect(getMediaAbsoluteUrl(mediaWithURL('https://cdn.example.com/social-image.png'))).toBe(
       'https://cdn.example.com/social-image.png',
@@ -27,9 +47,7 @@ describe('media URL resolution', () => {
       getMediaImageProps({
         media: mediaWithURL('https://cdn.example.com/laboratory.avif', UPDATED_AT),
       })?.src,
-    ).toBe(
-      'https://cdn.example.com/laboratory.avif?v=2026-09-01T12%3A34%3A56.789Z',
-    )
+    ).toBe('https://cdn.example.com/laboratory.avif?v=2026-09-01T12%3A34%3A56.789Z')
   })
 
   it('preserves existing image query parameters when adding the media version', () => {
