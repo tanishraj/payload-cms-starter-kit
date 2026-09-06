@@ -33,7 +33,10 @@ describe('MongoDB environment contract', () => {
     const envExample = readFileSync('.env.example', 'utf8')
 
     expect(envExample).toContain(
-      'MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit',
+      'MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true',
+    )
+    expect(envExample).toContain(
+      'TEST_MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit_test?replicaSet=rs0&directConnection=true',
     )
   })
 

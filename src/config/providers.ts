@@ -6,13 +6,13 @@ import type { Plugin } from 'payload'
 import { buildMediaPublicURL } from './mediaPublicURL'
 import type { RuntimeConfig } from './runtime'
 
-export const createDatabaseAdapter = (config: RuntimeConfig) => {
+export const createDatabaseAdapter = (config: Pick<RuntimeConfig, 'database'>) => {
   return mongooseAdapter({
     url: config.database.url,
   })
 }
 
-export const createEmailAdapter = (config: RuntimeConfig) => {
+export const createEmailAdapter = (config: Pick<RuntimeConfig, 'email'>) => {
   if (config.email.provider !== 'resend' || !config.email.apiKey || !config.email.fromAddress) {
     return undefined
   }
@@ -21,11 +21,11 @@ export const createEmailAdapter = (config: RuntimeConfig) => {
     apiKey: config.email.apiKey,
     defaultFromAddress: config.email.fromAddress,
     defaultFromName: config.email.fromName,
-    overrideRecipientAddress: process.env.RESEND_OVERRIDE_TO_EMAIL || undefined,
+    overrideRecipientAddress: config.email.overrideRecipientAddress || undefined,
   })
 }
 
-export const createStoragePlugins = (config: RuntimeConfig): Plugin[] => {
+export const createStoragePlugins = (config: Pick<RuntimeConfig, 'media'>): Plugin[] => {
   if (config.media.provider !== 's3') {
     return []
   }
@@ -33,7 +33,6 @@ export const createStoragePlugins = (config: RuntimeConfig): Plugin[] => {
   const publicURL = config.media.publicURL
   const storageOptions: Parameters<typeof s3Storage>[0] = {
     bucket: config.media.bucket,
-    clientUploads: config.media.clientUploads,
     collections: {
       media: publicURL
         ? {

@@ -70,11 +70,18 @@ The CMS looks for a submitted email using the normalized keys `submitterEmail`, 
 
 ## Spam Protection And Failure Handling
 
+- the submission endpoint accepts `application/json` (including parameters such as `charset=utf-8`) and rejects request bodies larger than 256 KiB
+- each submission may contain at most 100 value keys; email fields allow 320 characters, text fields allow 500, and textarea fields allow 10,000
+- campaign and source metadata allow 500 characters, landing-page metadata allows 2,048, and unrecognized metadata keys are discarded
 - the hidden honeypot key is `website`; suspected bots receive a neutral success response
 - the built-in limiter allows five attempts per IP and form slug per ten minutes
-- the limiter is in-memory and per application process, not a durable distributed rate limiter
+- the limiter is bounded and periodically pruned, but remains an in-memory, single-application-instance defense-in-depth control rather than a durable distributed rate limiter
+- client forwarding headers are used for limiter identity only on the documented Vercel deployment, where the platform owns those headers; the first normalized address is length-capped before it becomes a limiter key
+- every rate-limited response includes `Retry-After` so clients know when to try again
 - required, email, select-option, and checkbox-acceptance rules come from the Form schema
 - notification, confirmation, downstream-event, and review-promotion failures are logged without changing a successful visitor response after the submission is stored
+
+Production deployments should enforce coordinated limits at Vercel WAF or through a durable shared store. Review `/api/search`, `/api/forms/*/submit`, `/api/review-feed`, `/api/news-events-tabs`, `/api/calendar-events`, Payload login, and Payload password endpoints when defining that policy. The repository's in-memory form and search limiters do not coordinate across processes, regions, or instances.
 
 ## Best Practices
 

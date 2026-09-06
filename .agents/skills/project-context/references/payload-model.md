@@ -39,13 +39,13 @@ Nine globals are registered:
 - ReusableSections own shared block stacks. Direct recursive selection is excluded; renderers stop nesting after depth 10.
 - NavigationLinks provide reusable destinations and page-synchronized records. Headers and Footers provide versioned shell presets.
 - SystemPages pair one type with its matching block and are referenced from system modes.
-- Media owns governed uploads, alt requirements, usage detection, deletion guards, storage health, queue sync, and audit events. GalleryAlbums own ordered reusable image sets.
+- Media owns server-side public marketing-asset uploads, extension/MIME/signature format validation before Payload file generation or replacement cleanup, alt requirements, usage detection, deletion guards, storage health, queue sync, and audit events. Format validation is not malware scanning; private or arbitrary document intake requires a separate collection and private bucket path with external scanning and quarantine. GalleryAlbums own ordered reusable image sets.
 - Forms define general, lead, and review-intent inputs and notifications. FormSubmissions own immutable submitted data plus operational state, activity, assignment, and optional Review promotion.
 - WorkQueue stores deduplicated actionable conditions. OperationalAuditEvents stores selected immutable operational history. Both record their source feature for Site Manager row filtering. Users own authentication, Admin/Site Manager roles, and feature grants.
 
 ## Feature and Publication Governance
 
-The only roles are Admin and Site Manager. Admins implicitly hold every registered feature and may grant any subset of the 29 Admin destinations to Site Managers. A missing grant fails closed in the sidebar and at the Payload access layer. Relationship dependencies receive bounded read access without exposing the destination or permitting mutation.
+The only roles are Admin and Site Manager. Anonymous first-Admin creation requires both a literally empty Users collection, including trashed records, and the explicit runtime bootstrap policy; production defaults that policy off and additionally pins bootstrap to one normalized configured email. Payload's unique email index selects the atomic winner if same-address bootstrap requests race. Non-production ignores the email pin and remains flag-only. Admins implicitly hold every registered feature and may grant any subset of the 29 Admin destinations to Site Managers. A missing grant fails closed in the sidebar and at the Payload access layer. Relationship dependencies receive bounded read access without exposing the destination or permitting mutation.
 
 Governed content uses Payload's native `_status` as its only draft/publication state. Open or blocked approval/publish-issue queue items prevent publishing; in-progress items do not. Publishing stamps actor and time metadata. Public review submissions additionally remain draft and pending until an Admin or Reviews-granted Site Manager approves or rejects them.
 
@@ -65,5 +65,8 @@ Payload access layer. Submitted Reviews additionally require approved moderation
 Form/Media fields require an appropriate feature grant. Payload Local API calls bypass access
 by default. Use `overrideAccess: false` when acting for a user. Pass `req` into nested operations so
 they share transactions. Use request context flags when a hook writes data that could trigger itself.
+Page and Review cache-revalidation hooks honor `SKIP_CACHE_REVALIDATION_CONTEXT` only when it is
+explicitly `true`, allowing trusted request-external maintenance writes to avoid calling Next cache
+APIs without a request store; ordinary content writes continue to revalidate normally.
 Run `pnpm generate:types` after schema changes and keep
 [payload-types.ts](../../../../src/payload-types.ts) synchronized.

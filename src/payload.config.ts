@@ -25,7 +25,7 @@ import { WorkQueue } from './collections/WorkQueue'
 import { SystemPages } from './collections/SystemPages'
 import { createDatabaseAdapter, createEmailAdapter, createStoragePlugins } from './config/providers'
 import { assertSupportedStarterContract, getStarterContract } from './config/starterContract'
-import { getRuntimeConfig } from './config/runtime'
+import { runtimeConfig } from './config/runtime.server'
 import { payloadUploadConfig } from './config/uploadLimits'
 import { projectEditor } from './fields/bodyEditorConfig'
 import { PageSettings } from './globals/PageSettings'
@@ -43,11 +43,11 @@ import { withTrash } from './plugins/withTrash'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-const runtimeConfig = getRuntimeConfig()
 const starterContract = getStarterContract(runtimeConfig)
 assertSupportedStarterContract(starterContract)
 const email = createEmailAdapter(runtimeConfig)
 const storagePlugins = createStoragePlugins(runtimeConfig)
+const s3ClientUploadHandlerPath = '@payloadcms/storage-s3/client#S3ClientUploadHandler'
 
 if (runtimeConfig.deployment.isProduction && !email && runtimeConfig.email.provider === 'resend') {
   throw new Error('Missing production email configuration.')
@@ -56,6 +56,12 @@ if (runtimeConfig.deployment.isProduction && !email && runtimeConfig.email.provi
 export default buildConfig({
   admin: {
     user: Users.slug,
+    dependencies: {
+      [s3ClientUploadHandlerPath]: {
+        path: s3ClientUploadHandlerPath,
+        type: 'function',
+      },
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -108,9 +114,13 @@ export default buildConfig({
   editor: projectEditor,
   email,
   graphQL: {
-    disableIntrospectionInProduction: true,
-    disablePlaygroundInProduction: true,
+    disable: true,
   },
+  cors: [runtimeConfig.application.origin],
+  csrf: [runtimeConfig.application.origin],
+  // Existing Page previews request depth 8 and the page-path redirect hook requests depth 10.
+  maxDepth: 10,
+  serverURL: runtimeConfig.application.origin,
   secret: runtimeConfig.payload.secret,
   upload: payloadUploadConfig,
   typescript: {

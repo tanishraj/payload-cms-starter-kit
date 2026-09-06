@@ -2,11 +2,9 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { ImageResponse } from 'next/og'
 
+import { findPublicReviews } from '@/domains/reviews/publicReviewQueries'
 import { getOpenGraphMediaImage } from '@/lib/media'
-import {
-  createOpenGraphFallbackResponse,
-  loadOpenGraphRemoteImage,
-} from '@/lib/openGraphImages'
+import { createOpenGraphFallbackResponse, loadOpenGraphRemoteImage } from '@/lib/openGraphImages'
 
 export const alt = 'Review preview'
 export const contentType = 'image/png'
@@ -19,11 +17,10 @@ export default async function ReviewOgImage({ params }: Props) {
   const payload = await getPayload({ config: configPromise })
 
   const [result, siteSettings] = await Promise.all([
-    payload.find({
-      collection: 'reviews',
+    findPublicReviews(payload, {
       depth: 0,
       limit: 1,
-      where: { slug: { equals: slug }, _status: { equals: 'published' } },
+      where: { slug: { equals: slug } },
     }),
     payload.findGlobal({ slug: 'site-settings', depth: 1 }),
   ])

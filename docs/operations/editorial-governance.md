@@ -16,7 +16,7 @@ immediately. The last active Admin cannot be demoted, trashed, or permanently de
 ## Site Manager Features
 
 Each checkbox corresponds to one Payload Admin destination. A grant controls both navigation and
-server-side access through Admin, REST, GraphQL, preview, and user-scoped Local API calls.
+server-side access through Admin, REST, preview, and user-scoped Local API calls. GraphQL is disabled.
 
 | Admin group    | Feature               | Included Site Manager actions                                               |
 | -------------- | --------------------- | --------------------------------------------------------------------------- |
@@ -107,7 +107,7 @@ remain ungranted and are reported for Admin review.
 Run a read-only report only against an explicit target. For local Docker:
 
 ```bash
-pnpm report:permissions-migration -- --database-uri "mongodb://127.0.0.1:27017/payload-cms-starter-kit"
+pnpm report:permissions-migration -- --database-uri "mongodb://127.0.0.1:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true"
 ```
 
 Before any shared or production migration:

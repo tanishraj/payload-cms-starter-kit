@@ -19,7 +19,7 @@ test.describe('Frontend', () => {
   })
 
   test('can go on homepage', async () => {
-    await page.goto('http://localhost:3000')
+    await page.goto('/')
 
     await expect(page).toHaveTitle(/E2E Homepage/)
 

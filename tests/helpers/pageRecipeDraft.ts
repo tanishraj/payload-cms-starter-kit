@@ -1,11 +1,20 @@
-import { getPayload } from 'payload'
+import { getRequiredTestDatabaseURI } from './testDatabaseSafety'
 
-import config from '../../src/payload.config.js'
+async function getTestPayload() {
+  process.env.MONGODB_URI = getRequiredTestDatabaseURI()
+
+  const [{ getPayload }, { default: config }] = await Promise.all([
+    import('payload'),
+    import('../../src/payload.config.js'),
+  ])
+
+  return getPayload({ config })
+}
 
 export const recipeE2ETitle = 'E2E Landing Recipe'
 
 export async function cleanupPageRecipeDraft(): Promise<void> {
-  const payload = await getPayload({ config })
+  const payload = await getTestPayload()
 
   await payload.delete({
     collection: 'pages',

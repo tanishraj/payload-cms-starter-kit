@@ -2,7 +2,7 @@
 
 ## Runtime and Layers
 
-This is one editorial marketing application: Payload CMS 3.85.2 and Next.js 16 share the App Router process, with React 19, Tailwind CSS 4, MongoDB, and TypeScript. The main entry points are [Payload configuration](../../../../src/payload.config.ts) and the [App Router](../../../../src/app).
+This is one editorial marketing application: Payload CMS 3.88.0 and Next.js 16 share a Node.js 22.17.0 App Router process within the supported `>=22.13.0 <23` range, using pnpm 11.17.0, React 19, Tailwind CSS 4, MongoDB, and TypeScript. The main entry points are [Payload configuration](../../../../src/payload.config.ts) and the [App Router](../../../../src/app).
 
 The repository has eight practical layers:
 
@@ -10,12 +10,12 @@ The repository has eight practical layers:
 2. Payload content model and governance under collections, globals, fields, access, hooks, and plugins.
 3. CMS block schemas, renderers, previews, and thumbnails.
 4. Frontend UI and the semantic design system under components and styles.
-5. Domain services and runtime adapters under `src/lib` and `src/config`.
+5. Domain services and runtime adapters under `src/domains`, `src/lib`, and `src/config`.
 6. Vitest, Playwright, fixtures, and helpers under `tests`.
 7. Maintained architecture, operator, and runbook documentation.
 8. Package, Next.js, Docker, lint, and build tooling.
 
-React Server Components load public CMS data. Focused client components own interaction such as carousels, tabs, dialogs, consent, forms, and galleries. Payload Admin, REST, GraphQL, and the public frontend run in the same application.
+React Server Components load public CMS data. Focused client components own interaction such as carousels, tabs, dialogs, consent, forms, and galleries. Payload Admin, REST, and the public frontend run in the same application; GraphQL is disabled because the repository has no application consumer.
 
 ## Public and Administrative Delivery
 
@@ -41,7 +41,12 @@ React Server Components load public CMS data. Focused client components own inte
   published albums; authenticated routes load selected draft albums on the server and pass the same
   serializable snapshot to client-safe preview adapters. Gallery clients never query Payload.
 - Form submission, review-feed, News & Events Tabs pagination, Calendar month loading, redirects, and media reconciliation
-  have focused route handlers.
+  have focused route handlers. Public form JSON is media-type checked and byte-bounded before parsing,
+  and its schema-backed values and known metadata have explicit size limits. Form submission and
+  search share bounded, periodically pruned in-memory rate-limiter behavior with `Retry-After`;
+  this is single-instance defense in depth, while coordinated production enforcement belongs in
+  Vercel WAF or a durable shared store. Forwarded client addresses contribute to limiter identity
+  only on Vercel, where the deployment platform owns those headers.
 - Full-page Page creation uses a guided Admin setup with code-owned Blank and Landing recipes. The
   authenticated `POST /api/pages/create-from-recipe` collection endpoint accepts only a Page title
   and approved recipe ID, creates through Payload with `draft: true` and access enforcement, and
@@ -51,7 +56,7 @@ React Server Components load public CMS data. Focused client components own inte
   Action Queue counts query only destinations granted to the authenticated user with
   `overrideAccess: false`. Counts and quick actions for ungranted features are absent, and failed
   operational counts remain visibly unavailable instead of becoming zero.
-- `/admin`, Payload REST, GraphQL, and GraphQL Playground live under the Payload route group.
+- `/admin` and Payload REST live under the Payload route group. The generated GraphQL route files remain present, but Payload disables GraphQL and its Playground at configuration level.
 - Development-only block thumbnail previews live under their own route group.
 - The public frontend layout mounts one theme-aware Back to Top control outside the content shell.
   It appears after `64px` of scrolling, stays below consent and modal layers, and switches from
@@ -64,10 +69,33 @@ Exact current route paths live in [project-inventory.json](project-inventory.jso
 
 ## Providers and Runtime Contract
 
-[runtime.ts](../../../../src/config/runtime.ts) reads environment behavior, [starterContract.ts](../../../../src/config/starterContract.ts) rejects unsupported deployment combinations, and [providers.ts](../../../../src/config/providers.ts) constructs MongoDB, optional Resend email, and local/S3 storage. S3-compatible storage can supply a validated public HTTPS origin: Payload then generates encoded direct-media URLs and Next.js allows that exact remote image host, while authenticated uploads, deletes, and reconciliation continue through the private S3 endpoint. Direct-origin objects bypass Payload media access checks and are restricted to public-safe content.
+[runtime.server.ts](../../../../src/config/runtime.server.ts) is the server-only, read-once owner of secret-bearing environment state. [runtime.ts](../../../../src/config/runtime.ts) retains pure parsing and types for focused validation, while [publicOrigin.ts](../../../../src/config/publicOrigin.ts) exposes only the browser-safe canonical public origin. Server and browser-safe paths share [applicationOrigin.ts](../../../../src/config/applicationOrigin.ts) validation and normalization semantics. [starterContract.ts](../../../../src/config/starterContract.ts) rejects unsupported deployment combinations, and [providers.ts](../../../../src/config/providers.ts) constructs MongoDB, optional Resend email, and local/S3 storage only from typed runtime configuration. Payload uses the canonical origin for server URL, CORS, CSRF, live preview, and redirect-map loading; the request Host is never a proxy fetch target. The proxy uses the current request URL only to reject an exact absolute self-loop, including on an alias host. S3-compatible storage can supply a validated public HTTPS origin: Payload then generates encoded direct-media URLs and Next.js allows that exact remote image host, while authenticated uploads, deletes, and reconciliation continue through the private S3 endpoint. Uploads remain server-side so Media format policy runs before Payload file generation and replacement cleanup; runtime configuration rejects S3 browser uploads and the storage plugin never enables them. Direct-origin objects bypass Payload media access checks and are restricted to public-safe content.
 
 MongoDB is the supported database. Local Docker Compose pins MongoDB 8.0.29 and isolates its files in the version-specific
-`mongo_data_8_0` volume so Atlas dump and restore workflows do not cross MongoDB server versions. Local development may use local-disk media. Vercel production must use durable S3-compatible storage. Email is either disabled or delivered through Resend. Production requires a non-placeholder Payload secret of at least 32 characters and disables GraphQL introspection and Playground. Upload limits live in [uploadLimits.ts](../../../../src/config/uploadLimits.ts).
+`mongo_data_8_0` volume so Atlas dump and restore workflows do not cross MongoDB server versions. It
+initializes one `rs0` member advertising `mongo:27017`, reports healthy only as writable PRIMARY,
+publishes the normal developer endpoint only on loopback, and makes host clients use
+`directConnection=true`. The fixed Docker verifiers use only ephemeral loopback test bindings and
+current-run Compose, image, and BuildKit-builder resources. They share one atomic owner-token lock,
+pin Compose to absolute repository paths with an allowlisted environment, use an owner-only empty env
+fixture, and require matching ownership markers before cleanup. They prove a request-threaded Payload
+transaction and inspect the Node 22 standalone image for persisted build secrets. Local development
+may use local-disk media. Vercel production must use durable S3-compatible storage. Email is either disabled or delivered through Resend; a production recipient override requires an explicit allow flag. Production requires a canonical HTTPS origin, a non-placeholder Payload secret of at least 32 characters, and disables GraphQL completely. Anonymous first-Admin creation also requires the Users collection to be literally empty, including trashed records, and the environment-specific bootstrap flag to be enabled; production additionally pins the request to one normalized configured email, with Payload's unique email index selecting the atomic winner under a same-address race. Non-production ignores any configured first-Admin email and remains flag-only. Payload caps global relationship depth at 10 to preserve the existing Page preview depth-8 and redirect-hook depth-10 consumers. It uses session authentication with five-attempt/ten-minute lockout, two-hour tokens, token-free auth responses, and secure SameSite=Lax cookies in production. Upload limits live in [uploadLimits.ts](../../../../src/config/uploadLimits.ts).
+
+GitHub verification uses one read-only, bounded job with immutable setup-action revisions and fixed
+non-secret environment fixtures. After the frozen install and production dependency audit, its
+CI-only controller creates an owner-labeled MongoDB 8.0.29 container on loopback, configures the sole
+`rs0` member as `127.0.0.1:27017`, and waits for the exact version and writable-primary state. The
+controller accepts only a matching GitHub run identity and safe `_test` database URIs. The job
+installs bundled Chromium, regenerates Payload types and the Admin import map and rejects either
+drift, runs TypeScript, lint, the complete integration suite, exactly two critical Admin/Site
+Manager feature-governance and Review-moderation browser journeys, and the Node 22 Vercel production
+build. The job supplies fixed non-secret values; isolated browser configuration may load only the
+tracked non-secret `test.env` fixture, never ignored developer `.env` or `.env.atlas.local`, a
+production environment file, or a production secret. Its final step always verifies ownership
+before removing the exact container. Project-context maintenance stays local; the ownership-checked
+production-image verifier is a local/release portability and build-secret inspection gate rather
+than a GitHub job.
 
 ## Caching and Delivery Safety
 
@@ -105,13 +133,25 @@ so moving that Page beneath a parent does not leave consent UI pointing at its l
 ## Verification
 
 - Run focused Vitest files while iterating, then `pnpm test:int`.
-- Run `pnpm test:e2e` for affected Admin or browser journeys.
+- Run `pnpm audit:prod` as the sole exception-aware production dependency audit gate; raw pnpm
+  audit output is diagnostic and must not be used as an independent pass/fail result. The exception
+  schema, approval workflow, and narrow lock refresh procedure live in
+  [dependency-management.md](../../../../docs/operations/dependency-management.md).
+- Run `pnpm test:e2e` for affected Admin or browser journeys. Playwright loads its committed
+  isolated `test.env` with override enabled, accepts only an explicit loopback MongoDB database name
+  ending in `_test` or `-test`, replaces every runtime-sensitive child value and ambient Node
+  option with the fixed Payload/TypeScript import flags, and starts a fresh development server.
+  The focused runtime-import config proves that boundary in a real worker without a server or
+  database connection.
+- Run `pnpm test:e2e:governance` for the two critical feature-grant/revocation and submitted-Review
+  moderation journeys. GitHub CI runs exactly this browser file; the full E2E suite remains local.
 - Run `pnpm generate:types` after schema changes.
 - Run `pnpm generate:importmap` after custom Admin component changes.
 - Run `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` in proportion to risk.
 - Finish every implementation with `pnpm project-context:update` and `pnpm project-context:check`.
-- GitHub Actions runs project-context consistency, generated types, TypeScript, lint, integration
-  tests, and the production build on pull requests and protected branch pushes. Mongo-backed tests
-  use a single-node in-memory replica set so transaction behavior matches the supported adapter.
+- Project-context update/check remains a local repository-maintenance loop and does not run in
+  GitHub Actions. CI uses the exact one-job contract described above on pull requests and pushes to
+  `develop` or `main`. Memory-backed tests pin MongoDB 8.0.29 as a one-member replica so transaction
+  behavior matches the supported adapter.
 
 Use the maintained [feature inventory](../../../../docs/architecture/feature-inventory.md), [content model map](../../../../docs/architecture/content-model-map.md), [runtime/provider runbook](../../../../docs/operations/runtime-and-providers.md), and [developer workflows](../../../../docs/operations/developer-workflows.md) for deeper operational context.

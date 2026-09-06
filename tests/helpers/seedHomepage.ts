@@ -1,7 +1,16 @@
-import { getPayload } from 'payload'
-
-import config from '../../src/payload.config.js'
 import { getTestUserDocument } from './seedUser'
+import { getRequiredTestDatabaseURI } from './testDatabaseSafety'
+
+async function getTestPayload() {
+  process.env.MONGODB_URI = getRequiredTestDatabaseURI()
+
+  const [{ getPayload }, { default: config }] = await Promise.all([
+    import('payload'),
+    import('../../src/payload.config.js'),
+  ])
+
+  return getPayload({ config })
+}
 
 const homepageSlug = 'e2e-homepage'
 
@@ -51,7 +60,7 @@ const homepagePageData = {
 }
 
 export async function seedHomepage(): Promise<void> {
-  const payload = await getPayload({ config })
+  const payload = await getTestPayload()
   const user = await getTestUserDocument()
 
   await payload.delete({
@@ -83,7 +92,7 @@ export async function seedHomepage(): Promise<void> {
 }
 
 export async function cleanupHomepage(): Promise<void> {
-  const payload = await getPayload({ config })
+  const payload = await getTestPayload()
   const user = await getTestUserDocument()
 
   await payload.updateGlobal({

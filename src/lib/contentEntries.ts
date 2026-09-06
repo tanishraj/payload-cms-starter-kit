@@ -2,6 +2,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { cache } from 'react'
 
+import { findPublicReviews } from '@/domains/reviews/publicReviewQueries'
 import type { Metadata } from 'next'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { resolveCanonicalURL, resolveRobotsMode } from '@/lib/seo'
@@ -56,7 +57,8 @@ const toTaxonomyArchiveTerm = (value: unknown): TaxonomyArchiveTerm | null => {
 
   return {
     ...term,
-    canonicalURL: 'canonicalURL' in value && typeof value.canonicalURL === 'string' ? value.canonicalURL : null,
+    canonicalURL:
+      'canonicalURL' in value && typeof value.canonicalURL === 'string' ? value.canonicalURL : null,
     includeInSitemap:
       'includeInSitemap' in value && typeof value.includeInSitemap === 'string'
         ? value.includeInSitemap
@@ -67,10 +69,13 @@ const toTaxonomyArchiveTerm = (value: unknown): TaxonomyArchiveTerm | null => {
         : null,
     metaTitle: 'metaTitle' in value && typeof value.metaTitle === 'string' ? value.metaTitle : null,
     ogDescription:
-      'ogDescription' in value && typeof value.ogDescription === 'string' ? value.ogDescription : null,
+      'ogDescription' in value && typeof value.ogDescription === 'string'
+        ? value.ogDescription
+        : null,
     ogImage: 'ogImage' in value ? ((value.ogImage as Article['ogImage']) ?? null) : null,
     ogTitle: 'ogTitle' in value && typeof value.ogTitle === 'string' ? value.ogTitle : null,
-    robotsMode: 'robotsMode' in value && typeof value.robotsMode === 'string' ? value.robotsMode : null,
+    robotsMode:
+      'robotsMode' in value && typeof value.robotsMode === 'string' ? value.robotsMode : null,
   }
 }
 
@@ -89,15 +94,15 @@ const toManagedEntryMetadata = async ({
   const canonicalUrl = resolvedCanonical ? toAbsoluteSiteUrl(resolvedCanonical) : undefined
   const defaultImageUrl = getMediaAbsoluteUrl(seoSettings.defaultImage)
   const entryImageUrl = getMediaAbsoluteUrl(entry.ogImage) ?? defaultImageUrl
-  const resolvedTitle = entry.metaTitle || entry.fallbackTitle || seoSettings.defaultTitle || undefined
+  const resolvedTitle =
+    entry.metaTitle || entry.fallbackTitle || seoSettings.defaultTitle || undefined
   const resolvedDescription =
     entry.metaDescription ||
     entry.fallbackDescription ||
     seoSettings.defaultDescription ||
     undefined
   const openGraphTitle = entry.ogTitle || resolvedTitle
-  const openGraphDescription =
-    entry.ogDescription || resolvedDescription
+  const openGraphDescription = entry.ogDescription || resolvedDescription
 
   return {
     title: resolvedTitle,
@@ -302,7 +307,9 @@ const toTaxonomyArchiveMetadata = async ({
     robots: resolveRobotsMode({
       inheritedRobots: seoSettings.robots,
       robotsMode:
-        typeof term?.robotsMode === 'string' ? (term.robotsMode as 'default' | 'index' | 'noindex') : null,
+        typeof term?.robotsMode === 'string'
+          ? (term.robotsMode as 'default' | 'index' | 'noindex')
+          : null,
     }),
     twitter: {
       card: archiveImageUrl ? 'summary_large_image' : 'summary',
@@ -337,13 +344,7 @@ const getPublishedReviews = cache(async (): Promise<Review[]> => {
     config: configPromise,
   })
 
-  const result = await payload.find({
-    collection: 'reviews',
-    where: {
-      _status: {
-        equals: 'published',
-      },
-    },
+  const result = await findPublicReviews(payload, {
     depth: 2,
     limit: 100,
   })
@@ -371,14 +372,19 @@ export const getArticleCategoryArchiveBySlug = cache(
     articles: Article[]
     category: TaxonomyArchiveTerm | null
   }> => {
-    const [articles, category] = await Promise.all([getPublishedArticles(), getCategoryBySlug(slug)])
+    const [articles, category] = await Promise.all([
+      getPublishedArticles(),
+      getCategoryBySlug(slug),
+    ])
     const categoryID = category?.id
 
     return {
       articles:
         categoryID == null
           ? []
-          : articles.filter((article) => getTaxonomyTerm(article.primaryCategory)?.id === categoryID),
+          : articles.filter(
+              (article) => getTaxonomyTerm(article.primaryCategory)?.id === categoryID,
+            ),
       category,
     }
   },
@@ -426,53 +432,41 @@ export async function getArticleTagArchiveMetadataBySlug(slug: string): Promise<
   })
 }
 
-export const getRelatedArticles = cache(
-  async (article: Article, limit = 3): Promise<Article[]> => {
-    const publishedArticles = await getPublishedArticles()
-    const primaryCategoryID = getTaxonomyTerm(article.primaryCategory)?.id
-    const tagIDs = new Set(getTaxonomyRelationshipIDs(article.tags))
+export const getRelatedArticles = cache(async (article: Article, limit = 3): Promise<Article[]> => {
+  const publishedArticles = await getPublishedArticles()
+  const primaryCategoryID = getTaxonomyTerm(article.primaryCategory)?.id
+  const tagIDs = new Set(getTaxonomyRelationshipIDs(article.tags))
 
-    const samePrimaryCategory = publishedArticles.filter(
-      (candidate) =>
-        candidate.id !== article.id &&
-        primaryCategoryID != null &&
-        getTaxonomyTerm(candidate.primaryCategory)?.id === primaryCategoryID,
+  const samePrimaryCategory = publishedArticles.filter(
+    (candidate) =>
+      candidate.id !== article.id &&
+      primaryCategoryID != null &&
+      getTaxonomyTerm(candidate.primaryCategory)?.id === primaryCategoryID,
+  )
+
+  const sharedTags = publishedArticles.filter((candidate) => {
+    if (candidate.id === article.id || !tagIDs.size) {
+      return false
+    }
+
+    return getTaxonomyRelationshipIDs(candidate.tags).some((candidateTagID) =>
+      tagIDs.has(candidateTagID),
     )
+  })
 
-    const sharedTags = publishedArticles.filter((candidate) => {
-      if (candidate.id === article.id || !tagIDs.size) {
-        return false
-      }
-
-      return getTaxonomyRelationshipIDs(candidate.tags).some((candidateTagID) =>
-        tagIDs.has(candidateTagID),
-      )
-    })
-
-    return toUniqueEntries([...samePrimaryCategory, ...sharedTags]).slice(0, limit)
-  },
-)
+  return toUniqueEntries([...samePrimaryCategory, ...sharedTags]).slice(0, limit)
+})
 
 export const getReviewBySlug = cache(async (slug: string): Promise<Review | null> => {
   const payload = await getPayload({
     config: configPromise,
   })
 
-  const result = await payload.find({
-    collection: 'reviews',
+  const result = await findPublicReviews(payload, {
     where: {
-      and: [
-        {
-          slug: {
-            equals: slug,
-          },
-        },
-        {
-          _status: {
-            equals: 'published',
-          },
-        },
-      ],
+      slug: {
+        equals: slug,
+      },
     },
     depth: 2,
     limit: 1,
@@ -529,29 +523,27 @@ export async function getReviewCategoryArchiveMetadataBySlug(slug: string): Prom
   })
 }
 
-export const getRelatedReviews = cache(
-  async (review: Review, limit = 3): Promise<Review[]> => {
-    const publishedReviews = await getPublishedReviews()
-    const primaryCategoryID = getTaxonomyTerm(review.primaryCategory)?.id
-    const tagIDs = new Set(getTaxonomyRelationshipIDs(review.tags))
+export const getRelatedReviews = cache(async (review: Review, limit = 3): Promise<Review[]> => {
+  const publishedReviews = await getPublishedReviews()
+  const primaryCategoryID = getTaxonomyTerm(review.primaryCategory)?.id
+  const tagIDs = new Set(getTaxonomyRelationshipIDs(review.tags))
 
-    const samePrimaryCategory = publishedReviews.filter(
-      (candidate) =>
-        candidate.id !== review.id &&
-        primaryCategoryID != null &&
-        getTaxonomyTerm(candidate.primaryCategory)?.id === primaryCategoryID,
+  const samePrimaryCategory = publishedReviews.filter(
+    (candidate) =>
+      candidate.id !== review.id &&
+      primaryCategoryID != null &&
+      getTaxonomyTerm(candidate.primaryCategory)?.id === primaryCategoryID,
+  )
+
+  const sharedTags = publishedReviews.filter((candidate) => {
+    if (candidate.id === review.id || !tagIDs.size) {
+      return false
+    }
+
+    return getTaxonomyRelationshipIDs(candidate.tags).some((candidateTagID) =>
+      tagIDs.has(candidateTagID),
     )
+  })
 
-    const sharedTags = publishedReviews.filter((candidate) => {
-      if (candidate.id === review.id || !tagIDs.size) {
-        return false
-      }
-
-      return getTaxonomyRelationshipIDs(candidate.tags).some((candidateTagID) =>
-        tagIDs.has(candidateTagID),
-      )
-    })
-
-    return toUniqueEntries([...samePrimaryCategory, ...sharedTags]).slice(0, limit)
-  },
-)
+  return toUniqueEntries([...samePrimaryCategory, ...sharedTags]).slice(0, limit)
+})

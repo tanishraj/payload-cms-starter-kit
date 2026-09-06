@@ -7,6 +7,7 @@ import {
   requireFeature,
 } from '@/access/featureAccess'
 import { buildSEOFields } from '@/fields/buildSEOFields'
+import { runtimeConfig } from '@/config/runtime.server'
 import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { projectSlugField } from '@/fields/projectSlugField'
 import { enforcePublicationPolicy } from '@/hooks/enforcePublicationPolicy'
@@ -18,6 +19,7 @@ import {
   revalidateDeletedArticleCache,
 } from '@/hooks/revalidateCmsContent'
 import { projectEditor } from '@/fields/bodyEditorConfig'
+import { buildLivePreviewURL } from '@/lib/siteUrl'
 
 const previewBreakpoints = [
   {
@@ -60,9 +62,7 @@ export const Articles: CollectionConfig = {
           return null
         }
 
-        const appURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
-
-        return `${appURL}/articles/${data.slug}?preview=true`
+        return buildLivePreviewURL(`/articles/${data.slug}?preview=true`, runtimeConfig)
       },
     },
   },

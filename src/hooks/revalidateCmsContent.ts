@@ -71,7 +71,13 @@ export const revalidateArticlesCache: CollectionAfterChangeHook = ({ doc, previo
 /**
  * Revalidates the reviews cache when a review changes.
  */
-export const revalidateReviewsCache: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
+export const revalidateReviewsCache: CollectionAfterChangeHook = ({
+  context,
+  doc,
+  previousDoc,
+}) => {
+  if (context?.[SKIP_CACHE_REVALIDATION_CONTEXT] === true) return doc
+
   if (isOrWasPublished(doc, previousDoc)) {
     revalidateTags(CMS_CACHE_TAGS.reviews, CMS_CACHE_TAGS.sitemap)
   }
@@ -172,7 +178,9 @@ export const revalidateDeletedArticleCache: CollectionAfterDeleteHook = ({ doc }
   return doc
 }
 
-export const revalidateDeletedReviewCache: CollectionAfterDeleteHook = ({ doc }) => {
+export const revalidateDeletedReviewCache: CollectionAfterDeleteHook = ({ context, doc }) => {
+  if (context?.[SKIP_CACHE_REVALIDATION_CONTEXT] === true) return doc
+
   if (doc._status === 'published') {
     revalidateTags(CMS_CACHE_TAGS.reviews, CMS_CACHE_TAGS.sitemap)
   }

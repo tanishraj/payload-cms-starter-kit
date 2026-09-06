@@ -304,5 +304,12 @@ describe('sitemap route', () => {
       'page-settings',
       'seo-settings',
     ])
+    expect(payloadMocks.find).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'reviews',
+        draft: false,
+        overrideAccess: false,
+      }),
+    )
   })
 })

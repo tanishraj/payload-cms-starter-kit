@@ -4,7 +4,7 @@ This is the maintained technical map of the starter. It records what is register
 
 ## Runtime Architecture
 
-- Payload CMS 3.85.2 and Next.js 16 share one App Router application.
+- Payload CMS 3.88.0 and Next.js 16 share one App Router application.
 - React Server Components load public CMS data; focused client components provide carousels, dialogs, tabs, consent, forms, and gallery interaction.
 - The public shell uses tagged CMS caches and does not read request cookies or authenticate a Payload user. A private no-store `/api/frontend-session` lookup mounts the editor toolbar after hydration when a CMS session exists.
 - Analytics settings cross the cached shell as primitive props; a client consent boundary mounts GTM or standalone GA4 plus Speed Insights only after consent.
@@ -12,7 +12,7 @@ This is the maintained technical map of the starter. It records what is register
 - Uploads use local disk or an S3-compatible provider. Production on Vercel rejects local-disk media at startup.
 - Public fonts use `next/font`-hosted Inter, Playfair Display, and IBM Plex Mono assets rather than runtime Google stylesheet imports.
 - Email is disabled or delivered through Resend.
-- Payload REST, GraphQL, admin, generated types, and generated import-map support are enabled.
+- Payload REST, Admin, generated types, and generated import-map support are enabled. GraphQL is disabled because the repository has no consumer.
 - The local plugin `withTrash()` enables Payload Trash on every collection.
 
 ## Payload Collections
@@ -61,11 +61,14 @@ Globals with versions retain history. Relevant changes invalidate cached fronten
 
 ## Roles, Features, And Publication Governance
 
-- The only roles are Admin and Site Manager. The first user is promoted to Admin, and the last active Admin cannot be demoted or deleted.
+- The only roles are Admin and Site Manager. Anonymous first-user creation requires a literally empty Users collection, including trashed records, and the explicit bootstrap policy. Production also pins bootstrap to one normalized configured email, whose unique index closes concurrent same-address creation. An accepted first user is promoted to Admin, and the last active Admin cannot be demoted or deleted.
 - Admins implicitly hold every feature and may create additional Admins or Site Managers. New Site Managers receive no features until an Admin grants them.
 - The registry exposes 29 features corresponding to Admin destinations. Each grant controls sidebar visibility and server access; missing grants fail closed.
 - Pages, Articles, News & Events, Reviews, and System Pages use Payload's native `_status` as their only draft/publication state. Publishing stamps user/time metadata.
 - Review submissions remain draft and pending until an Admin or Reviews-granted Site Manager approves or rejects them. Only approved submitted Reviews may be public.
+- Anonymous Review loaders use one domain boundary that always disables drafts and Payload Local API
+  access override. The collection access rule admits published staff Reviews and only approved,
+  published submitted Reviews; see [ADR 0001](../adr/0001-public-payload-read-boundary.md).
 - Action Queue and Audit Log access is intersected with the user's source-feature grants; records from ungranted or unmapped features remain hidden.
 - Open or blocked approval/publish-issue Action Queue items prevent publishing; `in_progress` items do not.
 - Queue hooks create, reopen, deduplicate, and auto-resolve work from form, header/footer, link, redirect, review, media, and publication conditions.
@@ -186,27 +189,32 @@ Maintenance and coming-soon overrides are applied to the homepage and catch-all 
 
 ## APIs And Middleware
 
-| Surface                                        | Contract                                                                                                                     |
-| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `/admin`                                       | Payload admin UI with dashboard and session bar integration                                                                  |
-| `GET /api/frontend-session`                    | Private no-store email/role projection used by the deferred public editor toolbar                                            |
-| `/api/[...slug]`                               | Payload REST API                                                                                                             |
-| `/api/graphql` and `/api/graphql-playground`   | Payload GraphQL API and playground                                                                                           |
-| `POST /api/forms/[slug]/submit`                | Published-form validation, honeypot, best-effort in-memory throttling, storage, email, events, and optional review promotion |
-| `GET /api/search`                              | Debounced dialog search; six results/type; 20 requests/IP/10 seconds in memory                                               |
-| `GET /api/review-feed`                         | Validated paginated published Review data for load-more behavior                                                             |
-| `GET /api/calendar-events`                     | Validated published or authenticated-draft Calendar month projection for one to five Event classifications                   |
-| `GET /api/redirects`                           | Cached enabled redirect map consumed by the request proxy                                                                    |
-| `POST /api/operations/media/reconcile-storage` | Token-protected local/S3 media health reconciliation                                                                         |
-| `/my-route`                                    | Public example custom route returning a static JSON message; replace or remove before client handoff                         |
+| Surface                                        | Contract                                                                                                                         |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `/admin`                                       | Payload admin UI with dashboard and session bar integration                                                                      |
+| `GET /api/frontend-session`                    | Private no-store email/role projection used by the deferred public editor toolbar                                                |
+| `/api/[...slug]`                               | Payload REST API                                                                                                                 |
+| `/api/graphql` and `/api/graphql-playground`   | Generated route files remain, but Payload disables GraphQL and the Playground                                                    |
+| `POST /api/forms/[slug]/submit`                | Bounded JSON and field validation, honeypot, best-effort local throttling, storage, email, events, and optional Review promotion |
+| `GET /api/search`                              | Debounced dialog search; six results/type; best-effort local limit of 20 requests/IP/10 seconds                                  |
+| `GET /api/review-feed`                         | Validated paginated published Review data for load-more behavior                                                                 |
+| `GET /api/calendar-events`                     | Validated published or authenticated-draft Calendar month projection for one to five Event classifications                       |
+| `GET /api/redirects`                           | Cached enabled redirect map consumed by the request proxy                                                                        |
+| `POST /api/operations/media/reconcile-storage` | Token-protected local/S3 media health reconciliation                                                                             |
+| `/my-route`                                    | Public example custom route returning a static JSON message; replace or remove before client handoff                             |
 
-The redirect proxy excludes Next.js internals, APIs, Admin, and common static/metadata routes. It keeps an in-process map per origin for 60 seconds and safely falls back to its previous map on API failure.
+The redirect proxy excludes Next.js internals, APIs, Admin, and common static/metadata routes. It loads the map only from the validated canonical application origin, keeps it in process for 60 seconds, rejects unsupported destination schemes and self-loops, and safely falls back to its previous map on API failure.
 
 ## Forms, Notifications, And Review Promotion
 
 - Public submission only loads published Forms.
+- Public submissions require JSON media type, permit JSON Content-Type parameters, and cap the UTF-8 request body at 256 KiB before parsing.
+- Submission values must be an object with at most 100 own keys. Email, text, and textarea values are limited to 320, 500, and 10,000 characters respectively; public errors use the configured field label.
+- Campaign and source metadata are limited to 500 characters, landing-page metadata to 2,048, and unknown metadata keys are discarded.
 - The hidden honeypot key is `website`; suspected bots receive a neutral success response.
-- The built-in limiter allows five attempts per IP and form slug per ten minutes. It is per process, in memory, and is not a durable distributed rate limiter.
+- The shared bounded in-memory limiter allows five attempts per IP and form slug per ten minutes and 20 search requests per IP per ten seconds. It prunes periodically and returns `Retry-After`, but operates only within one application instance and is defense in depth rather than coordinated distributed enforcement.
+- Forwarded client-address headers are trusted only in the documented Vercel deployment. The first address is normalized and length-capped before use as a limiter key.
+- Production rate-limit policy should cover `/api/search`, `/api/forms/*/submit`, `/api/review-feed`, `/api/news-events-tabs`, `/api/calendar-events`, Payload login, and Payload password endpoints through Vercel WAF or a durable shared store.
 - Required, email, select-option, and checkbox-acceptance validation derive from the Form schema.
 - Source, campaign, and landing-page metadata are captured when supplied.
 - General/lead Forms can notify internal recipients and optionally send a submitter confirmation. Contact email lookup prefers `submitterEmail`, then `reviewerEmail`, then `email`.
@@ -224,6 +232,11 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 
 ## Media Governance
 
+- Media is a public-marketing-asset trust class. Server-side create and replacement uploads accept
+  only AVIF, GIF, JPEG, PNG, WebP, and PDF, and validate that extension, declared MIME type, and
+  detected signature agree before Payload file handling. This is format validation, not malware
+  scanning; private or arbitrary documents need a separate private path with external scanning and
+  quarantine. See [ADR 0003](../adr/0003-public-media-trust-boundary.md).
 - Images require alt text. Logo, Hero, and SEO asset types require image MIME types.
 - Media detail views calculate references from governed collections and globals. Referenced assets cannot be deleted.
 - Storage status is `unchecked`, `healthy`, `missing`, `check_failed`, or `local_only`.
@@ -243,13 +256,40 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 
 ## Developer And Operational Tooling
 
+- The supported toolchain is Node.js `22.17.0` within `>=22.13.0 <23` and pnpm `11.17.0`.
+  The Next.js compatibility group (`next`, `@next/third-parties`, and `eslint-config-next`) is exact
+  `16.3.4`; the complete direct Payload family is exact `3.88.0`; direct Sharp and PostCSS are exact
+  `0.35.4` and `8.5.26` respectively. Payload CLI and generator scripts keep the `react-server`
+  condition, and generated Payload types and the Admin import map are checked for drift.
+- Playwright and every mutating E2E helper accept only a dedicated loopback MongoDB database named
+  with a `_test` or `-test` suffix; they never inherit the application's general database URI. See
+  [ADR 0002](../adr/0002-test-database-isolation.md).
 - `pnpm dev`, `devsafe`, `build`, and `start` run the Next.js application.
 - Payload commands generate types/import maps or expose the Payload CLI.
 - `pnpm generate:block-thumbnails` captures admin block-picker previews.
 - `pnpm export:db` uses `mongodump` to create a compressed archive under `backups/`.
 - `pnpm migrate:offices` migrates legacy office data.
-- Vitest covers schema, hooks, helpers, route behavior, rendering, providers, and documentation vocabulary; Playwright covers core Admin and frontend journeys.
-- GitHub Actions verifies project context, generated Payload types, TypeScript, lint, integration
-  tests, and the production build. Mongo-backed tests use a single-node replica set. The supplied
-  Dockerfile builds a non-root Next.js standalone production image; production containers require
-  durable MongoDB and S3-compatible media storage.
+- `pnpm audit:prod` is the exception-aware production dependency gate. It blocks unexcepted high or
+  critical findings; raw `pnpm audit --prod --json` is advisory evidence only. The maintained
+  exception ledger is empty.
+- Vitest covers schema, hooks, helpers, route behavior, rendering, providers, and documentation vocabulary; the full local Playwright command covers core Admin and frontend journeys.
+- GitHub Actions has one mandatory, bounded `verify` job with read-only checkout and immutable setup
+  actions. It performs a frozen install, the sole exception-aware production audit gate, bundled
+  Chromium setup, both Payload generators and a combined drift check, TypeScript, lint, the complete
+  integration suite, exactly two critical Admin/Site Manager governance journeys, and the Node 22
+  Vercel production build.
+- CI creates an owner-labeled MongoDB `8.0.29` container, configures its only `rs0` member on
+  loopback, requires the exact version and writable PRIMARY state, and removes only that current-run
+  container in the final unconditional step. All mutation targets are explicit loopback `_test`
+  databases. The job uses fixed non-secret environment values; isolated browser configuration may
+  load only tracked non-secret `test.env`, never ignored developer `.env` or `.env.atlas.local`, a
+  production environment file, or a production secret. CI accesses no live service. Project-context
+  update/check remains a local repository-maintenance loop.
+- Local Compose pins MongoDB `8.0.29`, initializes a writable one-member `rs0`, and publishes its
+  normal developer port on loopback only. The repository Docker verifiers use isolated `_test`
+  databases and ownership-checked temporary resources; image verification scans runner environment
+  and filesystem layers for persisted build secrets before bounded cleanup.
+- `pnpm verify:docker-image` is a local/release portability gate, not a GitHub Actions job, because
+  Vercel is the supported production delivery path.
+- The Dockerfile builds a non-root Next.js standalone production image; production containers
+  require durable MongoDB and S3-compatible media storage.

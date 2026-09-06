@@ -1,4 +1,6 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+
+const ORIGINAL_ENV = { ...process.env }
 
 const adapterMocks = vi.hoisted(() => ({
   mongooseAdapter: vi.fn((config) => ({ kind: 'mongo', config })),
@@ -19,28 +21,37 @@ vi.mock('@payloadcms/storage-s3', () => ({
 }))
 
 describe('provider selection', () => {
+  afterEach(() => {
+    process.env = { ...ORIGINAL_ENV }
+  })
+
+  it('uses only the typed recipient override supplied by runtime config', async () => {
+    process.env.RESEND_OVERRIDE_TO_EMAIL = 'ambient-process-value@example.test'
+    const { createEmailAdapter } = await import('@/config/providers')
+
+    createEmailAdapter({
+      email: {
+        apiKey: 'resend-test-key',
+        fromAddress: 'hello@example.test',
+        fromName: 'Website',
+        overrideRecipientAddress: 'configured-override@example.test',
+        provider: 'resend',
+      },
+    })
+
+    expect(adapterMocks.resendAdapter).toHaveBeenCalledWith(
+      expect.objectContaining({
+        overrideRecipientAddress: 'configured-override@example.test',
+      }),
+    )
+  })
+
   it('creates a mongodb adapter for local runtime config', async () => {
     const { createDatabaseAdapter } = await import('@/config/providers')
 
     const adapter = createDatabaseAdapter({
       database: {
         url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
-      },
-      deployment: {
-        isProduction: false,
-        isVercel: false,
-      },
-      email: {
-        apiKey: null,
-        fromAddress: null,
-        fromName: 'Website',
-        provider: 'none',
-      },
-      media: {
-        provider: 'localDisk',
-      },
-      payload: {
-        secret: 'test-secret',
       },
     })
 
@@ -50,23 +61,10 @@ describe('provider selection', () => {
     expect(adapter).toMatchObject({ kind: 'mongo' })
   })
 
-  it('creates an s3 storage plugin for the media collection', async () => {
+  it('cannot enable direct client uploads in the s3 storage plugin', async () => {
     const { createStoragePlugins } = await import('@/config/providers')
 
     const plugins = createStoragePlugins({
-      database: {
-        url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
-      },
-      deployment: {
-        isProduction: true,
-        isVercel: true,
-      },
-      email: {
-        apiKey: null,
-        fromAddress: null,
-        fromName: 'Website',
-        provider: 'none',
-      },
       media: {
         provider: 's3',
         acl: 'public-read',
@@ -79,15 +77,11 @@ describe('provider selection', () => {
         region: 'ap-southeast-1',
         secretAccessKey: 'secret-key',
       },
-      payload: {
-        secret: 'test-secret',
-      },
-    })
+    } as never)
 
     expect(adapterMocks.s3Storage).toHaveBeenCalledWith({
       acl: 'public-read',
       bucket: 'payload-media',
-      clientUploads: true,
       collections: {
         media: true,
       },
@@ -101,6 +95,7 @@ describe('provider selection', () => {
         region: 'ap-southeast-1',
       },
     })
+    expect(adapterMocks.s3Storage.mock.calls.at(-1)?.[0]).not.toHaveProperty('clientUploads')
     expect(plugins).toHaveLength(1)
     expect(plugins[0]).toMatchObject({ kind: 's3-plugin' })
   })
@@ -109,33 +104,16 @@ describe('provider selection', () => {
     const { createStoragePlugins } = await import('@/config/providers')
 
     const plugins = createStoragePlugins({
-      database: {
-        url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
-      },
-      deployment: {
-        isProduction: true,
-        isVercel: true,
-      },
-      email: {
-        apiKey: null,
-        fromAddress: null,
-        fromName: 'Website',
-        provider: 'none',
-      },
       media: {
         provider: 's3',
         acl: null,
         accessKeyId: 'r2-access-key',
         bucket: 'snmih-media',
-        clientUploads: false,
         endpoint: 'https://account-id.r2.cloudflarestorage.com',
         forcePathStyle: true,
         publicURL: 'https://assets.snmih.tanish.im',
         region: 'auto',
         secretAccessKey: 'r2-secret-key',
-      },
-      payload: {
-        secret: 'test-secret',
       },
     })
 
@@ -145,7 +123,6 @@ describe('provider selection', () => {
     expect(storageOptions).not.toHaveProperty('acl')
     expect(storageOptions).toMatchObject({
       bucket: 'snmih-media',
-      clientUploads: false,
       config: {
         credentials: {
           accessKeyId: 'r2-access-key',

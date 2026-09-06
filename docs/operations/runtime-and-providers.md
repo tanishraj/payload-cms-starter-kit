@@ -2,54 +2,156 @@
 
 ## Supported Contract
 
-| Concern  | Supported values  | Notes                                                |
-| -------- | ----------------- | ---------------------------------------------------- |
-| Database | MongoDB           | URL must begin with `mongodb://` or `mongodb+srv://` |
-| Email    | `none`, `resend`  | Resend requires API key and from address             |
-| Media    | `localDisk`, `s3` | Vercel production rejects local disk                 |
+| Concern  | Supported values  | Notes                                                    |
+| -------- | ----------------- | -------------------------------------------------------- |
+| Node.js  | `22.17.0`         | Supported engine range is `>=22.13.0 <23`; CI matches it |
+| pnpm     | `11.17.0`         | Corepack uses the exact package-manager pin              |
+| Database | MongoDB           | URL must begin with `mongodb://` or `mongodb+srv://`     |
+| Email    | `none`, `resend`  | Resend requires API key and from address                 |
+| Media    | `localDisk`, `s3` | Vercel production rejects local disk                     |
 
-The application validates this contract while loading `src/payload.config.ts` and fails fast on missing or unsupported configuration.
+Payload startup validates the runtime and provider configuration while loading
+`src/payload.config.ts` and fails fast on missing or unsupported environment values. The Node and
+pnpm toolchain contract is declared by `package.json` and `.nvmrc`, then selected explicitly by
+Docker and CI.
+
+Payload's REST API and Admin remain enabled. GraphQL is disabled because a fresh repository scan found
+no application query or mutation consumer. That evidence covers this repository only; confirm unknown
+external consumers before changing an already deployed application's API contract.
 
 ## Environment Variables
 
-| Variable                   | Required           | Purpose                                                                                     |
-| -------------------------- | ------------------ | ------------------------------------------------------------------------------------------- |
-| `MONGODB_URI`              | yes                | MongoDB connection string                                                                   |
-| `PAYLOAD_SECRET`           | yes                | Unique authentication/encryption secret; production requires 32+ non-placeholder characters |
-| `NEXT_PUBLIC_SERVER_URL`   | production/preview | Absolute site URL used by metadata and live-preview links                                   |
-| `EMAIL_PROVIDER`           | no                 | `none` by default, or `resend`                                                              |
-| `RESEND_API_KEY`           | with Resend        | Resend API key                                                                              |
-| `RESEND_FROM_EMAIL`        | with Resend        | Default sender address                                                                      |
-| `RESEND_FROM_NAME`         | no                 | Sender label; defaults to `Website`                                                         |
-| `RESEND_OVERRIDE_TO_EMAIL` | no                 | Redirect every recipient in staging/QA                                                      |
-| `MEDIA_PROVIDER`           | no                 | `localDisk` by default, or `s3`                                                             |
-| `S3_BUCKET`                | with S3            | Object-storage bucket                                                                       |
-| `S3_ENDPOINT`              | with S3            | S3-compatible HTTPS endpoint                                                                |
-| `S3_REGION`                | with S3            | Storage region                                                                              |
-| `S3_ACCESS_KEY_ID`         | with S3            | Storage access key                                                                          |
-| `S3_SECRET_ACCESS_KEY`     | with S3            | Storage secret                                                                              |
-| `S3_PUBLIC_URL`            | no                 | HTTPS origin for direct public/CDN delivery                                                 |
-| `S3_ACL`                   | no                 | `none` default, `public-read`, or `private`                                                 |
-| `S3_FORCE_PATH_STYLE`      | no                 | Boolean, defaults to `true`                                                                 |
-| `S3_CLIENT_UPLOADS`        | no                 | Boolean, defaults to `false`; requires bucket CORS for browser PUT                          |
-| `MEDIA_RECONCILE_TOKEN`    | for reconciliation | Secret accepted as Bearer or `x-media-reconcile-token`                                      |
-| `SHADCNBLOCKS_API_KEY`     | optional tooling   | Used only by external Shadcn Blocks tooling, not the CMS runtime                            |
+| Variable                          | Required           | Purpose                                                                                       |
+| --------------------------------- | ------------------ | --------------------------------------------------------------------------------------------- |
+| `MONGODB_URI`                     | yes                | MongoDB connection string                                                                     |
+| `PAYLOAD_SECRET`                  | yes                | Unique authentication/encryption secret; production requires 32+ non-placeholder characters   |
+| `NEXT_PUBLIC_SERVER_URL`          | production         | Canonical HTTPS application origin; local development defaults to `http://localhost:3000`     |
+| `ALLOW_FIRST_ADMIN_CREATION`      | no                 | Strict boolean; defaults off in production and on outside production                          |
+| `FIRST_ADMIN_EMAIL`               | prod. bootstrap    | Normalized email permitted for the one-time anonymous production bootstrap                    |
+| `EMAIL_PROVIDER`                  | no                 | `none` by default, or `resend`                                                                |
+| `RESEND_API_KEY`                  | with Resend        | Resend API key                                                                                |
+| `RESEND_FROM_EMAIL`               | with Resend        | Default sender address                                                                        |
+| `RESEND_FROM_NAME`                | no                 | Sender label; defaults to `Website`                                                           |
+| `RESEND_OVERRIDE_TO_EMAIL`        | no                 | Redirect every recipient in staging/QA; blocked in production without the explicit allow flag |
+| `ALLOW_PRODUCTION_EMAIL_OVERRIDE` | no                 | Strict boolean acknowledgement required for a production recipient override                   |
+| `MEDIA_PROVIDER`                  | no                 | `localDisk` by default, or `s3`                                                               |
+| `S3_BUCKET`                       | with S3            | Object-storage bucket                                                                         |
+| `S3_ENDPOINT`                     | with S3            | S3-compatible HTTPS endpoint                                                                  |
+| `S3_REGION`                       | with S3            | Storage region                                                                                |
+| `S3_ACCESS_KEY_ID`                | with S3            | Storage access key                                                                            |
+| `S3_SECRET_ACCESS_KEY`            | with S3            | Storage secret                                                                                |
+| `S3_PUBLIC_URL`                   | no                 | HTTPS origin for direct public/CDN delivery                                                   |
+| `S3_ACL`                          | no                 | `none` default, `public-read`, or `private`                                                   |
+| `S3_FORCE_PATH_STYLE`             | no                 | Boolean, defaults to `true`                                                                   |
+| `MEDIA_RECONCILE_TOKEN`           | for reconciliation | Secret accepted as Bearer or `x-media-reconcile-token`                                        |
+| `SHADCNBLOCKS_API_KEY`            | optional tooling   | Used only by external Shadcn Blocks tooling, not the CMS runtime                              |
 
 Boolean variables accept `true/false`, `1/0`, `yes/no`, or `on/off` case-insensitively.
 
+`src/config/runtime.server.ts` is the server-only, read-once owner of secret-bearing runtime state;
+`src/config/runtime.ts` contains only the pure parser and types so validation can be tested without
+eager environment reads. Browser-capable URL helpers consume only the canonical public origin from
+`src/config/publicOrigin.ts`, which reads no application configuration other than
+`NEXT_PUBLIC_SERVER_URL`. Both paths use the same pure origin validator and normalization rules.
+Production accepts HTTPS only. Outside production, HTTPS remains valid and HTTP is accepted only for
+`localhost`, `127.0.0.1`, or `::1`. Payload uses this one origin for `serverURL`, CORS, CSRF,
+live-preview links, and redirect-map loading; an incoming request Host is never used as a server-side
+fetch target.
+
 ## Local Development
 
-Use `MEDIA_PROVIDER=localDisk` and either `docker compose up -d mongo` or another reachable MongoDB. Do not leave the placeholder S3 credentials active in a copied `.env`.
+Use `MEDIA_PROVIDER=localDisk` and start the pinned replica with
+`docker compose up -d --wait mongo`, or use another reachable MongoDB replica set. A host process
+uses `mongodb://127.0.0.1:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true`.
+The Compose Payload service instead uses
+`mongodb://mongo:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true`, because the
+replica advertises `mongo:27017` inside the Compose network. Compose's
+`depends_on`/`service_healthy` condition covers initial startup ordering only; the application must
+still handle a later MongoDB outage. Do not leave placeholder S3 credentials active in a copied
+`.env`.
+
+### First Admin Bootstrap
+
+Anonymous user creation is permitted only when the Users collection is literally empty, including
+trashed records, and `ALLOW_FIRST_ADMIN_CREATION=true`. The runtime default is `true` outside
+production and `false` in production, while `.env.example` chooses the safer explicit `false`
+value. Production additionally requires `FIRST_ADMIN_EMAIL`; the submitted address must match it
+after trimming and case normalization. Payload's unique email index allows only one of two raced
+requests for that pinned address to win. Outside production, `FIRST_ADMIN_EMAIL` is ignored and the
+bootstrap policy remains flag-only.
+
+For a new environment:
+
+1. Confirm that the target Users collection is empty and that the database is the intended environment.
+2. Set `ALLOW_FIRST_ADMIN_CREATION=true`; in production, also set `FIRST_ADMIN_EMAIL` to the exact
+   account address. Deploy or restart the application.
+3. Create the first account through Payload Admin; it is normalized to the Admin role.
+4. Immediately remove `FIRST_ADMIN_EMAIL`, remove the allow flag or set it to `false`, then deploy
+   or restart again.
+5. Sign in as that Admin and create all later Admin or Site Manager accounts while authenticated.
+
+Never leave the bootstrap flag enabled as an operational convenience. It does not permit anonymous
+creation after a user exists, but immediate removal keeps the production policy explicit.
 
 ## Production Docker Image
 
-`next.config.ts` enables standalone output, and the supplied Dockerfile packages that traced server as a non-root production image. Build it with:
+`next.config.ts` enables standalone output, and the supplied Dockerfile packages that traced server
+as a non-root production image. Every stage uses Node `22.17.0`; Corepack activates pnpm `11.17.0`,
+and dependency installation uses the frozen lockfile. The dependency stage copies
+`pnpm-workspace.yaml` so pnpm applies the repository's explicit lifecycle-build allowlist during the
+non-interactive install.
+
+Create a temporary owner-readable-only dotenv file outside the build context. It must contain the
+server-only values needed while Next.js builds, for example:
+
+```dotenv
+MONGODB_URI='mongodb://mongo-or-host:27017/build_test?replicaSet=rs0&directConnection=true'
+PAYLOAD_SECRET='replace-with-a-unique-build-only-secret-of-at-least-32-characters'
+ALLOW_FIRST_ADMIN_CREATION=false
+EMAIL_PROVIDER=none
+MEDIA_PROVIDER=localDisk
+```
+
+Do not use `.env` as this fixture, commit it, or reuse its build-only secret at runtime. BuildKit
+mounts it for the build instruction only; it is not copied into an image layer. Build with:
 
 ```bash
-docker build -t payload-cms-starter-kit .
+DOCKER_BUILDKIT=1 docker build \
+  --secret id=payload_build_env,src=/absolute/path/to/payload-build.env \
+  --build-arg NEXT_PUBLIC_SERVER_URL=https://www.example.com \
+  -t payload-cms-starter-kit .
 ```
 
 Run the image with a durable MongoDB connection and `MEDIA_PROVIDER=s3` plus the required S3-compatible provider variables. The image intentionally has no persistent local-media volume. `docker-compose.yml` remains a local-development workflow; it is not a production deployment stack.
+
+For repository verification, run `pnpm verify:docker-local` and then
+`pnpm verify:docker-image`. Both refuse a pre-existing Compose project named
+`payload_hardening_verify` or network named `payload_hardening_verify_default`; image verification
+also refuses the pre-existing tag `payload-cms-starter-kit:hardening-verify`. They use only dedicated
+`_test` databases, never the default Compose project, `.env`, Atlas, or the developer
+`mongo_data_8_0` volume. Normal local use publishes `127.0.0.1:27017`; the verifiers set
+`MONGO_HOST_PORT=0` internally so Docker allocates an ephemeral loopback port and an existing local
+Mongo listener is never touched. The transaction verifier strictly accepts the discovered binding
+only as `127.0.0.1:<port>`. Normal Compose resolves `PAYLOAD_ENV_FILE` to `.env`; the verifiers
+instead use an owner-only empty temporary file, disable automatic `.env` loading, and give that same
+safe path to the transaction child's dotenv loader. Every verifier Compose call uses this
+repository's absolute Compose file and project directory under an allowlisted child environment, so
+ambient Compose file, project, profile, or path-separator controls cannot redirect it. Both start
+only the Mongo service and preflight the two exact derived Compose volume names. Image verification
+also reserves the Buildx builder
+`payload_hardening_verify_builder`, refuses its derived container or state volume if already present,
+and connects that current-run builder to the fixed Compose network so the build resolves
+`mongo:27017`. The builder grants only `network.host`, and the matching build request uses that
+namespace; for this fixed docker-container builder, “host” is its isolated container network, not the
+developer host or default Docker network. Both commands share one atomic OS-temporary lock; an
+existing or stale lock fails closed. Compose resources and the fixed image carry a random current-run
+ownership marker that must still match before cleanup. Cleanup is limited to verified current-run
+resources, including removal of that builder before its network. For stale-lock recovery, first prove
+no verifier is running and all fixed Docker identities are absent, then remove only the exact lock
+path named by the error.
+
+`pnpm verify:docker-image` is a documented local/release portability and build-secret inspection
+gate, not a GitHub Actions job, because the supported production delivery path is Vercel.
 
 ## S3-Compatible Storage
 
@@ -58,6 +160,13 @@ style, and public/private delivery behavior with the actual provider. Blank `S3_
 `S3_ACL=none` both omit the ACL request field for providers such as Cloudflare R2. Explicit
 `public-read` and `private` values remain available for compatible providers.
 
+The `media` collection is a public-marketing-asset trust class. It accepts only AVIF, GIF, JPEG,
+PNG, WebP, and PDF files whose filename extension, declared MIME type, and detected file signature
+agree. This format validation rejects disguised or unsupported file types before persistence, but
+it is not antivirus or malware scanning. Do not accept arbitrary or private documents through this
+collection. Private submissions require a separate collection and private bucket path, with an
+external malware-scanning and quarantine workflow in place before document intake is enabled.
+
 When `S3_PUBLIC_URL` is absent, Payload retains its normal file-handler URL behavior. When it is
 present, it must be an HTTPS origin without credentials, a path, query, or fragment. Payload emits
 encoded file URLs from that origin, and Next.js allows images only from that exact host. Direct
@@ -65,8 +174,13 @@ delivery bypasses Payload file access checks: every object in that bucket is pub
 knows its URL, even when the corresponding Payload document is a draft. Never place private or
 restricted documents in a public-delivery bucket.
 
-Enable client uploads only after adding a narrowly scoped PUT CORS rule for every approved Admin
-origin. Keep `S3_CLIENT_UPLOADS=false` during the initial provider cutover.
+Media uploads are server-only so extension, MIME, and signature validation runs before Payload
+generates file data, deletes a replaced local file, writes database state, or invokes storage
+adapters. `S3_CLIENT_UPLOADS=true` is rejected during runtime configuration and the S3 plugin never
+enables browser PUTs. Payload retains its aborting 10 MiB application limit, with 12 MiB reserved for
+server-action multipart overhead. On Vercel, an upstream request-body limit may be lower and rejects
+the request before this application cap; deployments needing larger uploads must use an application
+hosting path that supports the required server request size, not direct-to-bucket uploads.
 
 Run storage reconciliation after migrations, restores, or suspected bucket drift. See [Media](../guides/media.md).
 
@@ -83,7 +197,6 @@ S3_REGION=auto
 S3_PUBLIC_URL=https://assets.snmih.tanish.im
 S3_ACL=none
 S3_FORCE_PATH_STYLE=true
-S3_CLIENT_UPLOADS=false
 ```
 
 Set `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY` only in `.env` or the deployment environment.
@@ -127,7 +240,7 @@ redeploy. DNS may remain on Cloudflare while the media provider configuration is
 
 ## Email
 
-`EMAIL_PROVIDER=none` keeps form storage and workflows active without sending email. Resend configuration creates Payload's email adapter. `RESEND_OVERRIDE_TO_EMAIL` is useful for staging but dangerous in production if forgotten because it reroutes all recipients.
+`EMAIL_PROVIDER=none` keeps form storage and workflows active without sending email. Resend configuration creates Payload's email adapter. `RESEND_OVERRIDE_TO_EMAIL` is useful for staging but dangerous in production because it reroutes every recipient. Production refuses to start when an override is present unless `ALLOW_PRODUCTION_EMAIL_OVERRIDE=true`; remove both values immediately after the controlled test.
 
 ## Deployment Notes
 
@@ -135,16 +248,30 @@ redeploy. DNS may remain on Cloudflare while the media provider configuration is
   placeholder, and shorter-than-32-character values
 - use durable MongoDB and object storage for hosted production
 - set `NEXT_PUBLIC_SERVER_URL` to the externally reachable HTTPS origin
+- keep `ALLOW_FIRST_ADMIN_CREATION` unset or `false` and remove `FIRST_ADMIN_EMAIL` after bootstrap
+- keep `ALLOW_PRODUCTION_EMAIL_OVERRIDE=false` unless a controlled production delivery test is active
 - never expose reconciliation or provider secrets to client-side variables
 - keep database archives in approved encrypted external storage, never in Git or Docker contexts
-- GitHub Actions verifies project context, generated types, TypeScript, lint, integration tests,
-  and the production build
+- GitHub Actions has one required `verify` job with read-only repository access and persisted
+  checkout credentials disabled. It installs frozen dependencies, enforces `pnpm audit:prod`,
+  installs bundled Chromium, starts an owner-labeled exact MongoDB `8.0.29` writable one-member
+  `rs0` on loopback, regenerates Payload types and the Admin import map and rejects either drift,
+  runs TypeScript, lint, the complete integration suite, exactly two critical governance browser
+  journeys, and the Node 22 Vercel production build. Its final unconditional step removes only the
+  exact current-run container after ownership verification.
+- CI supplies fixed non-secret values and explicit loopback `_test` database URIs. It does not load
+  `.env` or `.env.atlas.local`, receive production secrets, or access Atlas or another live service.
+- `pnpm project-context:update` and `pnpm project-context:check` remain local repository-maintenance
+  checks and do not run in GitHub Actions
 
 ## Verification
 
 ```bash
 pnpm test:int
+pnpm test:e2e:governance
 pnpm build
+pnpm verify:docker-local
+pnpm verify:docker-image
 ```
 
 Then sign in, upload an image, publish a Page, submit a Form, and inspect the public route in the target environment.

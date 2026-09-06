@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import { ADMIN_FEATURE_KEYS } from '@/access/adminFeatures'
+import { adminOrFirstUserAccess } from '@/access/featureAccess'
 import {
   Users,
   normalizeFeatureGrants,
@@ -35,10 +36,11 @@ describe('two-role user administration', () => {
   })
 
   it('bootstraps the first account as Admin and defaults later accounts to zero-grant Site Managers', async () => {
+    const firstRequest = reqWithCount(0, null)
     const first = await normalizeUserAccessFields({
       data: { email: 'first@example.test' },
       operation: 'create',
-      req: reqWithCount(0, null),
+      req: firstRequest,
     } as never)
     const later = await normalizeUserAccessFields({
       data: { email: 'manager@example.test' },
@@ -47,8 +49,66 @@ describe('two-role user administration', () => {
     } as never)
 
     expect(first?.role).toBe('admin')
+    expect(firstRequest.payload.count).toHaveBeenCalledWith(
+      expect.objectContaining({ req: firstRequest, trash: true }),
+    )
     expect(later?.role).toBe('siteManager')
     expect(later?.features).toEqual(normalizeFeatureGrants(null))
+  })
+
+  it('allows anonymous first-admin creation only for an empty collection and the configured email', async () => {
+    const localBootstrap = adminOrFirstUserAccess({
+      allowFirstAdminCreation: true,
+      firstAdminEmail: null,
+    })
+    const productionBootstrap = adminOrFirstUserAccess({
+      allowFirstAdminCreation: true,
+      firstAdminEmail: 'first.admin@example.test',
+    })
+    const denyBootstrap = adminOrFirstUserAccess({
+      allowFirstAdminCreation: false,
+      firstAdminEmail: null,
+    })
+    const matchingRequest = reqWithCount(0, null)
+    const mismatchedRequest = reqWithCount(0, null)
+
+    await expect(
+      localBootstrap({
+        data: { email: 'local@example.test' },
+        req: reqWithCount(0, null),
+      } as never),
+    ).resolves.toBe(true)
+    await expect(
+      localBootstrap({
+        data: { email: 'local@example.test' },
+        req: reqWithCount(1, null),
+      } as never),
+    ).resolves.toBe(false)
+    await expect(
+      productionBootstrap({
+        data: { email: 'different@example.test' },
+        req: mismatchedRequest,
+      } as never),
+    ).resolves.toBe(false)
+    expect(mismatchedRequest.payload.count).not.toHaveBeenCalled()
+    await expect(
+      productionBootstrap({
+        data: { email: '  FIRST.ADMIN@EXAMPLE.TEST ' },
+        req: matchingRequest,
+      } as never),
+    ).resolves.toBe(true)
+    expect(matchingRequest.payload.count).toHaveBeenCalledWith(
+      expect.objectContaining({ req: matchingRequest, trash: true }),
+    )
+    await expect(
+      denyBootstrap({ data: { email: 'local@example.test' }, req: reqWithCount(0, null) } as never),
+    ).resolves.toBe(false)
+    await expect(
+      denyBootstrap({
+        data: { email: 'different@example.test' },
+        req: reqWithCount(0, { role: 'admin' }),
+      } as never),
+    ).resolves.toBe(true)
   })
 
   it('preserves explicit Site Manager grants and clears active sessions when grants change', async () => {

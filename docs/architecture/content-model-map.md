@@ -34,7 +34,12 @@ Use this ownership map before adding schema so client-specific changes land in t
 
 ## Media
 
-`media` owns uploads, internal classification, alt text, usage summaries, critical-asset notes, deletion protection, storage health, Action Queue integration, and selected Audit Log events.
+`media` owns server-side public marketing-asset uploads, extension/MIME/signature format validation
+before Payload file generation or replacement cleanup, internal classification, alt text, usage
+summaries, critical-asset notes, deletion protection, storage health, Action Queue integration, and
+selected Audit Log events. Format validation is not malware scanning; arbitrary or private document
+intake belongs in a separate collection and private bucket path with external scanning and
+quarantine.
 
 `gallery-albums` owns ordered image collections for Event Gallery. Its first image is the cover and the remaining row order controls the viewer.
 

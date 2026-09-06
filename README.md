@@ -7,14 +7,15 @@ This repository is an editorial-first marketing CMS starter built to be copied f
 - local development: `MongoDB` plus local-disk uploads
 - email: `none` or `resend`
 - hosted database target: `MongoDB`
-- Vercel media target: `S3-compatible` object storage such as `IDrive e2`
+- Vercel media target: durable `S3-compatible` object storage
 
 The repo fails fast if you try to boot a Vercel production profile with the default local-disk `media` behavior. Use `MEDIA_PROVIDER=s3` with a durable bucket before allowing editor-managed uploads in hosted environments.
 
 ## First Boot
 
 1. Copy `.env.example` to `.env`.
-2. Start MongoDB locally with `docker compose up -d mongo`, or point `MONGODB_URI` at an existing MongoDB instance.
+2. Start the transaction-capable local MongoDB with `docker compose up -d --wait mongo`, or point
+   `MONGODB_URI` at an existing replica set.
 3. Set `PAYLOAD_SECRET`.
 4. Run `pnpm install`.
 5. Run `pnpm dev`.
@@ -22,7 +23,11 @@ The repo fails fast if you try to boot a Vercel production profile with the defa
 
 ## Production Docker Image
 
-The supplied `Dockerfile` builds the Next.js standalone production server. Build it with `docker build -t payload-cms-starter-kit .` and run it with the environment variables described below.
+The supplied `Dockerfile` builds the Next.js standalone production server with Node `22.17.0` and
+pnpm `11.17.0`. Its dependency install is frozen. The only public build argument is
+`NEXT_PUBLIC_SERVER_URL`; all server-only build configuration must be supplied through the required
+BuildKit secret `payload_build_env`. See [Runtime and Providers](docs/operations/runtime-and-providers.md)
+for the fixture format and exact build command.
 
 Production containers require a durable external MongoDB database and `MEDIA_PROVIDER=s3` with a durable S3-compatible bucket. The image intentionally does not provide persistent local-disk uploads. `docker-compose.yml` remains the local-development workflow and is not a production stack.
 
@@ -139,6 +144,7 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 - [Complete feature inventory](docs/architecture/feature-inventory.md)
 - [Editorial governance](docs/operations/editorial-governance.md)
 - [MongoDB deployment](docs/operations/mongodb-deployment.md)
+- [Dependency management](docs/operations/dependency-management.md)
 - [Runtime and providers](docs/operations/runtime-and-providers.md)
 - [Developer workflows](docs/operations/developer-workflows.md)
 
@@ -157,7 +163,7 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 
 Local development defaults:
 
-- `MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit`
+- `MONGODB_URI=mongodb://127.0.0.1:27017/payload-cms-starter-kit?replicaSet=rs0&directConnection=true`
 - `PAYLOAD_SECRET`
 - `EMAIL_PROVIDER=none`
 - `MEDIA_PROVIDER=localDisk`
@@ -184,7 +190,6 @@ S3-compatible media storage for hosted uploads:
 - `S3_PUBLIC_URL` for direct public/CDN delivery
 - `S3_ACL=none | public-read | private`
 - `S3_FORCE_PATH_STYLE=true | false`
-- `S3_CLIENT_UPLOADS=true | false`
 - `MEDIA_RECONCILE_TOKEN` for the protected media health endpoint
 
 Optional tooling:
@@ -193,16 +198,22 @@ Optional tooling:
 
 ## Tooling
 
-- `Node.js`: `^18.20.2 || >=20.9.0`
-- `pnpm`: `^9 || ^10 || ^11`
+- `Node.js`: `22.17.0` (`>=22.13.0 <23`)
+- `pnpm`: `11.17.0`
 
 ## Testing
 
 - `pnpm test:int`
 - `pnpm test:e2e`
 - `pnpm test`
+- `pnpm verify:docker-local` for the isolated local replica and real Payload transaction contract
+- `pnpm verify:docker-image` for the Node 22 production image and BuildKit-secret boundary
 
-Use an isolated MongoDB database for tests. E2E helpers seed and delete known test users and homepage content. See [Developer Workflows](docs/operations/developer-workflows.md) for browser installation, generation, backup, migration, and reconciliation commands.
+Use an isolated MongoDB database for tests. E2E uses the committed `test.env` values instead of
+ambient application configuration. Docker verifiers serialize through one fixed OS-temporary lock,
+pin Compose to this repository, and use their own empty environment file. See
+[Developer Workflows](docs/operations/developer-workflows.md) for safe lock recovery, browser
+installation, generation, backup, migration, and reconciliation commands.
 
 ## Starter Conventions
 

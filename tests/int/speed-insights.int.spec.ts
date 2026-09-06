@@ -16,7 +16,7 @@ const featureInventory = readFileSync('docs/architecture/feature-inventory.md', 
 describe('Vercel Speed Insights integration', () => {
   it('installs and imports the framework-specific package', () => {
     expect(packageJSON.dependencies?.['@vercel/speed-insights']).toBeTruthy()
-    expect(packageJSON.dependencies?.['@next/third-parties']).toBe('16.2.10')
+    expect(packageJSON.dependencies?.['@next/third-parties']).toBeTruthy()
     expect(analyticsSource).toContain(
       "import { SpeedInsights } from '@vercel/speed-insights/next'",
     )

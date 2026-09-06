@@ -22,28 +22,28 @@ test.describe('Admin Panel', () => {
   })
 
   test('can navigate to dashboard', async () => {
-    await page.goto('http://localhost:3000/admin')
-    await expect(page).toHaveURL('http://localhost:3000/admin')
+    await page.goto('/admin')
+    await expect(page).toHaveURL('/admin')
     const dashboardArtifact = page.locator('span[title="Dashboard"]').first()
     await expect(dashboardArtifact).toBeVisible()
   })
 
   test('can navigate to list view', async () => {
-    await page.goto('http://localhost:3000/admin/collections/users')
-    await expect(page).toHaveURL('http://localhost:3000/admin/collections/users')
+    await page.goto('/admin/collections/users')
+    await expect(page).toHaveURL('/admin/collections/users')
     const listViewArtifact = page.locator('h1', { hasText: 'Users' }).first()
     await expect(listViewArtifact).toBeVisible()
   })
 
   test('can navigate to edit view', async () => {
-    await page.goto('http://localhost:3000/admin/collections/users/create')
+    await page.goto('/admin/collections/users/create')
     await expect(page).toHaveURL(/\/admin\/collections\/users\/[a-zA-Z0-9-_]+/)
     const editViewArtifact = page.locator('input[name="email"]')
     await expect(editViewArtifact).toBeVisible()
   })
 
   test('creates a Landing Page draft from the guided setup', async () => {
-    await page.goto('http://localhost:3000/admin/collections/pages/create')
+    await page.goto('/admin/collections/pages/create')
 
     await expect(page.getByRole('heading', { name: 'Create a Page' })).toBeVisible()
     await expect(page.getByRole('radio', { name: /Blank Page/ })).toBeChecked()

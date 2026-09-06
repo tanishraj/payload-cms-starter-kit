@@ -5,6 +5,13 @@ import { assertSupportedStarterContract, getStarterContract } from '@/config/sta
 describe('starter contract', () => {
   it('marks the documented local profile as supported', () => {
     const contract = getStarterContract({
+      application: {
+        origin: 'http://localhost:3000',
+      },
+      auth: {
+        allowFirstAdminCreation: true,
+        firstAdminEmail: null,
+      },
       database: {
         url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       },
@@ -16,10 +23,14 @@ describe('starter contract', () => {
         apiKey: null,
         fromAddress: null,
         fromName: 'Website',
+        overrideRecipientAddress: null,
         provider: 'none',
       },
       media: {
         provider: 'localDisk',
+      },
+      operations: {
+        mediaReconcileToken: null,
       },
       payload: {
         secret: 'test-secret',
@@ -35,6 +46,13 @@ describe('starter contract', () => {
 
   it('rejects Vercel production because local-disk media is not durable there', () => {
     const contract = getStarterContract({
+      application: {
+        origin: 'https://www.example.test',
+      },
+      auth: {
+        allowFirstAdminCreation: false,
+        firstAdminEmail: null,
+      },
       database: {
         url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       },
@@ -46,10 +64,14 @@ describe('starter contract', () => {
         apiKey: null,
         fromAddress: null,
         fromName: 'Website',
+        overrideRecipientAddress: null,
         provider: 'none',
       },
       media: {
         provider: 'localDisk',
+      },
+      operations: {
+        mediaReconcileToken: null,
       },
       payload: {
         secret: 'test-secret',
@@ -63,6 +85,13 @@ describe('starter contract', () => {
 
   it('allows hosted deployments when s3 media storage is configured', () => {
     const contract = getStarterContract({
+      application: {
+        origin: 'https://www.example.test',
+      },
+      auth: {
+        allowFirstAdminCreation: false,
+        firstAdminEmail: null,
+      },
       database: {
         url: 'mongodb://127.0.0.1:27017/payload-cms-starter-kit',
       },
@@ -74,6 +103,7 @@ describe('starter contract', () => {
         apiKey: null,
         fromAddress: null,
         fromName: 'Website',
+        overrideRecipientAddress: null,
         provider: 'none',
       },
       media: {
@@ -81,12 +111,14 @@ describe('starter contract', () => {
         acl: 'public-read',
         accessKeyId: 'access-key',
         bucket: 'payload-media',
-        clientUploads: true,
         endpoint: 'https://s3.ap-southeast-1.idrivee2.com',
         forcePathStyle: true,
         publicURL: null,
         region: 'ap-southeast-1',
         secretAccessKey: 'secret-key',
+      },
+      operations: {
+        mediaReconcileToken: 'do-not-expose-this-token',
       },
       payload: {
         secret: 'test-secret',
@@ -98,5 +130,6 @@ describe('starter contract', () => {
       reason: null,
       supported: true,
     })
+    expect(JSON.stringify(contract)).not.toContain('do-not-expose-this-token')
   })
 })

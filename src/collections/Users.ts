@@ -26,6 +26,7 @@ import {
   isAdmin,
 } from '@/access/featureAccess'
 import { recordOperationalAuditEvent } from '@/lib/operationalAudit'
+import { runtimeConfig } from '@/config/runtime.server'
 
 type UserAccessDocument = {
   deletedAt?: string | null
@@ -182,7 +183,10 @@ export const normalizeUserAccessFields: CollectionBeforeChangeHook = async ({
     const { totalDocs } = await req.payload.count({
       collection: 'users',
       overrideAccess: true,
-      where: {},
+      req,
+      trash: true,
+      // Keep this logically unfiltered while forcing transaction-safe countDocuments in MongoDB.
+      where: { id: { exists: true } },
     })
 
     if (totalDocs === 0) {
@@ -299,9 +303,19 @@ export const Users: CollectionConfig = {
     hidden: hideFromNonAdmin,
     useAsTitle: 'email',
   },
-  auth: true,
+  auth: {
+    cookies: {
+      sameSite: 'Lax',
+      secure: runtimeConfig.deployment.isProduction,
+    },
+    lockTime: 10 * 60 * 1000,
+    maxLoginAttempts: 5,
+    removeTokenFromResponses: true,
+    tokenExpiration: 2 * 60 * 60,
+    useSessions: true,
+  },
   access: {
-    create: adminOrFirstUserAccess,
+    create: adminOrFirstUserAccess(runtimeConfig.auth),
     delete: adminOnlyAccess,
     read: adminSelfOrAssignmentRead,
     readVersions: adminOnlyAccess,

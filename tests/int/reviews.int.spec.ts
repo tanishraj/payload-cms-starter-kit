@@ -73,11 +73,10 @@ describe('reviews collection', () => {
     expect(payloadMocks.find).toHaveBeenCalledWith(
       expect.objectContaining({
         collection: 'reviews',
+        draft: false,
+        overrideAccess: false,
         where: expect.objectContaining({
-          and: expect.arrayContaining([
-            { slug: { equals: 'great-service' } },
-            { _status: { equals: 'published' } },
-          ]),
+          slug: { equals: 'great-service' },
         }),
       }),
     )

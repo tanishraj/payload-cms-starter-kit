@@ -1,6 +1,14 @@
 import { normalizeMediaPublicURL } from './mediaPublicURL'
+import { parseApplicationOrigin } from './applicationOrigin'
 
 export type RuntimeConfig = {
+  application: {
+    origin: string
+  }
+  auth: {
+    allowFirstAdminCreation: boolean
+    firstAdminEmail: string | null
+  }
   database: {
     url: string
   }
@@ -13,6 +21,7 @@ export type RuntimeConfig = {
     apiKey: string | null
     fromAddress: string | null
     fromName: string
+    overrideRecipientAddress: string | null
   }
   media:
     | {
@@ -22,7 +31,6 @@ export type RuntimeConfig = {
         provider: 's3'
         acl: 'private' | 'public-read' | null
         bucket: string
-        clientUploads: boolean
         endpoint: string
         forcePathStyle: boolean
         publicURL: string | null
@@ -33,12 +41,19 @@ export type RuntimeConfig = {
   payload: {
     secret: string
   }
+  operations: {
+    mediaReconcileToken: string | null
+  }
 }
 
 const isMongoConnectionString = (value: string): boolean =>
   value.startsWith('mongodb://') || value.startsWith('mongodb+srv://')
 
-const parseBooleanEnv = (value: string | undefined, defaultValue: boolean): boolean => {
+const parseBooleanEnv = (
+  value: string | undefined,
+  defaultValue: boolean,
+  variableName: string,
+): boolean => {
   if (value == null || value.trim() === '') {
     return defaultValue
   }
@@ -53,7 +68,7 @@ const parseBooleanEnv = (value: string | undefined, defaultValue: boolean): bool
     return false
   }
 
-  throw new Error(`Invalid boolean value "${value}". Use true/false.`)
+  throw new Error(`Invalid boolean value for ${variableName}. Use true/false.`)
 }
 
 const getMediaProvider = (env: NodeJS.ProcessEnv): 'localDisk' | 's3' => {
@@ -68,22 +83,53 @@ const getMediaProvider = (env: NodeJS.ProcessEnv): 'localDisk' | 's3' => {
   throw new Error('Unsupported MEDIA_PROVIDER. Use "localDisk" or "s3".')
 }
 
+const parseFirstAdminEmail = (value: string | undefined): string | null => {
+  const normalized = value?.trim().toLowerCase() || ''
+
+  if (!normalized) return null
+
+  if (normalized.length > 320 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)) {
+    throw new Error('Invalid FIRST_ADMIN_EMAIL. Use a valid email address.')
+  }
+
+  return normalized
+}
+
 export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeConfig => {
   const mediaProvider = getMediaProvider(env)
+  const s3ClientUploads = parseBooleanEnv(env.S3_CLIENT_UPLOADS, false, 'S3_CLIENT_UPLOADS')
   const isProduction = env.NODE_ENV === 'production'
   const isVercel = Boolean(env.VERCEL)
   const mongodbURI = env.MONGODB_URI?.trim() || ''
   const payloadSecret = env.PAYLOAD_SECRET?.trim() || ''
+  const applicationOrigin = parseApplicationOrigin(env.NEXT_PUBLIC_SERVER_URL, isProduction)
+  const allowFirstAdminCreation = parseBooleanEnv(
+    env.ALLOW_FIRST_ADMIN_CREATION,
+    !isProduction,
+    'ALLOW_FIRST_ADMIN_CREATION',
+  )
+  const firstAdminEmail = isProduction ? parseFirstAdminEmail(env.FIRST_ADMIN_EMAIL) : null
+  const allowProductionEmailOverride = parseBooleanEnv(
+    env.ALLOW_PRODUCTION_EMAIL_OVERRIDE,
+    false,
+    'ALLOW_PRODUCTION_EMAIL_OVERRIDE',
+  )
+  const overrideRecipientAddress = env.RESEND_OVERRIDE_TO_EMAIL?.trim() || null
+  const mediaReconcileToken = env.MEDIA_RECONCILE_TOKEN?.trim() || null
+
+  if (s3ClientUploads) {
+    throw new Error('S3 client uploads are not supported. Use server-side media uploads.')
+  }
+
+  if (isProduction && allowFirstAdminCreation && !firstAdminEmail) {
+    throw new Error('Production first-Admin creation requires FIRST_ADMIN_EMAIL.')
+  }
 
   if (!payloadSecret) {
     throw new Error('Missing PAYLOAD_SECRET. Set a unique secret for this environment.')
   }
 
-  const placeholderSecrets = new Set([
-    'YOUR_PAYLOAD_CMS_SECRET_HERE',
-    'change-me',
-    'changeme',
-  ])
+  const placeholderSecrets = new Set(['YOUR_PAYLOAD_CMS_SECRET_HERE', 'change-me', 'changeme'])
 
   if (isProduction && (payloadSecret.length < 32 || placeholderSecrets.has(payloadSecret))) {
     throw new Error(
@@ -114,6 +160,12 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
     )
   }
 
+  if (isProduction && overrideRecipientAddress && !allowProductionEmailOverride) {
+    throw new Error(
+      'Production recipient override is disabled. Set ALLOW_PRODUCTION_EMAIL_OVERRIDE=true to enable it explicitly.',
+    )
+  }
+
   const media =
     mediaProvider === 's3'
       ? (() => {
@@ -123,7 +175,6 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
           const accessKeyId = env.S3_ACCESS_KEY_ID?.trim() || ''
           const secretAccessKey = env.S3_SECRET_ACCESS_KEY?.trim() || ''
           const rawACL = env.S3_ACL?.trim() || 'none'
-
           if (!bucket || !endpoint || !region || !accessKeyId || !secretAccessKey) {
             throw new Error(
               'Incomplete S3 media configuration. Set S3_BUCKET, S3_ENDPOINT, S3_REGION, S3_ACCESS_KEY_ID, and S3_SECRET_ACCESS_KEY.',
@@ -145,9 +196,8 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
             acl,
             accessKeyId,
             bucket,
-            clientUploads: parseBooleanEnv(env.S3_CLIENT_UPLOADS, false),
             endpoint,
-            forcePathStyle: parseBooleanEnv(env.S3_FORCE_PATH_STYLE, true),
+            forcePathStyle: parseBooleanEnv(env.S3_FORCE_PATH_STYLE, true, 'S3_FORCE_PATH_STYLE'),
             publicURL: normalizeMediaPublicURL(env.S3_PUBLIC_URL),
             region,
             secretAccessKey,
@@ -158,6 +208,13 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
         }
 
   return {
+    application: {
+      origin: applicationOrigin,
+    },
+    auth: {
+      allowFirstAdminCreation,
+      firstAdminEmail,
+    },
     database: {
       url: mongodbURI,
     },
@@ -170,10 +227,14 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
       apiKey: env.RESEND_API_KEY || null,
       fromAddress: env.RESEND_FROM_EMAIL || null,
       fromName: env.RESEND_FROM_NAME || 'Website',
+      overrideRecipientAddress,
     },
     media,
     payload: {
       secret: payloadSecret,
+    },
+    operations: {
+      mediaReconcileToken,
     },
   }
 }

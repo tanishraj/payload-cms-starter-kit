@@ -1,8 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import { getMediaStorageObjectKey, reconcileMediaStorage } from '@/lib/mediaStorage'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const sendMock = vi.fn()
+const originalEnvironment = { ...process.env }
+
+let mediaStorage: typeof import('@/lib/mediaStorage')
 
 vi.mock('@aws-sdk/client-s3', () => ({
   HeadObjectCommand: vi.fn(function HeadObjectCommand(input: unknown) {
@@ -17,22 +18,37 @@ vi.mock('@aws-sdk/client-s3', () => ({
   }),
 }))
 
-describe('media storage helpers', () => {
-  beforeEach(() => {
-    sendMock.mockReset()
-    process.env.MONGODB_URI = 'mongodb://127.0.0.1:27017/payload-cms-starter-kit'
-    process.env.EMAIL_PROVIDER = 'none'
-    process.env.MEDIA_PROVIDER = 's3'
-    process.env.S3_BUCKET = 'snmih'
-    process.env.S3_ENDPOINT = 'https://s3.ap-northeast-1.idrivee2.com'
-    process.env.S3_REGION = 'ap-northeast-1'
-    process.env.S3_ACCESS_KEY_ID = 'test-access-key'
-    process.env.S3_SECRET_ACCESS_KEY = 'test-secret-key'
-  })
+beforeEach(async () => {
+  sendMock.mockReset()
+  vi.resetModules()
+  process.env = {
+    ...originalEnvironment,
+    EMAIL_PROVIDER: 'none',
+    MEDIA_PROVIDER: 's3',
+    MONGODB_URI: 'mongodb://127.0.0.1:27017/media-storage_test',
+    PAYLOAD_SECRET: 'media-storage-only-payload-secret',
+    S3_ACCESS_KEY_ID: 'test-access-key',
+    S3_ACL: 'none',
+    S3_BUCKET: 'snmih',
+    S3_CLIENT_UPLOADS: 'false',
+    S3_ENDPOINT: 'https://s3.example.invalid',
+    S3_FORCE_PATH_STYLE: 'true',
+    S3_PUBLIC_URL: '',
+    S3_REGION: 'test-region',
+    S3_SECRET_ACCESS_KEY: 'test-secret-key',
+  }
+  mediaStorage = await import('@/lib/mediaStorage')
+})
 
+afterEach(() => {
+  process.env = { ...originalEnvironment }
+  vi.resetModules()
+})
+
+describe('media storage helpers', () => {
   it('derives the object key from filename first', () => {
     expect(
-      getMediaStorageObjectKey({
+      mediaStorage.getMediaStorageObjectKey({
         bucket: 'snmih',
         media: {
           filename: 'uploads/banner.png',
@@ -44,7 +60,7 @@ describe('media storage helpers', () => {
 
   it('derives the object key from a path-style bucket url', () => {
     expect(
-      getMediaStorageObjectKey({
+      mediaStorage.getMediaStorageObjectKey({
         bucket: 'snmih',
         media: {
           url: 'https://s3.ap-northeast-1.idrivee2.com/snmih/site/logo.png',
@@ -55,18 +71,6 @@ describe('media storage helpers', () => {
 })
 
 describe('reconcileMediaStorage', () => {
-  beforeEach(() => {
-    sendMock.mockReset()
-    process.env.MONGODB_URI = 'mongodb://127.0.0.1:27017/payload-cms-starter-kit'
-    process.env.EMAIL_PROVIDER = 'none'
-    process.env.MEDIA_PROVIDER = 's3'
-    process.env.S3_BUCKET = 'snmih'
-    process.env.S3_ENDPOINT = 'https://s3.ap-northeast-1.idrivee2.com'
-    process.env.S3_REGION = 'ap-northeast-1'
-    process.env.S3_ACCESS_KEY_ID = 'test-access-key'
-    process.env.S3_SECRET_ACCESS_KEY = 'test-secret-key'
-  })
-
   it('marks missing media, updates the document, and records an audit event', async () => {
     sendMock.mockRejectedValueOnce({
       $metadata: {
@@ -80,7 +84,7 @@ describe('reconcileMediaStorage', () => {
       update: vi.fn(async () => ({})),
     }
 
-    const result = await reconcileMediaStorage({
+    const result = await mediaStorage.reconcileMediaStorage({
       media: [
         {
           filename: 'hero.png',
@@ -127,7 +131,7 @@ describe('reconcileMediaStorage', () => {
       update: vi.fn(async () => ({})),
     }
 
-    const result = await reconcileMediaStorage({
+    const result = await mediaStorage.reconcileMediaStorage({
       media: [
         {
           filename: 'hero.png',

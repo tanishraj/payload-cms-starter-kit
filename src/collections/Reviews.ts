@@ -1,12 +1,13 @@
-import { type Access, type CollectionConfig, type Where } from 'payload'
+import { type CollectionConfig } from 'payload'
 
 import {
-  canReadFeature,
   deleteFeatureOrAdmin,
   featureFieldReadAccess,
   hideUnlessFeature,
   requireFeature,
 } from '@/access/featureAccess'
+import { publicReviewReadAccess } from '@/domains/reviews/publicReviewAccess'
+import { runtimeConfig } from '@/config/runtime.server'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
 import { projectSlugField } from '@/fields/projectSlugField'
@@ -18,6 +19,7 @@ import { syncPrimaryCategoryMembership } from '@/hooks/syncPrimaryCategoryMember
 import { validateSEOContract } from '@/hooks/validateSEOContract'
 import { reviewRatingOptions } from '@/lib/reviews'
 import { revalidateDeletedReviewCache, revalidateReviewsCache } from '@/hooks/revalidateCmsContent'
+import { buildLivePreviewURL } from '@/lib/siteUrl'
 
 const previewBreakpoints = [
   {
@@ -39,25 +41,6 @@ const previewBreakpoints = [
     height: 844,
   },
 ] as const
-
-const readReviews: Access = ({ req }) => {
-  if (req.user) return canReadFeature(req.user, 'reviews')
-
-  const publicReviewWhere: Where = {
-    and: [
-      { _status: { equals: 'published' } },
-      {
-        or: [
-          { sourceSubmission: { exists: false } },
-          { sourceSubmission: { equals: null } },
-          { moderationStatus: { equals: 'approved' } },
-        ],
-      },
-    ],
-  }
-
-  return publicReviewWhere
-}
 
 export const Reviews: CollectionConfig = {
   slug: 'reviews',
@@ -86,16 +69,14 @@ export const Reviews: CollectionConfig = {
           return null
         }
 
-        const appURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
-
-        return `${appURL}/reviews/${data.slug}`
+        return buildLivePreviewURL(`/reviews/${data.slug}`, runtimeConfig)
       },
     },
   },
   access: {
     create: requireFeature('reviews'),
     delete: deleteFeatureOrAdmin('reviews'),
-    read: readReviews,
+    read: publicReviewReadAccess,
     readVersions: requireFeature('reviews'),
     update: requireFeature('reviews'),
   },

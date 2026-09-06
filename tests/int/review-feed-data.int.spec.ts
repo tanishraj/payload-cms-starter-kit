@@ -75,8 +75,9 @@ describe('Review Feed data', () => {
 
     expect(find).toHaveBeenCalledWith({
       collection: 'reviews',
+      draft: false,
       limit: 4,
-      overrideAccess: true,
+      overrideAccess: false,
       page: 2,
       select: {
         displayName: true,
@@ -90,11 +91,6 @@ describe('Review Feed data', () => {
         updatedAt: true,
       },
       sort: ['-publishedAt', '-id'],
-      where: {
-        _status: {
-          equals: 'published',
-        },
-      },
     })
     expect(result).toEqual({
       docs: [

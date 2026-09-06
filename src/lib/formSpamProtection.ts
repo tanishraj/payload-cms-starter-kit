@@ -4,12 +4,19 @@ import {
   FORM_RATE_LIMIT_WINDOW_MS,
   type FormSubmissionValues,
 } from '@/lib/forms'
+import {
+  getTrustedClientIPAddress,
+  InMemoryRateLimiter,
+  type RateLimitDecision,
+  type RateLimiter,
+} from '@/domains/forms/rateLimiter'
 
-const submissionAttemptsByKey = new Map<string, number[]>()
-
-const pruneExpiredAttempts = (timestamps: number[], now: number): number[] => {
-  return timestamps.filter((timestamp) => now - timestamp < FORM_RATE_LIMIT_WINDOW_MS)
-}
+const submissionRateLimiter: RateLimiter = new InMemoryRateLimiter({
+  maxAttempts: FORM_RATE_LIMIT_MAX_SUBMISSIONS,
+  maxKeys: 10_000,
+  pruneIntervalMs: FORM_RATE_LIMIT_WINDOW_MS,
+  windowMs: FORM_RATE_LIMIT_WINDOW_MS,
+})
 
 const getRateLimitKey = ({
   formSlug,
@@ -22,23 +29,7 @@ const getRateLimitKey = ({
 }
 
 export const getClientIPAddress = (request: Request): string => {
-  const forwardedFor = request.headers.get('x-forwarded-for')
-
-  if (forwardedFor) {
-    const firstForwardedIP = forwardedFor.split(',')[0]?.trim()
-
-    if (firstForwardedIP) {
-      return firstForwardedIP
-    }
-  }
-
-  const realIP = request.headers.get('x-real-ip')?.trim()
-
-  if (realIP) {
-    return realIP
-  }
-
-  return 'unknown'
+  return getTrustedClientIPAddress(request)
 }
 
 export const isSpamHoneypotTriggered = (values: FormSubmissionValues): boolean => {
@@ -53,17 +44,13 @@ export const isRateLimited = ({
 }: {
   formSlug: string
   ipAddress: string
-}): boolean => {
-  const now = Date.now()
+}): RateLimitDecision => {
   const key = getRateLimitKey({
     formSlug,
     ipAddress,
   })
-  const recentAttempts = pruneExpiredAttempts(submissionAttemptsByKey.get(key) ?? [], now)
 
-  submissionAttemptsByKey.set(key, recentAttempts)
-
-  return recentAttempts.length >= FORM_RATE_LIMIT_MAX_SUBMISSIONS
+  return submissionRateLimiter.check(key)
 }
 
 export const recordSubmissionAttempt = ({
@@ -73,13 +60,10 @@ export const recordSubmissionAttempt = ({
   formSlug: string
   ipAddress: string
 }): void => {
-  const now = Date.now()
   const key = getRateLimitKey({
     formSlug,
     ipAddress,
   })
-  const recentAttempts = pruneExpiredAttempts(submissionAttemptsByKey.get(key) ?? [], now)
 
-  recentAttempts.push(now)
-  submissionAttemptsByKey.set(key, recentAttempts)
+  submissionRateLimiter.record(key)
 }

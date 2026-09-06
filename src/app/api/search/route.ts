@@ -2,32 +2,23 @@ import configPromise from '@payload-config'
 import { NextResponse } from 'next/server'
 import { getPayload, type Where } from 'payload'
 
+import {
+  getTrustedClientIPAddress,
+  InMemoryRateLimiter,
+  type RateLimiter,
+} from '@/domains/forms/rateLimiter'
+import { findPublicReviews } from '@/domains/reviews/publicReviewQueries'
 import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
 import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
 
-// In-memory rate limiter: 20 requests / IP / 10 s.
-// Expired entries are evicted on each request to prevent unbounded growth
-// in long-lived Node.js processes (e.g. self-hosted next start).
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
 const RATE_LIMIT = 20
 const RATE_WINDOW_MS = 10_000
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now()
-
-  // Evict expired entries so the map does not grow unboundedly
-  for (const [key, entry] of rateLimitMap) {
-    if (now >= entry.resetAt) rateLimitMap.delete(key)
-  }
-
-  const entry = rateLimitMap.get(ip)
-  if (!entry || now >= entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS })
-    return false
-  }
-  entry.count++
-  return entry.count > RATE_LIMIT
-}
+const searchRateLimiter: RateLimiter = new InMemoryRateLimiter({
+  maxAttempts: RATE_LIMIT,
+  maxKeys: 10_000,
+  pruneIntervalMs: RATE_WINDOW_MS,
+  windowMs: RATE_WINDOW_MS,
+})
 
 export type SearchResultItem = {
   id: string
@@ -50,14 +41,22 @@ const MIN_QUERY_LENGTH = 2
 const PER_TYPE_LIMIT = 6
 
 export async function GET(request: Request) {
-  const ip =
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-    request.headers.get('x-real-ip') ??
-    'unknown'
+  const ip = getTrustedClientIPAddress(request)
+  const rateLimitDecision = searchRateLimiter.check(ip)
 
-  if (isRateLimited(ip)) {
-    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+  if (rateLimitDecision.limited) {
+    return NextResponse.json(
+      { error: 'Too many requests' },
+      {
+        headers: {
+          'Retry-After': String(rateLimitDecision.retryAfterSeconds),
+        },
+        status: 429,
+      },
+    )
   }
+
+  searchRateLimiter.record(ip)
 
   const { searchParams } = new URL(request.url)
   const query = searchParams.get('q')?.trim() ?? ''
@@ -112,16 +111,12 @@ export async function GET(request: Request) {
         ],
       },
     }),
-    payload.find({
-      collection: 'reviews',
+    findPublicReviews(payload, {
       depth: 0,
       limit: PER_TYPE_LIMIT,
       select: { id: true, title: true, slug: true, reviewTitle: true, reviewerName: true },
       where: {
-        and: [
-          ...publishedFilter,
-          { or: [{ title: textLike }, { reviewTitle: textLike }, { reviewerName: textLike }] },
-        ],
+        and: [{ or: [{ title: textLike }, { reviewTitle: textLike }, { reviewerName: textLike }] }],
       },
     }),
   ])

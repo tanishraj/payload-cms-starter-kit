@@ -31,6 +31,25 @@ const runModeration = ({
   } as never)
 
 describe('public Review moderation', () => {
+  it('keeps the source submission system-owned and immutable', () => {
+    const moderationGroup = Reviews.fields.find(
+      (field) => 'type' in field && field.type === 'collapsible' && field.label === 'Moderation',
+    )
+    const sourceSubmission =
+      moderationGroup && 'fields' in moderationGroup
+        ? moderationGroup.fields.find(
+            (field) => 'name' in field && field.name === 'sourceSubmission',
+          )
+        : undefined
+
+    if (!sourceSubmission || !('access' in sourceSubmission) || !sourceSubmission.access) {
+      throw new Error('Expected sourceSubmission field access.')
+    }
+
+    expect(sourceSubmission.access.create?.({} as never)).toBe(false)
+    expect(sourceSubmission.access.update?.({} as never)).toBe(false)
+  })
+
   it('rejects untrusted writes to automated moderation and publication metadata fields', () => {
     const serialized = JSON.stringify(Reviews.fields)
 

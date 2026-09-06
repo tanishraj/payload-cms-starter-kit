@@ -4,29 +4,54 @@ import { tmpdir } from 'node:os'
 
 import { MongoMemoryReplSet } from 'mongodb-memory-server'
 
+import { assertSafeTestDatabaseURI } from './testDatabaseSafety'
+
+export const MEMORY_TEST_DATABASE_NAME = 'payload-memory_test'
+
 export async function createTestMongoServer(): Promise<{
   stop: () => Promise<void>
   uri: string
 }> {
   const downloadDir = mkdtempSync(join(tmpdir(), 'payload-mongodb-binary-'))
-  const server = await MongoMemoryReplSet.create({
-    binary: {
-      downloadDir,
-    },
-    replSet: {
-      count: 1,
-      storageEngine: 'wiredTiger',
-    },
-  })
+  let server: MongoMemoryReplSet
 
-  return {
-    stop: async () => {
+  try {
+    server = await MongoMemoryReplSet.create({
+      binary: {
+        downloadDir,
+        version: '8.0.29',
+      },
+      replSet: {
+        count: 1,
+        storageEngine: 'wiredTiger',
+      },
+    })
+  } catch (error) {
+    rmSync(downloadDir, {
+      force: true,
+      recursive: true,
+    })
+    throw error
+  }
+
+  const stop = async (): Promise<void> => {
+    try {
       await server.stop()
+    } finally {
       rmSync(downloadDir, {
         force: true,
         recursive: true,
       })
-    },
-    uri: server.getUri(),
+    }
+  }
+
+  try {
+    const uri = server.getUri(MEMORY_TEST_DATABASE_NAME)
+    assertSafeTestDatabaseURI(uri)
+
+    return { stop, uri }
+  } catch (error) {
+    await stop()
+    throw error
   }
 }
