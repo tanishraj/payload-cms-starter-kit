@@ -38,6 +38,8 @@ export const createPageRecipeLayout = (recipe: PageRecipeID, title: string): Pag
     {
       appearance: { background: 'none', border: 'none' },
       blockType: 'pageHeader',
+      contentAlignment: 'left',
+      size: 'default',
       title: title.trim(),
       topContent: 'eyebrow',
       variant: 'minimal',

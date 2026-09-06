@@ -491,4 +491,61 @@ describe('live-preview page block renderer', () => {
     expect(html).toContain('data-image-mosaic-album-interaction="static"')
     expect(html).not.toContain('Unselected album')
   })
+
+  it('forwards canonical section fields and compatibility aliases through live preview', () => {
+    const media = {
+      alt: 'Campus learning',
+      height: 900,
+      id: 'campus-learning',
+      mimeType: 'image/jpeg',
+      url: '/media/campus-learning.jpg',
+      width: 1600,
+    }
+    const layout = [
+      {
+        actions: [{ label: 'Canonical action', linkType: 'custom', url: '/canonical' }],
+        blockType: 'mediaCarousel',
+        contentAlignment: 'right',
+        eyebrow: 'Campus media',
+        footerActions: [{ label: 'Media footer', linkType: 'custom', url: '/media-footer' }],
+        items: [{ media, title: 'Learning spaces' }],
+        sectionActions: [{ label: 'Legacy action', linkType: 'custom', url: '/legacy' }],
+        title: 'Explore campus',
+      },
+      {
+        actions: [{ label: 'Meet our alumni', linkType: 'custom', url: '/alumni' }],
+        blockType: 'testimonialSpotlight',
+        footerActions: [
+          { label: 'Testimonial footer', linkType: 'custom', url: '/testimonial-footer' },
+        ],
+        image: media,
+        personName: 'Alex Morgan',
+        sectionContentAlignment: 'right',
+        sectionEyebrow: 'Alumni story',
+        sectionTitle: 'Where graduates lead',
+        title: 'A rigorous and humane education',
+      },
+    ] as unknown as NonNullable<Page['layout']>
+    const html = renderToStaticMarkup(
+      renderLivePreviewPageBlocks(
+        layout,
+        {
+          feedPagesBySize: {},
+          ratingDistribution: { average: 0, count: 0, counts: [0, 0, 0, 0, 0] },
+        },
+        EMPTY_NEWS_EVENTS_PREVIEW_SNAPSHOT,
+        [],
+        [],
+      ),
+    )
+
+    expect(html).toContain('Campus media')
+    expect(html).toContain('href="/canonical"')
+    expect(html).not.toContain('href="/legacy"')
+    expect(html).toContain('href="/media-footer"')
+    expect(html).toContain('data-testimonial-spotlight-section-alignment="right"')
+    expect(html).toContain('Alumni story')
+    expect(html).toContain('href="/alumni"')
+    expect(html).toContain('href="/testimonial-footer"')
+  })
 })
