@@ -3745,7 +3745,7 @@ export interface NewsEventsHighlightsBlock {
   title?: string | null;
   description?: string | null;
   /**
-   * Limit the carousel to selected active classifications. Leave empty to include all active classifications. Selection order does not change chronological slide order.
+   * Limit the carousel to selected active Event classifications. Leave empty to include all active Event classifications. Up to three featured Events appear first, followed by three automatic upcoming Events.
    */
   classifications?: (string | NewsEventClassification)[] | null;
   actions?:
@@ -3808,11 +3808,10 @@ export interface NewsEventsHighlightsBlock {
         id?: string | null;
       }[]
     | null;
-  itemCount: number;
   autoplay?: boolean | null;
   carouselControlsPosition: 'bottom' | 'top';
   /**
-   * Optional message shown when there are no News & Events entries.
+   * Optional message shown when there are no eligible Events.
    */
   emptyStateMessage?: string | null;
   imagePositionOverride: 'item' | 'center' | 'top' | 'bottom' | 'left' | 'right';
@@ -10489,7 +10488,6 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  itemCount?: T;
   autoplay?: T;
   carouselControlsPosition?: T;
   emptyStateMessage?: T;

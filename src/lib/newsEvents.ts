@@ -7,6 +7,10 @@ import { cache } from 'react'
 
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 import {
+  NEWS_EVENTS_HIGHLIGHTS_FEATURED_LIMIT,
+  NEWS_EVENTS_HIGHLIGHTS_UPCOMING_LIMIT,
+} from '@/blocks/NewsEventsHighlights/newsEventsHighlightsShared'
+import {
   isNewsEventsTabsItemsPerTab,
   NEWS_EVENTS_TABS_MAX_CLASSIFICATIONS,
   type NewsEventsTabsItemsPerTab,
@@ -49,6 +53,7 @@ type NewsEventCardRecord = Pick<
   | 'eventEnd'
   | 'eventStart'
   | 'excerpt'
+  | 'featuredInHighlights'
   | 'featuredImage'
   | 'featuredImagePosition'
   | 'id'
@@ -67,6 +72,7 @@ const cardSelect = {
   eventEnd: true,
   eventStart: true,
   excerpt: true,
+  featuredInHighlights: true,
   featuredImage: true,
   featuredImagePosition: true,
   primaryCategory: true,
@@ -327,6 +333,23 @@ const classificationScopeWhere = (
   }
 }
 
+const uniqueNewsEventRecords = (...groups: NewsEventCardRecord[][]): NewsEventCardRecord[] => {
+  const seen = new Set<string>()
+
+  return groups.flat().filter((record) => {
+    const id = String(record.id)
+    if (seen.has(id)) return false
+    seen.add(id)
+    return true
+  })
+}
+
+const toPublicNewsEventCards = (
+  records: NewsEventCardRecord[],
+  nowISO: string,
+  timeZone: SiteTimeZone,
+): PublicNewsEventCard[] => records.map((entry) => toPublicNewsEventCard(entry, nowISO, timeZone))
+
 async function fetchMixedNewsEventSources(
   payload: Pick<NewsEventsPayload, 'find'>,
   {
@@ -424,17 +447,14 @@ export async function fetchNewsEventsHighlights(
   payload: Pick<NewsEventsPayload, 'find'>,
   {
     classificationIDs = [],
-    limit,
     nowISO,
     timeZone = DEFAULT_SITE_TIME_ZONE,
   }: {
     classificationIDs?: readonly string[]
-    limit: number
     nowISO: string
     timeZone?: SiteTimeZone
   },
 ): Promise<PublicNewsEventCard[]> {
-  const resolvedLimit = normalizeHighlightsItemCount(limit)
   const requestedIDs = [...new Set(classificationIDs.map((id) => id.trim()).filter(Boolean))]
   const classifications =
     requestedIDs.length > 0
@@ -444,14 +464,53 @@ export async function fetchNewsEventsHighlights(
   if (requestedIDs.length > 0 && classifications.length !== requestedIDs.length) return []
   if (classifications.length === 0) return []
 
-  const { events, news } = await fetchMixedNewsEventSources(payload, {
-    classifications,
-    limit: resolvedLimit,
-    nowISO,
-    timeZone,
-  })
+  const eventWhere = classificationScopeWhere(
+    classifications.filter(({ behavior }) => behavior === 'event'),
+  )
+  if (!eventWhere) return []
 
-  return interleaveNewsEvents(news, events, resolvedLimit)
+  const eligibilityWhere = currentOrUpcomingEventWhere(nowISO, timeZone)
+  const [featuredResult, upcomingResult] = await Promise.all([
+    payload.find({
+      collection: 'news-events',
+      depth: 1,
+      limit: NEWS_EVENTS_HIGHLIGHTS_FEATURED_LIMIT,
+      overrideAccess: true,
+      select: cardSelect,
+      sort: ['eventStart', 'id'],
+      where: {
+        and: [
+          ...publishedWhere,
+          eventWhere,
+          eligibilityWhere,
+          { featuredInHighlights: { equals: true } },
+        ],
+      },
+    }),
+    payload.find({
+      collection: 'news-events',
+      depth: 1,
+      limit: NEWS_EVENTS_HIGHLIGHTS_UPCOMING_LIMIT,
+      overrideAccess: true,
+      select: cardSelect,
+      sort: ['eventStart', 'id'],
+      where: {
+        and: [
+          ...publishedWhere,
+          eventWhere,
+          eligibilityWhere,
+          { featuredInHighlights: { not_equals: true } },
+        ],
+      },
+    }),
+  ])
+
+  const records = uniqueNewsEventRecords(
+    featuredResult.docs as NewsEventCardRecord[],
+    upcomingResult.docs as NewsEventCardRecord[],
+  )
+
+  return toPublicNewsEventCards(records, nowISO, timeZone)
 }
 
 export async function fetchNewsEventGroups(
@@ -683,14 +742,13 @@ export async function fetchNewsEventBySlug(
 const loadPayload = cache(async () => getPayload({ config: configPromise }))
 
 export const getNewsEventsHighlights = cache(
-  async (classificationIDs: readonly string[], limit: number, nowISO: string) => {
+  async (classificationIDs: readonly string[], nowISO: string) => {
     const payload = await loadPayload()
     const timeZone = await getSiteTimeZone()
 
     try {
       return await fetchNewsEventsHighlights(payload, {
         classificationIDs,
-        limit,
         nowISO,
         timeZone,
       })
