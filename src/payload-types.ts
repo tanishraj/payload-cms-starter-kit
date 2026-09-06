@@ -331,6 +331,9 @@ export interface PageHeaderBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -361,6 +364,9 @@ export interface PageHeaderBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -544,6 +550,9 @@ export interface HeroBannerBlock {
         label: string;
         linkType?: ('page' | 'custom') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -807,6 +816,9 @@ export interface AboutSectionBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -837,6 +849,9 @@ export interface AboutSectionBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -902,6 +917,9 @@ export interface FeatureSpotlightBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -932,6 +950,9 @@ export interface FeatureSpotlightBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -990,6 +1011,9 @@ export interface ContentHighlightsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1020,6 +1044,9 @@ export interface ContentHighlightsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1065,6 +1092,9 @@ export interface ContentHighlightsBlock {
           label: string;
           linkType?: ('page' | 'custom' | 'file') | null;
           page?: (string | null) | Page;
+          /**
+           * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+           */
           url?: string | null;
           openInNewTab?: boolean | null;
           /**
@@ -1146,6 +1176,9 @@ export interface AcademicProgrammesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1239,6 +1272,9 @@ export interface AcademicProgrammesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1323,6 +1359,9 @@ export interface NewsEventsTabsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1353,6 +1392,9 @@ export interface NewsEventsTabsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1494,6 +1536,9 @@ export interface CalendarBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1524,6 +1569,9 @@ export interface CalendarBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1561,6 +1609,9 @@ export interface CalendarBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1627,6 +1678,9 @@ export interface AnnualCalendarBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1657,6 +1711,9 @@ export interface AnnualCalendarBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1706,6 +1763,9 @@ export interface AnnualCalendarBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1768,6 +1828,9 @@ export interface DepartmentProfilesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1824,6 +1887,9 @@ export interface DepartmentProfilesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1941,6 +2007,9 @@ export interface GalleryAlbumTabsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1989,6 +2058,9 @@ export interface GalleryAlbumTabsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2081,6 +2153,9 @@ export interface QaAccordionBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2111,6 +2186,9 @@ export interface QaAccordionBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2171,6 +2249,9 @@ export interface QaAccordionBlock {
             label: string;
             linkType?: ('page' | 'custom' | 'file') | null;
             page?: (string | null) | Page;
+            /**
+             * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+             */
             url?: string | null;
             openInNewTab?: boolean | null;
             /**
@@ -2263,6 +2344,9 @@ export interface TestimonialSpotlightBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2300,6 +2384,9 @@ export interface TestimonialSpotlightBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2368,6 +2455,9 @@ export interface AccreditationCardsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2420,6 +2510,9 @@ export interface AccreditationCardsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2499,6 +2592,9 @@ export interface BannerCtaBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2529,6 +2625,9 @@ export interface BannerCtaBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2600,6 +2699,9 @@ export interface Contact24Block {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2630,6 +2732,9 @@ export interface Contact24Block {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2735,6 +2840,9 @@ export interface DownloadListBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2817,6 +2925,9 @@ export interface DownloadListBlock {
               label: string;
               linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               /**
@@ -2869,6 +2980,9 @@ export interface DownloadListBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2985,6 +3099,9 @@ export interface NewsGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3015,6 +3132,9 @@ export interface NewsGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3112,6 +3232,9 @@ export interface Cta39Block {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3142,6 +3265,9 @@ export interface Cta39Block {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3222,6 +3348,9 @@ export interface HeroCarouselBlock {
               label: string;
               linkType?: ('page' | 'custom') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               /**
@@ -3285,6 +3414,9 @@ export interface GalleryCoverflowBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3315,6 +3447,9 @@ export interface GalleryCoverflowBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3377,6 +3512,9 @@ export interface FeatureMatrixBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3407,6 +3545,9 @@ export interface FeatureMatrixBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3481,6 +3622,9 @@ export interface EditorialReasonsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3523,6 +3667,9 @@ export interface EditorialReasonsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3608,6 +3755,9 @@ export interface LeadershipProfilesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3666,6 +3816,9 @@ export interface LeadershipProfilesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3753,6 +3906,9 @@ export interface NewsEventsHighlightsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3783,6 +3939,9 @@ export interface NewsEventsHighlightsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3856,6 +4015,9 @@ export interface ProfileCarouselBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3886,6 +4048,9 @@ export interface ProfileCarouselBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3968,6 +4133,9 @@ export interface GalleryShowcaseBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3998,6 +4166,9 @@ export interface GalleryShowcaseBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4057,6 +4228,9 @@ export interface EventGalleryBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4096,6 +4270,9 @@ export interface EventGalleryBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4176,6 +4353,9 @@ export interface ImageMosaicBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4206,6 +4386,9 @@ export interface ImageMosaicBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4242,6 +4425,9 @@ export interface ImageMosaicBlock {
               label: string;
               linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               /**
@@ -4337,6 +4523,9 @@ export interface StudentExperienceBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4393,6 +4582,9 @@ export interface StudentExperienceBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4448,6 +4640,9 @@ export interface RatingSpotlightBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4478,6 +4673,9 @@ export interface RatingSpotlightBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4536,6 +4734,9 @@ export interface ReviewFeedBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4569,6 +4770,9 @@ export interface ReviewFeedBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4621,6 +4825,9 @@ export interface ReviewSubmissionBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4651,6 +4858,9 @@ export interface ReviewSubmissionBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4774,6 +4984,9 @@ export interface Contact33Block {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4804,6 +5017,9 @@ export interface Contact33Block {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4863,6 +5079,9 @@ export interface TeamShowcaseBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4893,6 +5112,9 @@ export interface TeamShowcaseBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4960,6 +5182,9 @@ export interface Services21Block {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4990,6 +5215,9 @@ export interface Services21Block {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5054,6 +5282,9 @@ export interface VideoEmbedBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5084,6 +5315,9 @@ export interface VideoEmbedBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5153,6 +5387,9 @@ export interface MediaCarouselBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5183,6 +5420,9 @@ export interface MediaCarouselBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5231,6 +5471,9 @@ export interface MediaCarouselBlock {
               label: string;
               linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               /**
@@ -5295,6 +5538,9 @@ export interface ProgramMatrixBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5325,6 +5571,9 @@ export interface ProgramMatrixBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5369,6 +5618,9 @@ export interface ProgramMatrixBlock {
           label: string;
           linkType?: ('page' | 'custom' | 'file') | null;
           page?: (string | null) | Page;
+          /**
+           * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+           */
           url?: string | null;
           openInNewTab?: boolean | null;
           /**
@@ -5459,6 +5711,9 @@ export interface LogoStripBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5582,6 +5837,9 @@ export interface TimelineBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5631,6 +5889,9 @@ export interface TimelineBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5693,6 +5954,9 @@ export interface IconCardShowcaseBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5763,6 +6027,9 @@ export interface IconCardShowcaseBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5848,6 +6115,9 @@ export interface IconGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5903,6 +6173,9 @@ export interface IconGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6013,6 +6286,9 @@ export interface TabsContentBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6070,6 +6346,9 @@ export interface TabsContentBlock {
               label: string;
               linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               /**
@@ -6103,6 +6382,9 @@ export interface TabsContentBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6171,6 +6453,9 @@ export interface FeeStructureBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6274,6 +6559,9 @@ export interface FeeStructureBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6341,6 +6629,9 @@ export interface PGFeeStructureBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6434,6 +6725,9 @@ export interface PGFeeStructureBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6500,6 +6794,9 @@ export interface BankDetailsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6573,6 +6870,9 @@ export interface BankDetailsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6638,6 +6938,9 @@ export interface NumberedStepsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6668,6 +6971,9 @@ export interface NumberedStepsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6746,6 +7052,9 @@ export interface BentoGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6776,6 +7085,9 @@ export interface BentoGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6854,6 +7166,9 @@ export interface TestimonialGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6901,6 +7216,9 @@ export interface TestimonialGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6959,6 +7277,9 @@ export interface AwardsListBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6989,6 +7310,9 @@ export interface AwardsListBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -7453,6 +7777,9 @@ export interface NewsEvent {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -7647,6 +7974,9 @@ export interface NavigationLink {
   description?: string | null;
   linkType: 'page' | 'custom';
   page?: (string | null) | Page;
+  /**
+   * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+   */
   url?: string | null;
   openInNewTab?: boolean | null;
   /**
@@ -7699,6 +8029,9 @@ export interface HeaderNavbar12Block {
         label: string;
         linkType?: ('page' | 'custom') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         children?:
@@ -7706,6 +8039,9 @@ export interface HeaderNavbar12Block {
               label: string;
               linkType?: ('page' | 'custom') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               id?: string | null;
@@ -7719,6 +8055,9 @@ export interface HeaderNavbar12Block {
         label: string;
         linkType?: ('page' | 'custom') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**

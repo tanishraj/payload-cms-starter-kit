@@ -1308,6 +1308,12 @@
     ],
     "shared": [
       {
+        "exports": [
+          "BlockAnchorWrapper"
+        ],
+        "file": "src/blocks/shared/BlockAnchorWrapper.tsx"
+      },
+      {
         "exports": [],
         "file": "src/blocks/shared/BlockErrorBoundary.tsx"
       },
@@ -1365,6 +1371,17 @@
           "resolveBannerActionPlacement"
         ],
         "file": "src/blocks/shared/bannerCtaPresentation.ts"
+      },
+      {
+        "exports": [
+          "BLOCK_ANCHOR_ID_MAX_LENGTH",
+          "claimBlockAnchorID",
+          "createBlockAnchorField",
+          "normalizeBlockAnchorID",
+          "validateBlockAnchorID",
+          "validateUniqueBlockAnchorIDs"
+        ],
+        "file": "src/blocks/shared/blockAnchor.ts"
       },
       {
         "exports": [
@@ -2145,6 +2162,7 @@
       "src/app/(frontend)/reviews/category/[slug]/page.tsx",
       "src/app/(frontend)/search/SearchInput.tsx",
       "src/app/(frontend)/search/page.tsx",
+      "src/app/(frontend)/template.tsx",
       "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
       "src/app/(payload)/admin/[[...segments]]/page.tsx",
       "src/app/(payload)/api/[...slug]/route.ts",
@@ -2157,7 +2175,7 @@
       "src/app/api/frontend-session/route.ts",
       "src/app/api/news-events-tabs/route.ts",
       "src/app/api/operations/media/reconcile-storage/route.ts",
-      "src/app/api/redirects/route.ts",
+      "src/app/api/public-redirects/route.ts",
       "src/app/api/review-feed/route.ts",
       "src/app/api/search/route.ts",
       "src/app/robots.ts",
@@ -2376,6 +2394,7 @@
       "src/blocks/renderLivePreviewPageBlocks.tsx",
       "src/blocks/renderNewsEventDetailBlocks.tsx",
       "src/blocks/renderPageBlocks.tsx",
+      "src/blocks/shared/BlockAnchorWrapper.tsx",
       "src/blocks/shared/BlockErrorBoundary.tsx",
       "src/blocks/shared/BlockFooterActions.tsx",
       "src/blocks/shared/CalendarPdfDownload.tsx",
@@ -2384,6 +2403,7 @@
       "src/blocks/shared/ScrollableContentTabRail.tsx",
       "src/blocks/shared/bannerCtaFields.ts",
       "src/blocks/shared/bannerCtaPresentation.ts",
+      "src/blocks/shared/blockAnchor.ts",
       "src/blocks/shared/blockAppearance.ts",
       "src/blocks/shared/blockAppearanceFields.ts",
       "src/blocks/shared/blockSpacing.ts",
@@ -2461,6 +2481,7 @@
       "src/components/global/GlobalAnnouncement.tsx",
       "src/components/global/GlobalFooter.tsx",
       "src/components/global/GlobalHeader.tsx",
+      "src/components/global/RouteTransitionScrollGuard.tsx",
       "src/components/global/SearchDialog.tsx",
       "src/components/header/HeaderMobileMenu.tsx",
       "src/components/header/HeaderNavMenu.tsx",
@@ -2688,6 +2709,7 @@
       "tests/int/back-to-top-button.int.spec.tsx",
       "tests/int/bank-details.int.spec.tsx",
       "tests/int/banner-media-overlay.int.spec.tsx",
+      "tests/int/block-anchor-navigation.int.spec.tsx",
       "tests/int/block-appearance-contract.int.spec.ts",
       "tests/int/block-catalog.int.spec.ts",
       "tests/int/block-layout-contracts.int.spec.tsx",
@@ -2847,6 +2869,7 @@
       "tests/int/reviews.int.spec.ts",
       "tests/int/rich-text-presentation.int.spec.tsx",
       "tests/int/rotating-announcement.int.spec.ts",
+      "tests/int/route-transition-scroll-guard.int.spec.tsx",
       "tests/int/runtime-config.int.spec.ts",
       "tests/int/runtime-import-boundary.int.spec.ts",
       "tests/int/scrollable-content-tab-rail.int.spec.tsx",
@@ -2887,7 +2910,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "e023ec8c93cf435b9819dd7981b2469046cc341029b2e677e16c43207a891353"
+    "sha256": "3aa5f8fb91d586239ae1ea98243ef82fbce146af88cd7eac150863f22755f44f"
   },
   "surfaces": {
     "access": [
@@ -3027,7 +3050,7 @@
       "src/app/api/frontend-session/route.ts",
       "src/app/api/news-events-tabs/route.ts",
       "src/app/api/operations/media/reconcile-storage/route.ts",
-      "src/app/api/redirects/route.ts",
+      "src/app/api/public-redirects/route.ts",
       "src/app/api/review-feed/route.ts",
       "src/app/api/search/route.ts",
       "src/app/robots.ts",
@@ -3057,6 +3080,7 @@
       "tests/int/back-to-top-button.int.spec.tsx",
       "tests/int/bank-details.int.spec.tsx",
       "tests/int/banner-media-overlay.int.spec.tsx",
+      "tests/int/block-anchor-navigation.int.spec.tsx",
       "tests/int/block-appearance-contract.int.spec.ts",
       "tests/int/block-catalog.int.spec.ts",
       "tests/int/block-layout-contracts.int.spec.tsx",
@@ -3215,6 +3239,7 @@
       "tests/int/reviews.int.spec.ts",
       "tests/int/rich-text-presentation.int.spec.tsx",
       "tests/int/rotating-announcement.int.spec.ts",
+      "tests/int/route-transition-scroll-guard.int.spec.tsx",
       "tests/int/runtime-config.int.spec.ts",
       "tests/int/runtime-import-boundary.int.spec.ts",
       "tests/int/scrollable-content-tab-rail.int.spec.tsx",
