@@ -59,6 +59,7 @@ import { TestimonialSpotlightBlock } from '@/blocks/TestimonialSpotlight/config'
 import { TimelineBlock } from '@/blocks/Timeline/config'
 import { VideoEmbedBlock } from '@/blocks/VideoEmbed/config'
 import { createBlockAnchorField } from '@/blocks/shared/blockAnchor'
+import { applyBlockSectionSchemaContract } from '@/blocks/shared/sectionSchemaContract'
 
 export const blockPickerGroups = {
   start: 'Start',
@@ -77,14 +78,18 @@ export type BlockGroupDefinition = Readonly<{
   group: BlockPickerGroup
 }>
 
-const decorateBlock = (block: Block, group: BlockPickerGroup): Block => ({
-  ...block,
-  admin: {
-    ...block.admin,
-    group,
-  },
-  fields: [...block.fields, createBlockAnchorField()],
-})
+const decorateBlock = (block: Block, group: BlockPickerGroup): Block => {
+  const normalizedBlock = applyBlockSectionSchemaContract(block)
+
+  return {
+    ...normalizedBlock,
+    admin: {
+      ...normalizedBlock.admin,
+      group,
+    },
+    fields: [...normalizedBlock.fields, createBlockAnchorField()],
+  }
+}
 
 export const buildBlockRegistry = (groups: readonly BlockGroupDefinition[]): Block[] => {
   const slugs = new Set<string>()
