@@ -1,5 +1,11 @@
 export const contentIntroClasses = 'flex max-w-3xl flex-col gap-4'
 
+export const sectionIntroAlignmentClasses = {
+  left: 'items-start text-left',
+  center: 'mx-auto items-center text-center',
+  right: 'ml-auto items-end text-right',
+} as const
+
 export const contentSectionHeadingClasses =
   'font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl'
 

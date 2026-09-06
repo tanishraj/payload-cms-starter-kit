@@ -333,7 +333,11 @@ export function StudentExperienceBlockComponent({
           })}
         </div>
 
-        <BlockFooterActions actions={footerActions} className="mt-0" />
+        <BlockFooterActions
+          actions={footerActions}
+          alignment={resolvedAlignment}
+          className="mt-0"
+        />
       </div>
     </section>
   )

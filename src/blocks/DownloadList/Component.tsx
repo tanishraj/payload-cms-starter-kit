@@ -8,6 +8,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import { sectionIntroAlignmentClasses } from '@/blocks/shared/contentStyles'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -50,7 +51,7 @@ type DownloadListBlockLike = {
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   columns?: DownloadGridColumns | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   description?: string | null
   documentIconSize?: DownloadDocumentIconSize | null
   displayMode?: DownloadDisplayMode | null
@@ -127,7 +128,7 @@ export function DownloadListBlockComponent({
   if (validDownloads.length === 0) return null
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
-  const isCenter = (contentAlignment ?? 'left') === 'center'
+  const resolvedContentAlignment = contentAlignment ?? 'left'
   const resolvedActions = resolveCmsActions(actions)
   const resolvedAccentTitle = accentTitle?.trim() || undefined
   const resolvedSectionLayout = sectionLayout === 'split' ? 'split' : 'stacked'
@@ -196,7 +197,7 @@ export function DownloadListBlockComponent({
             <div
               className={cn(
                 'flex max-w-3xl flex-col gap-4',
-                isCenter ? 'mx-auto items-center text-center' : 'items-start text-left',
+                sectionIntroAlignmentClasses[resolvedContentAlignment],
                 usesSplitSection &&
                   resolvedIntroPosition === 'right' &&
                   'lg:col-start-2 lg:row-start-1',
@@ -228,7 +229,7 @@ export function DownloadListBlockComponent({
               ) : null}
               {resolvedActions.length > 0 ? (
                 <div className="mt-2">
-                  <ContentActions actions={resolvedActions} />
+                  <ContentActions actions={resolvedActions} alignment={resolvedContentAlignment} />
                 </div>
               ) : null}
             </div>
@@ -255,7 +256,7 @@ export function DownloadListBlockComponent({
             />
           </div>
         </div>
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
       </div>
     </section>
   )

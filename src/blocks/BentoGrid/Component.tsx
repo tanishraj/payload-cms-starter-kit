@@ -13,7 +13,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
-import { ContentActions } from '@/components/ContentActions'
+import { SectionIntro } from '@/blocks/shared/SectionIntro'
 import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
@@ -37,7 +37,7 @@ type BentoGridBlockLike = {
   accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   description?: string | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
@@ -177,7 +177,6 @@ export function BentoGridBlockComponent({
 
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const { className: appearanceClassName } = appearanceClasses
-  const isCenter = (contentAlignment ?? 'center') === 'center'
   const resolvedActions = resolveCmsActions(actions)
   const sectionBackground: BlockBackground = appearanceClasses.background
   const resolvedAccentTitle = accentTitle?.trim() || undefined
@@ -187,38 +186,16 @@ export function BentoGridBlockComponent({
       className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
     >
       <div className={regularBlockContainerClasses}>
-        {eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0 ? (
-          <div
-            className={cn(
-              'mb-12 flex flex-col gap-4',
-              isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
-            )}
-          >
-            {eyebrow?.trim() ? (
-              <SectionEyebrow surface={sectionBackground}>{eyebrow.trim()}</SectionEyebrow>
-            ) : null}
-            {title?.trim() ? (
-              <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-                {resolvedAccentTitle ? (
-                  <>
-                    <span className="block font-[inherit]">{title.trim()}</span>
-                    <em className="block font-[inherit]">{resolvedAccentTitle}</em>
-                  </>
-                ) : (
-                  title.trim()
-                )}
-              </h2>
-            ) : null}
-            {description?.trim() ? (
-              <p className="text-base leading-7 text-current/70">{description.trim()}</p>
-            ) : null}
-            {resolvedActions.length > 0 ? (
-              <div className="mt-2">
-                <ContentActions actions={resolvedActions} />
-              </div>
-            ) : null}
-          </div>
-        ) : null}
+        <SectionIntro
+          accentTitle={resolvedAccentTitle}
+          actions={resolvedActions}
+          alignment={contentAlignment ?? 'center'}
+          className="mb-12"
+          description={description}
+          eyebrow={eyebrow}
+          surface={sectionBackground}
+          title={title}
+        />
 
         <div className="grid auto-rows-fr grid-cols-1 gap-4 md:grid-cols-3">
           {validItems.map((item, index) => (
@@ -227,7 +204,7 @@ export function BentoGridBlockComponent({
             </div>
           ))}
         </div>
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
       </div>
     </section>
   )

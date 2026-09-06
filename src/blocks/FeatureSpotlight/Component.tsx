@@ -19,7 +19,7 @@ type FeatureSpotlightBlockLike = {
   accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   contentVerticalAlignment?: 'bottom' | 'center' | 'top' | null
   description?: string | null
   eyebrow?: string | null
@@ -118,7 +118,9 @@ export function FeatureSpotlightBlockComponent({
     ? 'max-w-xl text-left'
     : resolvedContentAlignment === 'left'
       ? 'max-w-2xl items-start text-left'
-      : 'mx-auto max-w-2xl items-center text-center'
+      : resolvedContentAlignment === 'right'
+        ? 'ml-auto max-w-2xl items-end text-right'
+        : 'mx-auto max-w-2xl items-center text-center'
   const contentVerticalAlignmentClass =
     contentVerticalAlignmentClasses[resolvedContentVerticalAlignment]
   const filledSectionPaddingClasses =
@@ -145,9 +147,7 @@ export function FeatureSpotlightBlockComponent({
       )}
     >
       {eyebrow ? (
-        <SectionEyebrow surface={appearance?.background ?? 'none'}>
-          {eyebrow}
-        </SectionEyebrow>
+        <SectionEyebrow surface={appearance?.background ?? 'none'}>{eyebrow}</SectionEyebrow>
       ) : null}
       <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
         {resolvedAccentTitle ? (
@@ -185,33 +185,44 @@ export function FeatureSpotlightBlockComponent({
     >
       {renderAsEdgeToEdge ? (
         <>
-        <div
-          className={cn(
-            'grid items-stretch gap-8 md:grid-cols-2 md:gap-0',
-            edgeLayoutMinHeightClasses[resolvedSize],
-          )}
-        >
-          {renderAsSplit ? (
-            <div
-              className={cn(
-                order.media,
-                'relative aspect-4/3 overflow-hidden md:min-h-full md:aspect-auto',
-                edgeMediaMinHeightClasses[resolvedSize],
-              )}
-              data-feature-spotlight-media-frame="edgeToEdge"
-            >
-              <Image
-                fill
-                alt={media?.alt ?? ''}
-                className={cn('object-cover', objectPositionClasses[resolvedImagePosition])}
-                src={media?.src ?? ''}
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-          ) : null}
-          <div className={cn(order.content)}>
-            {resolvedPosition === 'right' ? (
-              <div className="ml-auto h-full w-full max-w-[calc(var(--breakpoint-2xl)/2)] pl-4">
+          <div
+            className={cn(
+              'grid items-stretch gap-8 md:grid-cols-2 md:gap-0',
+              edgeLayoutMinHeightClasses[resolvedSize],
+            )}
+          >
+            {renderAsSplit ? (
+              <div
+                className={cn(
+                  order.media,
+                  'relative aspect-4/3 overflow-hidden md:min-h-full md:aspect-auto',
+                  edgeMediaMinHeightClasses[resolvedSize],
+                )}
+                data-feature-spotlight-media-frame="edgeToEdge"
+              >
+                <Image
+                  fill
+                  alt={media?.alt ?? ''}
+                  className={cn('object-cover', objectPositionClasses[resolvedImagePosition])}
+                  src={media?.src ?? ''}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            ) : null}
+            <div className={cn(order.content)}>
+              {resolvedPosition === 'right' ? (
+                <div className="ml-auto h-full w-full max-w-[calc(var(--breakpoint-2xl)/2)] pl-4">
+                  <div
+                    className={cn(
+                      'flex min-h-full flex-col',
+                      contentVerticalAlignmentClass,
+                      splitContentPaddingClasses,
+                    )}
+                  >
+                    {content}
+                  </div>
+                </div>
+              ) : (
                 <div
                   className={cn(
                     'flex min-h-full flex-col',
@@ -221,21 +232,10 @@ export function FeatureSpotlightBlockComponent({
                 >
                   {content}
                 </div>
-              </div>
-            ) : (
-              <div
-                className={cn(
-                  'flex min-h-full flex-col',
-                  contentVerticalAlignmentClass,
-                  splitContentPaddingClasses,
-                )}
-              >
-                {content}
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-        <BlockFooterActions actions={footerActions} />
+          <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
         </>
       ) : renderAsContainedFill ? (
         <div className={regularBlockContainerClasses}>
@@ -268,7 +268,7 @@ export function FeatureSpotlightBlockComponent({
               </div>
             </div>
           </div>
-          <BlockFooterActions actions={footerActions} />
+          <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
         </div>
       ) : (
         <div
@@ -303,7 +303,7 @@ export function FeatureSpotlightBlockComponent({
           ) : (
             <div className="block">{content}</div>
           )}
-          <BlockFooterActions actions={footerActions} />
+          <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
         </div>
       )}
     </section>

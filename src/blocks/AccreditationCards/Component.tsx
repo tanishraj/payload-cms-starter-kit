@@ -315,7 +315,7 @@ export function AccreditationCardsBlockComponent({
           </div>
         </div>
 
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={resolvedAlignment} />
       </div>
     </section>
   )

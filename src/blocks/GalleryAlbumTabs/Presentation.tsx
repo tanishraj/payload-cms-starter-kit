@@ -25,7 +25,7 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import type { EventGalleryAlbum, EventGalleryDisplayOrder } from '@/lib/eventGalleryShared'
 import { cn } from '@/lib/utils'
 
-type GalleryAlbumTabsAlignment = 'center' | 'left'
+type GalleryAlbumTabsAlignment = 'center' | 'left' | 'right'
 type GalleryAlbumTabsHeaderActionAlignment = 'bottom' | 'center' | 'top'
 
 export type GalleryAlbumTabsBlockLike = {
@@ -55,6 +55,7 @@ type GalleryAlbumTabsBlockPresentationProps = GalleryAlbumTabsBlockLike & {
 const alignmentClasses = {
   center: 'mx-auto items-center text-center',
   left: 'items-start text-left',
+  right: 'ml-auto items-end text-right',
 } as const
 
 export function GalleryAlbumTabsBlockPresentation({
@@ -148,7 +149,7 @@ export function GalleryAlbumTabsBlockPresentation({
             {resolvedActions.length > 0 ? (
               <ContentActions
                 actions={resolvedActions}
-                alignment={resolvedAlignment === 'center' ? 'center' : 'left'}
+                alignment={resolvedAlignment}
                 className="md:w-auto md:shrink-0"
                 data-gallery-album-tabs-actions="true"
               />
@@ -170,10 +171,7 @@ export function GalleryAlbumTabsBlockPresentation({
           </p>
         )}
 
-        <BlockFooterActions
-          actions={footerActions}
-          alignment={resolvedAlignment === 'center' ? 'center' : 'left'}
-        />
+        <BlockFooterActions actions={footerActions} alignment={resolvedAlignment} />
       </div>
     </section>
   )

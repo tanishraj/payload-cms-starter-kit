@@ -10,7 +10,7 @@ export type ReviewFeedBlockLike = {
   accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   description?: string | null
   emptyStateMessage?: string | null
   eyebrow?: string | null
@@ -54,7 +54,11 @@ export function ReviewFeedBlockPresentation({
     <>
       <ReviewFeed
         accentTitle={accentTitle}
-        actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
+        actions={
+          resolvedActions.length > 0 ? (
+            <ContentActions actions={resolvedActions} alignment={contentAlignment ?? 'center'} />
+          ) : undefined
+        }
         appearance={appearance}
         contentAlignment={contentAlignment}
         description={description?.trim()}
@@ -67,7 +71,7 @@ export function ReviewFeedBlockPresentation({
         summary={summary}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
     </>
   )
 }

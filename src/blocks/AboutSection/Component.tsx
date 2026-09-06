@@ -12,6 +12,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import { sectionIntroAlignmentClasses } from '@/blocks/shared/contentStyles'
 import { ContentActions } from '@/components/ContentActions'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -49,7 +50,7 @@ type AboutSectionBlockLike = {
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   body?: string | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
   title?: string | null
@@ -287,13 +288,14 @@ export function AboutSectionBlockComponent({
   const renderAsContainedFill = renderAsSplit && resolvedMediaFillMode === 'containedFill'
   const renderAsEdgeToEdge = renderAsSplit && resolvedMediaFillMode === 'edgeToEdge'
   const splitOrder = splitOrderClasses[resolvedImageSide]
-  const isCenter = (contentAlignment ?? 'center') === 'center'
+  const resolvedContentAlignment = contentAlignment ?? 'center'
+  const isCenter = resolvedContentAlignment === 'center'
 
   const textContent = (
     <div
       className={cn(
         'flex flex-col gap-5',
-        isCenter && resolvedVariant !== 'split' && 'items-center text-center',
+        resolvedVariant !== 'split' && sectionIntroAlignmentClasses[resolvedContentAlignment],
       )}
     >
       {eyebrow?.trim() ? (
@@ -321,7 +323,7 @@ export function AboutSectionBlockComponent({
       ) : null}
       {resolvedActions.length > 0 ? (
         <div className="mt-2">
-          <ContentActions actions={resolvedActions} />
+          <ContentActions actions={resolvedActions} alignment={resolvedContentAlignment} />
         </div>
       ) : null}
       {resolvedStats.length > 0 ? <StatsRow stats={resolvedStats} /> : null}
@@ -439,7 +441,7 @@ export function AboutSectionBlockComponent({
           </div>
           {hasFooterActions ? (
             <div className={regularBlockContainerClasses}>
-              <BlockFooterActions actions={footerActions} />
+              <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
             </div>
           ) : null}
         </>
@@ -462,7 +464,7 @@ export function AboutSectionBlockComponent({
               <div className="w-full max-w-xl text-left">{textContent}</div>
             </div>
           </div>
-          <BlockFooterActions actions={footerActions} />
+          <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
         </div>
       ) : (
         <div className={regularBlockContainerClasses}>
@@ -498,7 +500,10 @@ export function AboutSectionBlockComponent({
                 ) : null}
                 {resolvedActions.length > 0 ? (
                   <div className="mt-2">
-                    <ContentActions actions={resolvedActions} />
+                    <ContentActions
+                      actions={resolvedActions}
+                      alignment={resolvedContentAlignment}
+                    />
                   </div>
                 ) : null}
                 {resolvedStats.length > 0 ? (
@@ -524,7 +529,7 @@ export function AboutSectionBlockComponent({
           ) : (
             <div className="mx-auto max-w-3xl">{textContent}</div>
           )}
-          <BlockFooterActions actions={footerActions} />
+          <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
         </div>
       )}
     </section>

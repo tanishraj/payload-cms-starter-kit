@@ -555,9 +555,7 @@ export function ReviewSubmissionBlockComponent({
                     ) : (
                       <span aria-hidden="true" />
                     )}
-                    <p className="shrink-0 text-sm text-current/70">
-                      {bodyCharacterCount}/1000
-                    </p>
+                    <p className="shrink-0 text-sm text-current/70">{bodyCharacterCount}/1000</p>
                   </div>
                   <FieldError>{errors.reviewBody}</FieldError>
                 </Field>
@@ -596,7 +594,7 @@ export function ReviewSubmissionBlockComponent({
             </p>
           )}
         </div>
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
       </div>
     </section>
   )

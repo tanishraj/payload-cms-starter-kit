@@ -4,17 +4,11 @@ import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
-import {
-  contentIntroClasses,
-  contentSectionDescriptionClasses,
-  contentSectionHeadingClasses,
-} from '@/blocks/shared/contentStyles'
+import { SectionIntro } from '@/blocks/shared/SectionIntro'
 import {
   resolveFeeDocumentButtonVariant,
   type ResolvedFeeDocumentDownload,
 } from '@/blocks/shared/FeeDocumentDownload'
-import { ContentActions } from '@/components/ContentActions'
-import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions } from '@/lib/cmsLinks'
 import { getMediaAbsoluteUrl } from '@/lib/media'
 import { cn } from '@/lib/utils'
@@ -51,7 +45,8 @@ export function PGFeeStructureBlockComponent({
   if (!resolvedProgramme || !resolvedSession || categories.length === 0) return null
 
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
-  const alignment = contentAlignment === 'center' ? 'center' : 'left'
+  const alignment =
+    contentAlignment === 'center' || contentAlignment === 'right' ? contentAlignment : 'left'
   const resolvedSize =
     size === 'none' || size === 'compact' || size === 'comfortable' ? size : 'default'
   const resolvedActions = resolveCmsActions(actions)
@@ -71,9 +66,6 @@ export function PGFeeStructureBlockComponent({
         url: fileURL,
       }
     : undefined
-  const hasHeader = Boolean(
-    resolvedEyebrow || resolvedTitle || resolvedDescription || resolvedActions.length,
-  )
 
   return (
     <section
@@ -82,37 +74,15 @@ export function PGFeeStructureBlockComponent({
       data-pg-fee-structure="true"
     >
       <div className={cn(regularBlockContainerClasses, 'flex flex-col gap-8 md:gap-10')}>
-        {hasHeader ? (
-          <div
-            className={cn(
-              contentIntroClasses,
-              alignment === 'center' ? 'mx-auto items-center text-center' : 'items-start text-left',
-            )}
-            data-content-alignment={alignment}
-          >
-            {resolvedEyebrow ? (
-              <SectionEyebrow surface={appearanceClasses.background}>
-                {resolvedEyebrow}
-              </SectionEyebrow>
-            ) : null}
-            {resolvedTitle ? (
-              <h2 className={contentSectionHeadingClasses}>
-                {resolvedAccentTitle ? (
-                  <>
-                    <span className="block">{resolvedTitle}</span>
-                    <em className="block">{resolvedAccentTitle}</em>
-                  </>
-                ) : (
-                  resolvedTitle
-                )}
-              </h2>
-            ) : null}
-            {resolvedDescription ? (
-              <p className={contentSectionDescriptionClasses}>{resolvedDescription}</p>
-            ) : null}
-            <ContentActions actions={resolvedActions} alignment={alignment} />
-          </div>
-        ) : null}
+        <SectionIntro
+          accentTitle={resolvedAccentTitle}
+          actions={resolvedActions}
+          alignment={alignment}
+          description={resolvedDescription}
+          eyebrow={resolvedEyebrow}
+          surface={appearanceClasses.background}
+          title={resolvedTitle}
+        />
 
         <PGFeeStructureClient
           academicSession={resolvedSession}

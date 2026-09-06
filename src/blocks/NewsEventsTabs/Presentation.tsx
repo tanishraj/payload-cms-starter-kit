@@ -30,7 +30,7 @@ import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { createEmptyNewsEventGroups, type PublicNewsEventGroups } from '@/lib/newsEventsShared'
 import { cn } from '@/lib/utils'
 
-type NewsEventsTabsAlignment = 'center' | 'left'
+type NewsEventsTabsAlignment = 'center' | 'left' | 'right'
 type NewsEventsTabsHeaderActionAlignment = 'bottom' | 'center' | 'top'
 
 export type NewsEventsTabsBlockLike = {
@@ -63,6 +63,7 @@ type NewsEventsTabsBlockPresentationProps = NewsEventsTabsBlockLike & {
 const alignmentClasses = {
   left: 'items-start text-left',
   center: 'mx-auto items-center text-center',
+  right: 'ml-auto items-end text-right',
 } as const
 
 export function NewsEventsTabsBlockPresentation({
@@ -171,7 +172,7 @@ export function NewsEventsTabsBlockPresentation({
             {resolvedActions.length > 0 ? (
               <ContentActions
                 actions={resolvedActions}
-                alignment={resolvedAlignment === 'center' ? 'center' : 'left'}
+                alignment={resolvedAlignment}
                 className="md:w-auto md:shrink-0"
                 data-news-events-tabs-actions="true"
               />
@@ -194,10 +195,7 @@ export function NewsEventsTabsBlockPresentation({
           variant={normalizeContentTabVariant(tabVariant)}
         />
 
-        <BlockFooterActions
-          actions={footerActions}
-          alignment={resolvedAlignment === 'center' ? 'center' : 'left'}
-        />
+        <BlockFooterActions actions={footerActions} alignment={resolvedAlignment} />
       </div>
     </section>
   )

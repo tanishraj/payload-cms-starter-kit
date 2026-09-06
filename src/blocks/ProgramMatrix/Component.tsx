@@ -57,7 +57,7 @@ type ProgramMatrixBlockLike = {
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   columns?: ProgramMatrixColumnCount | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   description?: string | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
@@ -282,7 +282,9 @@ export function ProgramMatrixBlockComponent({
               'flex max-w-3xl flex-col gap-4',
               resolvedAlignment === 'center'
                 ? 'mx-auto items-center text-center'
-                : 'items-start text-left',
+                : resolvedAlignment === 'right'
+                  ? 'ml-auto items-end text-right'
+                  : 'items-start text-left',
               usesSplitHeader &&
                 resolvedHeaderPosition === 'right' &&
                 'lg:col-start-2 lg:row-start-1',
@@ -409,7 +411,7 @@ export function ProgramMatrixBlockComponent({
             })}
           </div>
         </div>
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={resolvedAlignment} />
       </div>
     </section>
   )

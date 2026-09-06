@@ -132,7 +132,7 @@ export function Services21BlockComponent({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
     </>
   )
 }

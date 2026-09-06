@@ -410,7 +410,7 @@ export function EditorialReasonsBlockComponent({
             ) : null}
           </div>
         </div>
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
       </div>
     </section>
   )
