@@ -7442,6 +7442,10 @@ export interface NewsEvent {
    */
   eventAllDay?: boolean | null;
   /**
+   * Places this published, non-expired Event before the three automatic upcoming Events. At most three featured Events are shown.
+   */
+  featuredInHighlights?: boolean | null;
+  /**
    * Required only when the selected classification uses Event behavior.
    */
   eventLocation?: string | null;
@@ -12577,6 +12581,7 @@ export interface NewsEventsSelect<T extends boolean = true> {
   eventStart?: T;
   eventEnd?: T;
   eventAllDay?: T;
+  featuredInHighlights?: T;
   eventLocation?: T;
   eventRegistrationAction?:
     | T

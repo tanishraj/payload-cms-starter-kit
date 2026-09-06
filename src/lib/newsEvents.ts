@@ -31,7 +31,12 @@ import {
 } from '@/lib/newsEventsShared'
 import type { NewsEvent, SeoSetting, User } from '@/payload-types'
 import { getSiteTimeZone } from '@/lib/siteTimeZone.server'
-import { DEFAULT_SITE_TIME_ZONE, type SiteTimeZone } from '@/lib/siteTimeZone'
+import {
+  DEFAULT_SITE_TIME_ZONE,
+  getZonedDayBounds,
+  getZonedToday,
+  type SiteTimeZone,
+} from '@/lib/siteTimeZone'
 
 export type NewsEventsPayload = Pick<Payload, 'find' | 'findGlobal' | 'logger'>
 
@@ -232,14 +237,60 @@ const missingEventEndWhere: Where = {
   or: [{ eventEnd: { exists: false } }, { eventEnd: { equals: null } }],
 }
 
-export const currentOrUpcomingEventWhere = (nowISO: string): Where => ({
+const allDayEventWhere: Where = { eventAllDay: { equals: true } }
+const timedEventWhere: Where = {
   or: [
-    { eventEnd: { greater_than_equal: nowISO } },
+    { eventAllDay: { equals: false } },
+    { eventAllDay: { exists: false } },
+    { eventAllDay: { equals: null } },
+  ],
+}
+
+const eventEndingOnOrAfter = (thresholdISO: string): Where => ({
+  or: [
+    { eventEnd: { greater_than_equal: thresholdISO } },
     {
-      and: [missingEventEndWhere, { eventStart: { greater_than_equal: nowISO } }],
+      and: [missingEventEndWhere, { eventStart: { greater_than_equal: thresholdISO } }],
     },
   ],
 })
+
+const eventEndingBefore = (thresholdISO: string): Where => ({
+  or: [
+    { eventEnd: { less_than: thresholdISO } },
+    {
+      and: [missingEventEndWhere, { eventStart: { less_than: thresholdISO } }],
+    },
+  ],
+})
+
+export const currentOrUpcomingEventWhere = (
+  nowISO: string,
+  timeZone: SiteTimeZone = DEFAULT_SITE_TIME_ZONE,
+): Where => {
+  const todayStartISO = getZonedDayBounds(getZonedToday(nowISO, timeZone), timeZone).startISO
+
+  return {
+    or: [
+      { and: [allDayEventWhere, eventEndingOnOrAfter(todayStartISO)] },
+      { and: [timedEventWhere, eventEndingOnOrAfter(nowISO)] },
+    ],
+  }
+}
+
+export const pastEventWhere = (
+  nowISO: string,
+  timeZone: SiteTimeZone = DEFAULT_SITE_TIME_ZONE,
+): Where => {
+  const todayStartISO = getZonedDayBounds(getZonedToday(nowISO, timeZone), timeZone).startISO
+
+  return {
+    or: [
+      { and: [allDayEventWhere, eventEndingBefore(todayStartISO)] },
+      { and: [timedEventWhere, eventEndingBefore(nowISO)] },
+    ],
+  }
+}
 
 const missingClassificationWhere: Where = {
   or: [{ classification: { exists: false } }, { classification: { equals: null } }],
@@ -319,7 +370,7 @@ async function fetchMixedNewsEventSources(
           select: cardSelect,
           sort: ['eventStart', 'id'],
           where: {
-            and: [...publishedWhere, eventWhere, currentOrUpcomingEventWhere(nowISO)],
+            and: [...publishedWhere, eventWhere, currentOrUpcomingEventWhere(nowISO, timeZone)],
           },
         })
       : Promise.resolve({ docs: [] }),
@@ -499,7 +550,7 @@ export async function fetchNewsEventPage(
       and: [
         ...publishedWhere,
         scopeWhere,
-        ...(isEvent ? [currentOrUpcomingEventWhere(nowISO)] : []),
+        ...(isEvent ? [currentOrUpcomingEventWhere(nowISO, timeZone)] : []),
       ],
     },
   })
@@ -585,7 +636,7 @@ export async function fetchNewsGridItems(
   if (storyWhere) classificationWhere.push(storyWhere)
   if (eventWhere) {
     classificationWhere.push({
-      and: [eventWhere, currentOrUpcomingEventWhere(nowISO)],
+      and: [eventWhere, currentOrUpcomingEventWhere(nowISO, timeZone)],
     })
   }
 

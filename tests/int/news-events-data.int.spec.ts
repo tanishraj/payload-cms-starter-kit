@@ -1,10 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import {
+  currentOrUpcomingEventWhere,
   fetchNewsEventGroups,
   fetchNewsEventPage,
   fetchNewsEventPageForScope,
   parseNewsEventsTabsPagination,
+  pastEventWhere,
   resolveActiveNewsEventClassifications,
 } from '@/lib/newsEvents'
 import {
@@ -111,6 +113,41 @@ describe('News & Events public data helpers', () => {
     expect(normalizeHighlightsItemCount(99)).toBe(6)
     expect(normalizeHighlightsItemCount(0)).toBe(1)
     expect(normalizeHighlightsItemCount(undefined)).toBe(3)
+  })
+
+  it('keeps all-day Events eligible through their final site-local calendar day', () => {
+    const nowISO = '2026-08-20T12:00:00.000Z'
+    const todayStartISO = '2026-08-19T18:30:00.000Z'
+
+    expect(currentOrUpcomingEventWhere(nowISO, 'Asia/Kolkata')).toEqual({
+      or: [
+        {
+          and: [
+            { eventAllDay: { equals: true } },
+            {
+              or: [
+                { eventEnd: { greater_than_equal: todayStartISO } },
+                {
+                  and: [
+                    expect.objectContaining({ or: expect.any(Array) }),
+                    { eventStart: { greater_than_equal: todayStartISO } },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          and: [
+            expect.objectContaining({ or: expect.any(Array) }),
+            expect.objectContaining({ or: expect.any(Array) }),
+          ],
+        },
+      ],
+    })
+    expect(JSON.stringify(pastEventWhere(nowISO, 'Asia/Kolkata'))).toContain(
+      `"less_than":"${todayStartISO}"`,
+    )
   })
 
   it('parses a bounded selected-classification pagination scope', () => {
