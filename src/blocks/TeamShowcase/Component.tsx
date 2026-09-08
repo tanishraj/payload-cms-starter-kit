@@ -88,7 +88,7 @@ export function TeamShowcaseBlockComponent({
         members={resolvedMembers}
         size={size ?? undefined}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
     </>
   )
 }

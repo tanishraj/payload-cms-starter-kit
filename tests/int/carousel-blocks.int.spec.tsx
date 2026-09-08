@@ -360,6 +360,69 @@ describe('carousel block schemas', () => {
     expect(html).toContain('data-content-link="true"')
   })
 
+  it('supports explicit action modes and downloadable files in Hero Carousel slides', () => {
+    const [slide] = resolveHeroCarouselSlides([
+      {
+        backgroundImage: { alt: 'Campus', id: 'campus', url: '/campus.jpg' },
+        buttons: [
+          {
+            label: 'Admissions guide',
+            linkType: 'custom',
+            mode: 'link',
+            url: '/admissions',
+            variant: 'secondary',
+          },
+          {
+            file: {
+              alt: 'Programme handbook',
+              filename: 'programme-handbook.pdf',
+              url: '/api/media/file/programme-handbook.pdf',
+            } as never,
+            fileBehavior: 'download',
+            label: 'Download handbook',
+            linkType: 'file',
+            mode: 'button',
+            variant: 'outline',
+          },
+        ],
+        title: 'Campus life',
+      },
+    ])
+
+    expect(slide?.buttons).toEqual([
+      expect.objectContaining({ href: '/admissions', mode: 'link' }),
+      expect.objectContaining({
+        download: 'programme-handbook.pdf',
+        href: '/api/media/file/programme-handbook.pdf',
+        indicator: 'download',
+        mode: 'button',
+      }),
+    ])
+
+    const html = renderToStaticMarkup(
+      <HeroCarouselBlockComponent
+        slides={[
+          {
+            backgroundImage: { alt: 'Campus', id: 'campus', url: '/campus.jpg' },
+            buttons: [
+              {
+                label: 'Admissions guide',
+                linkType: 'custom',
+                mode: 'link',
+                url: '/admissions',
+                variant: 'secondary',
+              },
+            ],
+            title: 'Campus life',
+          },
+        ]}
+      />,
+    )
+
+    expect(html).toContain('data-content-link="true"')
+    expect(html).toContain('href="/admissions"')
+  })
+
   it('renders Gallery Coverflow state and action through the server adapter', () => {
     const images = ['one', 'two', 'three'].map((id) => ({
       image: {

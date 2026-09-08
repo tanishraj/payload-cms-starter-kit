@@ -34,7 +34,7 @@ export type AnnualCalendarBlockLike = AnnualCalendarPeriodInput & {
   calendarPdfLabel?: string | null
   calendarPdfTitle?: string | null
   classifications?: unknown
-  contentAlignment?: 'center' | 'left' | null
+  contentAlignment?: 'center' | 'left' | 'right' | null
   description?: string | null
   emptyStateMessage?: string | null
   eyebrow?: string | null
@@ -53,6 +53,7 @@ type AnnualCalendarBlockPresentationProps = AnnualCalendarBlockLike & {
 const alignmentClasses = {
   center: 'mx-auto items-center text-center',
   left: 'items-start text-left',
+  right: 'ml-auto items-end text-right',
 } as const
 
 export function AnnualCalendarBlockPresentation({
@@ -76,7 +77,8 @@ export function AnnualCalendarBlockPresentation({
 }: AnnualCalendarBlockPresentationProps) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const surface: SectionEyebrowSurface = appearanceClasses.background
-  const alignment = contentAlignment === 'center' ? 'center' : 'left'
+  const alignment =
+    contentAlignment === 'center' || contentAlignment === 'right' ? contentAlignment : 'left'
   const resolvedActions = resolveCmsActions(actions)
   const resolvedEyebrow = eyebrow?.trim()
   const resolvedTitle = title?.trim()

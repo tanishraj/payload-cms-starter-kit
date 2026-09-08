@@ -142,8 +142,8 @@ describe('SNMIH section eyebrows', () => {
     expect(css).toContain("[data-section-eyebrow-surface='lightOverlay']\n  )")
   })
 
-  it.each(regularSectionEyebrowFiles)('%s consumes the shared section eyebrow', (file) => {
-    expect(read(file)).toContain('SectionEyebrow')
+  it.each(regularSectionEyebrowFiles)('%s consumes the shared section eyebrow contract', (file) => {
+    expect(read(file)).toMatch(/Section(?:Eyebrow|Intro)/)
   })
 
   it('does not convert metadata labels into section eyebrows', () => {

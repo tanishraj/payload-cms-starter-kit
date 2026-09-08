@@ -432,7 +432,7 @@ export function QaAccordionBlockComponent({
             </>
           )}
         </div>
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
       </div>
     </section>
   )

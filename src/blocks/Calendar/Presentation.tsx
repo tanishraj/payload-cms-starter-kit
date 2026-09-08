@@ -36,7 +36,7 @@ export type CalendarBlockLike = {
   calendarPdfLabel?: string | null
   calendarPdfTitle?: string | null
   classifications?: unknown
-  contentAlignment?: 'center' | 'left' | null
+  contentAlignment?: 'center' | 'left' | 'right' | null
   description?: string | null
   emptyStateMessage?: string | null
   eyebrow?: string | null
@@ -55,6 +55,7 @@ type CalendarBlockPresentationProps = CalendarBlockLike & {
 const alignmentClasses = {
   center: 'mx-auto items-center text-center',
   left: 'items-start text-left',
+  right: 'ml-auto items-end text-right',
 } as const
 
 export function CalendarBlockPresentation({
@@ -80,7 +81,8 @@ export function CalendarBlockPresentation({
 }: CalendarBlockPresentationProps) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
   const surface: SectionEyebrowSurface = appearanceClasses.background
-  const alignment = contentAlignment === 'center' ? 'center' : 'left'
+  const alignment =
+    contentAlignment === 'center' || contentAlignment === 'right' ? contentAlignment : 'left'
   const resolvedActions = resolveCmsActions(actions)
   const resolvedEyebrow = eyebrow?.trim()
   const resolvedTitle = title?.trim()

@@ -92,7 +92,7 @@ export function FeatureMatrixBlockComponent({
         size={size ?? 'default'}
         title={title}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={resolvedAlignment} />
     </>
   )
 }

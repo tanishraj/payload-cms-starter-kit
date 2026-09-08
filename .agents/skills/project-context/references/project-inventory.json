@@ -1308,6 +1308,12 @@
     ],
     "shared": [
       {
+        "exports": [
+          "BlockAnchorWrapper"
+        ],
+        "file": "src/blocks/shared/BlockAnchorWrapper.tsx"
+      },
+      {
         "exports": [],
         "file": "src/blocks/shared/BlockErrorBoundary.tsx"
       },
@@ -1344,6 +1350,18 @@
       },
       {
         "exports": [
+          "SectionIntro"
+        ],
+        "file": "src/blocks/shared/SectionIntro.tsx"
+      },
+      {
+        "exports": [
+          "SectionShell"
+        ],
+        "file": "src/blocks/shared/SectionShell.tsx"
+      },
+      {
+        "exports": [
           "createBannerActionPlacementField",
           "createBannerContentAlignmentField",
           "createBannerContentWidthField",
@@ -1368,6 +1386,17 @@
       },
       {
         "exports": [
+          "BLOCK_ANCHOR_ID_MAX_LENGTH",
+          "claimBlockAnchorID",
+          "createBlockAnchorField",
+          "normalizeBlockAnchorID",
+          "validateBlockAnchorID",
+          "validateUniqueBlockAnchorIDs"
+        ],
+        "file": "src/blocks/shared/blockAnchor.ts"
+      },
+      {
+        "exports": [
           "normalizeBlockBackground",
           "resolveBlockAppearanceClasses",
           "resolveBlockSurface"
@@ -1379,6 +1408,12 @@
           "createBlockAppearanceFields"
         ],
         "file": "src/blocks/shared/blockAppearanceFields.ts"
+      },
+      {
+        "exports": [
+          "blockSectionProfiles"
+        ],
+        "file": "src/blocks/shared/blockSectionProfiles.ts"
       },
       {
         "exports": [
@@ -1442,7 +1477,8 @@
           "contentItemMetadataClasses",
           "contentItemTitleClasses",
           "contentSectionDescriptionClasses",
-          "contentSectionHeadingClasses"
+          "contentSectionHeadingClasses",
+          "sectionIntroAlignmentClasses"
         ],
         "file": "src/blocks/shared/contentStyles.ts"
       },
@@ -1460,6 +1496,13 @@
           "createIconField"
         ],
         "file": "src/blocks/shared/iconField.ts"
+      },
+      {
+        "exports": [
+          "preferCanonicalActions",
+          "resolveSectionAlignment"
+        ],
+        "file": "src/blocks/shared/legacySectionFields.ts"
       },
       {
         "exports": [
@@ -1499,6 +1542,24 @@
           "resolveLucideIcon"
         ],
         "file": "src/blocks/shared/resolveLucideIcon.ts"
+      },
+      {
+        "exports": [
+          "createFooterActionsField",
+          "createIntroductionActionsField",
+          "createSectionAlignmentField",
+          "createSectionPaddingField",
+          "createSectionThemeFields",
+          "sectionAlignmentOptions",
+          "sectionPaddingOptions"
+        ],
+        "file": "src/blocks/shared/sectionFields.ts"
+      },
+      {
+        "exports": [
+          "applyBlockSectionSchemaContract"
+        ],
+        "file": "src/blocks/shared/sectionSchemaContract.ts"
       },
       {
         "exports": [
@@ -2145,6 +2206,7 @@
       "src/app/(frontend)/reviews/category/[slug]/page.tsx",
       "src/app/(frontend)/search/SearchInput.tsx",
       "src/app/(frontend)/search/page.tsx",
+      "src/app/(frontend)/template.tsx",
       "src/app/(payload)/admin/[[...segments]]/not-found.tsx",
       "src/app/(payload)/admin/[[...segments]]/page.tsx",
       "src/app/(payload)/api/[...slug]/route.ts",
@@ -2157,7 +2219,7 @@
       "src/app/api/frontend-session/route.ts",
       "src/app/api/news-events-tabs/route.ts",
       "src/app/api/operations/media/reconcile-storage/route.ts",
-      "src/app/api/redirects/route.ts",
+      "src/app/api/public-redirects/route.ts",
       "src/app/api/review-feed/route.ts",
       "src/app/api/search/route.ts",
       "src/app/robots.ts",
@@ -2376,16 +2438,21 @@
       "src/blocks/renderLivePreviewPageBlocks.tsx",
       "src/blocks/renderNewsEventDetailBlocks.tsx",
       "src/blocks/renderPageBlocks.tsx",
+      "src/blocks/shared/BlockAnchorWrapper.tsx",
       "src/blocks/shared/BlockErrorBoundary.tsx",
       "src/blocks/shared/BlockFooterActions.tsx",
       "src/blocks/shared/CalendarPdfDownload.tsx",
       "src/blocks/shared/CalendarSidebar.tsx",
       "src/blocks/shared/FeeDocumentDownload.tsx",
       "src/blocks/shared/ScrollableContentTabRail.tsx",
+      "src/blocks/shared/SectionIntro.tsx",
+      "src/blocks/shared/SectionShell.tsx",
       "src/blocks/shared/bannerCtaFields.ts",
       "src/blocks/shared/bannerCtaPresentation.ts",
+      "src/blocks/shared/blockAnchor.ts",
       "src/blocks/shared/blockAppearance.ts",
       "src/blocks/shared/blockAppearanceFields.ts",
+      "src/blocks/shared/blockSectionProfiles.ts",
       "src/blocks/shared/blockSpacing.ts",
       "src/blocks/shared/breadcrumbFields.ts",
       "src/blocks/shared/calendarPdf.ts",
@@ -2396,11 +2463,14 @@
       "src/blocks/shared/contentStyles.ts",
       "src/blocks/shared/contentTabRail.ts",
       "src/blocks/shared/iconField.ts",
+      "src/blocks/shared/legacySectionFields.ts",
       "src/blocks/shared/mediaOverlayFields.ts",
       "src/blocks/shared/mediaOverlayPresentation.ts",
       "src/blocks/shared/overlayDisplayFields.ts",
       "src/blocks/shared/overlayDisplayPresentation.ts",
       "src/blocks/shared/resolveLucideIcon.ts",
+      "src/blocks/shared/sectionFields.ts",
+      "src/blocks/shared/sectionSchemaContract.ts",
       "src/blocks/shared/siteSocialLinks.ts",
       "src/blocks/systemPageFields.ts",
       "src/collections/Articles.ts",
@@ -2432,11 +2502,16 @@
       "src/components/SectionEyebrow.tsx",
       "src/components/admin/AdminSessionBar.tsx",
       "src/components/admin/AdminUserMenu.tsx",
+      "src/components/admin/DashboardOverview.scss",
       "src/components/admin/DashboardOverview.tsx",
+      "src/components/admin/DashboardView.tsx",
       "src/components/admin/DeferredAdminSessionBar.tsx",
+      "src/components/admin/FeatureAccessControls.scss",
+      "src/components/admin/FeatureAccessControls.tsx",
       "src/components/admin/PageCreateView.tsx",
       "src/components/admin/PageRecipeSetup.scss",
       "src/components/admin/PageRecipeSetup.tsx",
+      "src/components/admin/featureAccessPresentation.ts",
       "src/components/analytics/ConsentAwareAnalytics.tsx",
       "src/components/announcement/AnnouncementBar.tsx",
       "src/components/announcement/MarqueeAnnouncementContent.tsx",
@@ -2461,6 +2536,7 @@
       "src/components/global/GlobalAnnouncement.tsx",
       "src/components/global/GlobalFooter.tsx",
       "src/components/global/GlobalHeader.tsx",
+      "src/components/global/RouteTransitionScrollGuard.tsx",
       "src/components/global/SearchDialog.tsx",
       "src/components/header/HeaderMobileMenu.tsx",
       "src/components/header/HeaderNavMenu.tsx",
@@ -2688,9 +2764,13 @@
       "tests/int/back-to-top-button.int.spec.tsx",
       "tests/int/bank-details.int.spec.tsx",
       "tests/int/banner-media-overlay.int.spec.tsx",
+      "tests/int/block-anchor-navigation.int.spec.tsx",
       "tests/int/block-appearance-contract.int.spec.ts",
       "tests/int/block-catalog.int.spec.ts",
       "tests/int/block-layout-contracts.int.spec.tsx",
+      "tests/int/block-section-compatibility.int.spec.tsx",
+      "tests/int/block-section-presentation-contract.int.spec.tsx",
+      "tests/int/block-section-schema-contract.int.spec.ts",
       "tests/int/block-surface-semantics.int.spec.ts",
       "tests/int/block-theme-tabs.int.spec.ts",
       "tests/int/block-thumbnail-fixtures.int.spec.ts",
@@ -2740,6 +2820,7 @@
       "tests/int/event-gallery-render.int.spec.tsx",
       "tests/int/event-gallery-selection.int.spec.tsx",
       "tests/int/event-gallery-viewer.int.spec.tsx",
+      "tests/int/feature-access-controls.int.spec.ts",
       "tests/int/feature-access-matrix.int.spec.ts",
       "tests/int/feature-matrix.int.spec.ts",
       "tests/int/feature-spotlight.int.spec.ts",
@@ -2847,6 +2928,7 @@
       "tests/int/reviews.int.spec.ts",
       "tests/int/rich-text-presentation.int.spec.tsx",
       "tests/int/rotating-announcement.int.spec.ts",
+      "tests/int/route-transition-scroll-guard.int.spec.tsx",
       "tests/int/runtime-config.int.spec.ts",
       "tests/int/runtime-import-boundary.int.spec.ts",
       "tests/int/scrollable-content-tab-rail.int.spec.tsx",
@@ -2887,7 +2969,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "e023ec8c93cf435b9819dd7981b2469046cc341029b2e677e16c43207a891353"
+    "sha256": "db114963f052f10d40056f9fddaf93febf1e13905133975b2f19387a003dbdb4"
   },
   "surfaces": {
     "access": [
@@ -3027,7 +3109,7 @@
       "src/app/api/frontend-session/route.ts",
       "src/app/api/news-events-tabs/route.ts",
       "src/app/api/operations/media/reconcile-storage/route.ts",
-      "src/app/api/redirects/route.ts",
+      "src/app/api/public-redirects/route.ts",
       "src/app/api/review-feed/route.ts",
       "src/app/api/search/route.ts",
       "src/app/robots.ts",
@@ -3057,9 +3139,13 @@
       "tests/int/back-to-top-button.int.spec.tsx",
       "tests/int/bank-details.int.spec.tsx",
       "tests/int/banner-media-overlay.int.spec.tsx",
+      "tests/int/block-anchor-navigation.int.spec.tsx",
       "tests/int/block-appearance-contract.int.spec.ts",
       "tests/int/block-catalog.int.spec.ts",
       "tests/int/block-layout-contracts.int.spec.tsx",
+      "tests/int/block-section-compatibility.int.spec.tsx",
+      "tests/int/block-section-presentation-contract.int.spec.tsx",
+      "tests/int/block-section-schema-contract.int.spec.ts",
       "tests/int/block-surface-semantics.int.spec.ts",
       "tests/int/block-theme-tabs.int.spec.ts",
       "tests/int/block-thumbnail-fixtures.int.spec.ts",
@@ -3109,6 +3195,7 @@
       "tests/int/event-gallery-render.int.spec.tsx",
       "tests/int/event-gallery-selection.int.spec.tsx",
       "tests/int/event-gallery-viewer.int.spec.tsx",
+      "tests/int/feature-access-controls.int.spec.ts",
       "tests/int/feature-access-matrix.int.spec.ts",
       "tests/int/feature-matrix.int.spec.ts",
       "tests/int/feature-spotlight.int.spec.ts",
@@ -3215,6 +3302,7 @@
       "tests/int/reviews.int.spec.ts",
       "tests/int/rich-text-presentation.int.spec.tsx",
       "tests/int/rotating-announcement.int.spec.ts",
+      "tests/int/route-transition-scroll-guard.int.spec.tsx",
       "tests/int/runtime-config.int.spec.ts",
       "tests/int/runtime-import-boundary.int.spec.ts",
       "tests/int/scrollable-content-tab-rail.int.spec.tsx",

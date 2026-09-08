@@ -1,0 +1,106 @@
+.feature-access-overview {
+  background: var(--theme-elevation-50);
+  border: 1px solid var(--theme-elevation-200);
+  border-radius: 12px;
+  margin-bottom: var(--base);
+  padding: calc(var(--base) * 0.8);
+
+  &__heading {
+    align-items: start;
+    display: flex;
+    gap: var(--base);
+    justify-content: space-between;
+  }
+
+  strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: calc(var(--base) * 0.2);
+  }
+
+  p {
+    color: var(--theme-elevation-650);
+    line-height: 1.5;
+    margin: 0;
+    max-width: 72ch;
+  }
+
+  &__note {
+    border-top: 1px solid var(--theme-elevation-150);
+    font-size: 12px;
+    margin-top: calc(var(--base) * 0.65) !important;
+    padding-top: calc(var(--base) * 0.65);
+  }
+}
+
+.feature-access-controls {
+  &__group {
+    align-items: center;
+    border-bottom: 1px solid var(--theme-elevation-150);
+    color: var(--theme-elevation-650);
+    display: flex;
+    font-size: 12px;
+    gap: calc(var(--base) * 0.6);
+    justify-content: space-between;
+    margin-bottom: calc(var(--base) * 0.65);
+    padding-bottom: calc(var(--base) * 0.5);
+  }
+
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: calc(var(--base) * 0.25);
+  }
+
+  &__button {
+    background: var(--theme-elevation-800);
+    border: 1px solid var(--theme-elevation-800);
+    border-radius: 6px;
+    color: var(--theme-elevation-0);
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    min-height: 34px;
+    padding: calc(var(--base) * 0.25) calc(var(--base) * 0.5);
+
+    &--quiet {
+      background: transparent;
+      border-color: var(--theme-elevation-300);
+      color: var(--theme-text);
+    }
+
+    &:hover:not(:disabled) {
+      background: var(--theme-elevation-900);
+      border-color: var(--theme-elevation-900);
+    }
+
+    &--quiet:hover:not(:disabled) {
+      background: var(--theme-elevation-100);
+      border-color: var(--theme-elevation-400);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--theme-success-500);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .feature-access-overview__heading,
+  .feature-access-controls__group {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .feature-access-controls__actions {
+    flex-shrink: 1;
+  }
+}

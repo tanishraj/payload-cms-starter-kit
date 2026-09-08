@@ -1,4 +1,7 @@
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   regularBlockContainerClasses,
@@ -98,7 +101,9 @@ export function VideoEmbedBlockComponent({
   const { type, embedUrl } = parseVideoUrl(url.trim())
 
   const resolvedTitle = title?.trim()
-  const iframeTitle = resolvedTitle || (type === 'youtube' ? 'YouTube video' : type === 'vimeo' ? 'Vimeo video' : 'Video')
+  const iframeTitle =
+    resolvedTitle ||
+    (type === 'youtube' ? 'YouTube video' : type === 'vimeo' ? 'Vimeo video' : 'Video')
   const autoplayParam = autoplay ? '&autoplay=1&mute=1' : ''
   const resolvedActions = resolveCmsActions(actions)
 
@@ -109,13 +114,21 @@ export function VideoEmbedBlockComponent({
         ? `${embedUrl}?dnt=1${autoplay ? '&autoplay=1&muted=1' : ''}`
         : embedUrl
 
-  const hasHeader = resolvedTitle || eyebrow?.trim() || description?.trim() || resolvedActions.length > 0
+  const hasHeader =
+    resolvedTitle || eyebrow?.trim() || description?.trim() || resolvedActions.length > 0
 
   return (
     <section className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClassName)}>
       <div className={cn(regularBlockContainerClasses, 'flex flex-col gap-8')}>
         {hasHeader ? (
-          <header className={cn('flex max-w-3xl flex-col gap-4', alignmentClasses[resolvedAlignment], resolvedAlignment === 'center' && 'mx-auto', resolvedAlignment === 'right' && 'ml-auto')}>
+          <header
+            className={cn(
+              'flex max-w-3xl flex-col gap-4',
+              alignmentClasses[resolvedAlignment],
+              resolvedAlignment === 'center' && 'mx-auto',
+              resolvedAlignment === 'right' && 'ml-auto',
+            )}
+          >
             {eyebrow?.trim() ? (
               <SectionEyebrow surface={appearance?.background ?? 'none'}>
                 {eyebrow.trim()}
@@ -136,7 +149,12 @@ export function VideoEmbedBlockComponent({
         ) : null}
 
         <figure className={cn('mx-auto w-full', maxWidthClasses[resolvedMaxWidth])}>
-          <div className={cn('w-full overflow-hidden rounded-card', aspectRatioClasses[resolvedAspectRatio])}>
+          <div
+            className={cn(
+              'w-full overflow-hidden rounded-card',
+              aspectRatioClasses[resolvedAspectRatio],
+            )}
+          >
             {type === 'direct' ? (
               <video
                 className="h-full w-full object-cover"
@@ -165,7 +183,7 @@ export function VideoEmbedBlockComponent({
             </figcaption>
           ) : null}
         </figure>
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={resolvedAlignment} />
       </div>
     </section>
   )

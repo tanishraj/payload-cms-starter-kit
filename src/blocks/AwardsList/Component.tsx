@@ -11,8 +11,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
-import { ContentActions } from '@/components/ContentActions'
-import { SectionEyebrow } from '@/components/SectionEyebrow'
+import { SectionIntro } from '@/blocks/shared/SectionIntro'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { cn } from '@/lib/utils'
 import { resolveCardSurface, type CardSurfaceClasses } from '@/blocks/shared/cardSurface'
@@ -33,7 +32,7 @@ type AwardsListBlockLike = {
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   awards?: AwardItem[] | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   description?: string | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
@@ -80,7 +79,7 @@ export function AwardsListBlockComponent({
   actions,
   appearance,
   awards,
-  contentAlignment = 'center',
+  contentAlignment = 'left',
   description,
   eyebrow,
   footerActions,
@@ -92,7 +91,6 @@ export function AwardsListBlockComponent({
   if (!items.length) return null
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
-  const isCenter = (contentAlignment ?? 'left') === 'center'
   const resolvedActions = resolveCmsActions(actions)
   const sectionBackground: BlockBackground = appearance?.background ?? 'none'
   const resolvedAccentTitle = accentTitle?.trim() || undefined
@@ -102,39 +100,16 @@ export function AwardsListBlockComponent({
       className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
     >
       <div className={regularBlockContainerClasses}>
-        {/* Header */}
-        {eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0 ? (
-          <div
-            className={cn(
-              'mb-12 flex flex-col gap-4',
-              isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
-            )}
-          >
-            {eyebrow?.trim() ? (
-              <SectionEyebrow surface={sectionBackground}>{eyebrow.trim()}</SectionEyebrow>
-            ) : null}
-            {title?.trim() ? (
-              <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-                {resolvedAccentTitle ? (
-                  <>
-                    <span className="block font-[inherit]">{title.trim()}</span>
-                    <em className="block font-[inherit]">{resolvedAccentTitle}</em>
-                  </>
-                ) : (
-                  title.trim()
-                )}
-              </h2>
-            ) : null}
-            {description?.trim() ? (
-              <p className="text-base leading-7 text-current/70">{description.trim()}</p>
-            ) : null}
-            {resolvedActions.length > 0 ? (
-              <div className="mt-2">
-                <ContentActions actions={resolvedActions} />
-              </div>
-            ) : null}
-          </div>
-        ) : null}
+        <SectionIntro
+          accentTitle={resolvedAccentTitle}
+          actions={resolvedActions}
+          alignment={contentAlignment ?? 'left'}
+          className="mb-12"
+          description={description}
+          eyebrow={eyebrow}
+          surface={sectionBackground}
+          title={title}
+        />
 
         {/* Cards variant */}
         {variant === 'cards' || !variant ? (
@@ -256,7 +231,7 @@ export function AwardsListBlockComponent({
             ))}
           </div>
         ) : null}
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'left'} />
       </div>
     </section>
   )

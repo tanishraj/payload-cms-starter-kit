@@ -42,7 +42,7 @@ export type MediaCarouselItem = {
 type MediaCarouselClientProps = {
   appearance?: string
   columns: 2 | 3 | 4
-  contentAlignment: 'left' | 'center'
+  contentAlignment: 'left' | 'center' | 'right'
   description?: string
   eyebrow?: string
   items: MediaCarouselItem[]
@@ -174,17 +174,16 @@ export function MediaCarouselClient({
   size,
   title,
 }: MediaCarouselClientProps) {
+  const headerAlignmentClasses = {
+    left: 'items-start text-left',
+    center: 'mx-auto max-w-3xl items-center text-center',
+    right: 'ml-auto max-w-3xl items-end text-right',
+  } as const
+
   return (
     <section className={cn(regularBlockMobilePaddingClasses[size], appearance)}>
       <div className="mx-auto w-full max-w-screen-2xl px-4">
-        <div
-          className={cn(
-            'mb-12 flex flex-col gap-4',
-            contentAlignment === 'center'
-              ? 'mx-auto max-w-3xl items-center text-center'
-              : 'items-start text-left',
-          )}
-        >
+        <div className={cn('mb-12 flex flex-col gap-4', headerAlignmentClasses[contentAlignment])}>
           {eyebrow ? <SectionEyebrow surface={sectionBackground}>{eyebrow}</SectionEyebrow> : null}
           <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
             {title}

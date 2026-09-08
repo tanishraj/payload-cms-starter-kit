@@ -9,6 +9,7 @@ import {
   reusableSectionBuilderBlocks,
 } from '@/blocks/blockCatalog'
 import { PageHeaderBlock } from '@/blocks/PageHeader/config'
+import { blockSectionProfiles } from '@/blocks/shared/blockSectionProfiles'
 import { Pages } from '@/collections/Pages'
 import { ReusableSections } from '@/collections/ReusableSections'
 import { NewsEventsDetailTemplate } from '@/globals/NewsEventsDetailTemplate'
@@ -96,6 +97,12 @@ describe('curated block catalog', () => {
     expect(advancedSlugs).toContain('bankDetails')
     expect(advancedSlugs).toContain('pgFeeStructure')
     expect(pageBuilderBlocks.every((block) => typeof block.admin?.group === 'string')).toBe(true)
+  })
+
+  it('keeps the section profile registry synchronized with the Page catalog', () => {
+    expect(Object.keys(blockSectionProfiles).sort()).toEqual(
+      pageBuilderBlocks.map(({ slug }) => slug).sort(),
+    )
   })
 
   it('preserves the documented special-registry differences', () => {

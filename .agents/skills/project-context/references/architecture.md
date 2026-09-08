@@ -23,7 +23,21 @@ React Server Components load public CMS data. Focused client components own inte
 - `/[...slug]` resolves hierarchical Pages, breadcrumbs, metadata, and WebPage JSON-LD.
 - `/privacy-policy` and `/terms-and-conditions` are migration-provisioned editable Pages selected through Site Identity legal relationships; existing exact-slug Pages and existing published or pending relationship choices are preserved.
 - Article and Review detail and taxonomy routes load published domain records. News/Event retains its detail route while its Topics and Tags are non-interactive metadata. The News/Event route loads its record and cached shared detail-page global in parallel, renders the saved Page-compatible block order, and injects the entry only into the global-only `newsEventsContent` block. Production uses the server renderer; authenticated preview uses the matching client-safe renderer with server-provided data snapshots so its client graph never imports Payload or `server-only` modules.
-- `/news-events` explicitly resolves the published CMS Page at that path so editors can compose its collection-backed listings from Page blocks. Article and Review archive landing pages are also ordinary CMS Pages.
+- `/news-events` explicitly resolves the published CMS Page at that path so editors can compose its
+  collection-backed listings from Page blocks. News & Events Highlights is Event-only and places up
+  to three eligible manually featured Events before three eligible automatic Events. News & Events
+  Tabs remains the complete published directory; Event classifications place current/upcoming
+  entries before recent past entries. Article and Review archive landing pages are also ordinary CMS
+  Pages.
+- Page-compatible blocks may expose stable editor-authored fragment IDs. Production and authenticated
+  live preview use the same document-order anchor wrapper, including blocks inside Reusable Sections
+  and the News & Events detail template. Root scrolling accounts for the sticky Admin, announcement,
+  and Header shell and becomes immediate under `prefers-reduced-motion`. The frontend route-transition
+  guard suppresses Next.js scroll management while the outgoing page is visible. A remounting App
+  Router template signals only after the outgoing route has been replaced, then the guard positions
+  the committed destination immediately. Sticky desktop dropdown triggers suppress pointer-induced
+  focus scrolling, and dropdown link dismissal does not restore trigger focus before navigation;
+  same-page fragment navigation remains smooth.
 - `/search`, `/api/search`, feeds, sitemap, robots, and Open Graph image routes implement discovery.
   Generated Open Graph routes keep their page-specific cards when their published record and public
   media logo are available, and return the code-owned SNMIH preview when a required record or the
@@ -41,7 +55,9 @@ React Server Components load public CMS data. Focused client components own inte
   published albums; authenticated routes load selected draft albums on the server and pass the same
   serializable snapshot to client-safe preview adapters. Gallery clients never query Payload.
 - Form submission, review-feed, News & Events Tabs pagination, Calendar month loading, redirects, and media reconciliation
-  have focused route handlers. Public form JSON is media-type checked and byte-bounded before parsing,
+  have focused route handlers. The public redirect map is served from `/api/public-redirects`,
+  leaving `/api/redirects` exclusively owned by Payload's collection REST API so Admin create,
+  update, and delete requests reach Payload. Public form JSON is media-type checked and byte-bounded before parsing,
   and its schema-backed values and known metadata have explicit size limits. Form submission and
   search share bounded, periodically pruned in-memory rate-limiter behavior with `Retry-After`;
   this is single-instance defense in depth, while coordinated production enforcement belongs in
@@ -104,6 +120,8 @@ Layout globals, the News & Events detail template, Pages, fixed Calendar month p
 CMS-backed remote images resolved through the shared media image-props helper append a validated
 Payload `updatedAt` version query. Replacing an object under the same public filename therefore gives
 the Next.js image optimizer a new cache key without disabling resizing or AVIF/WebP negotiation.
+Absolute same-origin Payload `/api/media/file/` URLs are normalized to root-relative paths so local
+image policy remains consistent when Payload expands relationships using the canonical server URL.
 Root-relative media paths and canonical URLs used outside that image-props boundary remain unchanged.
 
 Trusted CLI migrations that create Pages mark their writes to skip Next.js cache revalidation,

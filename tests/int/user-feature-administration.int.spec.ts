@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { ADMIN_FEATURE_KEYS } from '@/access/adminFeatures'
+import { ADMIN_FEATURE_GROUPS, ADMIN_FEATURE_KEYS, ADMIN_FEATURES } from '@/access/adminFeatures'
 import { adminOrFirstUserAccess } from '@/access/featureAccess'
 import {
   Users,
@@ -33,6 +33,52 @@ describe('two-role user administration', () => {
     )
     expect(Object.keys(normalizeFeatureGrants(null))).toEqual([...ADMIN_FEATURE_KEYS])
     expect(Object.values(normalizeFeatureGrants(null)).every((value) => value === false)).toBe(true)
+  })
+
+  it('progressively discloses feature groups with counts and bulk controls', () => {
+    const features = fieldNamed('features')
+    if (!features || features.type !== 'group' || !('name' in features)) {
+      throw new Error('Expected named feature group.')
+    }
+
+    const [overview, ...groups] = features.fields
+    expect(overview).toMatchObject({
+      name: 'featureAccessOverview',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: {
+            path: '@/components/admin/FeatureAccessControls#FeatureAccessOverview',
+          },
+        },
+      },
+    })
+    expect(groups).toHaveLength(ADMIN_FEATURE_GROUPS.length)
+
+    for (const [index, group] of ADMIN_FEATURE_GROUPS.entries()) {
+      const field = groups[index]
+      const keys = ADMIN_FEATURE_KEYS.filter((key) => ADMIN_FEATURES[key].group === group)
+
+      expect(field).toMatchObject({
+        type: 'collapsible',
+        label: `${group} (${keys.length})`,
+        admin: { initCollapsed: true },
+      })
+      expect(field && 'fields' in field ? field.fields[0] : null).toMatchObject({
+        type: 'ui',
+        admin: {
+          components: {
+            Field: {
+              clientProps: { featureKeys: keys, groupLabel: group },
+              path: '@/components/admin/FeatureAccessControls#FeatureGroupControls',
+            },
+          },
+        },
+      })
+    }
+
+    expect(features.admin?.description).toContain('read-only')
+    expect(features.admin?.description).toContain('signed out')
   })
 
   it('bootstraps the first account as Admin and defaults later accounts to zero-grant Site Managers', async () => {

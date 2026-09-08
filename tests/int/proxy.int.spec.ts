@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs'
 import { NextRequest } from 'next/server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -23,7 +24,7 @@ describe('redirect proxy', () => {
     const response = await proxy(new NextRequest('https://hostile.example/old-page'))
 
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://canonical.example.test/api/redirects',
+      'https://canonical.example.test/api/public-redirects',
       expect.objectContaining({ cache: 'no-store' }),
     )
     expect(response.status).toBe(301)
@@ -57,6 +58,11 @@ describe('redirect proxy', () => {
     expect(unsafeResponse.headers.get('location')).toBeNull()
     expect(loopResponse.headers.get('location')).toBeNull()
     expect(aliasLoopResponse.headers.get('location')).toBeNull()
+  })
+
+  it('keeps Payload collection REST ownership at /api/redirects', () => {
+    expect(existsSync('src/app/api/redirects/route.ts')).toBe(false)
+    expect(existsSync('src/app/api/public-redirects/route.ts')).toBe(true)
   })
 
   it('retains the public-path matcher exclusions', async () => {

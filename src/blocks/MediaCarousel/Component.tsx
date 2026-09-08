@@ -4,6 +4,7 @@ import {
 } from '@/blocks/shared/blockAppearance'
 import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import { preferCanonicalActions } from '@/blocks/shared/legacySectionFields'
 import { ContentActions } from '@/components/ContentActions'
 import { getMediaAbsoluteUrl, getMediaImageProps, isMediaDoc } from '@/lib/media'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
@@ -21,9 +22,10 @@ type MediaCarouselItemValue = {
 }
 
 type MediaCarouselBlockLike = {
+  actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   columns?: '2' | '3' | '4' | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   description?: string | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
@@ -34,6 +36,7 @@ type MediaCarouselBlockLike = {
 }
 
 export function MediaCarouselBlockComponent({
+  actions,
   appearance,
   columns,
   contentAlignment = 'center',
@@ -87,7 +90,7 @@ export function MediaCarouselBlockComponent({
 
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const resolvedColumns = (Number(columns ?? '3') as 2 | 3 | 4) || 3
-  const resolvedSectionActions = resolveCmsActions(sectionActions)
+  const resolvedSectionActions = resolveCmsActions(preferCanonicalActions(actions, sectionActions))
 
   return (
     <>
@@ -100,14 +103,17 @@ export function MediaCarouselBlockComponent({
         items={resolvedItems}
         sectionActions={
           resolvedSectionActions.length > 0 ? (
-            <ContentActions actions={resolvedSectionActions} />
+            <ContentActions
+              actions={resolvedSectionActions}
+              alignment={contentAlignment ?? 'center'}
+            />
           ) : undefined
         }
         sectionBackground={appearance?.background ?? 'none'}
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
     </>
   )
 }

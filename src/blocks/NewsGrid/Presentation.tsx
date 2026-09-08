@@ -35,7 +35,7 @@ import {
   type NewsGridCardsPerRow,
 } from '@/blocks/NewsGrid/newsGridShared'
 
-type NewsGridAlignment = 'center' | 'left'
+type NewsGridAlignment = 'center' | 'left' | 'right'
 type NewsGridHeaderActionAlignment = 'bottom' | 'center' | 'top'
 
 export type NewsGridFeatureCard = Omit<CmsLinkValue, 'linkType'> & {
@@ -73,6 +73,7 @@ type NewsGridBlockPresentationProps = NewsGridBlockLike & {
 const alignmentClasses = {
   left: 'items-start text-left',
   center: 'mx-auto items-center text-center',
+  right: 'ml-auto items-end text-right',
 } as const
 
 export function NewsGridBlockPresentation({
@@ -187,7 +188,7 @@ export function NewsGridBlockPresentation({
           {resolvedActions.length > 0 ? (
             <ContentActions
               actions={resolvedActions}
-              alignment={resolvedAlignment === 'center' ? 'center' : 'left'}
+              alignment={resolvedAlignment}
               className="md:w-auto md:shrink-0"
               data-news-grid-actions="true"
             />
@@ -282,10 +283,7 @@ export function NewsGridBlockPresentation({
           </p>
         )}
 
-        <BlockFooterActions
-          actions={footerActions}
-          alignment={resolvedAlignment === 'center' ? 'center' : 'left'}
-        />
+        <BlockFooterActions actions={footerActions} alignment={resolvedAlignment} />
       </div>
     </section>
   )

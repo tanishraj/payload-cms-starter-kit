@@ -208,7 +208,7 @@ export function ImageMosaicBlockPresentation({
           }
           itemCount={selectedAlbums.length}
         />
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
       </>
     )
   }
@@ -219,7 +219,7 @@ export function ImageMosaicBlockPresentation({
   return (
     <>
       <ImageMosaic {...commonProps} items={resolvedItems} />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
     </>
   )
 }

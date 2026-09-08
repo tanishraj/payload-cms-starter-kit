@@ -85,7 +85,7 @@ export function GalleryShowcaseBlockComponent({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
     </>
   )
 }
