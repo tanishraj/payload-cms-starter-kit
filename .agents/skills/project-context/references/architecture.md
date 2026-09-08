@@ -115,6 +115,12 @@ than a GitHub job.
 
 ## Caching and Delivery Safety
 
+The production Dockerfile supports both a `payload_build_env` dotenv secret file and individual
+Coolify BuildKit secrets mounted as environment variables using Dockerfile frontend 1.10. The file
+takes precedence when present. Explicit mounts avoid Coolify's automatic-injection skip for RUN
+instructions that already mount secrets; missing database/authentication secrets fail before build.
+See the runtime/provider runbook for build/runtime flags and preview-origin requirements.
+
 Layout globals, the News & Events detail template, Pages, fixed Calendar month projections, and redirects use tagged caching and focused invalidation hooks. The anonymous shell stays cacheable because editor-session and analytics-consent cookies are evaluated only by post-hydration client boundaries. Calendar Upcoming data uses five-minute freshness and stays independent of month, view, and classification filtering inside the selected scope. Site timezone, News/Event classification, and News/Event publication changes invalidate Calendar projections. Page, Article, Review, News/Event, and Redirect hooks invalidate both publication and takedown transitions, including published deletion. Feeds, robots, and sitemap use explicit time revalidation. Article and Review helpers also use request-level deduplication. Preserve draft/public filtering and cache invalidation together when changing queries or hooks.
 
 CMS-backed remote images resolved through the shared media image-props helper append a validated

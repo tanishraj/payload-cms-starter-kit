@@ -124,6 +124,29 @@ DOCKER_BUILDKIT=1 docker build \
 
 Run the image with a durable MongoDB connection and `MEDIA_PROVIDER=s3` plus the required S3-compatible provider variables. The image intentionally has no persistent local-media volume. `docker-compose.yml` remains a local-development workflow; it is not a production deployment stack.
 
+### Coolify Dockerfile Builds
+
+Select the repository Dockerfile build pack, `/Dockerfile`, base directory `/`, and port `3000`.
+In Environment Variables, select **Docker BuildKit secrets** and make the required runtime/provider
+variables available during both build and runtime. The Dockerfile uses frontend `1.10` to mount
+individual secrets as environment variables explicitly: Coolify skips automatic injection on RUN
+instructions that already have a secret mount. Do not switch back to ordinary build arguments for
+secret values. `SHADCNBLOCKS_API_KEY` is tooling-only and is not needed by this application build.
+After changing build-time environment values, use **Deploy (without cache)**: BuildKit secret
+contents do not invalidate Docker's layer cache, including changes to the public application origin
+or media origin supplied as secrets. Source changes still invalidate the copied application layer.
+
+Local builds can continue mounting `payload_build_env` as above; that file takes precedence when
+present. Without that file, the database URI and Payload secret must arrive through individual
+BuildKit mounts. Missing values fail before Next.js runs, and the normal runtime parser validates
+the remaining configuration. Neither route copies secrets into image layers.
+
+Configure the application's HTTPS domain and matching `NEXT_PUBLIC_SERVER_URL` before building.
+For PR previews, use separate test resources and set the preview origin to its generated HTTPS URL;
+a fixed main-application origin does not work for preview cookies, CSRF, and live preview links.
+Enable push deployments through the GitHub App; enable PR deployments only after verifying the
+preview origin and test-resource scopes. Keep public PR deployments disabled.
+
 For repository verification, run `pnpm verify:docker-local` and then
 `pnpm verify:docker-image`. Both refuse a pre-existing Compose project named
 `payload_hardening_verify` or network named `payload_hardening_verify_default`; image verification

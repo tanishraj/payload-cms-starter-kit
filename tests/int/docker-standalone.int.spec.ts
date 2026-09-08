@@ -1,4 +1,7 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { spawnSync } from 'node:child_process'
 import { describe, expect, it } from 'vitest'
 
 const nextConfigSource = readFileSync('next.config.ts', 'utf8')
@@ -15,7 +18,7 @@ const pnpmWorkspaceSource = readFileSync('pnpm-workspace.yaml', 'utf8')
 
 describe('Docker standalone deployment contract', () => {
   it('pins the supported Node and pnpm toolchain with one frozen install workflow', () => {
-    expect(dockerfileSource).toMatch(/^# syntax=docker\/dockerfile:1\.7$/m)
+    expect(dockerfileSource).toMatch(/^# syntax=docker\/dockerfile:1\.10$/m)
     expect(dockerfileSource.match(/FROM node:22\.17\.0-alpine/g)).toHaveLength(1)
     expect(dockerfileSource).toContain('corepack prepare pnpm@11.17.0 --activate')
     expect(dockerfileSource).toContain('pnpm install --frozen-lockfile')
@@ -28,14 +31,77 @@ describe('Docker standalone deployment contract', () => {
     expect(pnpmWorkspaceSource).toContain('unrs-resolver: true')
   })
 
-  it('uses a required build secret and exposes only the public origin as a build argument', () => {
+  it('mounts build secrets and exposes only the public origin as a build argument', () => {
     expect(dockerfileSource).toContain('ARG NEXT_PUBLIC_SERVER_URL')
-    expect(dockerfileSource).toContain('RUN --mount=type=secret,id=payload_build_env,required=true')
+    expect(dockerfileSource).toContain('RUN --mount=type=secret,id=payload_build_env')
+    for (const name of [
+      'MONGODB_URI',
+      'PAYLOAD_SECRET',
+      'S3_ACCESS_KEY_ID',
+      'S3_SECRET_ACCESS_KEY',
+      'S3_PUBLIC_URL',
+    ]) {
+      expect(dockerfileSource).toContain(`--mount=type=secret,id=${name},env=${name}`)
+    }
+    expect(dockerfileSource).toContain(
+      '--mount=type=secret,id=NEXT_PUBLIC_SERVER_URL,env=PAYLOAD_BUILD_SERVER_URL',
+    )
     expect(dockerfileSource).toContain('. /run/secrets/payload_build_env')
     expect(dockerfileSource).not.toMatch(/ARG\s+(MONGODB_URI|PAYLOAD_SECRET|RESEND_API_KEY|S3_)/)
     expect(dockerfileSource).not.toMatch(/ENV\s+(MONGODB_URI|PAYLOAD_SECRET|RESEND_API_KEY|S3_)/)
     expect(dockerfileSource).not.toMatch(/COPY\s+[^\n]*(\.env|payload_build_env)/)
   })
+
+  it.each(['file', 'environment', 'missing-uri', 'missing-secret', 'invalid-file'])(
+    'executes the build shell safely with %s secrets',
+    (mode) => {
+      const directory = mkdtempSync(join(tmpdir(), 'payload-build-shell-'))
+      try {
+        const fixturePath = join(directory, 'build.env')
+        const marker = join(directory, 'build-started')
+        writeFileSync(
+          join(directory, 'pnpm'),
+          '#!/bin/sh\n[ "$MONGODB_URI" = fixture-uri ] && [ "$PAYLOAD_SECRET" = fixture-secret ] && [ "$NEXT_PUBLIC_SERVER_URL" = https://test.example.com ] && touch "$BUILD_MARKER"\n',
+          { mode: 0o700 },
+        )
+        if (mode === 'file')
+          writeFileSync(fixturePath, 'MONGODB_URI=fixture-uri\nPAYLOAD_SECRET=fixture-secret\n')
+        if (mode === 'invalid-file') writeFileSync(fixturePath, 'exit 19\n')
+        const instruction = dockerfileSource.match(
+          /RUN --mount=type=secret,id=payload_build_env[\s\S]*?pnpm run build/,
+        )![0]
+        const shell = instruction
+          .replace(/^RUN /, '')
+          .replace(/--mount=\S+\s*/g, '')
+          .replace(/\\\n/g, '')
+          .replaceAll('/run/secrets/payload_build_env', fixturePath)
+        const result = spawnSync('/bin/sh', ['-c', shell], {
+          env: {
+            NODE_ENV: 'test',
+            PATH: `${directory}:/usr/bin:/bin`,
+            BUILD_MARKER: marker,
+            NEXT_PUBLIC_SERVER_URL: mode === 'environment' ? '' : 'https://test.example.com',
+            ...(mode === 'environment' ? { PAYLOAD_BUILD_SERVER_URL: 'https://test.example.com' } : {}),
+            ...(mode !== 'file' && mode !== 'missing-uri' ? { MONGODB_URI: 'fixture-uri' } : {}),
+            ...(mode !== 'file' && mode !== 'missing-secret'
+              ? { PAYLOAD_SECRET: 'fixture-secret' }
+              : {}),
+          },
+          encoding: 'utf8',
+        })
+        const succeeds = mode === 'file' || mode === 'environment'
+        expect(result.status === 0).toBe(succeeds)
+        expect(existsSync(marker)).toBe(succeeds)
+        expect(result.stdout + result.stderr).not.toContain('fixture-secret')
+        if (mode === 'missing-uri')
+          expect(result.stderr).toContain('MONGODB_URI build secret is required')
+        if (mode === 'missing-secret')
+          expect(result.stderr).toContain('PAYLOAD_SECRET build secret is required')
+      } finally {
+        rmSync(directory, { recursive: true, force: true })
+      }
+    },
+  )
 
   it('enables Next.js standalone output', () => {
     expect(nextConfigSource).toMatch(/output:\s*['"]standalone['"]/)
