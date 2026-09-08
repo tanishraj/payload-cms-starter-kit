@@ -77,7 +77,9 @@ export function EventGalleryBlockPresentation({
     <>
       <EventGallery
         actions={
-          resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined
+          resolvedActions.length > 0 ? (
+            <ContentActions actions={resolvedActions} alignment={contentAlignment ?? 'center'} />
+          ) : undefined
         }
         albums={albums}
         alignment={contentAlignment ?? 'center'}
@@ -97,7 +99,7 @@ export function EventGalleryBlockPresentation({
         themeMode={themeMode ?? 'dark'}
         title={resolvedTitle || undefined}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
     </>
   )
 }

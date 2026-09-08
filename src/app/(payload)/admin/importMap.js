@@ -24,7 +24,9 @@ import { DepartmentRowLabel as DepartmentRowLabel_1aee918a1994951b1541eb9f077855
 import { BankAccountRowLabel as BankAccountRowLabel_869dcdd72c29b13be90b51ff955fa3b3 } from '../../../blocks/BankDetails/RowLabel'
 import { PageCreateView as PageCreateView_244e42c068b95e8a328a77a2c7c4ade4 } from '@/components/admin/PageCreateView'
 import { LogoHeightField as LogoHeightField_afbb23a221f2bb10f37063672149b807 } from '../../../blocks/HeaderNavbar12/LogoHeightField'
-import { DashboardOverview as DashboardOverview_05d601da1b7f3b105394f9997b7afdb8 } from '@/components/admin/DashboardOverview'
+import { FeatureAccessOverview as FeatureAccessOverview_af1d959a8e1a18eafc54fa9fd5e758b7 } from '@/components/admin/FeatureAccessControls'
+import { FeatureGroupControls as FeatureGroupControls_af1d959a8e1a18eafc54fa9fd5e758b7 } from '@/components/admin/FeatureAccessControls'
+import { DashboardView as DashboardView_8d5ccf53266e3797f61e9453e2f2d431 } from '@/components/admin/DashboardView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
@@ -56,7 +58,9 @@ export const importMap = {
   "/blocks/BankDetails/RowLabel#BankAccountRowLabel": BankAccountRowLabel_869dcdd72c29b13be90b51ff955fa3b3,
   "@/components/admin/PageCreateView#PageCreateView": PageCreateView_244e42c068b95e8a328a77a2c7c4ade4,
   "/blocks/HeaderNavbar12/LogoHeightField#LogoHeightField": LogoHeightField_afbb23a221f2bb10f37063672149b807,
-  "@/components/admin/DashboardOverview#DashboardOverview": DashboardOverview_05d601da1b7f3b105394f9997b7afdb8,
+  "@/components/admin/FeatureAccessControls#FeatureAccessOverview": FeatureAccessOverview_af1d959a8e1a18eafc54fa9fd5e758b7,
+  "@/components/admin/FeatureAccessControls#FeatureGroupControls": FeatureGroupControls_af1d959a8e1a18eafc54fa9fd5e758b7,
+  "@/components/admin/DashboardView#DashboardView": DashboardView_8d5ccf53266e3797f61e9453e2f2d431,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
 }

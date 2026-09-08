@@ -79,7 +79,7 @@ export type PGFeeStructureBlockLike = {
   accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
-  contentAlignment?: 'center' | 'left' | null
+  contentAlignment?: 'center' | 'left' | 'right' | null
   description?: string | null
   downloadActionMode?: FeeDocumentDownloadActionMode | null
   downloadAppearance?: BlockAppearance | null

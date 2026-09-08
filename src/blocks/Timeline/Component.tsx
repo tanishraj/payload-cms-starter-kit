@@ -11,7 +11,7 @@ import {
   type RegularBlockSize,
 } from '@/blocks/shared/blockSpacing'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
-import { ContentActions } from '@/components/ContentActions'
+import { SectionIntro } from '@/blocks/shared/SectionIntro'
 import { SectionEyebrow } from '@/components/SectionEyebrow'
 import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
@@ -30,7 +30,7 @@ type TimelineBlockLike = {
   accentTitle?: string | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   description?: string | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
@@ -62,55 +62,16 @@ function StatusIcon({ badge, index }: { badge: string; index: number }) {
   return <span className="text-sm font-semibold">{index + 1}</span>
 }
 
-export const formatStepLabel = (index: number) =>
-  `Step ${String(index + 1).padStart(2, '0')}`
-
-// ── Section header shared across variants ────────────────────────────────────
-function SectionHeader({
-  accentTitle,
-  actions,
-  eyebrow,
-  title,
-  description,
-  alignment,
-  surface,
-}: {
-  accentTitle?: string
-  actions?: React.ReactNode
-  eyebrow?: string
-  title?: string | null
-  description?: string
-  alignment: 'left' | 'center'
-  surface: BlockBackground
-}) {
-  return (
-    <div
-      className={cn(
-        'mb-12 flex flex-col gap-4',
-        alignment === 'center' ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
-      )}
-    >
-      {eyebrow ? (
-        <SectionEyebrow surface={surface}>{eyebrow}</SectionEyebrow>
-      ) : null}
-      <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-        {accentTitle ? (
-          <>
-            <span className="block font-[inherit]">{title}</span>
-            <em className="block font-[inherit]">{accentTitle}</em>
-          </>
-        ) : (
-          title
-        )}
-      </h2>
-      {description ? <p className="text-base leading-7 text-current/70">{description}</p> : null}
-      {actions ? <div className="mt-2">{actions}</div> : null}
-    </div>
-  )
-}
+export const formatStepLabel = (index: number) => `Step ${String(index + 1).padStart(2, '0')}`
 
 // ── HORIZONTAL STEPS ─────────────────────────────────────────────────────────
-function HorizontalTimeline({ items, showConnectors }: { items: TimelineItem[]; showConnectors: boolean }) {
+function HorizontalTimeline({
+  items,
+  showConnectors,
+}: {
+  items: TimelineItem[]
+  showConnectors: boolean
+}) {
   return (
     <div className="w-full pt-2">
       {/* ── Mobile: vertical stacked list ── */}
@@ -131,9 +92,7 @@ function HorizontalTimeline({ items, showConnectors }: { items: TimelineItem[]; 
                 >
                   <StatusIcon badge={badge} index={index} />
                 </div>
-                {showConnectors && !isLast ? (
-                  <div className="w-px flex-1 bg-current/15" />
-                ) : null}
+                {showConnectors && !isLast ? <div className="w-px flex-1 bg-current/15" /> : null}
               </div>
               {/* Right column: content, pb spaces out to next circle */}
               <div className={cn('flex flex-col gap-1.5', !isLast && 'pb-8')}>
@@ -213,7 +172,13 @@ function HorizontalTimeline({ items, showConnectors }: { items: TimelineItem[]; 
 }
 
 // ── VERTICAL ──────────────────────────────────────────────────────────────────
-function VerticalTimeline({ items, sectionBackground }: { items: TimelineItem[]; sectionBackground: BlockBackground }) {
+function VerticalTimeline({
+  items,
+  sectionBackground,
+}: {
+  items: TimelineItem[]
+  sectionBackground: BlockBackground
+}) {
   return (
     <div className="relative flex flex-col gap-0">
       {items.map((item, index) => {
@@ -259,7 +224,13 @@ function VerticalTimeline({ items, sectionBackground }: { items: TimelineItem[];
 }
 
 // ── ALTERNATING ───────────────────────────────────────────────────────────────
-function AlternatingTimeline({ items, sectionBackground }: { items: TimelineItem[]; sectionBackground: BlockBackground }) {
+function AlternatingTimeline({
+  items,
+  sectionBackground,
+}: {
+  items: TimelineItem[]
+  sectionBackground: BlockBackground
+}) {
   return (
     <div className="flex flex-col gap-16">
       {items.map((item, index) => {
@@ -345,12 +316,15 @@ export function TimelineBlockComponent({
   const resolvedActions = resolveCmsActions(actions)
 
   return (
-    <section className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}>
+    <section
+      className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
+    >
       <div className="mx-auto w-full max-w-screen-2xl px-4">
-        <SectionHeader
+        <SectionIntro
           accentTitle={resolvedAccentTitle}
-          actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
+          actions={resolvedActions}
           alignment={alignment}
+          className="mb-12"
           description={description?.trim() || undefined}
           eyebrow={eyebrow?.trim() || undefined}
           surface={appearance?.background ?? 'none'}
@@ -360,13 +334,19 @@ export function TimelineBlockComponent({
         {variant === 'horizontal' ? (
           <HorizontalTimeline items={validItems} showConnectors={showConnectors ?? true} />
         ) : variant === 'alternating' ? (
-          <AlternatingTimeline items={validItems} sectionBackground={appearance?.background ?? 'none'} />
+          <AlternatingTimeline
+            items={validItems}
+            sectionBackground={appearance?.background ?? 'none'}
+          />
         ) : (
           <div className="mx-auto max-w-2xl">
-            <VerticalTimeline items={validItems} sectionBackground={appearance?.background ?? 'none'} />
+            <VerticalTimeline
+              items={validItems}
+              sectionBackground={appearance?.background ?? 'none'}
+            />
           </div>
         )}
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
       </div>
     </section>
   )

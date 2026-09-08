@@ -1,10 +1,5 @@
 import { getMediaImageProps } from '@/lib/media'
-import {
-  resolveCmsLink,
-  type CmsActionIndicatorPosition,
-  type CmsActionVariant,
-} from '@/lib/cmsLinks'
-import type { Media, Page } from '@/payload-types'
+import { resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import type {
   MediaOverlayCoverage,
   MediaOverlayDirection,
@@ -18,21 +13,6 @@ import {
   type HeroCarouselContentAlignment,
 } from './HeroCarouselClient'
 
-type HeroButton = {
-  file?: Media | number | string | null
-  fileBehavior?: 'download' | 'view' | null
-  fileIconPosition?: CmsActionIndicatorPosition | null
-  label?: string | null
-  linkType?: 'page' | 'custom' | 'file' | null
-  openFileInNewTab?: boolean | null
-  openInNewTab?: boolean | null
-  page?: Page | number | string | null
-  showArrow?: boolean | null
-  showFileIcon?: boolean | null
-  url?: string | null
-  variant?: CmsActionVariant | null
-}
-
 export type SlideData = {
   backgroundImage?: unknown
   backgroundVideoUrl?: string | null
@@ -40,7 +20,7 @@ export type SlideData = {
   id?: string | null
   title?: string | null
   description?: string | null
-  buttons?: HeroButton[] | null
+  buttons?: CmsActionValue[] | null
 }
 
 export function resolveHeroCarouselSlides(slides?: SlideData[] | null): CarouselSlide[] {
@@ -56,25 +36,13 @@ export function resolveHeroCarouselSlides(slides?: SlideData[] | null): Carousel
       return []
     }
 
-    const buttons = (slide.buttons ?? []).flatMap((button) => {
-      const label = button.label?.trim()
-      const link = resolveCmsLink(button)
-
-      return label && link.href
-        ? [
-            {
-              download: link.download,
-              href: link.href,
-              indicator: link.indicator,
-              indicatorPosition: link.indicatorPosition,
-              label,
-              openInNewTab: link.openInNewTab,
-              showArrow: Boolean(button.showArrow),
-              variant: button.variant ?? 'secondary',
-            },
-          ]
-        : []
-    }) as CarouselSlide['buttons']
+    const buttons = resolveCmsActions(
+      slide.buttons?.map((button) => ({
+        ...button,
+        variant: button.variant ?? 'secondary',
+      })),
+      'button',
+    )
 
     return [
       {

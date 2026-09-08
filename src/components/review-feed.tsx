@@ -1,5 +1,6 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { resolveBlockAppearanceClasses } from '@/blocks/shared/blockAppearance'
+import { sectionIntroAlignmentClasses } from '@/blocks/shared/contentStyles'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -19,7 +20,7 @@ export type ReviewFeedPresentationProps = {
   accentTitle?: string | null
   actions?: React.ReactNode
   appearance?: BlockAppearance | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   description?: string | null
   emptyStateMessage: string
   eyebrow?: string | null
@@ -86,7 +87,7 @@ export function ReviewFeed({
   title,
 }: ReviewFeedPresentationProps) {
   const appearanceClasses = resolveBlockAppearanceClasses(appearance)
-  const isCenter = (contentAlignment ?? 'center') === 'center'
+  const resolvedContentAlignment = contentAlignment ?? 'center'
   const resolvedAccentTitle = accentTitle?.trim() || undefined
 
   return (
@@ -99,14 +100,12 @@ export function ReviewFeed({
         <div className="flex w-full flex-col gap-6">
           <header
             className={cn(
-              'flex flex-col gap-4',
-              isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
+              'flex max-w-3xl flex-col gap-4',
+              sectionIntroAlignmentClasses[resolvedContentAlignment],
             )}
           >
             {eyebrow ? (
-              <SectionEyebrow surface={appearance?.background ?? 'none'}>
-                {eyebrow}
-              </SectionEyebrow>
+              <SectionEyebrow surface={appearance?.background ?? 'none'}>{eyebrow}</SectionEyebrow>
             ) : null}
             <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
               {resolvedAccentTitle ? (

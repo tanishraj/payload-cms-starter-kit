@@ -273,6 +273,44 @@ describe('Hero Banner block', () => {
     expect(html).toContain('data-content-link="true"')
   })
 
+  it('supports explicit editorial mode and downloadable files in Hero actions', () => {
+    const html = renderToStaticMarkup(
+      createElement(HeroBannerBlockComponent, {
+        backgroundImage: { alt: 'Campus', url: '/media/campus.jpg' } as never,
+        buttons: [
+          {
+            label: 'Admissions guide',
+            linkType: 'custom',
+            mode: 'link',
+            url: '/admissions',
+            variant: 'secondary',
+          },
+          {
+            file: {
+              alt: 'Programme handbook',
+              filename: 'programme-handbook.pdf',
+              url: '/api/media/file/programme-handbook.pdf',
+            },
+            fileBehavior: 'download',
+            label: 'Download handbook',
+            linkType: 'file',
+            mode: 'button',
+            variant: 'outline',
+          },
+        ] as never,
+        title: 'Study medicine.',
+      }),
+    )
+
+    expect(html).toContain('data-content-link="true"')
+    expect(html).toContain('href="/admissions"')
+    expect(html).toContain('Admissions guide')
+    expect(html).toMatch(
+      /<a(?=[^>]*href="\/api\/media\/file\/programme-handbook\.pdf")(?=[^>]*download="programme-handbook\.pdf")[^>]*>/,
+    )
+    expect(html).toContain('data-action-indicator="download"')
+  })
+
   it('applies the optional text shadow to dark-overlay copy and editorial links only', () => {
     const shadowedHtml = renderToStaticMarkup(
       createElement(HeroBannerBlockComponent, {

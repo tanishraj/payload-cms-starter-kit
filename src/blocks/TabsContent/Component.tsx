@@ -170,7 +170,7 @@ export function TabsContentBlockComponent({
             tabContentAlignment={tabContentAlignment ?? 'left'}
           />
         </div>
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
       </div>
     </section>
   )

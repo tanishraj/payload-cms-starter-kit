@@ -11,10 +11,11 @@ import { DeferredAdminSessionBar } from '@/components/admin/DeferredAdminSession
 import { ConsentAwareAnalytics } from '@/components/analytics/ConsentAwareAnalytics'
 import { BackToTopButton } from '@/components/global/BackToTopButton'
 import { CookieConsentBanner } from '@/components/global/CookieConsentBanner'
+import { RouteTransitionScrollGuard } from '@/components/global/RouteTransitionScrollGuard'
 import { SearchDialog } from '@/components/global/SearchDialog'
 import { GlobalAnnouncement } from '@/components/global/GlobalAnnouncement'
 import { GlobalFooter } from '@/components/global/GlobalFooter'
-import { GlobalHeader } from '@/components/global/GlobalHeader'
+import { GlobalHeader, isGlobalHeaderSticky } from '@/components/global/GlobalHeader'
 import {
   type BlockAppearance,
   resolveBlockAppearanceClasses,
@@ -246,17 +247,25 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   ]
     .filter(Boolean)
     .join(' ')
-  const htmlStyle = {
-    ...(colorScheme === 'system' ? { colorScheme: 'light dark' } : { colorScheme }),
-    '--cms-toolbar-offset': '0px',
-  } as React.CSSProperties & { '--cms-toolbar-offset': string }
   const { className: pageBodyClassName } = resolveBlockAppearanceClasses(pageAppearance)
   const cmsToolbarOffset = 'var(--cms-toolbar-offset, 0px)'
   // Only a persistent (non-hide-on-scroll) announcement reserves space below it;
   // the bar collapses --global-announcement-height to 0 when dismissed. The
   // fallback keeps the correct offset during SSR and before hydration.
   const headerReservesAnnouncement = Boolean(announcementItems?.length) && !announcementHideOnScroll
-  const headerTopOffset = `calc(${cmsToolbarOffset} + var(--global-announcement-height, ${headerReservesAnnouncement ? '2.5rem' : '0px'}))`
+  const announcementHeight = headerReservesAnnouncement ? '2.5rem' : '0px'
+  const headerTopOffset = `calc(${cmsToolbarOffset} + var(--global-announcement-height, ${announcementHeight}))`
+  const blockAnchorOffset = isGlobalHeaderSticky(activeHeader)
+    ? `calc(${cmsToolbarOffset} + var(--global-announcement-height, ${announcementHeight}) + 6rem)`
+    : '1rem'
+  const htmlStyle = {
+    ...(colorScheme === 'system' ? { colorScheme: 'light dark' } : { colorScheme }),
+    '--block-anchor-offset': blockAnchorOffset,
+    '--cms-toolbar-offset': '0px',
+  } as React.CSSProperties & {
+    '--block-anchor-offset': string
+    '--cms-toolbar-offset': string
+  }
   const contentShellStyle = { paddingTop: cmsToolbarOffset } as React.CSSProperties
 
   return (
@@ -264,6 +273,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       lang="en"
       className={htmlClassName}
       data-color-scheme={colorScheme}
+      data-scroll-behavior="smooth"
       data-theme-color={themeColor}
       style={htmlStyle}
       suppressHydrationWarning
@@ -323,6 +333,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         />
       </head>
       <body className={pageBodyClassName}>
+        <RouteTransitionScrollGuard />
         {/* Skip navigation — visually hidden until focused */}
         <a
           href="#main-content"

@@ -915,12 +915,9 @@ describe('FeeStructureBlockComponent', () => {
     expect(tabs.every((tab) => !tab.className.includes('sm:'))).toBe(true)
   })
 
-  it.each([
-    ['left', 'self-start'],
-    ['center', 'mx-auto'],
-  ] as const)(
-    'constrains the fee context band when aligned %s',
-    (contentAlignment, alignmentClass) => {
+  it.each(['left', 'center', 'right'] as const)(
+    'keeps fee context body geometry independent from %s intro alignment',
+    (contentAlignment) => {
       const { container } = render(
         <FeeStructureBlockComponent
           academicSession="2026-27"
@@ -934,7 +931,8 @@ describe('FeeStructureBlockComponent', () => {
       const context = container.querySelector('[data-fee-context="true"]')
       expect(context?.className).toContain('w-full')
       expect(context?.className).toContain('max-w-3xl')
-      expect(context?.className).toContain(alignmentClass)
+      expect(context?.className).toContain('self-start')
+      expect(context?.className).not.toContain('mx-auto')
     },
   )
 

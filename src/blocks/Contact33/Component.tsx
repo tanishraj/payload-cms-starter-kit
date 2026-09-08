@@ -43,8 +43,7 @@ export function Contact33BlockComponent({
     media: image as Media | number | string | null,
     preset: 'generic',
   })
-  const resolvedForm =
-    form && typeof form === 'object' ? (form as Contact33FormLike) : null
+  const resolvedForm = form && typeof form === 'object' ? (form as Contact33FormLike) : null
 
   if (!resolvedTitle || !resolvedImage || !resolvedImageAlt) {
     return null
@@ -55,7 +54,11 @@ export function Contact33BlockComponent({
   return (
     <>
       <Contact33
-        actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
+        actions={
+          resolvedActions.length > 0 ? (
+            <ContentActions actions={resolvedActions} alignment={contentAlignment ?? 'center'} />
+          ) : undefined
+        }
         appearance={appearance}
         contentAlignment={contentAlignment ?? 'center'}
         description={description?.trim()}
@@ -66,7 +69,7 @@ export function Contact33BlockComponent({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
     </>
   )
 }

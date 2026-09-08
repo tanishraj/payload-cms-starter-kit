@@ -5,6 +5,7 @@ import {
   type BlockAppearance,
 } from '@/blocks/shared/blockAppearance'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
+import { resolveSectionAlignment } from '@/blocks/shared/legacySectionFields'
 import {
   regularBlockContainerClasses,
   regularBlockMobilePaddingClasses,
@@ -26,6 +27,7 @@ type TestimonialSpotlightBlockLike = {
   appearance?: BlockAppearance | null
   containerBackground?: CardSurfaceValue | null
   containerOutline?: 'none' | 'outline' | null
+  contentAlignment?: 'center' | 'left' | 'right' | null
   contentVerticalAlignment?: 'bottom' | 'center' | 'top' | null
   description?: string | null
   designation?: string | null
@@ -36,7 +38,7 @@ type TestimonialSpotlightBlockLike = {
   mediaFillMode?: 'contained' | 'containedFill' | 'edgeToEdge' | null
   mediaPosition?: 'left' | 'right' | null
   personName?: string | null
-  sectionContentAlignment?: 'center' | 'left' | null
+  sectionContentAlignment?: 'center' | 'left' | 'right' | null
   sectionDescription?: string | null
   sectionEyebrow?: string | null
   sectionTitle?: string | null
@@ -111,6 +113,7 @@ export function TestimonialSpotlightBlockComponent({
   appearance,
   containerBackground,
   containerOutline,
+  contentAlignment,
   contentVerticalAlignment = 'center',
   description,
   designation,
@@ -121,7 +124,7 @@ export function TestimonialSpotlightBlockComponent({
   mediaFillMode = 'contained',
   mediaPosition = 'left',
   personName,
-  sectionContentAlignment = 'center',
+  sectionContentAlignment,
   sectionDescription,
   sectionEyebrow,
   sectionTitle,
@@ -140,7 +143,11 @@ export function TestimonialSpotlightBlockComponent({
   const resolvedSectionDescription = sectionDescription?.trim()
   const resolvedSectionActions = resolveCmsActions(actions)
   const hasFooterActions = resolveCmsActions(footerActions).length > 0
-  const resolvedSectionContentAlignment = sectionContentAlignment === 'left' ? 'left' : 'center'
+  const resolvedSectionContentAlignment = resolveSectionAlignment(
+    contentAlignment,
+    sectionContentAlignment,
+    'center',
+  )
   const hasSectionHeader = Boolean(
     resolvedSectionEyebrow ||
     resolvedSectionTitle ||
@@ -180,7 +187,11 @@ export function TestimonialSpotlightBlockComponent({
   if (!media || !resolvedTitle || !resolvedPersonName) return null
 
   const MessageHeading = resolvedSectionTitle ? 'h3' : 'h2'
-  const isSectionCentered = resolvedSectionContentAlignment === 'center'
+  const sectionAlignmentClasses = {
+    left: 'items-start text-left',
+    center: 'mx-auto items-center text-center',
+    right: 'ml-auto items-end text-right',
+  } as const
   const ContentGroup = resolvedTestimonial ? 'figure' : 'div'
   const Attribution = resolvedTestimonial ? 'figcaption' : 'div'
 
@@ -188,7 +199,7 @@ export function TestimonialSpotlightBlockComponent({
     <div
       className={cn(
         'flex max-w-3xl flex-col gap-4',
-        isSectionCentered ? 'mx-auto items-center text-center' : 'items-start text-left',
+        sectionAlignmentClasses[resolvedSectionContentAlignment],
       )}
       data-testimonial-spotlight-section-alignment={resolvedSectionContentAlignment}
       data-testimonial-spotlight-section-header="true"
@@ -347,7 +358,10 @@ export function TestimonialSpotlightBlockComponent({
           {splitLayout}
           {hasFooterActions ? (
             <div className={regularBlockContainerClasses}>
-              <BlockFooterActions actions={footerActions} />
+              <BlockFooterActions
+                actions={footerActions}
+                alignment={resolvedSectionContentAlignment}
+              />
             </div>
           ) : null}
         </>
@@ -355,7 +369,7 @@ export function TestimonialSpotlightBlockComponent({
         <div className={regularBlockContainerClasses}>
           {sectionHeader ? <div className="mb-12">{sectionHeader}</div> : null}
           {splitLayout}
-          <BlockFooterActions actions={footerActions} />
+          <BlockFooterActions actions={footerActions} alignment={resolvedSectionContentAlignment} />
         </div>
       )}
     </section>

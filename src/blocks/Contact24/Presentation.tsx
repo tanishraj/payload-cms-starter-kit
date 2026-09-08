@@ -1,6 +1,11 @@
 import type { BlockAppearance } from '@/blocks/shared/blockAppearance'
 import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
-import { Contact24, type Contact24DetailsAlignment, type Contact24MapActionMode, type Contact24MapActionVariant } from '@/components/contact24'
+import {
+  Contact24,
+  type Contact24DetailsAlignment,
+  type Contact24MapActionMode,
+  type Contact24MapActionVariant,
+} from '@/components/contact24'
 import { ContentActions } from '@/components/ContentActions'
 import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
 import type { SiteOfficeLocation } from '@/lib/siteOfficesShared'
@@ -49,7 +54,11 @@ export function Contact24BlockPresentation({
   return (
     <>
       <Contact24
-        actions={resolvedActions.length > 0 ? <ContentActions actions={resolvedActions} /> : undefined}
+        actions={
+          resolvedActions.length > 0 ? (
+            <ContentActions actions={resolvedActions} alignment={contentAlignment ?? 'center'} />
+          ) : undefined
+        }
         appearance={appearance}
         contentAlignment={contentAlignment ?? 'center'}
         description={description?.trim()}
@@ -63,7 +72,7 @@ export function Contact24BlockPresentation({
         size={size ?? 'default'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
     </>
   )
 }

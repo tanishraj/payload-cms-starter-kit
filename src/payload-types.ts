@@ -320,7 +320,7 @@ export interface PageHeaderBlock {
    * Small label above the page title.
    */
   eyebrow?: string | null;
-  title?: string | null;
+  title: string;
   accentTitle?: string | null;
   /**
    * Supporting line below the title.
@@ -331,36 +331,9 @@ export interface PageHeaderBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -402,6 +375,48 @@ export interface PageHeaderBlock {
         id?: string | null;
       }[]
     | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   variant: 'minimal' | 'banner';
   /**
    * Use the page hierarchy, configure a custom trail, or hide breadcrumbs.
@@ -411,15 +426,10 @@ export interface PageHeaderBlock {
    * Legacy Key Facts setting retained for backwards compatibility.
    */
   keyFactsNumberPosition?: ('inline' | 'above') | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
   /**
    * The side column stacks back under the copy on small screens.
    */
   actionPlacement?: ('side' | 'below') | null;
-  contentAlignment?: ('left' | 'center' | 'right') | null;
   contentWidth?: ('narrow' | 'default' | 'wide') | null;
   /**
    * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
@@ -435,7 +445,10 @@ export interface PageHeaderBlock {
    */
   overlayCoverage?: ('full' | 'split') | null;
   height?: ('compact' | 'default' | 'immersive') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'pageHeader';
@@ -538,18 +551,33 @@ export interface HeroBannerBlock {
   buttons?:
     | {
         label: string;
-        linkType?: ('page' | 'custom') | null;
+        linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
          * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
          */
-        variant: 'default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline' | 'link';
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
         /**
-         * Adds a trailing arrow to this button.
+         * Adds a trailing arrow when this action is displayed as a button.
          */
         showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
         id?: string | null;
       }[]
     | null;
@@ -578,6 +606,10 @@ export interface HeroBannerBlock {
   verticalAlignment: 'top' | 'center' | 'bottom';
   contentWidth: 'narrow' | 'default' | 'wide';
   height: 'compact' | 'default' | 'immersive';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'heroBanner';
@@ -591,6 +623,10 @@ export interface ReusableSectionBlock {
    * Select a reusable section to embed on this page.
    */
   section: string | ReusableSection;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'reusableSection';
@@ -698,6 +734,10 @@ export interface RichTextBlock {
   };
   size: 'none' | 'compact' | 'default' | 'comfortable';
   maxWidth: 'prose' | 'md' | 'lg' | 'full';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'richText';
@@ -717,6 +757,39 @@ export interface AboutSectionBlock {
    * Main about text. Paragraphs separated by blank lines are rendered as separate paragraphs.
    */
   body: string;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Controls the semantic and visual fallback marker for List Items.
    */
@@ -786,41 +859,14 @@ export interface AboutSectionBlock {
         id?: string | null;
       }[]
     | null;
-  actions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
-        /**
-         * Choose the Media asset this action should view or download.
-         */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
   footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -850,7 +896,11 @@ export interface AboutSectionBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment?: ('left' | 'center') | null;
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   variant: 'split' | 'centered' | 'text';
   imagePosition?: ('left' | 'right') | null;
   /**
@@ -862,7 +912,10 @@ export interface AboutSectionBlock {
    * Uses the active theme tokens and automatically adjusts panel contrast.
    */
   imageDetailBackground?: ('subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'aboutSection';
@@ -882,6 +935,9 @@ export interface FeatureSpotlightBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -912,6 +968,9 @@ export interface FeatureSpotlightBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -941,13 +1000,20 @@ export interface FeatureSpotlightBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   layoutMode: 'split' | 'contentOnly';
   mediaPosition?: ('left' | 'right') | null;
   imagePosition?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
   mediaFillMode?: ('contained' | 'containedFill' | 'edgeToEdge') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  contentAlignment?: ('left' | 'center') | null;
   contentVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'featureSpotlight';
@@ -966,36 +1032,9 @@ export interface ContentHighlightsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1041,6 +1080,9 @@ export interface ContentHighlightsBlock {
           label: string;
           linkType?: ('page' | 'custom' | 'file') | null;
           page?: (string | null) | Page;
+          /**
+           * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+           */
           url?: string | null;
           openInNewTab?: boolean | null;
           /**
@@ -1072,10 +1114,48 @@ export interface ContentHighlightsBlock {
     cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
     id?: string | null;
   }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   itemsLayout: '1' | '2' | '3' | '4';
   cardStyle: 'open' | 'leftRule' | 'boxed' | 'divided';
   eyebrowPlacement: 'stacked' | 'inline';
@@ -1091,9 +1171,11 @@ export interface ContentHighlightsBlock {
    */
   ruledDividers?: ('rows' | 'grid' | 'individual') | null;
   headerLayout: 'stacked' | 'split';
-  contentAlignment?: ('left' | 'center' | 'right') | null;
   splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'contentHighlights';
@@ -1118,6 +1200,9 @@ export interface AcademicProgrammesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1211,6 +1296,9 @@ export interface AcademicProgrammesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1241,9 +1329,10 @@ export interface AcademicProgrammesBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
-   * Aligns the section eyebrow, heading, description, and actions together.
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
    */
   contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   headerLayout: 'split' | 'stacked';
   viewMode: 'grid' | 'list' | 'detailedCards';
   /**
@@ -1266,7 +1355,10 @@ export interface AcademicProgrammesBlock {
    * Aligns the right-column description and section actions to the top or bottom.
    */
   sideContentAlignment?: ('top' | 'bottom') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'academicProgrammes';
@@ -1291,36 +1383,9 @@ export interface NewsEventsTabsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1368,10 +1433,48 @@ export interface NewsEventsTabsBlock {
    * Shown when the selected classification has no published entries.
    */
   emptyStateMessage?: string | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   /**
    * Choose a contained, pill-shaped, or minimal underline tab treatment.
    */
@@ -1385,14 +1488,13 @@ export interface NewsEventsTabsBlock {
    */
   cardsPerRow?: ('2' | '3' | '4') | null;
   /**
-   * Header actions only sit beside the heading when aligned left.
-   */
-  contentAlignment?: ('left' | 'center') | null;
-  /**
    * Aligns header actions against the content when they appear beside the heading.
    */
   headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'newsEventsTabs';
@@ -1458,36 +1560,9 @@ export interface CalendarBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1525,6 +1600,9 @@ export interface CalendarBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1553,40 +1631,14 @@ export interface CalendarBlock {
   calendarPdf?: (string | null) | Media;
   calendarPdfLabel?: string | null;
   emptyStateMessage?: string | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center';
-  /**
-   * Choose whether dates outside the selected month remain faintly visible or are hidden.
-   */
-  adjacentMonthDates: 'muted' | 'hidden';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'calendar';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AnnualCalendarBlock".
- */
-export interface AnnualCalendarBlock {
-  /**
-   * Small label above the optional section heading.
-   */
-  eyebrow?: string | null;
-  /**
-   * Optional Annual Calendar section heading.
-   */
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
+  footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1612,11 +1664,50 @@ export interface AnnualCalendarBlock {
         id?: string | null;
       }[]
     | null;
-  footerActions?:
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Choose whether dates outside the selected month remain faintly visible or are hidden.
+   */
+  adjacentMonthDates: 'muted' | 'hidden';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'calendar';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AnnualCalendarBlock".
+ */
+export interface AnnualCalendarBlock {
+  /**
+   * Small label above the optional section heading.
+   */
+  eyebrow?: string | null;
+  /**
+   * Optional Annual Calendar section heading.
+   */
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1666,6 +1757,9 @@ export interface AnnualCalendarBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1694,12 +1788,52 @@ export interface AnnualCalendarBlock {
   calendarPdf?: (string | null) | Media;
   calendarPdfLabel?: string | null;
   emptyStateMessage?: string | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment: 'left' | 'center';
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'annualCalendar';
@@ -1724,6 +1858,9 @@ export interface DepartmentProfilesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1780,6 +1917,9 @@ export interface DepartmentProfilesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1809,6 +1949,11 @@ export interface DepartmentProfilesBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   showSearch?: boolean | null;
   searchPlaceholder?: string | null;
   showDepartmentTabs?: boolean | null;
@@ -1860,7 +2005,6 @@ export interface DepartmentProfilesBlock {
    * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
    */
   featuredCarouselOverlayCoverage?: ('full' | 'split') | null;
-  contentAlignment: 'left' | 'center' | 'right';
   headerLayout: 'split' | 'stacked';
   descriptionPosition?: ('side' | 'underTitle') | null;
   sideContentAlignment?: ('top' | 'bottom') | null;
@@ -1868,7 +2012,10 @@ export interface DepartmentProfilesBlock {
   mediumColumns?: ('3' | '4' | '5' | '6') | null;
   smallColumns?: ('4' | '5' | '6' | '7' | '8') | null;
   cardFrame: 'boxed' | 'framed' | 'open';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'departmentProfiles';
@@ -1893,6 +2040,9 @@ export interface GalleryAlbumTabsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1941,6 +2091,9 @@ export interface GalleryAlbumTabsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -1971,18 +2124,22 @@ export interface GalleryAlbumTabsBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
    * Choose a contained, pill-shaped, or minimal underline tab treatment.
    */
   tabVariant: 'contained' | 'pill' | 'underline';
   /**
-   * Header actions only sit beside the heading when aligned left.
-   */
-  contentAlignment?: ('left' | 'center') | null;
-  /**
    * Aligns header actions against the content when they appear beside the heading.
    */
   headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'galleryAlbumTabs';
@@ -2021,6 +2178,10 @@ export interface GalleryAlbum {
  * via the `definition` "QaAccordionBlock".
  */
 export interface QaAccordionBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
   title?: string | null;
   accentTitle?: string | null;
   description?: string | null;
@@ -2029,36 +2190,9 @@ export interface QaAccordionBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2119,6 +2253,9 @@ export interface QaAccordionBlock {
             label: string;
             linkType?: ('page' | 'custom' | 'file') | null;
             page?: (string | null) | Page;
+            /**
+             * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+             */
             url?: string | null;
             openInNewTab?: boolean | null;
             /**
@@ -2146,17 +2283,57 @@ export interface QaAccordionBlock {
         | null;
     };
   };
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
   contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   layoutMode: 'stacked' | 'split';
   splitProportion?: ('balanced' | 'sectionFocus' | 'qaFocus') | null;
   accordionPlacement?: ('left' | 'right') | null;
   sectionVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
   defaultOpenFirst?: boolean | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'qaAccordion';
@@ -2183,6 +2360,10 @@ export interface StatsStripBlock {
   animationEnabled?: boolean | null;
   animationDuration: number;
   triggerOnce?: boolean | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'statsStrip';
@@ -2203,6 +2384,9 @@ export interface TestimonialSpotlightBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2240,6 +2424,9 @@ export interface TestimonialSpotlightBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2269,7 +2456,11 @@ export interface TestimonialSpotlightBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  sectionContentAlignment: 'left' | 'center';
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  sectionContentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   /**
    * Match Section inherits the section surface. Other choices apply a semantic theme surface to the complete image and content container.
    */
@@ -2278,8 +2469,11 @@ export interface TestimonialSpotlightBlock {
   mediaPosition: 'left' | 'right';
   imagePosition: 'center' | 'top' | 'bottom' | 'left' | 'right';
   mediaFillMode: 'contained' | 'containedFill' | 'edgeToEdge';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
   contentVerticalAlignment: 'top' | 'center' | 'bottom';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonialSpotlight';
@@ -2304,6 +2498,9 @@ export interface AccreditationCardsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2356,6 +2553,9 @@ export interface AccreditationCardsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2386,9 +2586,10 @@ export interface AccreditationCardsBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
-   * Aligns the section eyebrow, heading, description, and actions together.
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
    */
   contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   columns: '2' | '3' | '4';
   /**
    * Stepped Rules alternates connected rules. Grouped uses one outer frame with item dividers. Boxed frames every card. Open uses dividers without an outer frame.
@@ -2402,7 +2603,10 @@ export interface AccreditationCardsBlock {
    * Applies one consistent icon treatment across the cards.
    */
   iconStyle: 'plain' | 'square' | 'circle' | 'outline';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'accreditationCards';
@@ -2431,6 +2635,9 @@ export interface BannerCtaBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2461,6 +2668,9 @@ export interface BannerCtaBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2491,10 +2701,14 @@ export interface BannerCtaBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
    * The side column stacks back under the copy on small screens.
    */
   actionPlacement?: ('side' | 'below') | null;
-  contentAlignment?: ('left' | 'center' | 'right') | null;
   contentWidth?: ('narrow' | 'default' | 'wide') | null;
   /**
    * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
@@ -2510,7 +2724,10 @@ export interface BannerCtaBlock {
    */
   overlayCoverage?: ('full' | 'split') | null;
   height?: ('compact' | 'default' | 'immersive') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'bannerCta';
@@ -2521,43 +2738,16 @@ export interface BannerCtaBlock {
  */
 export interface Contact24Block {
   eyebrow?: string | null;
-  title?: string | null;
+  title: string;
   description?: string | null;
   actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2587,14 +2777,50 @@ export interface Contact24Block {
    * Leave empty to show all published offices. Select specific offices to show only those, in the order chosen.
    */
   offices?: (string | OfficeLocation)[] | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
   contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   detailsAlignment: 'left' | 'center' | 'right';
   showAddressDetails?: boolean | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
   /**
    * Label for the map link shown on each office card.
    */
@@ -2604,6 +2830,10 @@ export interface Contact24Block {
    * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
    */
   mapActionVariant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'contact24';
@@ -2659,6 +2889,9 @@ export interface DownloadListBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2741,6 +2974,9 @@ export interface DownloadListBlock {
               label: string;
               linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               /**
@@ -2793,6 +3029,9 @@ export interface DownloadListBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2822,6 +3061,11 @@ export interface DownloadListBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   sectionLayout: 'stacked' | 'split';
   /**
    * Choose which side contains the section introduction on large screens.
@@ -2852,8 +3096,10 @@ export interface DownloadListBlock {
    * Show every grid action with its label or as an accessible icon-only control.
    */
   gridActionDisplay?: ('labelled' | 'icons') | null;
-  contentAlignment?: ('left' | 'center') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'downloadList';
@@ -2880,6 +3126,10 @@ export interface AnnouncementBlock {
    * Lower values scroll faster.
    */
   marqueeDurationMs?: number | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'announcement';
@@ -2901,36 +3151,9 @@ export interface NewsGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -2990,19 +3213,56 @@ export interface NewsGridBlock {
     url?: string | null;
     openInNewTab?: boolean | null;
   };
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
-   * Header actions only sit beside the heading when aligned left.
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
    */
-  contentAlignment?: ('left' | 'center') | null;
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   /**
    * Aligns header actions against the content when they appear beside the heading.
    */
   headerActionAlignment?: ('center' | 'top' | 'bottom') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'newsGrid';
@@ -3024,6 +3284,9 @@ export interface Cta39Block {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3054,6 +3317,9 @@ export interface Cta39Block {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3084,10 +3350,14 @@ export interface Cta39Block {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
    * Keep all content together, split copy from the heading, or place actions on the right.
    */
   headerLayout: 'stacked' | 'split' | 'actionSplit';
-  contentAlignment: 'left' | 'center' | 'right';
   /**
    * Position the description and actions relative to the heading.
    */
@@ -3096,7 +3366,10 @@ export interface Cta39Block {
    * Arrange the right-column actions in a row or a vertical stack on desktop.
    */
   actionLayout?: ('inline' | 'stacked') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta39';
@@ -3128,18 +3401,33 @@ export interface HeroCarouselBlock {
         buttons?:
           | {
               label: string;
-              linkType?: ('page' | 'custom') | null;
+              linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               /**
+               * Choose the Media asset this action should view or download.
+               */
+              file?: (string | null) | Media;
+              fileBehavior?: ('view' | 'download') | null;
+              openFileInNewTab?: boolean | null;
+              mode?: ('link' | 'button') | null;
+              /**
                * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
                */
-              variant: 'default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline' | 'link';
+              variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
               /**
-               * Adds a trailing arrow to this button.
+               * Adds a trailing arrow when this action is displayed as a button.
                */
               showArrow?: boolean | null;
+              /**
+               * Shows an animated down arrow for this file download.
+               */
+              showFileIcon?: boolean | null;
+              fileIconPosition?: ('left' | 'right') | null;
               id?: string | null;
             }[]
           | null;
@@ -3171,6 +3459,10 @@ export interface HeroCarouselBlock {
   showPauseControl?: boolean | null;
   showArrows?: boolean | null;
   showDots?: boolean | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'heroCarousel';
@@ -3189,36 +3481,9 @@ export interface GalleryCoverflowBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3253,30 +3518,14 @@ export interface GalleryCoverflowBlock {
         id?: string | null;
       }[]
     | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center' | 'right';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'galleryCoverflow';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FeatureMatrixBlock".
- */
-export interface FeatureMatrixBlock {
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
+  footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3302,11 +3551,40 @@ export interface FeatureMatrixBlock {
         id?: string | null;
       }[]
     | null;
-  footerActions?:
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryCoverflow';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureMatrixBlock".
+ */
+export interface FeatureMatrixBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3345,14 +3623,54 @@ export interface FeatureMatrixBlock {
         id?: string | null;
       }[]
     | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
   contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
   showOuterBorder?: boolean | null;
   borderAnimationEnabled?: boolean | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'featureMatrix';
@@ -3377,6 +3695,9 @@ export interface EditorialReasonsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3419,6 +3740,42 @@ export interface EditorialReasonsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3449,9 +3806,10 @@ export interface EditorialReasonsBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
-   * Aligns the section eyebrow, heading, description, and actions together.
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
    */
   contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   /**
    * Controls the introduction and numbered-list proportions on large screens.
    */
@@ -3475,7 +3833,10 @@ export interface EditorialReasonsBlock {
    * Keeps the introduction visible beside longer lists on large screens.
    */
   stickyIntro?: boolean | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'editorialReasons';
@@ -3500,6 +3861,9 @@ export interface LeadershipProfilesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3558,6 +3922,9 @@ export interface LeadershipProfilesBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3587,6 +3954,11 @@ export interface LeadershipProfilesBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   cardLayout: 'standard' | 'imageOverlay';
   /**
    * Applies one semantic card surface to every Standard leadership profile for a consistent directory.
@@ -3605,10 +3977,6 @@ export interface LeadershipProfilesBlock {
    * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
    */
   overlayCoverage?: ('full' | 'split') | null;
-  /**
-   * Aligns the section eyebrow, heading, description, and actions together.
-   */
-  contentAlignment: 'left' | 'center' | 'right';
   headerLayout: 'split' | 'stacked';
   /**
    * Moves the section description between the title column and the right column.
@@ -3619,7 +3987,10 @@ export interface LeadershipProfilesBlock {
    */
   sideContentAlignment?: ('top' | 'bottom') | null;
   columns: '2' | '3' | '4';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'leadershipProfiles';
@@ -3632,15 +4003,14 @@ export interface NewsEventsHighlightsBlock {
   eyebrow?: string | null;
   title?: string | null;
   description?: string | null;
-  /**
-   * Limit the carousel to selected active classifications. Leave empty to include all active classifications. Selection order does not change chronological slide order.
-   */
-  classifications?: (string | NewsEventClassification)[] | null;
   actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3666,11 +4036,18 @@ export interface NewsEventsHighlightsBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Limit the carousel to selected active Event classifications. Leave empty to include all active Event classifications. Up to three featured Events appear first, followed by three automatic upcoming Events.
+   */
+  classifications?: (string | NewsEventClassification)[] | null;
   footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3696,11 +4073,19 @@ export interface NewsEventsHighlightsBlock {
         id?: string | null;
       }[]
     | null;
-  itemCount: number;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   autoplay?: boolean | null;
   carouselControlsPosition: 'bottom' | 'top';
   /**
-   * Optional message shown when there are no News & Events entries.
+   * Optional message shown when there are no eligible Events.
    */
   emptyStateMessage?: string | null;
   imagePositionOverride: 'item' | 'center' | 'top' | 'bottom' | 'left' | 'right';
@@ -3717,12 +4102,10 @@ export interface NewsEventsHighlightsBlock {
    * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
    */
   overlayCoverage: 'full' | 'split';
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center' | 'right';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'newsEventsHighlights';
@@ -3733,7 +4116,7 @@ export interface NewsEventsHighlightsBlock {
  */
 export interface ProfileCarouselBlock {
   eyebrow?: string | null;
-  title?: string | null;
+  title: string;
   accentTitle?: string | null;
   description?: string | null;
   actions?:
@@ -3741,36 +4124,9 @@ export interface ProfileCarouselBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3810,45 +4166,14 @@ export interface ProfileCarouselBlock {
         id?: string | null;
       }[]
     | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center' | 'right';
-  cardVariant: 'stacked' | 'overlay';
-  overlayAlignment?: ('left' | 'center' | 'right') | null;
-  /**
-   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
-   */
-  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
-  overlayStyle?: ('light' | 'dark' | 'darker') | null;
-  /**
-   * The named edge receives the strongest tint; Even keeps coverage balanced.
-   */
-  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
-  /**
-   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
-   */
-  overlayCoverage?: ('full' | 'split') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'profileCarousel';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "GalleryShowcaseBlock".
- */
-export interface GalleryShowcaseBlock {
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
+  footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3874,11 +4199,55 @@ export interface GalleryShowcaseBlock {
         id?: string | null;
       }[]
     | null;
-  footerActions?:
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  cardVariant: 'stacked' | 'overlay';
+  overlayAlignment?: ('left' | 'center' | 'right') | null;
+  /**
+   * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
+   */
+  themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
+  overlayStyle?: ('light' | 'dark' | 'darker') | null;
+  /**
+   * The named edge receives the strongest tint; Even keeps coverage balanced.
+   */
+  overlayDirection?: ('vertical' | 'leftToRight' | 'rightToLeft' | 'bottomToTop' | 'topToBottom') | null;
+  /**
+   * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
+   */
+  overlayCoverage?: ('full' | 'split') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'profileCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryShowcaseBlock".
+ */
+export interface GalleryShowcaseBlock {
+  eyebrow?: string | null;
+  title: string;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3911,12 +4280,52 @@ export interface GalleryShowcaseBlock {
         id?: string | null;
       }[]
     | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
   contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'galleryShowcase';
@@ -3934,6 +4343,9 @@ export interface EventGalleryBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -3973,6 +4385,9 @@ export interface EventGalleryBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4003,6 +4418,11 @@ export interface EventGalleryBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
    * Show the album title, event date, and image count over each cover image.
    */
   showCardOverlay?: boolean | null;
@@ -4029,8 +4449,10 @@ export interface EventGalleryBlock {
    * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
    */
   overlayCoverage?: ('full' | 'split') | null;
-  contentAlignment: 'left' | 'center' | 'right';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'eventGallery';
@@ -4041,7 +4463,7 @@ export interface EventGalleryBlock {
  */
 export interface ImageMosaicBlock {
   eyebrow?: string | null;
-  title?: string | null;
+  title: string;
   accentTitle?: string | null;
   description?: string | null;
   actions?:
@@ -4049,36 +4471,9 @@ export interface ImageMosaicBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4115,6 +4510,9 @@ export interface ImageMosaicBlock {
               label: string;
               linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               /**
@@ -4152,10 +4550,46 @@ export interface ImageMosaicBlock {
    * Open all images from the selected album in the full-screen slideshow when its tile is selected.
    */
   enableAlbumSlideshow?: boolean | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
   contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
   showImageOverlays?: boolean | null;
@@ -4182,6 +4616,10 @@ export interface ImageMosaicBlock {
    * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
    */
   overlayCoverage?: ('full' | 'split') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'imageMosaic';
@@ -4206,6 +4644,9 @@ export interface StudentExperienceBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4262,6 +4703,9 @@ export interface StudentExperienceBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4291,11 +4735,18 @@ export interface StudentExperienceBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
   contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   headerLayout: 'split' | 'stacked';
   cardHeight: 'compact' | 'default' | 'comfortable';
   showNumbers?: boolean | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'studentExperience';
@@ -4306,43 +4757,16 @@ export interface StudentExperienceBlock {
  */
 export interface RatingSpotlightBlock {
   eyebrow?: string | null;
-  title?: string | null;
+  title: string;
   description?: string | null;
   actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4373,12 +4797,52 @@ export interface RatingSpotlightBlock {
     manualRating?: number | null;
     manualReviewCount?: number | null;
   };
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
   contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'ratingSpotlight';
@@ -4389,7 +4853,7 @@ export interface RatingSpotlightBlock {
  */
 export interface ReviewFeedBlock {
   eyebrow?: string | null;
-  title?: string | null;
+  title: string;
   accentTitle?: string | null;
   description?: string | null;
   actions?:
@@ -4397,6 +4861,9 @@ export interface ReviewFeedBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4430,6 +4897,9 @@ export interface ReviewFeedBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4459,8 +4929,15 @@ export interface ReviewFeedBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment?: ('left' | 'center') | null;
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'reviewFeed';
@@ -4478,36 +4955,9 @@ export interface ReviewSubmissionBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4537,12 +4987,52 @@ export interface ReviewSubmissionBlock {
    * Select a review-intent form. Use rating, reviewerName, reviewerEmail, reviewBody, and an optional subjectLabel select field; subjectLabel options become the topic chips. Review titles are generated from the submitted review.
    */
   form: string | Form;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
   contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'reviewSubmission';
@@ -4620,43 +5110,16 @@ export interface Form {
  */
 export interface Contact33Block {
   eyebrow?: string | null;
-  title?: string | null;
+  title: string;
   description?: string | null;
   actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4688,30 +5151,14 @@ export interface Contact33Block {
    * Select a published general or lead form with name (Text), email (Email), subject (Select), and message (Textarea) fields.
    */
   form: string | Form;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center' | 'right';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  imagePosition: 'left' | 'right';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'contact33';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TeamShowcaseBlock".
- */
-export interface TeamShowcaseBlock {
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
+  footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4737,11 +5184,44 @@ export interface TeamShowcaseBlock {
         id?: string | null;
       }[]
     | null;
-  footerActions?:
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  imagePosition: 'left' | 'right';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact33';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamShowcaseBlock".
+ */
+export interface TeamShowcaseBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4780,31 +5260,14 @@ export interface TeamShowcaseBlock {
         id?: string | null;
       }[]
     | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center' | 'right';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  showHeaderDivider?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'teamShowcase';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Services21Block".
- */
-export interface Services21Block {
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
+  footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4830,11 +5293,41 @@ export interface Services21Block {
         id?: string | null;
       }[]
     | null;
-  footerActions?:
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  showHeaderDivider?: boolean | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'teamShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Services21Block".
+ */
+export interface Services21Block {
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4869,32 +5362,14 @@ export interface Services21Block {
         id?: string | null;
       }[]
     | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center' | 'right';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'services21';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "VideoEmbedBlock".
- */
-export interface VideoEmbedBlock {
-  eyebrow?: string | null;
-  /**
-   * Display heading shown above the video. Also used as the iframe accessibility title.
-   */
-  title?: string | null;
-  description?: string | null;
-  actions?:
+  footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4920,11 +5395,42 @@ export interface VideoEmbedBlock {
         id?: string | null;
       }[]
     | null;
-  footerActions?:
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'services21';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock".
+ */
+export interface VideoEmbedBlock {
+  eyebrow?: string | null;
+  /**
+   * Display heading shown above the video. Also used as the iframe accessibility title.
+   */
+  title?: string | null;
+  description?: string | null;
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -4962,34 +5468,14 @@ export interface VideoEmbedBlock {
    * Autoplay is always muted to comply with browser policies.
    */
   autoplay?: boolean | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  contentAlignment: 'left' | 'center' | 'right';
-  aspectRatio: '16/9' | '4/3' | '1/1' | '9/16';
-  maxWidth: 'md' | 'lg' | 'full';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'videoEmbed';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaCarouselBlock".
- */
-export interface MediaCarouselBlock {
-  /**
-   * Small label above the section title.
-   */
-  eyebrow?: string | null;
-  title?: string | null;
-  description?: string | null;
-  sectionActions?:
+  footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5015,11 +5501,77 @@ export interface MediaCarouselBlock {
         id?: string | null;
       }[]
     | null;
-  footerActions?:
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  aspectRatio: '16/9' | '4/3' | '1/1' | '9/16';
+  maxWidth: 'md' | 'lg' | 'full';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoEmbed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaCarouselBlock".
+ */
+export interface MediaCarouselBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  sectionActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5068,6 +5620,9 @@ export interface MediaCarouselBlock {
               label: string;
               linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               /**
@@ -5100,34 +5655,14 @@ export interface MediaCarouselBlock {
         id?: string | null;
       }[]
     | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  columns: '2' | '3' | '4';
-  contentAlignment: 'left' | 'center';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaCarousel';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProgramMatrixBlock".
- */
-export interface ProgramMatrixBlock {
-  /**
-   * Small label above the section title.
-   */
-  eyebrow?: string | null;
-  title: string;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
+  footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5153,11 +5688,44 @@ export interface ProgramMatrixBlock {
         id?: string | null;
       }[]
     | null;
-  footerActions?:
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  columns: '2' | '3' | '4';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProgramMatrixBlock".
+ */
+export interface ProgramMatrixBlock {
+  /**
+   * Small label above the section title.
+   */
+  eyebrow?: string | null;
+  title: string;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5202,6 +5770,9 @@ export interface ProgramMatrixBlock {
           label: string;
           linkType?: ('page' | 'custom' | 'file') | null;
           page?: (string | null) | Page;
+          /**
+           * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+           */
           url?: string | null;
           openInNewTab?: boolean | null;
           /**
@@ -5237,10 +5808,48 @@ export interface ProgramMatrixBlock {
     cardBackground: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
     id?: string | null;
   }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   actionMode?: ('link' | 'button') | null;
   /**
    * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5260,8 +5869,10 @@ export interface ProgramMatrixBlock {
    * Use one column on mobile, up to two on tablet, and this count on desktop.
    */
   columns: '1' | '2' | '3' | '4';
-  contentAlignment: 'left' | 'center';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'programMatrix';
@@ -5288,6 +5899,9 @@ export interface LogoStripBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5331,11 +5945,48 @@ export interface LogoStripBlock {
         id?: string | null;
       }[]
     | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment?: ('left' | 'center') | null;
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   displayMode: 'marquee' | 'grid';
   /**
    * Show the text label below each logo.
@@ -5346,7 +5997,10 @@ export interface LogoStripBlock {
    */
   grayscale?: boolean | null;
   logoHeight: 'sm' | 'md' | 'lg';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'logoStrip';
@@ -5382,6 +6036,10 @@ export interface BreadcrumbBlock {
   showHome?: boolean | null;
   showCurrentPage?: boolean | null;
   sectionPadding: 'none' | 'compact' | 'default';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'breadcrumb';
@@ -5395,7 +6053,7 @@ export interface TimelineBlock {
    * Small label above the section title.
    */
   eyebrow?: string | null;
-  title?: string | null;
+  title: string;
   accentTitle?: string | null;
   description?: string | null;
   actions?:
@@ -5403,6 +6061,9 @@ export interface TimelineBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5452,6 +6113,9 @@ export interface TimelineBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5481,13 +6145,20 @@ export interface TimelineBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   variant: 'horizontal' | 'vertical' | 'alternating';
   /**
    * Show lines connecting steps. Applies to Horizontal Steps only.
    */
   showConnectors?: boolean | null;
-  contentAlignment: 'left' | 'center';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'timeline';
@@ -5510,6 +6181,9 @@ export interface IconCardShowcaseBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5580,6 +6254,9 @@ export interface IconCardShowcaseBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5610,6 +6287,11 @@ export interface IconCardShowcaseBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
    * Auto uses Brand on brand surfaces and Dark elsewhere. Light uses dark copy; Dark and Brand use light copy.
    */
   themeMode?: ('auto' | 'light' | 'dark' | 'brand') | null;
@@ -5627,7 +6309,6 @@ export interface IconCardShowcaseBlock {
    * Aligns the description and actions beside the heading in Split mode.
    */
   splitContentAlignment?: ('top' | 'center' | 'bottom') | null;
-  contentAlignment: 'left' | 'center' | 'right';
   cardContentAlignment: 'left' | 'center' | 'right';
   cardWidth: 'wide' | 'standard' | 'compact';
   cardHeight: 'compact' | 'standard' | 'tall';
@@ -5636,7 +6317,10 @@ export interface IconCardShowcaseBlock {
    * Applied to every card unless that card has an override.
    */
   defaultCardBackground: 'default' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'iconCardShowcase';
@@ -5661,6 +6345,9 @@ export interface IconGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5716,6 +6403,9 @@ export interface IconGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5745,6 +6435,11 @@ export interface IconGridBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   actionMode?: ('link' | 'button') | null;
   /**
    * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
@@ -5757,8 +6452,10 @@ export interface IconGridBlock {
   variant?: ('card' | 'contactCards' | 'minimal' | 'iconTop' | 'ruled') | null;
   columns?: ('2' | '3' | '4') | null;
   iconStyle?: ('square' | 'circle' | 'outline' | 'plain') | null;
-  contentAlignment?: ('left' | 'center') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'iconGrid';
@@ -5794,6 +6491,10 @@ export interface QuoteBlockBlock {
   variant?: ('centered' | 'side' | 'card' | 'highlight') | null;
   size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
   quoteSize?: ('sm' | 'lg' | 'xl' | '2xl') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'quoteBlock';
@@ -5818,6 +6519,9 @@ export interface TabsContentBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5875,6 +6579,9 @@ export interface TabsContentBlock {
               label: string;
               linkType?: ('page' | 'custom' | 'file') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               /**
@@ -5908,6 +6615,9 @@ export interface TabsContentBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -5938,6 +6648,11 @@ export interface TabsContentBlock {
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
   /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
    * Split places the section introduction on the left and the tabs with their content on the right.
    */
   sectionLayout?: ('stacked' | 'split') | null;
@@ -5948,9 +6663,11 @@ export interface TabsContentBlock {
   tabAlignment?: ('left' | 'center' | 'right' | 'stretch') | null;
   contentLayout?: ('imageRight' | 'imageLeft' | 'imageTop' | 'textOnly' | 'curriculum') | null;
   curriculumColumns?: ('1' | '2' | '3') | null;
-  contentAlignment?: ('left' | 'center' | 'right') | null;
   tabContentAlignment?: ('left' | 'center') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'tabsContent';
@@ -5972,6 +6689,9 @@ export interface FeeStructureBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6075,6 +6795,9 @@ export interface FeeStructureBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6104,8 +6827,12 @@ export interface FeeStructureBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   layout: 'table' | 'programmeCostAtlas';
-  contentAlignment: 'left' | 'center';
   tabStyle?: ('underline' | 'pills' | 'boxed') | null;
   /**
    * Centered Auto Width keeps intrinsic tabs centered when they fit and scrollable when they overflow. Equal Full Width divides the complete tab rail evenly.
@@ -6116,7 +6843,10 @@ export interface FeeStructureBlock {
   downloadAppearance?: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
   };
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'feeStructure';
@@ -6138,6 +6868,9 @@ export interface PGFeeStructureBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6231,6 +6964,9 @@ export interface PGFeeStructureBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6260,7 +6996,11 @@ export interface PGFeeStructureBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment: 'left' | 'center';
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   tabStyle?: ('underline' | 'pills' | 'boxed') | null;
   /**
    * Centered Auto Width keeps intrinsic tabs centered when they fit and scrollable when they overflow. Equal Full Width divides the complete tab rail evenly.
@@ -6271,7 +7011,10 @@ export interface PGFeeStructureBlock {
   downloadAppearance?: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
   };
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'pgFeeStructure';
@@ -6293,6 +7036,9 @@ export interface BankDetailsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6366,6 +7112,9 @@ export interface BankDetailsBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6395,7 +7144,11 @@ export interface BankDetailsBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment: 'left' | 'center';
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   /**
    * Choose the contextual content rendered beside the bank-information panel.
    */
@@ -6409,7 +7162,10 @@ export interface BankDetailsBlock {
    * Centered Auto Width stays centered when it fits and scrolls from the start when it overflows.
    */
   tabWidth?: ('content' | 'centered' | 'equal') | null;
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'bankDetails';
@@ -6420,43 +7176,16 @@ export interface BankDetailsBlock {
  */
 export interface NumberedStepsBlock {
   eyebrow?: string | null;
-  title?: string | null;
+  title: string;
   description?: string | null;
   actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6505,32 +7234,14 @@ export interface NumberedStepsBlock {
         id?: string | null;
       }[]
     | null;
-  appearance: {
-    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
-    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
-  };
-  variant?: ('vertical' | 'cards' | 'alternating') | null;
-  numberStyle?: ('circle' | 'outlined' | 'serif') | null;
-  contentAlignment?: ('left' | 'center') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'numberedSteps';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BentoGridBlock".
- */
-export interface BentoGridBlock {
-  eyebrow?: string | null;
-  title?: string | null;
-  accentTitle?: string | null;
-  description?: string | null;
-  actions?:
+  footerActions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6556,11 +7267,42 @@ export interface BentoGridBlock {
         id?: string | null;
       }[]
     | null;
-  footerActions?:
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  variant?: ('vertical' | 'cards' | 'alternating') | null;
+  numberStyle?: ('circle' | 'outlined' | 'serif') | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'numberedSteps';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BentoGridBlock".
+ */
+export interface BentoGridBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
     | {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6608,12 +7350,52 @@ export interface BentoGridBlock {
         id?: string | null;
       }[]
     | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment?: ('left' | 'center') | null;
-  size?: ('none' | 'compact' | 'default' | 'comfortable') | null;
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'bentoGrid';
@@ -6635,6 +7417,9 @@ export interface TestimonialGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6682,6 +7467,9 @@ export interface TestimonialGridBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6711,10 +7499,17 @@ export interface TestimonialGridBlock {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment?: ('left' | 'center') | null;
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
   variant: 'grid' | 'featured' | 'list';
   columns: '2' | '3' | '4';
-  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonialGrid';
@@ -6736,36 +7531,9 @@ export interface AwardsListBlock {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
-        url?: string | null;
-        openInNewTab?: boolean | null;
         /**
-         * Choose the Media asset this action should view or download.
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
          */
-        file?: (string | null) | Media;
-        fileBehavior?: ('view' | 'download') | null;
-        openFileInNewTab?: boolean | null;
-        mode?: ('link' | 'button') | null;
-        /**
-         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
-         */
-        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
-        /**
-         * Adds a trailing arrow when this action is displayed as a button.
-         */
-        showArrow?: boolean | null;
-        /**
-         * Shows an animated down arrow for this file download.
-         */
-        showFileIcon?: boolean | null;
-        fileIconPosition?: ('left' | 'right') | null;
-        id?: string | null;
-      }[]
-    | null;
-  footerActions?:
-    | {
-        label: string;
-        linkType?: ('page' | 'custom' | 'file') | null;
-        page?: (string | null) | Page;
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -6817,13 +7585,53 @@ export interface AwardsListBlock {
         id?: string | null;
       }[]
     | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   appearance: {
     background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
     border: 'none' | 'top' | 'bottom' | 'topAndBottom';
   };
-  contentAlignment?: ('left' | 'center') | null;
-  variant: 'cards' | 'table' | 'rows';
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
   size: 'none' | 'compact' | 'default' | 'comfortable';
+  variant: 'cards' | 'table' | 'rows';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'awardsList';
@@ -6839,7 +7647,7 @@ export interface User {
    */
   role: 'admin' | 'siteManager';
   /**
-   * Choose the Admin destinations this Site Manager may use. New Site Managers start with no access.
+   * Choose editable Admin destinations. Required supporting destinations receive read-only access without appearing in navigation. After changed access is saved, the Site Manager is signed out of active sessions.
    */
   features?: {
     /**
@@ -7214,6 +8022,10 @@ export interface NewsEvent {
    */
   eventAllDay?: boolean | null;
   /**
+   * Places this published, non-expired Event before the three automatic upcoming Events. At most three featured Events are shown.
+   */
+  featuredInHighlights?: boolean | null;
+  /**
    * Required only when the selected classification uses Event behavior.
    */
   eventLocation?: string | null;
@@ -7222,6 +8034,9 @@ export interface NewsEvent {
         label: string;
         linkType?: ('page' | 'custom' | 'file') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -7416,6 +8231,9 @@ export interface NavigationLink {
   description?: string | null;
   linkType: 'page' | 'custom';
   page?: (string | null) | Page;
+  /**
+   * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+   */
   url?: string | null;
   openInNewTab?: boolean | null;
   /**
@@ -7468,6 +8286,9 @@ export interface HeaderNavbar12Block {
         label: string;
         linkType?: ('page' | 'custom') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         children?:
@@ -7475,6 +8296,9 @@ export interface HeaderNavbar12Block {
               label: string;
               linkType?: ('page' | 'custom') | null;
               page?: (string | null) | Page;
+              /**
+               * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+               */
               url?: string | null;
               openInNewTab?: boolean | null;
               id?: string | null;
@@ -7488,6 +8312,9 @@ export interface HeaderNavbar12Block {
         label: string;
         linkType?: ('page' | 'custom') | null;
         page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
         url?: string | null;
         openInNewTab?: boolean | null;
         /**
@@ -8324,6 +9151,13 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  keyFacts?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
   footerActions?:
     | T
     | {
@@ -8342,31 +9176,25 @@ export interface PageHeaderBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  keyFacts?:
-    | T
-    | {
-        label?: T;
-        value?: T;
-        id?: T;
-      };
-  variant?: T;
-  breadcrumbMode?: T;
-  keyFactsNumberPosition?: T;
   appearance?:
     | T
     | {
         background?: T;
         border?: T;
       };
-  actionPlacement?: T;
   contentAlignment?: T;
+  size?: T;
+  variant?: T;
+  breadcrumbMode?: T;
+  keyFactsNumberPosition?: T;
+  actionPlacement?: T;
   contentWidth?: T;
   themeMode?: T;
   overlayStyle?: T;
   overlayDirection?: T;
   overlayCoverage?: T;
   height?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -8388,8 +9216,14 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
         page?: T;
         url?: T;
         openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
         variant?: T;
         showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   themeMode?: T;
@@ -8407,6 +9241,7 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
   verticalAlignment?: T;
   contentWidth?: T;
   height?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -8416,6 +9251,7 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
  */
 export interface ReusableSectionBlockSelect<T extends boolean = true> {
   section?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -8433,6 +9269,7 @@ export interface RichTextBlockSelect<T extends boolean = true> {
       };
   size?: T;
   maxWidth?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -8445,6 +9282,24 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
   title?: T;
   accentTitle?: T;
   body?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   listStyle?: T;
   listItems?:
     | T
@@ -8477,24 +9332,6 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
-  actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        file?: T;
-        fileBehavior?: T;
-        openFileInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        showFileIcon?: T;
-        fileIconPosition?: T;
-        id?: T;
-      };
   footerActions?:
     | T
     | {
@@ -8520,12 +9357,13 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   variant?: T;
   imagePosition?: T;
   mediaFillMode?: T;
   imageDetailPosition?: T;
   imageDetailBackground?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -8581,13 +9419,14 @@ export interface FeatureSpotlightBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   layoutMode?: T;
   mediaPosition?: T;
   imagePosition?: T;
   mediaFillMode?: T;
-  size?: T;
-  contentAlignment?: T;
   contentVerticalAlignment?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -8601,24 +9440,6 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
   accentTitle?: T;
   description?: T;
   actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        file?: T;
-        fileBehavior?: T;
-        openFileInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        showFileIcon?: T;
-        fileIconPosition?: T;
-        id?: T;
-      };
-  footerActions?:
     | T
     | {
         label?: T;
@@ -8665,12 +9486,32 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
         cardBackground?: T;
         id?: T;
       };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   itemsLayout?: T;
   cardStyle?: T;
   eyebrowPlacement?: T;
@@ -8680,9 +9521,8 @@ export interface ContentHighlightsBlockSelect<T extends boolean = true> {
   itemTreatment?: T;
   ruledDividers?: T;
   headerLayout?: T;
-  contentAlignment?: T;
   splitContentAlignment?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -8767,6 +9607,7 @@ export interface AcademicProgrammesBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   headerLayout?: T;
   viewMode?: T;
   metadataPosition?: T;
@@ -8774,7 +9615,7 @@ export interface AcademicProgrammesBlockSelect<T extends boolean = true> {
   columns?: T;
   descriptionPosition?: T;
   sideContentAlignment?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -8805,6 +9646,13 @@ export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  allTabLabel?: T;
+  classifications?: T;
+  itemsPerTab?: T;
+  loadMoreLabel?: T;
+  newsActionLabel?: T;
+  eventActionLabel?: T;
+  emptyStateMessage?: T;
   footerActions?:
     | T
     | {
@@ -8823,25 +9671,19 @@ export interface NewsEventsTabsBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  allTabLabel?: T;
-  classifications?: T;
-  itemsPerTab?: T;
-  loadMoreLabel?: T;
-  newsActionLabel?: T;
-  eventActionLabel?: T;
-  emptyStateMessage?: T;
   appearance?:
     | T
     | {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   tabVariant?: T;
   layoutStyle?: T;
   cardsPerRow?: T;
-  contentAlignment?: T;
   headerActionAlignment?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -8855,24 +9697,6 @@ export interface CalendarBlockSelect<T extends boolean = true> {
   accentTitle?: T;
   description?: T;
   actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        file?: T;
-        fileBehavior?: T;
-        openFileInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        showFileIcon?: T;
-        fileIconPosition?: T;
-        id?: T;
-      };
-  footerActions?:
     | T
     | {
         label?: T;
@@ -8915,28 +9739,7 @@ export interface CalendarBlockSelect<T extends boolean = true> {
   calendarPdf?: T;
   calendarPdfLabel?: T;
   emptyStateMessage?: T;
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  contentAlignment?: T;
-  adjacentMonthDates?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AnnualCalendarBlock_select".
- */
-export interface AnnualCalendarBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
+  footerActions?:
     | T
     | {
         label?: T;
@@ -8954,7 +9757,29 @@ export interface AnnualCalendarBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  footerActions?:
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  size?: T;
+  adjacentMonthDates?: T;
+  anchorId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AnnualCalendarBlock_select".
+ */
+export interface AnnualCalendarBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
     | T
     | {
         label?: T;
@@ -9000,6 +9825,24 @@ export interface AnnualCalendarBlockSelect<T extends boolean = true> {
   calendarPdf?: T;
   calendarPdfLabel?: T;
   emptyStateMessage?: T;
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
@@ -9008,6 +9851,7 @@ export interface AnnualCalendarBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9081,6 +9925,8 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   showSearch?: T;
   searchPlaceholder?: T;
   showDepartmentTabs?: T;
@@ -9104,7 +9950,6 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
   featuredCarouselOverlayStyle?: T;
   featuredCarouselOverlayDirection?: T;
   featuredCarouselOverlayCoverage?: T;
-  contentAlignment?: T;
   headerLayout?: T;
   descriptionPosition?: T;
   sideContentAlignment?: T;
@@ -9112,7 +9957,7 @@ export interface DepartmentProfilesBlockSelect<T extends boolean = true> {
   mediumColumns?: T;
   smallColumns?: T;
   cardFrame?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9173,10 +10018,11 @@ export interface GalleryAlbumTabsBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
-  tabVariant?: T;
   contentAlignment?: T;
-  headerActionAlignment?: T;
   size?: T;
+  tabVariant?: T;
+  headerActionAlignment?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9185,28 +10031,11 @@ export interface GalleryAlbumTabsBlockSelect<T extends boolean = true> {
  * via the `definition` "QaAccordionBlock_select".
  */
 export interface QaAccordionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   title?: T;
   accentTitle?: T;
   description?: T;
   actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        file?: T;
-        fileBehavior?: T;
-        openFileInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        showFileIcon?: T;
-        fileIconPosition?: T;
-        id?: T;
-      };
-  footerActions?:
     | T
     | {
         label?: T;
@@ -9266,6 +10095,24 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
                   };
             };
       };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
@@ -9273,12 +10120,13 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   layoutMode?: T;
   splitProportion?: T;
   accordionPlacement?: T;
   sectionVerticalAlignment?: T;
-  size?: T;
   defaultOpenFirst?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9306,6 +10154,7 @@ export interface StatsStripBlockSelect<T extends boolean = true> {
   animationEnabled?: T;
   animationDuration?: T;
   triggerOnce?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9367,13 +10216,14 @@ export interface TestimonialSpotlightBlockSelect<T extends boolean = true> {
         border?: T;
       };
   sectionContentAlignment?: T;
+  size?: T;
   containerBackground?: T;
   containerOutline?: T;
   mediaPosition?: T;
   imagePosition?: T;
   mediaFillMode?: T;
-  size?: T;
   contentVerticalAlignment?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9438,11 +10288,12 @@ export interface AccreditationCardsBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   columns?: T;
   cardFrame?: T;
   cardSize?: T;
   iconStyle?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9498,15 +10349,16 @@ export interface BannerCtaBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
-  actionPlacement?: T;
   contentAlignment?: T;
+  size?: T;
+  actionPlacement?: T;
   contentWidth?: T;
   themeMode?: T;
   overlayStyle?: T;
   overlayDirection?: T;
   overlayCoverage?: T;
   height?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9536,6 +10388,7 @@ export interface Contact24BlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  offices?: T;
   footerActions?:
     | T
     | {
@@ -9554,7 +10407,6 @@ export interface Contact24BlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  offices?: T;
   appearance?:
     | T
     | {
@@ -9562,12 +10414,13 @@ export interface Contact24BlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   detailsAlignment?: T;
   showAddressDetails?: T;
-  size?: T;
   mapActionLabel?: T;
   mapActionMode?: T;
   mapActionVariant?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9681,6 +10534,8 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   sectionLayout?: T;
   introPosition?: T;
   introVerticalAlignment?: T;
@@ -9690,8 +10545,7 @@ export interface DownloadListBlockSelect<T extends boolean = true> {
   showDocumentIcon?: T;
   gridIconPosition?: T;
   gridActionDisplay?: T;
-  contentAlignment?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9718,6 +10572,7 @@ export interface AnnouncementBlockSelect<T extends boolean = true> {
   displayMode?: T;
   intervalMs?: T;
   marqueeDurationMs?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9731,24 +10586,6 @@ export interface NewsGridBlockSelect<T extends boolean = true> {
   accentTitle?: T;
   description?: T;
   actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        file?: T;
-        fileBehavior?: T;
-        openFileInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        showFileIcon?: T;
-        fileIconPosition?: T;
-        id?: T;
-      };
-  footerActions?:
     | T
     | {
         label?: T;
@@ -9784,6 +10621,24 @@ export interface NewsGridBlockSelect<T extends boolean = true> {
         url?: T;
         openInNewTab?: T;
       };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
@@ -9791,8 +10646,9 @@ export interface NewsGridBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
-  headerActionAlignment?: T;
   size?: T;
+  headerActionAlignment?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9847,11 +10703,12 @@ export interface Cta39BlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
-  headerLayout?: T;
   contentAlignment?: T;
+  size?: T;
+  headerLayout?: T;
   splitContentAlignment?: T;
   actionLayout?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9876,8 +10733,14 @@ export interface HeroCarouselBlockSelect<T extends boolean = true> {
               page?: T;
               url?: T;
               openInNewTab?: T;
+              file?: T;
+              fileBehavior?: T;
+              openFileInNewTab?: T;
+              mode?: T;
               variant?: T;
               showArrow?: T;
+              showFileIcon?: T;
+              fileIconPosition?: T;
               id?: T;
             };
         id?: T;
@@ -9892,6 +10755,7 @@ export interface HeroCarouselBlockSelect<T extends boolean = true> {
   showPauseControl?: T;
   showArrows?: T;
   showDots?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9922,6 +10786,12 @@ export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   footerActions?:
     | T
     | {
@@ -9940,12 +10810,6 @@ export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  images?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
   appearance?:
     | T
     | {
@@ -9954,6 +10818,7 @@ export interface GalleryCoverflowBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -9984,6 +10849,16 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  features?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        imagePosition?: T;
+        cardBackground?: T;
+        id?: T;
+      };
   footerActions?:
     | T
     | {
@@ -10002,16 +10877,6 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  features?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        imagePosition?: T;
-        cardBackground?: T;
-        id?: T;
-      };
   appearance?:
     | T
     | {
@@ -10022,6 +10887,7 @@ export interface FeatureMatrixBlockSelect<T extends boolean = true> {
   size?: T;
   showOuterBorder?: T;
   borderAnimationEnabled?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10081,6 +10947,24 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
@@ -10088,6 +10972,7 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   layoutProportion?: T;
   listColumns?: T;
   numberLayout?: T;
@@ -10096,7 +10981,7 @@ export interface EditorialReasonsBlockSelect<T extends boolean = true> {
   introVerticalAlignment?: T;
   actionsPosition?: T;
   stickyIntro?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10169,18 +11054,19 @@ export interface LeadershipProfilesBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   cardLayout?: T;
   cardBackground?: T;
   themeMode?: T;
   overlayStyle?: T;
   overlayDirection?: T;
   overlayCoverage?: T;
-  contentAlignment?: T;
   headerLayout?: T;
   descriptionPosition?: T;
   sideContentAlignment?: T;
   columns?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10192,7 +11078,6 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  classifications?: T;
   actions?:
     | T
     | {
@@ -10211,6 +11096,7 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  classifications?: T;
   footerActions?:
     | T
     | {
@@ -10229,15 +11115,6 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  itemCount?: T;
-  autoplay?: T;
-  carouselControlsPosition?: T;
-  emptyStateMessage?: T;
-  imagePositionOverride?: T;
-  themeMode?: T;
-  overlayStyle?: T;
-  overlayDirection?: T;
-  overlayCoverage?: T;
   appearance?:
     | T
     | {
@@ -10246,6 +11123,15 @@ export interface NewsEventsHighlightsBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   size?: T;
+  autoplay?: T;
+  carouselControlsPosition?: T;
+  emptyStateMessage?: T;
+  imagePositionOverride?: T;
+  themeMode?: T;
+  overlayStyle?: T;
+  overlayDirection?: T;
+  overlayCoverage?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10276,6 +11162,17 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  profiles?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        role?: T;
+        department?: T;
+        imagePosition?: T;
+        cardBackground?: T;
+        id?: T;
+      };
   footerActions?:
     | T
     | {
@@ -10294,17 +11191,6 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  profiles?:
-    | T
-    | {
-        image?: T;
-        name?: T;
-        role?: T;
-        department?: T;
-        imagePosition?: T;
-        cardBackground?: T;
-        id?: T;
-      };
   appearance?:
     | T
     | {
@@ -10312,13 +11198,14 @@ export interface ProfileCarouselBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   cardVariant?: T;
   overlayAlignment?: T;
   themeMode?: T;
   overlayStyle?: T;
   overlayDirection?: T;
   overlayCoverage?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10349,6 +11236,13 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  images?:
+    | T
+    | {
+        image?: T;
+        imagePosition?: T;
+        id?: T;
+      };
   footerActions?:
     | T
     | {
@@ -10367,13 +11261,6 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  images?:
-    | T
-    | {
-        image?: T;
-        imagePosition?: T;
-        id?: T;
-      };
   appearance?:
     | T
     | {
@@ -10382,6 +11269,7 @@ export interface GalleryShowcaseBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10438,6 +11326,8 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   showCardOverlay?: T;
   overlayDisplay?: T;
   showEventDate?: T;
@@ -10447,8 +11337,7 @@ export interface EventGalleryBlockSelect<T extends boolean = true> {
   overlayStyle?: T;
   overlayDirection?: T;
   overlayCoverage?: T;
-  contentAlignment?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10462,24 +11351,6 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
   accentTitle?: T;
   description?: T;
   actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        file?: T;
-        fileBehavior?: T;
-        openFileInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        showFileIcon?: T;
-        fileIconPosition?: T;
-        id?: T;
-      };
-  footerActions?:
     | T
     | {
         label?: T;
@@ -10527,6 +11398,24 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
   galleryAlbums?: T;
   displayOrder?: T;
   enableAlbumSlideshow?: T;
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
@@ -10544,6 +11433,7 @@ export interface ImageMosaicBlockSelect<T extends boolean = true> {
   overlayStyle?: T;
   overlayDirection?: T;
   overlayCoverage?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10615,10 +11505,11 @@ export interface StudentExperienceBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   headerLayout?: T;
   cardHeight?: T;
   showNumbers?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10648,6 +11539,13 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  ratingData?:
+    | T
+    | {
+        dataMode?: T;
+        manualRating?: T;
+        manualReviewCount?: T;
+      };
   footerActions?:
     | T
     | {
@@ -10666,13 +11564,6 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  ratingData?:
-    | T
-    | {
-        dataMode?: T;
-        manualRating?: T;
-        manualReviewCount?: T;
-      };
   appearance?:
     | T
     | {
@@ -10681,6 +11572,7 @@ export interface RatingSpotlightBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10740,6 +11632,7 @@ export interface ReviewFeedBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10769,6 +11662,7 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  form?: T;
   footerActions?:
     | T
     | {
@@ -10787,7 +11681,6 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  form?: T;
   appearance?:
     | T
     | {
@@ -10796,6 +11689,7 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10825,6 +11719,9 @@ export interface Contact33BlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  image?: T;
+  imageAlt?: T;
+  form?: T;
   footerActions?:
     | T
     | {
@@ -10843,9 +11740,6 @@ export interface Contact33BlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  image?: T;
-  imageAlt?: T;
-  form?: T;
   appearance?:
     | T
     | {
@@ -10855,6 +11749,7 @@ export interface Contact33BlockSelect<T extends boolean = true> {
   contentAlignment?: T;
   size?: T;
   imagePosition?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10863,28 +11758,11 @@ export interface Contact33BlockSelect<T extends boolean = true> {
  * via the `definition` "TeamShowcaseBlock_select".
  */
 export interface TeamShowcaseBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   title?: T;
   accentTitle?: T;
   description?: T;
   actions?:
-    | T
-    | {
-        label?: T;
-        linkType?: T;
-        page?: T;
-        url?: T;
-        openInNewTab?: T;
-        file?: T;
-        fileBehavior?: T;
-        openFileInNewTab?: T;
-        mode?: T;
-        variant?: T;
-        showArrow?: T;
-        showFileIcon?: T;
-        fileIconPosition?: T;
-        id?: T;
-      };
-  footerActions?:
     | T
     | {
         label?: T;
@@ -10912,6 +11790,24 @@ export interface TeamShowcaseBlockSelect<T extends boolean = true> {
         cardBackground?: T;
         id?: T;
       };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
@@ -10921,6 +11817,7 @@ export interface TeamShowcaseBlockSelect<T extends boolean = true> {
   contentAlignment?: T;
   size?: T;
   showHeaderDivider?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -10951,6 +11848,15 @@ export interface Services21BlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  services?:
+    | T
+    | {
+        code?: T;
+        title?: T;
+        description?: T;
+        image?: T;
+        id?: T;
+      };
   footerActions?:
     | T
     | {
@@ -10969,15 +11875,6 @@ export interface Services21BlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  services?:
-    | T
-    | {
-        code?: T;
-        title?: T;
-        description?: T;
-        image?: T;
-        id?: T;
-      };
   appearance?:
     | T
     | {
@@ -10986,6 +11883,7 @@ export interface Services21BlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11015,6 +11913,9 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  url?: T;
+  caption?: T;
+  autoplay?: T;
   footerActions?:
     | T
     | {
@@ -11033,9 +11934,6 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  url?: T;
-  caption?: T;
-  autoplay?: T;
   appearance?:
     | T
     | {
@@ -11043,9 +11941,10 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   aspectRatio?: T;
   maxWidth?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11057,7 +11956,7 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
-  sectionActions?:
+  actions?:
     | T
     | {
         label?: T;
@@ -11075,7 +11974,7 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  footerActions?:
+  sectionActions?:
     | T
     | {
         label?: T;
@@ -11121,28 +12020,7 @@ export interface MediaCarouselBlockSelect<T extends boolean = true> {
         cardBackground?: T;
         id?: T;
       };
-  appearance?:
-    | T
-    | {
-        background?: T;
-        border?: T;
-      };
-  columns?: T;
-  contentAlignment?: T;
-  size?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProgramMatrixBlock_select".
- */
-export interface ProgramMatrixBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  accentTitle?: T;
-  description?: T;
-  actions?:
+  footerActions?:
     | T
     | {
         label?: T;
@@ -11160,7 +12038,29 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  footerActions?:
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  size?: T;
+  columns?: T;
+  anchorId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProgramMatrixBlock_select".
+ */
+export interface ProgramMatrixBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
     | T
     | {
         label?: T;
@@ -11210,12 +12110,32 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
         cardBackground?: T;
         id?: T;
       };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   actionMode?: T;
   actionVariant?: T;
   itemActionLabel?: T;
@@ -11223,8 +12143,7 @@ export interface ProgramMatrixBlockSelect<T extends boolean = true> {
   headerPosition?: T;
   headerVerticalAlignment?: T;
   columns?: T;
-  contentAlignment?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11263,6 +12182,24 @@ export interface LogoStripBlockSelect<T extends boolean = true> {
         openInNewTab?: T;
         id?: T;
       };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   appearance?:
     | T
     | {
@@ -11270,11 +12207,12 @@ export interface LogoStripBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   displayMode?: T;
   showLabels?: T;
   grayscale?: T;
   logoHeight?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11305,6 +12243,7 @@ export interface BreadcrumbBlockSelect<T extends boolean = true> {
   showHome?: T;
   showCurrentPage?: T;
   sectionPadding?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11369,10 +12308,11 @@ export interface TimelineBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
-  variant?: T;
-  showConnectors?: T;
   contentAlignment?: T;
   size?: T;
+  variant?: T;
+  showConnectors?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11446,19 +12386,20 @@ export interface IconCardShowcaseBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   themeMode?: T;
   overlayStyle?: T;
   overlayDirection?: T;
   overlayCoverage?: T;
   headerLayout?: T;
   splitContentAlignment?: T;
-  contentAlignment?: T;
   cardContentAlignment?: T;
   cardWidth?: T;
   cardHeight?: T;
   iconSize?: T;
   defaultCardBackground?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11526,14 +12467,15 @@ export interface IconGridBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   actionMode?: T;
   actionVariant?: T;
   itemActionLabel?: T;
   variant?: T;
   columns?: T;
   iconStyle?: T;
-  contentAlignment?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11558,6 +12500,7 @@ export interface QuoteBlockBlockSelect<T extends boolean = true> {
   variant?: T;
   size?: T;
   quoteSize?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11648,14 +12591,15 @@ export interface TabsContentBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
+  contentAlignment?: T;
+  size?: T;
   sectionLayout?: T;
   tabStyle?: T;
   tabAlignment?: T;
   contentLayout?: T;
   curriculumColumns?: T;
-  contentAlignment?: T;
   tabContentAlignment?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11758,8 +12702,9 @@ export interface FeeStructureBlockSelect<T extends boolean = true> {
         background?: T;
         border?: T;
       };
-  layout?: T;
   contentAlignment?: T;
+  size?: T;
+  layout?: T;
   tabStyle?: T;
   tabWidth?: T;
   downloadActionMode?: T;
@@ -11769,7 +12714,7 @@ export interface FeeStructureBlockSelect<T extends boolean = true> {
     | {
         background?: T;
       };
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11864,6 +12809,7 @@ export interface PGFeeStructureBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   tabStyle?: T;
   tabWidth?: T;
   downloadActionMode?: T;
@@ -11873,7 +12819,7 @@ export interface PGFeeStructureBlockSelect<T extends boolean = true> {
     | {
         background?: T;
       };
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11958,11 +12904,12 @@ export interface BankDetailsBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   displayMode?: T;
   panelPosition?: T;
   tabStyle?: T;
   tabWidth?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -11992,6 +12939,17 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  steps?:
+    | T
+    | {
+        title?: T;
+        accentTitle?: T;
+        description?: T;
+        image?: T;
+        badge?: T;
+        cardBackground?: T;
+        id?: T;
+      };
   footerActions?:
     | T
     | {
@@ -12010,27 +12968,17 @@ export interface NumberedStepsBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  steps?:
-    | T
-    | {
-        title?: T;
-        accentTitle?: T;
-        description?: T;
-        image?: T;
-        badge?: T;
-        cardBackground?: T;
-        id?: T;
-      };
   appearance?:
     | T
     | {
         background?: T;
         border?: T;
       };
-  variant?: T;
-  numberStyle?: T;
   contentAlignment?: T;
   size?: T;
+  variant?: T;
+  numberStyle?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -12061,6 +13009,19 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  items?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        icon?: T;
+        image?: T;
+        linkUrl?: T;
+        size?: T;
+        accentColor?: T;
+        id?: T;
+      };
   footerActions?:
     | T
     | {
@@ -12079,19 +13040,6 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  items?:
-    | T
-    | {
-        eyebrow?: T;
-        title?: T;
-        description?: T;
-        icon?: T;
-        image?: T;
-        linkUrl?: T;
-        size?: T;
-        accentColor?: T;
-        id?: T;
-      };
   appearance?:
     | T
     | {
@@ -12100,6 +13048,7 @@ export interface BentoGridBlockSelect<T extends boolean = true> {
       };
   contentAlignment?: T;
   size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -12166,9 +13115,10 @@ export interface TestimonialGridBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
+  size?: T;
   variant?: T;
   columns?: T;
-  size?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -12199,6 +13149,17 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
+  awards?:
+    | T
+    | {
+        title?: T;
+        organization?: T;
+        category?: T;
+        year?: T;
+        description?: T;
+        cardBackground?: T;
+        id?: T;
+      };
   footerActions?:
     | T
     | {
@@ -12217,17 +13178,6 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
         fileIconPosition?: T;
         id?: T;
       };
-  awards?:
-    | T
-    | {
-        title?: T;
-        organization?: T;
-        category?: T;
-        year?: T;
-        description?: T;
-        cardBackground?: T;
-        id?: T;
-      };
   appearance?:
     | T
     | {
@@ -12235,8 +13185,9 @@ export interface AwardsListBlockSelect<T extends boolean = true> {
         border?: T;
       };
   contentAlignment?: T;
-  variant?: T;
   size?: T;
+  variant?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -12292,6 +13243,7 @@ export interface NewsEventsSelect<T extends boolean = true> {
   eventStart?: T;
   eventEnd?: T;
   eventAllDay?: T;
+  featuredInHighlights?: T;
   eventLocation?: T;
   eventRegistrationAction?:
     | T
@@ -13492,6 +14444,10 @@ export interface NewsEventsContentBlock {
    * Full spans the image. Split limits directional gradients to the strongest half; Even remains full-frame.
    */
   overlayCoverage: 'full' | 'split';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'newsEventsContent';
@@ -13764,6 +14720,7 @@ export interface NewsEventsContentBlockSelect<T extends boolean = true> {
   overlayStyle?: T;
   overlayDirection?: T;
   overlayCoverage?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }

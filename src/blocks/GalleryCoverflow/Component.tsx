@@ -142,7 +142,7 @@ export function GalleryCoverflowBlockComponent({
           />
         </div>
       ) : null}
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
     </section>
   )
 }

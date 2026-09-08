@@ -12,6 +12,21 @@ type ResolvedMediaImage = {
 
 const defaultSiteURL = getSiteURL()
 
+const toLocalPayloadMediaPath = (value: string): string | null => {
+  try {
+    const mediaURL = new URL(value)
+    const siteURL = new URL(defaultSiteURL)
+
+    if (mediaURL.origin !== siteURL.origin || !mediaURL.pathname.startsWith('/api/media/file/')) {
+      return null
+    }
+
+    return `${mediaURL.pathname}${mediaURL.search}${mediaURL.hash}`
+  } catch {
+    return null
+  }
+}
+
 export const isMediaDoc = (value: string | number | Media | null | undefined): value is Media => {
   return typeof value === 'object' && value !== null
 }
@@ -30,7 +45,7 @@ export const getMediaAbsoluteUrl = (
   }
 
   if (/^https?:\/\//i.test(url)) {
-    return url
+    return toLocalPayloadMediaPath(url) ?? url
   }
 
   return new URL(url, defaultSiteURL).toString()
@@ -119,7 +134,9 @@ export const getMediaImageProps = ({
     : absoluteUrl
 
   const alt =
-    (isMediaDoc(media) ? media.alt?.trim() : '') || fallbackAlt?.trim() || getMediaAltFallback(preset)
+    (isMediaDoc(media) ? media.alt?.trim() : '') ||
+    fallbackAlt?.trim() ||
+    getMediaAltFallback(preset)
 
   return {
     alt,

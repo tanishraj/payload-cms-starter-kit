@@ -19,9 +19,10 @@ export type ContentActionFileBehavior = 'download' | 'view'
 export type ContentActionButtonVariant =
   'default' | 'outline' | 'primary' | 'secondary' | 'white' | 'whiteOutline'
 
-type CreateContentActionsFieldOptions = {
+export type CreateContentActionsFieldOptions = {
   actionLabel?: string
   allowedLinkTypes?: readonly ContentActionLinkType[]
+  defaultMode?: 'button' | 'link'
   defaultVariant?: ContentActionButtonVariant
   fileFilterOptions?: UploadField['filterOptions']
   fixedFileBehavior?: ContentActionFileBehavior
@@ -143,7 +144,12 @@ const createActionContentFields = ({
             name: 'url',
             label: 'Custom URL',
             type: 'text',
-            admin: { condition: isCustomLink },
+            admin: {
+              condition: isCustomLink,
+              description:
+                'Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.',
+              placeholder: '#admissions or /programmes#mbbs',
+            },
           } satisfies Field,
           {
             name: 'openInNewTab',
@@ -213,12 +219,13 @@ const createActionContentFields = ({
 }
 
 const createActionLayoutFields = ({
+  defaultMode = 'link',
   defaultVariant = 'default',
   includeDisplayMode,
   includeNavigationArrow,
 }: Pick<
   CreateContentActionsFieldOptions,
-  'defaultVariant' | 'includeDisplayMode' | 'includeNavigationArrow'
+  'defaultMode' | 'defaultVariant' | 'includeDisplayMode' | 'includeNavigationArrow'
 >): Field[] => [
   ...(includeDisplayMode
     ? [
@@ -226,7 +233,7 @@ const createActionLayoutFields = ({
           name: 'mode',
           label: 'Display As',
           type: 'select',
-          defaultValue: 'link',
+          defaultValue: defaultMode,
           options: [
             { label: 'Link', value: 'link' },
             { label: 'Button', value: 'button' },
@@ -314,6 +321,7 @@ export const createContentActionModeField = ({
 export const createContentActionsField = ({
   actionLabel,
   allowedLinkTypes,
+  defaultMode,
   defaultVariant,
   fileFilterOptions,
   fixedFileBehavior,
@@ -348,6 +356,7 @@ export const createContentActionsField = ({
         {
           label: 'Theme Settings',
           fields: createActionLayoutFields({
+            defaultMode,
             defaultVariant,
             includeDisplayMode,
             includeNavigationArrow,

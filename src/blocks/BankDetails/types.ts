@@ -52,7 +52,7 @@ export type BankDetailsBlockLike = {
   accounts?: BankAccountValue[] | null
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
-  contentAlignment?: 'center' | 'left' | null
+  contentAlignment?: 'center' | 'left' | 'right' | null
   description?: string | null
   displayMode?: BankDetailsDisplayMode | null
   eyebrow?: string | null

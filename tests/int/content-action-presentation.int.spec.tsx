@@ -25,8 +25,10 @@ const file = {
 type TestField = {
   admin?: { condition?: unknown; hidden?: boolean }
   defaultValue?: unknown
+  fields?: TestField[]
   filterOptions?: unknown
   label?: string
+  maxRows?: number
   name?: string
   options?: Array<{ label: string; value: string }>
   relationTo?: string
@@ -120,6 +122,53 @@ describe('content action presentation', () => {
       type: 'checkbox',
     })
   })
+
+  it('can default row display mode to a button without changing the shared field shape', () => {
+    const field = createContentActionsField({ defaultMode: 'button' })
+    const tabs = (field.fields[0] as TestField).tabs ?? []
+    const theme = tabs.find((tab) => tab.label === 'Theme Settings')?.fields ?? []
+
+    expect(theme.find((item) => item.name === 'mode')).toMatchObject({
+      defaultValue: 'button',
+      label: 'Display As',
+      required: false,
+      type: 'select',
+    })
+  })
+
+  it.each([
+    ['Hero Banner', HeroBannerBlock, 'default'],
+    ['Hero Carousel', HeroCarouselBlock, 'secondary'],
+  ] as const)(
+    'uses the complete shared action contract for %s buttons',
+    (_label, block, variant) => {
+      const buttons = findFieldsByName(block.fields, 'buttons')[0]
+      const rowTabs = buttons?.fields?.[0]?.tabs ?? []
+      const content = rowTabs.find((tab) => tab.label === 'Content')?.fields ?? []
+      const theme = rowTabs.find((tab) => tab.label === 'Theme Settings')?.fields ?? []
+
+      expect(buttons).toMatchObject({
+        label: 'Buttons',
+        maxRows: 2,
+        name: 'buttons',
+        type: 'array',
+      })
+      expect(
+        content.find((item) => item.name === 'linkType')?.options?.map(({ value }) => value),
+      ).toEqual(['page', 'custom', 'file'])
+      expect(content.find((item) => item.name === 'file')).toMatchObject({
+        relationTo: 'media',
+        type: 'upload',
+      })
+      expect(theme.find((item) => item.name === 'mode')).toMatchObject({
+        defaultValue: 'button',
+        type: 'select',
+      })
+      expect(theme.find((item) => item.name === 'variant')).toMatchObject({
+        defaultValue: variant,
+      })
+    },
+  )
 
   it('shows destination controls only for matching action data', () => {
     const fields = getActionTabs(true).find((tab) => tab.label === 'Content')?.fields ?? []
@@ -543,12 +592,12 @@ describe('content action presentation', () => {
   })
 
   it.each(['src/blocks/HeroBanner/Component.tsx', 'src/blocks/HeroCarousel/Component.tsx'])(
-    'carries resolved link indicators through %s',
+    'delegates Hero action semantics to the shared resolver in %s',
     (filePath) => {
       const source = readFileSync(filePath, 'utf8')
 
-      expect(source).toContain('indicator: link.indicator')
-      expect(source).toContain('indicatorPosition: link.indicatorPosition')
+      expect(source).toContain('resolveCmsActions')
+      expect(source).toContain("'button'")
     },
   )
 

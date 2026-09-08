@@ -59,7 +59,9 @@ import { TestimonialGridBlockComponent } from './TestimonialGrid/Component'
 import { AwardsListBlockComponent } from './AwardsList/Component'
 import { AboutSectionBlockComponent } from './AboutSection/Component'
 import { AccreditationCardsBlockComponent } from './AccreditationCards/Component'
+import { BlockAnchorWrapper } from './shared/BlockAnchorWrapper'
 import { BlockErrorBoundary } from './shared/BlockErrorBoundary'
+import { claimBlockAnchorID } from './shared/blockAnchor'
 
 export type PageBlock = NonNullable<Page['layout']>[number]
 
@@ -77,9 +79,10 @@ export type PageRenderContext = {
 export type PageBlockRenderArgs = {
   automaticBreadcrumbs: ResolvedPageBreadcrumb[]
   heroPreloadState: { assigned: boolean }
+  usedAnchorIDs: Set<string>
 }
 
-export function renderPageBlockNode(
+function renderPageBlockContent(
   block: PageBlock,
   index: number,
   args: PageBlockRenderArgs,
@@ -231,6 +234,25 @@ export function renderPageBlockNode(
   }
 }
 
+export function renderPageBlockNode(
+  block: PageBlock,
+  index: number,
+  args: PageBlockRenderArgs,
+  depth = 0,
+): React.ReactNode {
+  if (depth > 10) return null
+
+  const key = block.id ?? `${block.blockType}-${index}`
+  const anchorID = claimBlockAnchorID(block.anchorId, args.usedAnchorIDs)
+  const content = renderPageBlockContent(block, index, args, depth)
+
+  return content ? (
+    <BlockAnchorWrapper anchorID={anchorID} key={key}>
+      {content}
+    </BlockAnchorWrapper>
+  ) : null
+}
+
 export function renderPageBlocks(blocks?: PageBlock[] | null, context: PageRenderContext = {}) {
   if (!blocks?.length) {
     return null
@@ -241,6 +263,7 @@ export function renderPageBlocks(blocks?: PageBlock[] | null, context: PageRende
       ? resolveAutomaticPageBreadcrumbs(context.page, { isHomepage: context.isHomepage })
       : [],
     heroPreloadState: { assigned: false },
+    usedAnchorIDs: new Set(['main-content']),
   }
 
   return (

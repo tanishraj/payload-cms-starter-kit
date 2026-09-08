@@ -40,6 +40,8 @@ describe('page recipes', () => {
       {
         appearance: { background: 'none', border: 'none' },
         blockType: 'pageHeader',
+        contentAlignment: 'left',
+        size: 'default',
         title: 'About the Institute',
         topContent: 'eyebrow',
         variant: 'minimal',

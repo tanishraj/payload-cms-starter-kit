@@ -17,9 +17,8 @@ import {
   contentItemTitleClasses,
 } from '@/blocks/shared/contentStyles'
 import { Button } from '@/components/ui/button'
-import { ContentActions } from '@/components/ContentActions'
 import { ContentLink } from '@/components/ContentLink'
-import { SectionEyebrow } from '@/components/SectionEyebrow'
+import { SectionIntro } from '@/blocks/shared/SectionIntro'
 import { resolveCmsActions, type CmsActionValue, type CmsActionVariant } from '@/lib/cmsLinks'
 import { getPageHref } from '@/lib/pagePaths'
 import type { Page } from '@/payload-types'
@@ -51,7 +50,7 @@ type IconGridBlockLike = {
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
   columns?: '2' | '3' | '4' | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   description?: string | null
   eyebrow?: string | null
   footerActions?: CmsActionValue[] | null
@@ -76,7 +75,8 @@ const ruledColumnClasses: Record<NonNullable<IconGridBlockLike['columns']>, stri
 }
 
 const iconContainerClasses = {
-  square: 'flex size-11 shrink-0 items-center justify-center rounded-compact bg-primary/10 text-primary',
+  square:
+    'flex size-11 shrink-0 items-center justify-center rounded-compact bg-primary/10 text-primary',
   circle:
     'flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary',
   outline:
@@ -595,7 +595,6 @@ export function IconGridBlockComponent({
   const { background: sectionBackground, className: appearanceClassName } =
     resolveBlockAppearanceClasses(appearance)
   const ruledSurface = resolveCardSurface('default', sectionBackground)
-  const isCenter = (contentAlignment ?? 'center') === 'center'
   const resolvedActions = resolveCmsActions(actions)
   const resolvedColumns = columns ?? '3'
   const resolvedIconStyle = (iconStyle ?? 'square') as keyof typeof iconContainerClasses
@@ -619,38 +618,17 @@ export function IconGridBlockComponent({
       className={cn(regularBlockMobilePaddingClasses[size ?? 'default'], appearanceClassName)}
     >
       <div className={regularBlockContainerClasses}>
-        {/* Header */}
         {hasHeader ? (
-          <div
-            className={cn(
-              'mb-12 flex flex-col gap-4',
-              isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start',
-            )}
-          >
-            {eyebrow?.trim() ? (
-              <SectionEyebrow surface={sectionBackground}>{eyebrow.trim()}</SectionEyebrow>
-            ) : null}
-            {resolvedTitle ? (
-              <h2 className="text-3xl font-semibold tracking-tight text-balance text-current sm:text-4xl">
-                {resolvedAccentTitle ? (
-                  <>
-                    <span className="block font-[inherit]">{resolvedTitle}</span>
-                    <em className="block font-[inherit]">{resolvedAccentTitle}</em>
-                  </>
-                ) : (
-                  resolvedTitle
-                )}
-              </h2>
-            ) : null}
-            {description?.trim() ? (
-              <p className="text-base leading-7 text-current/70">{description.trim()}</p>
-            ) : null}
-            {resolvedActions.length > 0 ? (
-              <div className="mt-2">
-                <ContentActions actions={resolvedActions} />
-              </div>
-            ) : null}
-          </div>
+          <SectionIntro
+            accentTitle={resolvedAccentTitle}
+            actions={resolvedActions}
+            alignment={contentAlignment ?? 'center'}
+            className="mb-12"
+            description={description}
+            eyebrow={eyebrow}
+            surface={sectionBackground}
+            title={resolvedTitle}
+          />
         ) : null}
 
         {/* Grid */}
@@ -683,7 +661,7 @@ export function IconGridBlockComponent({
             return <CardItem key={index} item={item} {...itemProps} />
           })}
         </div>
-        <BlockFooterActions actions={footerActions} />
+        <BlockFooterActions actions={footerActions} alignment={contentAlignment ?? 'center'} />
       </div>
     </section>
   )

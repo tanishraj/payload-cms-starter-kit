@@ -519,6 +519,15 @@ describe('page block pipeline', () => {
       buttonContentTab?.fields ?? [],
       'label',
     )
+    const buttonFileField = getNamedField<{ relationTo?: string; type?: string }>(
+      buttonContentTab?.fields ?? [],
+      'file',
+    )
+    const buttonModeField = getNamedField<{
+      defaultValue?: string
+      options?: Array<{ value: string }>
+      type?: string
+    }>(buttonLayoutTab?.fields ?? [], 'mode')
     const buttonVariantField = getNamedField<{
       defaultValue?: string
       options?: Array<{ value: string }>
@@ -594,6 +603,9 @@ describe('page block pipeline', () => {
     expect(buttonTabsField?.tabs?.map((tab) => tab.label)).toEqual(['Content', 'Theme Settings'])
     expect(buttonLabelField?.type).toBe('text')
     expect(buttonLabelField?.required).toBe(true)
+    expect(buttonFileField).toMatchObject({ relationTo: 'media', type: 'upload' })
+    expect(buttonModeField?.defaultValue).toBe('button')
+    expect(buttonModeField?.options?.map((option) => option.value)).toEqual(['link', 'button'])
     expect(buttonVariantField?.defaultValue).toBe('default')
     expect(buttonVariantField?.options?.map((option) => option.value)).toEqual([
       'default',
@@ -602,7 +614,6 @@ describe('page block pipeline', () => {
       'outline',
       'white',
       'whiteOutline',
-      'link',
     ])
   })
 
@@ -1575,5 +1586,58 @@ describe('page block pipeline', () => {
 
     expect(source).toContain("import { Contact24BlockComponent } from './Contact24/Component'")
     expect(source).toContain("case 'contact24':")
+  })
+
+  it('forwards canonical section fields and compatibility aliases through production rendering', () => {
+    const media = {
+      alt: 'Campus learning',
+      height: 900,
+      id: 'campus-learning',
+      mimeType: 'image/jpeg',
+      url: '/media/campus-learning.jpg',
+      width: 1600,
+    }
+    const result = PageContent({
+      page: {
+        id: 'page-section-contract',
+        layout: [
+          {
+            actions: [{ label: 'Canonical action', linkType: 'custom', url: '/canonical' }],
+            blockType: 'mediaCarousel',
+            contentAlignment: 'right',
+            eyebrow: 'Campus media',
+            footerActions: [{ label: 'Media footer', linkType: 'custom', url: '/media-footer' }],
+            items: [{ media, title: 'Learning spaces' }],
+            sectionActions: [{ label: 'Legacy action', linkType: 'custom', url: '/legacy' }],
+            title: 'Explore campus',
+          },
+          {
+            actions: [{ label: 'Meet our alumni', linkType: 'custom', url: '/alumni' }],
+            blockType: 'testimonialSpotlight',
+            footerActions: [
+              { label: 'Testimonial footer', linkType: 'custom', url: '/testimonial-footer' },
+            ],
+            image: media,
+            personName: 'Alex Morgan',
+            sectionContentAlignment: 'right',
+            sectionEyebrow: 'Alumni story',
+            sectionTitle: 'Where graduates lead',
+            title: 'A rigorous and humane education',
+          },
+        ],
+        slug: 'section-contract',
+        title: 'Section contract',
+      } as never,
+    })
+    const html = renderToStaticMarkup(result)
+
+    expect(html).toContain('Campus media')
+    expect(html).toContain('href="/canonical"')
+    expect(html).not.toContain('href="/legacy"')
+    expect(html).toContain('href="/media-footer"')
+    expect(html).toContain('data-testimonial-spotlight-section-alignment="right"')
+    expect(html).toContain('Alumni story')
+    expect(html).toContain('href="/alumni"')
+    expect(html).toContain('href="/testimonial-footer"')
   })
 })

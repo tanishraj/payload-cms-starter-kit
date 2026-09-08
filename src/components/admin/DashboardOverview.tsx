@@ -1,119 +1,65 @@
-import configPromise from '@payload-config'
-import { headers as getHeaders } from 'next/headers'
-import { getPayload } from 'payload'
+import type { Payload } from 'payload'
 
-import { hasFeature } from '@/access/featureAccess'
+import { ADMIN_FEATURES, type AdminFeatureKey } from '@/access/adminFeatures'
+import { getGrantedFeatureKeys, hasFeature, isAdmin } from '@/access/featureAccess'
 import type { User } from '@/payload-types'
 
-// ── Shared style helpers ───────────────────────────────────────────────────────
+import './DashboardOverview.scss'
 
-const sectionLabel: React.CSSProperties = {
-  fontSize: '11px',
-  fontWeight: 700,
-  textTransform: 'uppercase',
-  letterSpacing: '0.08em',
-  color: 'var(--theme-elevation-500)',
-  marginBottom: '10px',
+type DashboardOverviewProps = {
+  payload: Payload
+  user: User | null
 }
 
-const card: React.CSSProperties = {
-  background: 'var(--theme-elevation-100)',
-  border: '1px solid var(--theme-elevation-200)',
-  borderRadius: '8px',
-}
-
-// ── Attention stat card ────────────────────────────────────────────────────────
+type CountValue = number | null
 
 type AttentionCardProps = {
-  label: string
-  value: number | null
-  href: string
-  accent: string
   alert?: boolean
+  href: string
+  label: string
+  tone: 'error' | 'success' | 'warning'
+  value: CountValue
 }
 
-function AttentionCard({ label, value, href, accent, alert = false }: AttentionCardProps) {
+function AttentionCard({ alert = false, href, label, tone, value }: AttentionCardProps) {
   const unavailable = value === null
   const active = alert && !unavailable && value > 0
+
   return (
     <a
+      className="admin-dashboard-overview__attention-card"
+      data-active={active || undefined}
+      data-tone={tone}
       href={href}
-      style={{
-        ...card,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '6px',
-        padding: '20px 24px',
-        textDecoration: 'none',
-        color: 'inherit',
-        borderColor: active ? accent : 'var(--theme-elevation-200)',
-      }}
     >
-      <span style={{ fontSize: '28px', fontWeight: 700, color: accent, lineHeight: 1 }}>
-        {unavailable ? '—' : value}
-      </span>
-      <span style={{ fontSize: '13px', color: 'var(--theme-elevation-600)', fontWeight: 500 }}>
-        {label}
-      </span>
+      <span className="admin-dashboard-overview__attention-value">{unavailable ? '—' : value}</span>
+      <span className="admin-dashboard-overview__attention-label">{label}</span>
       {unavailable ? (
-        <span style={{ fontSize: '11px', color: 'var(--theme-elevation-600)', marginTop: '2px' }}>
-          Count unavailable
-        </span>
+        <span className="admin-dashboard-overview__attention-note">Count unavailable</span>
       ) : active ? (
-        <span style={{ fontSize: '11px', color: accent, fontWeight: 600, marginTop: '2px' }}>
-          Needs attention →
-        </span>
+        <span className="admin-dashboard-overview__attention-note">Needs attention →</span>
       ) : null}
     </a>
   )
 }
 
-// ── Mini stat (context row) ────────────────────────────────────────────────────
-
-function MiniStat({ label, value, href }: { label: string; value: number; href: string }) {
+function MiniStat({ href, label, value }: { href: string; label: string; value: CountValue }) {
   return (
-    <a
-      href={href}
-      style={{
-        ...card,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '12px 16px',
-        textDecoration: 'none',
-        color: 'inherit',
-        gap: '12px',
-      }}
-    >
-      <span style={{ fontSize: '13px', color: 'var(--theme-elevation-700)', fontWeight: 500 }}>
-        {label}
-      </span>
-      <span
-        style={{
-          fontSize: '18px',
-          fontWeight: 700,
-          color: 'var(--theme-elevation-800)',
-          lineHeight: 1,
-        }}
-      >
-        {value}
-      </span>
+    <a className="admin-dashboard-overview__mini-stat" href={href}>
+      <span>{label}</span>
+      <span className="admin-dashboard-overview__mini-value">{value === null ? '—' : value}</span>
+      {value === null ? (
+        <span className="admin-dashboard-overview__mini-note">Count unavailable</span>
+      ) : null}
     </a>
   )
 }
 
-// ── Recently edited row ────────────────────────────────────────────────────────
-
-const TYPE_COLORS: Record<string, string> = {
-  Page: '#6366f1',
-  Article: '#0ea5e9',
-  'News & Event': '#10b981',
-  Review: '#f59e0b',
-}
-
-const STATUS_STYLES: Record<string, { bg: string; color: string; label: string }> = {
-  published: { bg: '#d1fae5', color: '#065f46', label: 'Published' },
-  draft: { bg: '#f3f4f6', color: '#374151', label: 'Draft' },
+const TYPE_TONES: Record<string, 'neutral' | 'success' | 'warning'> = {
+  Article: 'neutral',
+  'News & Event': 'success',
+  Page: 'neutral',
+  Review: 'warning',
 }
 
 function formatRelativeTime(iso: string): string {
@@ -125,116 +71,63 @@ function formatRelativeTime(iso: string): string {
   if (hours < 24) return `${hours}h ago`
   const days = Math.floor(hours / 24)
   if (days < 7) return `${days}d ago`
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  return new Date(iso).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
 }
 
 type RecentItem = {
-  id: string
-  title?: string | null
-  type: string
   collection: string
+  id: string
+  status: null | string | undefined
+  title?: null | string
+  type: string
   updatedAt: string
-  status: string | null | undefined
+}
+
+type DashboardDoc = {
+  _status?: null | string
+  id: number | string
+  status?: null | string
+  submissionIntent?: null | string
+  submittedAt?: null | string
+  submitterEmail?: null | string
+  submitterName?: null | string
+  title?: null | string
+  updatedAt?: string
 }
 
 function RecentEditRow({ item }: { item: RecentItem }) {
-  const typeColor = TYPE_COLORS[item.type] ?? '#6366f1'
-  const statusStyle = STATUS_STYLES[item.status ?? 'draft'] ?? STATUS_STYLES.draft
+  const typeTone = TYPE_TONES[item.type] ?? 'neutral'
+  const status = item.status === 'published' ? 'published' : 'draft'
+
   return (
     <a
+      className="admin-dashboard-overview__recent-row"
       href={`/admin/collections/${item.collection}/${item.id}`}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-        padding: '10px 16px',
-        textDecoration: 'none',
-        color: 'inherit',
-        borderBottom: '1px solid var(--theme-elevation-150)',
-      }}
     >
-      {/* Type badge */}
-      <span
-        style={{
-          flexShrink: 0,
-          fontSize: '10px',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.06em',
-          color: typeColor,
-          background: typeColor + '18',
-          padding: '2px 7px',
-          borderRadius: '4px',
-          minWidth: '68px',
-          textAlign: 'center',
-        }}
-      >
+      <span className="admin-dashboard-overview__type" data-tone={typeTone}>
         {item.type}
       </span>
-
-      {/* Title */}
-      <span
-        style={{
-          flex: 1,
-          fontSize: '13px',
-          fontWeight: 500,
-          color: 'var(--theme-text)',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {item.title}
+      <span className="admin-dashboard-overview__recent-title">{item.title}</span>
+      <span className="admin-dashboard-overview__status" data-status={status}>
+        {status === 'published' ? 'Published' : 'Draft'}
       </span>
-
-      {/* Status badge */}
-      <span
-        style={{
-          flexShrink: 0,
-          fontSize: '11px',
-          fontWeight: 600,
-          background: statusStyle.bg,
-          color: statusStyle.color,
-          padding: '2px 8px',
-          borderRadius: '99px',
-        }}
-      >
-        {statusStyle.label}
-      </span>
-
-      {/* Time */}
-      <span
-        style={{
-          flexShrink: 0,
-          fontSize: '12px',
-          color: 'var(--theme-elevation-500)',
-          whiteSpace: 'nowrap',
-          minWidth: '60px',
-          textAlign: 'right',
-        }}
-      >
+      <time className="admin-dashboard-overview__time" dateTime={item.updatedAt}>
         {formatRelativeTime(item.updatedAt)}
-      </span>
+      </time>
     </a>
   )
 }
 
-// ── Main dashboard ─────────────────────────────────────────────────────────────
+const featureHref = (key: AdminFeatureKey) => {
+  const { kind, slug } = ADMIN_FEATURES[key].resource
+  return kind === 'collection' ? `/admin/collections/${slug}` : `/admin/globals/${slug}`
+}
 
-export async function DashboardOverview() {
-  const payload = await getPayload({ config: configPromise })
+const countUnavailable = async () => ({ totalDocs: null as CountValue })
+const countHidden = async () => ({ totalDocs: 0 as CountValue })
+const emptyDocs = async () => ({ docs: [] as DashboardDoc[] })
 
-  let user: User | null = null
-  try {
-    const authResult = await payload.auth({
-      canSetHeaders: false,
-      headers: new Headers(await getHeaders()),
-    })
-    user = authResult.user as User | null
-  } catch {
-    return null
-  }
-
+export async function DashboardOverview({ payload, user }: DashboardOverviewProps) {
   if (!user) return null
 
   const visibility = {
@@ -248,9 +141,6 @@ export async function DashboardOverview() {
     workQueue: hasFeature(user, 'actionQueue'),
   }
   const secureQuery = { overrideAccess: false as const, user }
-  const zeroCount = () => Promise.resolve({ totalDocs: 0 })
-  const unavailableCount = () => Promise.resolve({ totalDocs: null })
-  const emptyDocs = () => Promise.resolve({ docs: [] })
 
   const [
     pagesTotal,
@@ -263,22 +153,21 @@ export async function DashboardOverview() {
     recentPages,
     recentArticles,
     recentNews,
+    recentReviews,
     recentSubmissionsResult,
   ] = await Promise.all([
-    // Content totals
     visibility.pages
-      ? payload.count({ collection: 'pages', ...secureQuery }).catch(zeroCount)
-      : zeroCount(),
+      ? payload.count({ collection: 'pages', ...secureQuery }).catch(countUnavailable)
+      : countHidden(),
     visibility.articles
-      ? payload.count({ collection: 'articles', ...secureQuery }).catch(zeroCount)
-      : zeroCount(),
+      ? payload.count({ collection: 'articles', ...secureQuery }).catch(countUnavailable)
+      : countHidden(),
     visibility.newsEvents
-      ? payload.count({ collection: 'news-events', ...secureQuery }).catch(zeroCount)
-      : zeroCount(),
+      ? payload.count({ collection: 'news-events', ...secureQuery }).catch(countUnavailable)
+      : countHidden(),
     visibility.reviews
-      ? payload.count({ collection: 'reviews', ...secureQuery }).catch(zeroCount)
-      : zeroCount(),
-    // Public reviews waiting for moderation
+      ? payload.count({ collection: 'reviews', ...secureQuery }).catch(countUnavailable)
+      : countHidden(),
     visibility.reviews
       ? payload
           .count({
@@ -291,9 +180,8 @@ export async function DashboardOverview() {
               ],
             },
           })
-          .catch(unavailableCount)
-      : zeroCount(),
-    // Lead / ops
+          .catch(countUnavailable)
+      : countHidden(),
     visibility.formSubmissions
       ? payload
           .count({
@@ -301,8 +189,8 @@ export async function DashboardOverview() {
             ...secureQuery,
             where: { status: { in: ['new', 'in_review'] } },
           })
-          .catch(unavailableCount)
-      : zeroCount(),
+          .catch(countUnavailable)
+      : countHidden(),
     visibility.workQueue
       ? payload
           .count({
@@ -310,9 +198,8 @@ export async function DashboardOverview() {
             ...secureQuery,
             where: { status: { in: ['open', 'in_progress', 'blocked'] } },
           })
-          .catch(unavailableCount)
-      : zeroCount(),
-    // Recently edited
+          .catch(countUnavailable)
+      : countHidden(),
     visibility.pages
       ? payload
           .find({ collection: 'pages', ...secureQuery, depth: 0, limit: 5, sort: '-updatedAt' })
@@ -334,7 +221,11 @@ export async function DashboardOverview() {
           })
           .catch(emptyDocs)
       : emptyDocs(),
-    // Recent submissions
+    visibility.reviews
+      ? payload
+          .find({ collection: 'reviews', ...secureQuery, depth: 0, limit: 5, sort: '-updatedAt' })
+          .catch(emptyDocs)
+      : emptyDocs(),
     visibility.formSubmissions
       ? payload
           .find({
@@ -349,32 +240,40 @@ export async function DashboardOverview() {
   ])
 
   const recentEdits: RecentItem[] = [
-    ...recentPages.docs.map((d) => ({
-      id: String(d.id),
-      title: String(d.title ?? 'Untitled'),
-      type: 'Page',
+    ...recentPages.docs.map((doc) => ({
       collection: 'pages',
-      updatedAt: String(d.updatedAt),
-      status: d._status,
+      id: String(doc.id),
+      status: doc._status,
+      title: String(doc.title ?? 'Untitled'),
+      type: 'Page',
+      updatedAt: String(doc.updatedAt),
     })),
-    ...recentArticles.docs.map((d) => ({
-      id: String(d.id),
-      title: String(d.title ?? 'Untitled'),
-      type: 'Article',
+    ...recentArticles.docs.map((doc) => ({
       collection: 'articles',
-      updatedAt: String(d.updatedAt),
-      status: d._status,
+      id: String(doc.id),
+      status: doc._status,
+      title: String(doc.title ?? 'Untitled'),
+      type: 'Article',
+      updatedAt: String(doc.updatedAt),
     })),
-    ...recentNews.docs.map((d) => ({
-      id: String(d.id),
-      title: String(d.title ?? 'Untitled'),
-      type: 'News & Event',
+    ...recentNews.docs.map((doc) => ({
       collection: 'news-events',
-      updatedAt: String(d.updatedAt),
-      status: d._status,
+      id: String(doc.id),
+      status: doc._status,
+      title: String(doc.title ?? 'Untitled'),
+      type: 'News & Event',
+      updatedAt: String(doc.updatedAt),
+    })),
+    ...recentReviews.docs.map((doc) => ({
+      collection: 'reviews',
+      id: String(doc.id),
+      status: doc._status,
+      title: String(doc.title ?? 'Untitled'),
+      type: 'Review',
+      updatedAt: String(doc.updatedAt),
     })),
   ]
-    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+    .sort((left, right) => new Date(right.updatedAt).getTime() - new Date(left.updatedAt).getTime())
     .slice(0, 6)
 
   const recentSubmissions = recentSubmissionsResult.docs
@@ -404,242 +303,208 @@ export async function DashboardOverview() {
       label: '+ Upload Media',
     },
   ].filter(({ enabled }) => enabled)
-  const hasAssignedWorkspace = hasContent || hasAttention || quickActions.length > 0
+  const grantedFeatureKeys = isAdmin(user) ? [] : getGrantedFeatureKeys(user)
+  const hasAssignedWorkspace = isAdmin(user) || grantedFeatureKeys.length > 0
+  const hasDashboardModules = hasContent || hasAttention || quickActions.length > 0
 
   return (
-    <div style={{ padding: '0 0 48px' }}>
+    <div className="admin-dashboard-overview">
+      <header className="admin-dashboard-overview__header">
+        <h1>Dashboard</h1>
+        <p>
+          {isAdmin(user)
+            ? 'Monitor publishing activity and open the tasks that need attention.'
+            : 'Your dashboard shows only the website features assigned to your account.'}
+        </p>
+      </header>
+
       {!hasAssignedWorkspace ? (
-        <div style={{ ...card, maxWidth: '620px', padding: '24px' }}>
-          <p style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>No features assigned yet</p>
-          <p
-            style={{
-              color: 'var(--theme-elevation-600)',
-              fontSize: '13px',
-              lineHeight: 1.5,
-              margin: '8px 0 0',
-            }}
-          >
+        <section
+          className="admin-dashboard-overview__empty"
+          aria-labelledby="dashboard-empty-title"
+        >
+          <h2 id="dashboard-empty-title">No features assigned yet</h2>
+          <p>
             Your account is active, but an Admin has not assigned a website feature to it. Contact
             an Admin when you need access.
           </p>
-        </div>
+        </section>
       ) : null}
 
-      {/* ── Needs Attention ───────────────────────────────────────────────── */}
+      {hasAssignedWorkspace && !hasDashboardModules ? (
+        <section
+          className="admin-dashboard-overview__assigned"
+          aria-labelledby="dashboard-assigned-title"
+        >
+          <div>
+            <h2 id="dashboard-assigned-title">
+              {grantedFeatureKeys.length} {grantedFeatureKeys.length === 1 ? 'feature' : 'features'}{' '}
+              assigned
+            </h2>
+            <p>
+              Open a feature below or use the sidebar. Supporting read-only access stays hidden.
+            </p>
+          </div>
+          <nav aria-label="Assigned website features">
+            {grantedFeatureKeys.map((key) => (
+              <a href={featureHref(key)} key={key}>
+                {ADMIN_FEATURES[key].label}
+              </a>
+            ))}
+          </nav>
+        </section>
+      ) : null}
+
       {hasAttention ? (
-        <>
-          <p style={sectionLabel}>Needs Attention</p>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-              gap: '12px',
-              marginBottom: '32px',
-            }}
-          >
+        <section aria-labelledby="dashboard-attention-title">
+          <h2 className="admin-dashboard-overview__section-title" id="dashboard-attention-title">
+            Needs Attention
+          </h2>
+          <div className="admin-dashboard-overview__attention-grid">
             {visibility.reviews ? (
               <AttentionCard
-                label="Reviews awaiting moderation"
-                value={pendingReviews.totalDocs}
-                href="/admin/collections/reviews?where[and][0][sourceSubmission][exists]=true&where[and][1][moderationStatus][equals]=pending"
-                accent="#0f766e"
                 alert
+                href="/admin/collections/reviews?where[and][0][sourceSubmission][exists]=true&where[and][1][moderationStatus][equals]=pending"
+                label="Reviews awaiting moderation"
+                tone="success"
+                value={pendingReviews.totalDocs}
               />
             ) : null}
             {visibility.formSubmissions ? (
               <AttentionCard
-                label="Open Submissions"
-                value={openSubmissions.totalDocs}
-                href="/admin/collections/form-submissions"
-                accent="#f59e0b"
                 alert
+                href="/admin/collections/form-submissions"
+                label="Open Submissions"
+                tone="warning"
+                value={openSubmissions.totalDocs}
               />
             ) : null}
             {visibility.workQueue ? (
               <AttentionCard
-                label="Action Queue"
-                value={actionQueue.totalDocs}
-                href="/admin/collections/work-queue"
-                accent="#ef4444"
                 alert
+                href="/admin/collections/work-queue"
+                label="Action Queue"
+                tone="error"
+                value={actionQueue.totalDocs}
               />
             ) : null}
           </div>
-        </>
+        </section>
       ) : null}
 
-      {/* ── Content Overview ──────────────────────────────────────────────── */}
       {hasContent ? (
-        <>
-          <p style={sectionLabel}>Content Overview</p>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-              gap: '10px',
-              marginBottom: '32px',
-            }}
-          >
+        <section aria-labelledby="dashboard-content-title">
+          <h2 className="admin-dashboard-overview__section-title" id="dashboard-content-title">
+            Content Overview
+          </h2>
+          <div className="admin-dashboard-overview__content-grid">
             {visibility.pages ? (
               <MiniStat
+                href="/admin/collections/pages"
                 label="Pages"
                 value={pagesTotal.totalDocs}
-                href="/admin/collections/pages"
               />
             ) : null}
             {visibility.articles ? (
               <MiniStat
+                href="/admin/collections/articles"
                 label="Articles"
                 value={articlesTotal.totalDocs}
-                href="/admin/collections/articles"
               />
             ) : null}
             {visibility.newsEvents ? (
               <MiniStat
+                href="/admin/collections/news-events"
                 label="News & Events"
                 value={newsTotal.totalDocs}
-                href="/admin/collections/news-events"
               />
             ) : null}
             {visibility.reviews ? (
               <MiniStat
+                href="/admin/collections/reviews"
                 label="Reviews"
                 value={reviewsTotal.totalDocs}
-                href="/admin/collections/reviews"
               />
             ) : null}
           </div>
-        </>
+        </section>
       ) : null}
 
-      {/* ── Quick Actions ─────────────────────────────────────────────────── */}
       {quickActions.length > 0 ? (
-        <>
-          <p style={{ ...sectionLabel, marginBottom: '10px' }}>Quick Actions</p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '32px' }}>
-            {quickActions.map(({ label, href }) => (
-              <a
-                key={href}
-                href={href}
-                style={{
-                  display: 'inline-block',
-                  padding: '7px 14px',
-                  background: 'var(--theme-elevation-100)',
-                  border: '1px solid var(--theme-elevation-200)',
-                  borderRadius: '6px',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: 'var(--theme-text)',
-                  textDecoration: 'none',
-                }}
-              >
+        <section aria-labelledby="dashboard-actions-title">
+          <h2 className="admin-dashboard-overview__section-title" id="dashboard-actions-title">
+            Quick Actions
+          </h2>
+          <div className="admin-dashboard-overview__quick-actions">
+            {quickActions.map(({ href, label }) => (
+              <a href={href} key={href}>
                 {label}
               </a>
             ))}
           </div>
-        </>
+        </section>
       ) : null}
 
-      {/* ── Recently Edited ───────────────────────────────────────────────── */}
-      {recentEdits.length > 0 && (
-        <div style={{ marginBottom: '32px' }}>
-          <p style={sectionLabel}>Recently Edited</p>
-          <div style={{ ...card, overflow: 'hidden' }}>
-            {recentEdits.map((item, i) => (
-              <div
-                key={`${item.collection}-${item.id}`}
-                style={i === recentEdits.length - 1 ? { borderBottom: 'none' } : {}}
-              >
-                <RecentEditRow item={item} />
-              </div>
+      {recentEdits.length > 0 ? (
+        <section aria-labelledby="dashboard-recent-title">
+          <h2 className="admin-dashboard-overview__section-title" id="dashboard-recent-title">
+            Recently Edited
+          </h2>
+          <div className="admin-dashboard-overview__recent-list">
+            {recentEdits.map((item) => (
+              <RecentEditRow item={item} key={`${item.collection}-${item.id}`} />
             ))}
           </div>
-        </div>
-      )}
+        </section>
+      ) : null}
 
-      {/* ── Recent Submissions ────────────────────────────────────────────── */}
-      {visibility.formSubmissions && recentSubmissions.length > 0 && (
-        <div>
-          <p style={sectionLabel}>Recent Submissions</p>
-          <div style={{ ...card, overflow: 'hidden' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+      {visibility.formSubmissions && recentSubmissions.length > 0 ? (
+        <section aria-labelledby="dashboard-submissions-title">
+          <h2 className="admin-dashboard-overview__section-title" id="dashboard-submissions-title">
+            Recent Submissions
+          </h2>
+          <div className="admin-dashboard-overview__table-frame" tabIndex={0}>
+            <table>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--theme-elevation-200)' }}>
-                  {['From', 'Form Intent', 'Status', 'Submitted'].map((h) => (
-                    <th
-                      key={h}
-                      style={{
-                        padding: '10px 16px',
-                        textAlign: 'left',
-                        fontWeight: 600,
-                        color: 'var(--theme-elevation-600)',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {h}
+                <tr>
+                  {['From', 'Form Intent', 'Status', 'Submitted'].map((heading) => (
+                    <th key={heading} scope="col">
+                      {heading}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {recentSubmissions.map((sub, i) => {
-                  const isLast = i === recentSubmissions.length - 1
-                  const statusStyle =
-                    sub.status === 'new'
-                      ? { bg: '#fef3c7', color: '#92400e' }
-                      : sub.status === 'in_review'
-                        ? { bg: '#dbeafe', color: '#1e40af' }
-                        : { bg: '#f3f4f6', color: '#374151' }
-                  return (
-                    <tr
-                      key={sub.id}
-                      style={isLast ? {} : { borderBottom: '1px solid var(--theme-elevation-150)' }}
-                    >
-                      <td style={{ padding: '10px 16px' }}>
-                        <a
-                          href={`/admin/collections/form-submissions/${sub.id}`}
-                          style={{ color: 'var(--theme-text)', textDecoration: 'underline' }}
-                        >
-                          {sub.submitterEmail || sub.submitterName || `#${sub.id}`}
-                        </a>
-                      </td>
-                      <td style={{ padding: '10px 16px', color: 'var(--theme-elevation-600)' }}>
-                        {sub.submissionIntent ?? '—'}
-                      </td>
-                      <td style={{ padding: '10px 16px' }}>
-                        <span
-                          style={{
-                            display: 'inline-block',
-                            padding: '2px 8px',
-                            borderRadius: '99px',
-                            fontSize: '11px',
-                            fontWeight: 600,
-                            background: statusStyle.bg,
-                            color: statusStyle.color,
-                          }}
-                        >
-                          {sub.status}
-                        </span>
-                      </td>
-                      <td
-                        style={{
-                          padding: '10px 16px',
-                          color: 'var(--theme-elevation-600)',
-                          whiteSpace: 'nowrap',
-                        }}
+                {recentSubmissions.map((submission) => (
+                  <tr key={submission.id}>
+                    <td>
+                      <a href={`/admin/collections/form-submissions/${submission.id}`}>
+                        {submission.submitterEmail ||
+                          submission.submitterName ||
+                          `#${submission.id}`}
+                      </a>
+                    </td>
+                    <td>{submission.submissionIntent ?? '—'}</td>
+                    <td>
+                      <span
+                        className="admin-dashboard-overview__submission-status"
+                        data-status={submission.status ?? 'unknown'}
                       >
-                        {sub.submittedAt
-                          ? new Date(sub.submittedAt as string).toLocaleDateString()
-                          : '—'}
-                      </td>
-                    </tr>
-                  )
-                })}
+                        {submission.status ?? 'unknown'}
+                      </span>
+                    </td>
+                    <td>
+                      {submission.submittedAt
+                        ? new Date(submission.submittedAt as string).toLocaleDateString()
+                        : '—'}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-        </div>
-      )}
+        </section>
+      ) : null}
     </div>
   )
 }

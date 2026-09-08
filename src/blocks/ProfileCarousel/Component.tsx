@@ -120,7 +120,7 @@ export function ProfileCarouselBlockComponent({
         themeMode={themeMode ?? 'auto'}
         title={resolvedTitle}
       />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={resolvedAlignment} />
     </>
   )
 }

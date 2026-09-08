@@ -92,7 +92,7 @@ export function RatingSpotlightBlockPresentation({
   return (
     <>
       <RatingSpotlight {...presentationProps} />
-      <BlockFooterActions actions={footerActions} />
+      <BlockFooterActions actions={footerActions} alignment={resolvedAlignment} />
     </>
   )
 }

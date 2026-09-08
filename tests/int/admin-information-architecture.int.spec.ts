@@ -29,8 +29,19 @@ import { SEOSettings } from '@/globals/SEOSettings'
 import { SiteSettings } from '@/globals/SiteSettings'
 import { SystemModeSettings } from '@/globals/SystemModeSettings'
 import { ThemeSettings } from '@/globals/ThemeSettings'
+import config from '@/payload.config'
 
 describe('admin information architecture', () => {
+  it('uses the capability-aware dashboard as the complete dashboard body', async () => {
+    const resolvedConfig = await config
+    const components = resolvedConfig.admin.components
+
+    expect(components.beforeDashboard).toBeUndefined()
+    expect(components.views.dashboard).toMatchObject({
+      Component: '@/components/admin/DashboardView#DashboardView',
+    })
+  })
+
   it('assigns the documented groups and operator-facing labels', () => {
     for (const collection of [Pages, Articles, Reviews, ReusableSections]) {
       expect(collection.admin?.group).toBe('Content')

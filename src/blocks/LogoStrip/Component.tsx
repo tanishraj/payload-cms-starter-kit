@@ -1,6 +1,10 @@
 import Image from 'next/image'
 
-import { resolveBlockAppearanceClasses, type BlockAppearance } from '@/blocks/shared/blockAppearance'
+import {
+  resolveBlockAppearanceClasses,
+  type BlockAppearance,
+} from '@/blocks/shared/blockAppearance'
+import { BlockFooterActions } from '@/blocks/shared/BlockFooterActions'
 import {
   regularBlockMobilePaddingClasses,
   type RegularBlockSize,
@@ -25,10 +29,11 @@ type LogoItem = {
 type LogoStripBlockLike = {
   actions?: CmsActionValue[] | null
   appearance?: BlockAppearance | null
-  contentAlignment?: 'left' | 'center' | null
+  contentAlignment?: 'left' | 'center' | 'right' | null
   description?: string | null
   displayMode?: 'grid' | 'marquee' | null
   eyebrow?: string | null
+  footerActions?: CmsActionValue[] | null
   grayscale?: boolean | null
   logoHeight?: 'sm' | 'md' | 'lg' | null
   logos?: LogoItem[] | null
@@ -50,6 +55,7 @@ export function LogoStripBlockComponent({
   description,
   displayMode = 'marquee',
   eyebrow,
+  footerActions,
   grayscale = true,
   logoHeight = 'md',
   logos,
@@ -81,15 +87,26 @@ export function LogoStripBlockComponent({
   const { className: appearanceClassName } = resolveBlockAppearanceClasses(appearance)
   const resolvedSize: RegularBlockSize = size ?? 'default'
   const heightClass = logoHeightClasses[logoHeight ?? 'md']
-  const isCenter = (contentAlignment ?? 'center') === 'center'
+  const resolvedContentAlignment = contentAlignment ?? 'center'
+  const headerAlignmentClasses = {
+    left: 'items-start text-left',
+    center: 'mx-auto max-w-3xl items-center text-center',
+    right: 'ml-auto max-w-3xl items-end text-right',
+  } as const
   const resolvedActions = resolveCmsActions(actions)
-  const hasHeader = eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0
+  const hasHeader =
+    eyebrow?.trim() || title?.trim() || description?.trim() || resolvedActions.length > 0
 
   return (
     <section className={cn(regularBlockMobilePaddingClasses[resolvedSize], appearanceClassName)}>
       <div className="mx-auto w-full max-w-screen-2xl px-4">
         {hasHeader ? (
-          <div className={cn('mb-10 flex flex-col gap-4', isCenter ? 'mx-auto max-w-3xl items-center text-center' : 'items-start')}>
+          <div
+            className={cn(
+              'mb-10 flex flex-col gap-4',
+              headerAlignmentClasses[resolvedContentAlignment],
+            )}
+          >
             {eyebrow?.trim() ? (
               <SectionEyebrow surface={appearance?.background ?? 'none'}>
                 {eyebrow.trim()}
@@ -105,7 +122,7 @@ export function LogoStripBlockComponent({
             ) : null}
             {resolvedActions.length > 0 ? (
               <div className="mt-2">
-                <ContentActions actions={resolvedActions} />
+                <ContentActions actions={resolvedActions} alignment={resolvedContentAlignment} />
               </div>
             ) : null}
           </div>
@@ -159,6 +176,7 @@ export function LogoStripBlockComponent({
             })}
           </div>
         )}
+        <BlockFooterActions actions={footerActions} alignment={resolvedContentAlignment} />
       </div>
     </section>
   )

@@ -16,36 +16,15 @@ import { ActionButtonContent } from '@/components/ActionButtonContent'
 import { ContentLink } from '@/components/ContentLink'
 import { Button } from '@/components/ui/button'
 import { SectionEyebrow, type SectionEyebrowSurface } from '@/components/SectionEyebrow'
-import {
-  getCmsActionAnchorProps,
-  resolveCmsLink,
-  type CmsActionIndicatorPosition,
-  type CmsActionVariant,
-} from '@/lib/cmsLinks'
+import { getCmsActionAnchorProps, resolveCmsActions, type CmsActionValue } from '@/lib/cmsLinks'
 import { getMediaImageProps } from '@/lib/media'
 import { cn } from '@/lib/utils'
-import type { Media, Page } from '@/payload-types'
-
-type HeroButton = {
-  file?: Media | number | string | null
-  fileBehavior?: 'download' | 'view' | null
-  fileIconPosition?: CmsActionIndicatorPosition | null
-  label?: string | null
-  linkType?: 'page' | 'custom' | 'file' | null
-  openFileInNewTab?: boolean | null
-  openInNewTab?: boolean | null
-  page?: Page | number | string | null
-  showArrow?: boolean | null
-  showFileIcon?: boolean | null
-  url?: string | null
-  variant?: CmsActionVariant | null
-}
 
 export type HeroBannerBlockLike = {
   accentTitle?: string | null
   appearance?: BlockAppearance | null
   backgroundImage?: unknown
-  buttons?: HeroButton[] | null
+  buttons?: CmsActionValue[] | null
   contentWidth?: 'default' | 'narrow' | 'wide' | null
   description?: string | null
   enableTextShadow?: boolean | null
@@ -209,26 +188,7 @@ export function HeroBannerBlockComponent({
     return null
   }
 
-  const actions = (buttons ?? []).flatMap((button) => {
-    const label = button.label?.trim()
-    const link = resolveCmsLink(button)
-    const resolvedVariant = button.variant ?? 'default'
-
-    return label && link.href
-      ? [
-          {
-            download: link.download,
-            href: link.href,
-            indicator: link.indicator,
-            indicatorPosition: link.indicatorPosition,
-            label,
-            openInNewTab: link.openInNewTab,
-            showArrow: Boolean(button.showArrow),
-            variant: resolvedVariant,
-          },
-        ]
-      : []
-  })
+  const actions = resolveCmsActions(buttons, 'button')
 
   return (
     <section
@@ -332,7 +292,7 @@ export function HeroBannerBlockComponent({
                 data-hero-banner-actions="true"
               >
                 {actions.map((action) =>
-                  action.variant === 'link' ? (
+                  action.mode === 'link' || action.variant === 'link' ? (
                     <ContentLink
                       arrowStyle={usesTextShadow ? heroLinkArrowShadowStyle : undefined}
                       className={cn('w-full sm:w-auto', mediaOverlay.text.link)}
