@@ -20,6 +20,23 @@ const fieldNamed = (name: string) =>
   Users.fields.find((field) => 'name' in field && field.name === name)
 
 describe('two-role user administration', () => {
+  it('shows the bootstrap notice without role or feature choices only for anonymous setup', () => {
+    const visible = (name: string, user: unknown) => {
+      const condition = fieldNamed(name)?.admin?.condition
+      expect(condition).toBeTypeOf('function')
+      return condition?.({}, { role: 'siteManager' }, { user } as never)
+    }
+
+    expect(visible('firstAdminNotice', null)).toBe(true)
+    expect(visible('role', null)).toBe(false)
+    expect(visible('features', null)).toBe(false)
+    expect(visible('firstAdminNotice', { role: 'admin' })).toBe(false)
+    expect(visible('role', { role: 'admin' })).toBe(true)
+    expect(visible('features', { role: 'admin' })).toBe(true)
+    expect(visible('role', { role: 'siteManager' })).toBe(false)
+    expect(visible('firstAdminNotice', { role: 'siteManager' })).toBe(false)
+  })
+
   it('exposes only Admin and Site Manager with 29 default-off grants', () => {
     const role = fieldNamed('role')
     const features = fieldNamed('features')
@@ -84,7 +101,7 @@ describe('two-role user administration', () => {
   it('bootstraps the first account as Admin and defaults later accounts to zero-grant Site Managers', async () => {
     const firstRequest = reqWithCount(0, null)
     const first = await normalizeUserAccessFields({
-      data: { email: 'first@example.test' },
+      data: { email: 'first@example.test', role: 'siteManager' },
       operation: 'create',
       req: firstRequest,
     } as never)

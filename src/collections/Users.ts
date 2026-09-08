@@ -345,6 +345,16 @@ export const Users: CollectionConfig = {
   },
   fields: [
     {
+      name: 'firstAdminNotice',
+      type: 'ui',
+      admin: {
+        condition: (_data, _siblingData, { user }) => !user,
+        components: {
+          Field: '@/components/admin/FirstAdminNotice#FirstAdminNotice',
+        },
+      },
+    },
+    {
       name: 'role',
       type: 'select',
       defaultValue: 'siteManager',
@@ -353,6 +363,7 @@ export const Users: CollectionConfig = {
       saveToJWT: true,
       access: { create: adminFieldAccess, read: adminFieldAccess, update: adminFieldAccess },
       admin: {
+        condition: (_data, _siblingData, { user }) => isAdmin(user),
         description: 'Admins have full access. Site Managers receive only selected features.',
         position: 'sidebar',
       },

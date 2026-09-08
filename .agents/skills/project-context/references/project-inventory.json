@@ -2508,6 +2508,7 @@
       "src/components/admin/DeferredAdminSessionBar.tsx",
       "src/components/admin/FeatureAccessControls.scss",
       "src/components/admin/FeatureAccessControls.tsx",
+      "src/components/admin/FirstAdminNotice.tsx",
       "src/components/admin/PageCreateView.tsx",
       "src/components/admin/PageRecipeSetup.scss",
       "src/components/admin/PageRecipeSetup.tsx",
@@ -2969,7 +2970,7 @@
       "tests/int/work-queue.int.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "db114963f052f10d40056f9fddaf93febf1e13905133975b2f19387a003dbdb4"
+    "sha256": "3692e798b0d8923989218e6e2f5f2793f6b2c677f05dc452aebc512af5e01985"
   },
   "surfaces": {
     "access": [

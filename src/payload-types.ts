@@ -7645,7 +7645,7 @@ export interface User {
   /**
    * Admins have full access. Site Managers receive only selected features.
    */
-  role: 'admin' | 'siteManager';
+  role?: ('admin' | 'siteManager') | null;
   /**
    * Choose editable Admin destinations. Required supporting destinations receive read-only access without appearing in navigation. After changed access is saved, the Site Manager is signed out of active sessions.
    */
