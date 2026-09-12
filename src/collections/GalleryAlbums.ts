@@ -1,3 +1,4 @@
+import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 import { type CollectionConfig } from 'payload'
 
 import {
@@ -31,6 +32,7 @@ export const GalleryAlbums: CollectionConfig = {
   versions: {
     drafts: true,
   },
+  hooks: { afterChange: [revalidateGlobalsCache] },
   timestamps: true,
   fields: [
     {

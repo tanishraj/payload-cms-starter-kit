@@ -19,7 +19,7 @@ This is the maintained technical map of the starter. It records what is register
 
 | Group          | Collection                             | Responsibilities                                                                                                     |
 | -------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Content        | Pages                                  | Hierarchical routes, 57-block layouts, native drafts, SEO, live preview, page-owned links, path-change redirects     |
+| Content        | Pages                                  | Hierarchical routes, 59-block layouts, native drafts, SEO, live preview, page-owned links, path-change redirects     |
 | Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, native drafts, live preview                            |
 | News & Events  | News & Events                          | Single-choice classifications, event validation/registration, taxonomy, block/detail/feed data, drafts, live preview |
 | News & Events  | Classifications                        | Public labels, Story/Event behavior, and Calendar colors used by entries, badges, tabs, dates, and validation        |
@@ -78,7 +78,7 @@ See [Users, Features, and Publication Governance](../operations/editorial-govern
 
 ## Page And Shell Block Systems
 
-The canonical catalog contains 57 Page blocks. Normal Pages register all 57 choices: Announcement, Banner CTA, News Grid, News & Events Tabs, Calendar, Annual Calendar, Call to Action, Hero Banner, Hero Carousel, Gallery Coverflow, Feature Spotlight, Testimonial Spotlight, Feature Matrix, Content Highlights, Editorial Reasons, Academic Programmes, Leadership Profiles, Department Profiles, News & Events Highlights, Profile Carousel, Gallery Showcase, Event Gallery, Gallery Album Tabs, Image Mosaic, Student Experience, Stats Strip, Q&A Accordion, Rating Spotlight, Review Feed, Review Submission, Contact Form, Regional Offices, Team Showcase, Services, Rich Text, Video Embed, Media Carousel, Program Matrix, Logo Strip, Page Header, Breadcrumb, Timeline, Icon Card Showcase, Icon Grid, Quote Block, Tabs Content, Download List, Fee Structure, PG Fee Structure, Bank Details, Numbered Steps, Bento Grid, Testimonial Grid, Awards List, About Section, Accreditation Cards, and Reusable Section. Reusable Sections expose the 56 non-recursive Page-compatible blocks.
+The canonical catalog contains 59 Page blocks. Normal Pages register all 59 choices: Announcement, Banner CTA, News Grid, News & Events Tabs, Calendar, Annual Calendar, Call to Action, Hero Banner, Hero Carousel, Gallery Coverflow, Feature Spotlight, Testimonial Spotlight, Feature Matrix, Content Highlights, Editorial Reasons, Academic Programmes, Leadership Profiles, Department Profiles, News & Events Highlights, Profile Carousel, Gallery Showcase, Event Gallery, Gallery Album Tabs, Image Mosaic, Student Experience, Stats Strip, Q&A Accordion, Rating Spotlight, Review Feed, Review Submission, Contact Form, Regional Offices, Team Showcase, Services, Rich Text, Video Embed, Media Carousel, Program Matrix, Logo Strip, Logo Marquee, Partner Directory, Page Header, Breadcrumb, Timeline, Icon Card Showcase, Icon Grid, Quote Block, Tabs Content, Download List, Fee Structure, PG Fee Structure, Bank Details, Numbered Steps, Bento Grid, Testimonial Grid, Awards List, About Section, Accreditation Cards, and Reusable Section. Reusable Sections expose the 58 non-recursive Page-compatible blocks.
 
 Leadership Profiles provides a static, non-clickable leadership directory with an optional section title, required profile media and names, optional content nameplates, accented designations, qualifications, and up to three smaller expertise items. It omits an entirely empty header, adapts profile heading levels to the presence of a section title, and uses the shared split/stacked header when content exists. Its block-wide Standard layout preserves all profile metadata and one shared semantic card surface; a hidden per-profile field remains only as a first-profile fallback for saved content. The optional Image Overlay layout uses fixed `4:5` portraits plus shared tone, strength, direction, and coverage controls, and displays only the leadership label, name, and designation. Qualification and expertise values remain saved and return when Standard is selected. Existing documents use Standard without migration. The responsive grid retains one mobile column, at most two tablet columns, and two-to-four configured desktop columns.
 
@@ -305,3 +305,14 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
   Vercel is the supported production delivery path.
 - The Dockerfile builds a non-root Next.js standalone production image; production containers
   require durable MongoDB and S3-compatible media storage.
+
+
+## September 2026 additions
+
+- Optional account TOTP with one-use recovery codes, password-confirmed settings, replay protection and session invalidation. Internal credential state is not exposed through ordinary collection APIs.
+- Phone form inputs, immutable searchable submitter phone numbers, review-field compatibility checks, and Site Identity/timezone-aware notification and confirmation emails.
+- Partner Directory and Logo Marquee are available in Page and reusable-section layouts, with matching live previews and thumbnails.
+- Fee blocks use shared file action controls with legacy compatibility. Remote download actions use the published-media attachment route; view links remain direct.
+- Public search shares ranked queries across page/API and limits scans to 2,000 candidates per content type. Public-review access enforcement and bounded rate limiting remain in place.
+- Published relationship changes expire dependent caches immediately; CLI skip contexts remain effective through nested Page/Navigation Link writes. Navigation shell population includes routing fields only.
+- Configurable opt-in daily logical MongoDB backups to a dedicated private R2 destination, with sidecars, upload checks and retention. See the database backup runbook.

@@ -30,7 +30,9 @@
     "test:e2e:governance": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.config.ts tests/e2e/governance.e2e.spec.ts",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation NEXT_PUBLIC_SERVER_URL= ALLOW_FIRST_ADMIN_CREATION= vitest run --config ./vitest.config.mts",
     "verify:docker-image": "tsx scripts/verify-production-image.ts",
-    "verify:docker-local": "tsx scripts/verify-local-compose.ts"
+    "verify:docker-local": "tsx scripts/verify-local-compose.ts",
+    "backup:prod-db": "tsx scripts/backup-prod-db.ts",
+    "test:e2e:two-factor": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.two-factor.config.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.916.0",
@@ -58,6 +60,7 @@
     "lucide-react": "^1.23.0",
     "mongodb-memory-server": "^11.2.0",
     "next": "16.3.4",
+    "otpauth": "9.5.2",
     "payload": "3.88.0",
     "photoswipe": "^5.4.4",
     "postcss": "8.5.26",
@@ -65,6 +68,7 @@
     "radix-ui": "^1.6.2",
     "react": "19.2.7",
     "react-dom": "19.2.7",
+    "react-fast-marquee": "1.6.5",
     "react-hook-form": "^7.83.0",
     "react-icons": "^5.7.0",
     "server-only": "^0.0.1",

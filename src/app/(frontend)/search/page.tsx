@@ -1,13 +1,11 @@
+import { searchPublishedContent } from '@/lib/search'
 import type { Metadata } from 'next'
 import configPromise from '@payload-config'
-import { getPayload, type Where } from 'payload'
+import { getPayload } from 'payload'
 import Link from 'next/link'
 import { CalendarDays, FileText, Newspaper, Star, type LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { findPublicReviews } from '@/domains/reviews/publicReviewQueries'
-import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
-import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
 import { normalizeSuggestedSearchTerms } from '@/lib/searchSuggestions'
 import { SearchInput } from './SearchInput'
 import type { SearchSetting } from '@/payload-types'
@@ -54,123 +52,17 @@ async function getSearchSettings(): Promise<SearchSetting> {
 
 async function runSearch(query: string): Promise<SearchGroup[]> {
   const payload = await getPayload({ config: configPromise })
-  const textLike = { like: query }
-  const publishedFilter: Where[] = [{ _status: { equals: 'published' } }]
-
-  const [pagesResult, articlesResult, newsEventsResult, reviewsResult] = await Promise.allSettled([
-    payload.find({
-      collection: 'pages',
-      depth: 0,
-      limit: PER_TYPE_LIMIT,
-      select: { id: true, title: true, slug: true, parent: true, metaDescription: true },
-      where: {
-        and: [...publishedFilter, { or: [{ title: textLike }, { metaDescription: textLike }] }],
-      },
-    }),
-    payload.find({
-      collection: 'articles',
-      depth: 0,
-      limit: PER_TYPE_LIMIT,
-      select: { id: true, title: true, slug: true, excerpt: true, authorName: true },
-      where: {
-        and: [
-          ...publishedFilter,
-          { or: [{ title: textLike }, { excerpt: textLike }, { authorName: textLike }] },
-        ],
-      },
-    }),
-    payload.find({
-      collection: 'news-events',
-      depth: 1,
-      limit: PER_TYPE_LIMIT,
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        excerpt: true,
-        classification: true,
-        contentType: true,
-        authorName: true,
-      },
-      where: {
-        and: [
-          ...publishedFilter,
-          { or: [{ title: textLike }, { excerpt: textLike }, { authorName: textLike }] },
-        ],
-      },
-    }),
-    findPublicReviews(payload, {
-      depth: 0,
-      limit: PER_TYPE_LIMIT,
-      select: { id: true, title: true, slug: true, reviewTitle: true, reviewerName: true },
-      where: {
-        and: [{ or: [{ title: textLike }, { reviewTitle: textLike }, { reviewerName: textLike }] }],
-      },
-    }),
-  ])
-
-  const groups: SearchGroup[] = []
-
-  if (pagesResult.status === 'fulfilled' && pagesResult.value.docs.length > 0) {
-    const pageHrefs = await resolveSearchPageHrefs(pagesResult.value.docs, payload)
-    const items: SearchItem[] = []
-    for (const page of pagesResult.value.docs) {
-      const href = pageHrefs.get(String(page.id))
-      if (!href) continue
-      items.push({
-        id: String(page.id),
-        title: page.title,
-        excerpt: page.metaDescription ?? '',
-        href,
-        label: 'Page',
-      })
-    }
-    if (items.length) groups.push({ type: 'page', label: 'Pages', items })
+  const results = await searchPublishedContent(payload, query, PER_TYPE_LIMIT)
+  const labels = {
+    page: 'Pages',
+    article: 'Articles',
+    'news-event': 'News & Events',
+    review: 'Reviews',
   }
-
-  if (articlesResult.status === 'fulfilled' && articlesResult.value.docs.length > 0) {
-    groups.push({
-      type: 'article',
-      label: 'Articles',
-      items: articlesResult.value.docs.map((article) => ({
-        id: String(article.id),
-        title: article.title,
-        excerpt: article.excerpt ?? '',
-        href: `/articles/${article.slug}`,
-        label: 'Article',
-      })),
-    })
-  }
-
-  if (newsEventsResult.status === 'fulfilled' && newsEventsResult.value.docs.length > 0) {
-    groups.push({
-      type: 'news-event',
-      label: 'News & Events',
-      items: newsEventsResult.value.docs.map((entry) => ({
-        id: String(entry.id),
-        title: entry.title,
-        excerpt: entry.excerpt ?? '',
-        href: `/news-events/${entry.slug}`,
-        label:
-          resolveNewsEventClassificationRecord(entry.classification, entry.contentType)
-            ?.badgeLabel ?? 'News & Events',
-      })),
-    })
-  }
-
-  if (reviewsResult.status === 'fulfilled' && reviewsResult.value.docs.length > 0) {
-    groups.push({
-      type: 'review',
-      label: 'Reviews',
-      items: reviewsResult.value.docs.map((review) => ({
-        id: String(review.id),
-        title: review.title,
-        excerpt: review.reviewTitle ?? '',
-        href: `/reviews/${review.slug}`,
-        label: 'Review',
-      })),
-    })
-  }
+  const groups: SearchGroup[] = Object.entries(labels).flatMap(([type, label]) => {
+    const items = results.filter((result) => result.type === type)
+    return items.length ? [{ type, label, items }] : []
+  })
 
   return groups
 }

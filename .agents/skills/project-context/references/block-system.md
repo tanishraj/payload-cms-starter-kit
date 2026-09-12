@@ -2,7 +2,7 @@
 
 ## Registries
 
-[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 20-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library. Pages expose 57 blocks and Reusable Sections expose the 56 non-recursive choices.
+[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 20-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library. Pages expose 59 blocks and Reusable Sections expose the 58 non-recursive choices.
 
 Calendar is an Explore block backed only by selected active Event-behavior News & Events classifications. Editors choose one to five ordered classifications, while each classification centrally owns its semantic Calendar color. The complete toolbar, month/timeline panel, and Upcoming panel inherit the selected section surface; framed Tabs and Select controls share a true 44px height, and adjacent-month dates can be muted or hidden. The server renders the configured `Asia/Kolkata`-first current month and stable next-four Upcoming snapshot; visitor times remain timezone-correct but omit technical GMT/UTC suffixes. Desktop starts with a Sunday-first six-week grid, phones receive Timeline-first output, and `/api/calendar-events` supplies validated public or authenticated-draft month projections. Multi-day/all-day ranges are inclusive, day cells cap at two links before `+N more`, filtering never changes Upcoming, and production/live preview share the same serializable presentation contract. Editors may configure one sidebar action targeting a Page, Custom URL, or File and choose Button or Link presentation, while the existing document label remains the panel heading. Upcoming, its legend, and the action share one semantic sidebar; the rail matches the desktop calendar height and pins the action region to its bottom, while compact layouts keep natural source order and height. The sidebar action remains outside the month snapshot and cache identity.
 
@@ -531,3 +531,10 @@ Run focused block tests, then the Page block, live preview, thumbnail, and theme
 pnpm project-context:update
 pnpm project-context:check
 ```
+
+
+## September 2026 backported blocks and actions
+
+Partner Directory (`integration23`) and Logo Marquee (`logos20`) are registered in the advanced catalog, both production and live-preview renderers, and thumbnail fixtures. Both participate in the starter section schema/presentation contract and reusable-section choices. Partner Directory supports logos/names, optional detail dialogs and actions, stacked/split layouts and configurable grid presentation. Logo Marquee supports ordered rows, alternating motion, speed and logo sizing, labels, pause/play, and reduced-motion static rendering.
+
+Fee Structure and PG Fee Structure use `feeDocumentAction`, a one-row file-only shared action field. Existing feeDocument/downloadLabel/display fields remain hidden compatibility inputs; an explicitly cleared new action stays cleared. Remote download actions route through the public-media attachment endpoint. Q&A Accordion supports inline or bottom-of-column supporting actions; About Section fills the available content width while preserving starter alignment semantics.

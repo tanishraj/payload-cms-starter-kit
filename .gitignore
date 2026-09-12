@@ -46,6 +46,7 @@ next-env.d.ts
 # Local database exports contain sensitive client data.
 /backups/
 *.archive
+*.dump
 
 # Playwright
 node_modules/
@@ -56,3 +57,6 @@ node_modules/
 
 # Local visual brainstorming sessions
 /.superpowers/
+
+# Local database dumps (never commit database contents).
+*.dump

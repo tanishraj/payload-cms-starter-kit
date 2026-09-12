@@ -9,7 +9,7 @@ Registration order in [payload.config.ts](../../../../src/payload.config.ts) is 
 3. Navigation and structure: NavigationLinks, Headers, Footers, OfficeLocations, Redirects, SystemPages.
 4. Media: Media, GalleryAlbums.
 5. Intake: Forms, FormSubmissions.
-6. Administration: WorkQueue (Action Queue), OperationalAuditEvents (Audit Log), Users.
+6. Administration: WorkQueue (Action Queue), OperationalAuditEvents (Audit Log), Users, and hidden TwoFactorCredentials.
 
 Exact symbols and files are generated in [project-inventory.json](project-inventory.json). Collections receive Trash through [withTrash.ts](../../../../src/plugins/withTrash.ts), except NewsEventClassifications: classification deletion remains a guarded hard delete. An in-use delete identifies the first referencing News & Events entry, Page, Reusable Section, Calendar/Annual Calendar/Tabs container, or Detail Page Template so the editor can remove or replace that relationship; classifications that must remain connected are archived instead. Content and structural presets opt into drafts/versions in their own configs; operational records and users are not public content.
 
@@ -90,3 +90,10 @@ explicitly `true`, allowing trusted request-external maintenance writes to avoid
 APIs without a request store; ordinary content writes continue to revalidate normally.
 Run `pnpm generate:types` after schema changes and keep
 [payload-types.ts](../../../../src/payload-types.ts) synchronized.
+
+
+## Optional account security and form additions
+
+Users can enroll their own account in optional TOTP two-factor authentication through password-confirmed Users endpoints. A hidden TwoFactorCredentials collection denies all ordinary API access and stores encrypted secrets, hashed recovery codes, compare-and-swap revisions, attempt counters, and a session cutoff. Login and password reset enforce enabled factors. One-time authenticator steps and recovery codes cannot be replayed. Settings changes invalidate existing sessions. Independent security-state writes intentionally survive failed login transaction rollback; account deletion cleanup uses the request transaction. Existing first-admin policy, feature governance and user field protections remain authoritative.
+
+Forms support a Phone field with international-friendly formatting, 7–15 digit validation, and constrained Contact33 input. FormSubmissions stores immutable searchable submitterPhone. Review-intent forms reject required fields that the fixed Review Submission UI cannot provide. Notification and confirmation emails use site identity, timezone-aware dates, readable select labels and clickable contacts. Existing request-body, field-value, metadata and rate limits remain enforced.

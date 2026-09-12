@@ -1,9 +1,4 @@
-export type BlockSectionProfile =
-  | 'contentOnly'
-  | 'hero'
-  | 'standard'
-  | 'structural'
-  | 'utility'
+export type BlockSectionProfile = 'contentOnly' | 'hero' | 'standard' | 'structural' | 'utility'
 
 /**
  * Catalog-owned metadata describing which section contract each Page block uses.
@@ -56,6 +51,8 @@ export const blockSectionProfiles = {
   mediaCarousel: 'standard',
   programMatrix: 'standard',
   logoStrip: 'standard',
+  logos20: 'standard',
+  integration23: 'standard',
   breadcrumb: 'utility',
   timeline: 'standard',
   iconCardShowcase: 'standard',

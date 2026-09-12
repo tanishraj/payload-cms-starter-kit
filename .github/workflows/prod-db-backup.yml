@@ -1,0 +1,54 @@
+name: Production Database Backup
+
+on:
+  schedule:
+    # Daily at 02:00 UTC / 06:00 Asia/Dubai.
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: production-database-backup
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    if: vars.ENABLE_PROD_DB_BACKUPS == 'true'
+    name: Back up database to private R2
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    environment: production-backup
+    env:
+      PROD_DB_BACKUP_DATABASE: ${{ vars.PROD_DB_BACKUP_DATABASE }}
+      PROD_DB_BACKUP_BUCKET: ${{ vars.PROD_DB_BACKUP_BUCKET }}
+      PROD_DB_BACKUP_PREFIX: ${{ vars.PROD_DB_BACKUP_PREFIX }}
+      PROD_DB_BACKUP_RETENTION_COUNT: ${{ vars.PROD_DB_BACKUP_RETENTION_COUNT }}
+      PROD_MONGODB_URI: ${{ secrets.PROD_MONGODB_URI }}
+      R2_BACKUP_ACCESS_KEY_ID: ${{ secrets.R2_BACKUP_ACCESS_KEY_ID }}
+      R2_BACKUP_ENDPOINT: ${{ secrets.R2_BACKUP_ENDPOINT }}
+      R2_BACKUP_SECRET_ACCESS_KEY: ${{ secrets.R2_BACKUP_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: 11.17.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.17.0
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install MongoDB Database Tools
+        run: |
+          curl -fsSL https://pgp.mongodb.com/server-8.0.asc | sudo gpg --dearmor --yes -o /usr/share/keyrings/mongodb-server-8.0.gpg
+          echo "deb [ arch=amd64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+          sudo apt-get update
+          sudo apt-get install --yes mongodb-database-tools=100.18.0
+          mongodump --version
+          aws --version
+      - name: Create, upload, verify, and rotate the production backup
+        run: pnpm backup:prod-db

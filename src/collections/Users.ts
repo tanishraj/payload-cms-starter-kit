@@ -27,6 +27,12 @@ import {
 } from '@/access/featureAccess'
 import { recordOperationalAuditEvent } from '@/lib/operationalAudit'
 import { runtimeConfig } from '@/config/runtime.server'
+import {
+  deleteTwoFactorCredentials,
+  enforceTwoFactorLogin,
+  filterTwoFactorSessions,
+} from '@/lib/twoFactor'
+import { twoFactorSettingsEndpoint, twoFactorStatusEndpoint } from '@/endpoints/twoFactor'
 
 type UserAccessDocument = {
   deletedAt?: string | null
@@ -328,6 +334,7 @@ export const Users: CollectionConfig = {
     tokenExpiration: 2 * 60 * 60,
     useSessions: true,
   },
+  endpoints: [twoFactorStatusEndpoint, twoFactorSettingsEndpoint],
   access: {
     create: adminOrFirstUserAccess(runtimeConfig.auth),
     delete: adminOnlyAccess,
@@ -338,12 +345,18 @@ export const Users: CollectionConfig = {
   },
   hooks: {
     afterChange: [auditUserAuthorizationChange],
-    afterDelete: [auditUserDeletion],
-    afterRead: [sanitizeAssignmentUser],
+    afterDelete: [auditUserDeletion, deleteTwoFactorCredentials],
+    afterRead: [sanitizeAssignmentUser, filterTwoFactorSessions],
+    beforeLogin: [enforceTwoFactorLogin],
     beforeChange: [normalizeUserAccessFields],
     beforeDelete: [preventLastAdminDelete],
   },
   fields: [
+    {
+      name: 'twoFactorSettings',
+      type: 'ui',
+      admin: { components: { Field: '@/components/admin/TwoFactorSettings#TwoFactorSettings' } },
+    },
     {
       name: 'firstAdminNotice',
       type: 'ui',

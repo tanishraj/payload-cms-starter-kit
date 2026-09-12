@@ -5,12 +5,8 @@ import {
   regularBlockMobilePaddingClasses,
 } from '@/blocks/shared/blockSpacing'
 import { SectionIntro } from '@/blocks/shared/SectionIntro'
-import {
-  resolveFeeDocumentButtonVariant,
-  type ResolvedFeeDocumentDownload,
-} from '@/blocks/shared/FeeDocumentDownload'
 import { resolveCmsActions } from '@/lib/cmsLinks'
-import { getMediaAbsoluteUrl } from '@/lib/media'
+import { resolveFeeDocumentPanel } from '@/blocks/shared/feeDocumentAction'
 import { cn } from '@/lib/utils'
 
 import { normalizePGFeeCategories } from './normalizePGFeeStructure'
@@ -31,6 +27,7 @@ export function PGFeeStructureBlockComponent({
   eyebrow,
   feeCategories,
   feeDocument,
+  feeDocumentAction,
   footerActions,
   programmeName,
   size = 'default',
@@ -54,18 +51,15 @@ export function PGFeeStructureBlockComponent({
   const resolvedTitle = title?.trim()
   const resolvedAccentTitle = accentTitle?.trim()
   const resolvedDescription = description?.trim()
-  const fileURL = getMediaAbsoluteUrl(feeDocument)
-  const fileLabel = downloadLabel?.trim() || 'Download Fee Structure'
-  const resolvedDownload: ResolvedFeeDocumentDownload | undefined = fileURL
-    ? {
-        appearance: downloadAppearance,
-        buttonVariant: resolveFeeDocumentButtonVariant(downloadButtonVariant),
-        label: fileLabel,
-        mode: downloadActionMode === 'link' ? 'link' : 'button',
-        sectionBackground: appearanceClasses.background,
-        url: fileURL,
-      }
-    : undefined
+  const resolvedDownload = resolveFeeDocumentPanel({
+    feeDocument,
+    feeDocumentAction,
+    downloadLabel,
+    downloadActionMode,
+    downloadButtonVariant,
+    downloadAppearance,
+    sectionBackground: appearanceClasses.background,
+  })
 
   return (
     <section

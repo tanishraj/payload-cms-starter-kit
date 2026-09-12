@@ -1,3 +1,4 @@
+import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 import { type CollectionConfig } from 'payload'
 
 import {
@@ -81,6 +82,7 @@ export const SystemPages: CollectionConfig = {
   },
   hooks: {
     afterChange: [
+      revalidateGlobalsCache,
       createCollectionAuditHook({
         entityType: 'system_page',
         feature: 'systemPages',

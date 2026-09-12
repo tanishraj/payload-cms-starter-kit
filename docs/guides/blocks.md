@@ -97,6 +97,8 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Video Embed              | External video                               | Valid provider/embed URL                                                                                                                                                                                                                                                                                                                             |
 | Media Carousel           | Scrollable media slides                      | Client carousel behavior and independent slide-card backgrounds                                                                                                                                                                                                                                                                                      |
 | Program Matrix           | Academic programmes or structured offerings  | Stacked or 40/60 split introduction beside a seamless matrix with one to four responsive matrix columns, left/right placement, top, center, or bottom vertical positioning, flexible Lucide icons, semantic card backgrounds, and one optional per-card Link or Button action                                                                        |
+| Partner Directory        | Insurer and partner logo directory           | Integration 23 bordered grid; optional logos, detail dialogs, and shared actions; found in Advanced Library                                                                                                                                                                                                                                          |
+| Logo Marquee             | Scrolling rows of partner logos              | Logos 20 opposing marquees with pause, static reduced-motion fallback, and editable rows; no split layout                                                                                                                                                                                                                                            |
 | Logo Strip               | Partner/accreditation logos                  | Optional marquee behavior                                                                                                                                                                                                                                                                                                                            |
 | Page Header              | Inner-page heading                           | Eyebrow/title/description/actions                                                                                                                                                                                                                                                                                                                    |
 | Breadcrumb               | Standalone page trail                        | Uses automatic hierarchy or editor-authored breadcrumb items                                                                                                                                                                                                                                                                                         |
@@ -106,9 +108,9 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Quote Block              | Quotation or pull quote                      | Quote and attribution                                                                                                                                                                                                                                                                                                                                |
 | Tabs Content             | Grouped tab panels                           | Client tab interaction                                                                                                                                                                                                                                                                                                                               |
 | Download List            | Files and document libraries                 | Stacked or responsive 40/60 split introduction, four document layouts, one shared 1–8 Columns setting, optional file icons, controlled file-type labels, and up to two ordered per-document Download, View, or Custom actions                                                                                                                        |
-| Fee Structure            | Programme fee schedule                       | Default responsive table/cards or a 50/50 Programme Cost Atlas, one to four category tabs, fee-only notes, and a file-locked Link or Button download                                                                                                                                                                                                 |
-| PG Fee Structure         | Department-based postgraduate fees           | A responsive 50/50 Primary/Card department atlas with category-owned departments, shared or department-varying fee columns, category notes, and an official file Link or Button download                                                                                                                                                             |
-| Bank Details             | Official payment account information         | One to six purpose-specific accounts in an admin-selected Text or locally generated Scanner presentation, with mirrored 36/64 panels, editable ledger labels, adaptive tabs, and exact-value copy controls                                                                                                 |
+| Fee Structure            | Programme fee schedule                       | Default responsive table/cards or a 50/50 Programme Cost Atlas, one to four category tabs, fee-only notes, and a File action with View or Download behavior                                                                                                                                                                                          |
+| PG Fee Structure         | Department-based postgraduate fees           | A responsive 50/50 Primary/Card department atlas with category-owned departments, shared or department-varying fee columns, category notes, and an official File action with View or Download behavior                                                                                                                                               |
+| Bank Details             | Official payment account information         | One to six purpose-specific accounts in an admin-selected Text or locally generated Scanner presentation, with mirrored 36/64 panels, editable ledger labels, adaptive tabs, and exact-value copy controls                                                                                                                                           |
 | Numbered Steps           | Ordered process                              | Backgrounds apply to numbered Cards, not connected/alternating layouts                                                                                                                                                                                                                                                                               |
 | Bento Grid               | Mixed-size feature cards                     | Grid layout and semantic background controls                                                                                                                                                                                                                                                                                                         |
 | Testimonial Grid         | Curated testimonials                         | Backgrounds apply to Grid and Featured cards                                                                                                                                                                                                                                                                                                         |
@@ -187,7 +189,7 @@ which keeps the programme/session context band, semantic desktop table, and one 
 period. **Programme Cost Atlas** instead creates a 50/50 Primary/Card editorial composition on large
 screens and stacks it on smaller screens. Its left summary contains programme details, the first
 authored Total row as Annual totals, category notes, a required category-owned Complete programme
-expense, and the file download. Complete programme expense is manually authored and required for
+expense, and the file action. Complete programme expense is manually authored and required for
 every Atlas category; it is never calculated from Annual totals. The right statement shows each remaining fee head once with all of
 its authored period values; later Total rows remain there. The statement heading displays the
 authored category label verbatim beneath the **Statement breakdown** eyebrow. Atlas does not calculate or reorganize
@@ -195,9 +197,14 @@ values beyond moving that first authored Total row. Atlas uses standard sans-ser
 left-aligned period labels and values, matched two-half spacing, and semantic Primary/Card colors.
 New blocks start Additional Programme Details with an editable **Programme Duration** / **4.5 Years**
 row; editors can change or remove it, and existing saved blocks are not backfilled.
-The optional Media upload produces one official
-file download; its presentation can be an underlined Link or a configured Button, and its outlined
-container can use shared semantic backgrounds. Multiple-category tabs can use **Content Width**,
+Both fee blocks use an optional **Fee Document Action** with the shared File action controls.
+Remote Media downloads use a same-origin attachment endpoint so files on a separate asset domain
+download instead of opening in the current tab. The Media record must be published; View keeps
+the direct file URL. Local relative file URLs continue to use the browser's download attribute.
+Choose **View** or **Download**, set the label, use an underlined Link or configured Button, and
+choose whether View opens in a new tab. The outlined document container retains its shared
+semantic background settings. Existing fee documents, labels, and styles populate this action
+as downloads until edited; removing the action keeps it removed after saving. Multiple-category tabs can use **Content Width**,
 **Centered Auto Width**, or **Equal Full Width**. Centered Auto Width shrink-wraps and centers the
 category tabs when they fit, then returns them to the inline start inside the existing horizontal
 scroller when long labels or narrow viewports overflow. In the table layout, standard desktop fee-name
@@ -369,6 +376,14 @@ and rule rhythm. The shared preset suppresses Payload's empty `<p><br></p>` outp
 keeps regular mono labels while values use the normal text family; only date values use tabular
 numerals.
 
+Q&A Accordion introductions use the full available width for Left, Center, and Right alignment.
+In Split mode, supporting profiles, contact copy, and actions follow that alignment too. Use
+**Theme Settings → Supporting Actions Position → Bottom of Column** to place Contact Prompt links
+or buttons at the foot of the section-content column on desktop. **After Content** keeps them with
+the supporting copy and is the default for existing content. On smaller screens, supporting actions
+follow the content before the questions; Stacked mode hides supporting content. Section Actions
+remain separate and follow any bottom-positioned supporting actions.
+
 Headers use the `Header Navbar 12` block, Footers use `Footer 56`, and System Pages use exactly one matching `System 404`, `System Maintenance`, or `System Coming Soon` block. Those structural blocks are not selectable in normal Page layouts.
 
 ## Choosing Data-Owned Blocks
@@ -384,6 +399,70 @@ Prefer the data-backed blocks when the same records need governance or reuse:
 ## Developer Thumbnail Workflow
 
 The admin picker uses generated previews in `public/block-thumbnails`. The preview route exists only in development. See [Developer Workflows](../operations/developer-workflows.md) before regenerating all or one thumbnail.
+
+## Partner Directory (Integration 23)
+
+Add **Partner Directory** from **Advanced Library** in Pages or Reusable Sections. The Content tab owns
+an optional eyebrow, title, italic accent, description, section/footer actions, and up to 100 ordered
+Partners / Insurers. Each entry requires a name; its Media logo, details, and actions are optional.
+Missing or failed logos show initials while the full name remains visible. Enter insurer information
+as supplied by the hospital; the block does not infer coverage or eligibility.
+
+Theme Settings provides the standard section background, borders, alignment, and padding, plus
+1, 2, 3, 4, or 6 desktop columns and Enable Detail Dialogs. Smaller screens reduce the columns.
+
+Stacked is the default layout, with an introduction above the full-width directory grid. Split places
+section content beside the directory on desktop. Split Proportion defaults to Balanced (50 / 50);
+Directory Focus (40 / 60) and Section Content Focus (60 / 40) are also available. Directory Position
+can be Left or Right, and Section Content Vertical Alignment can be Top, Center, or Bottom. Section Content Alignment
+controls left/center/right alignment within the header in either layout and also aligns footer actions.
+The whole introduction uses the shared `max-w-3xl` (48rem) cap: heading, description, and
+section actions follow the selected alignment. It fills narrower split columns, while the directory
+keeps its allocated width.
+Section actions stay with the header; footer actions follow the entire composition. Compact screens
+always stack the header before the grid. Column selection is a maximum: split panels reduce their
+column count according to the available panel width. Without any header content, Split falls back to
+a full-width grid.
+
+Item Layout applies to every tile independently of the section layout. Block (the default) places
+the logo above text; Inline places a compact logo beside text. Item Alignment selects Left or Center
+for the logo and name together, independently of Section Content Alignment. Long names wrap
+without shrinking the logo. A one-column selection stays one column; two columns fit inside the
+directory panel when space allows and collapse on narrow screens.
+
+Directory Style selects Bordered Grid (the default) or Ruled. Ruled shows horizontal and vertical
+dividers between items without an outer container border. Both styles support all column counts,
+item layouts, and alignments.
+
+With dialogs enabled, only entries with details or valid actions
+become buttons. Disabling dialogs leaves every tile static. Dialogs support keyboard navigation,
+Escape dismissal, and focus restoration. Links use the existing Page, Custom URL, or Media action fields.
+The block is adapted from `@shadcnblocks/integration23`; its SaaS OAuth demo is replaced by editorial details.
+
+## Logo Marquee (Logos 20)
+
+Add **Logo Marquee** from **Advanced Library**. The Content tab owns the optional heading, eyebrow,
+italic accent, description, section/footer actions, and a single **Logo Rows** list.
+Click **Add Row**, then **Add Logo** inside that row. Drag any row or logo to reorder it.
+Collapsed row labels show the row number and logo count; collapsed logo entries show the organisation name.
+There is no fixed row-count limit; each row supports up to 40 logos. Each logo requires an
+organisation name and a Media image. Rows alternate left and right by their saved position.
+Existing Top/Bottom/Additional content is combined into the new editor when read and saved in the
+unified format on the next edit. Clearing every row stays empty even when legacy fields still exist.
+Empty rows and incomplete draft entries are omitted; an entirely empty block renders nothing.
+Failed images fall back to the organisation name.
+
+Theme Settings provides standard section appearance, left/center/right content alignment and padding,
+plus scrolling on/off, Slow/Normal/Fast speed, logo height, optional organisation labels, and grayscale.
+The section always stacks the full-width heading above its logo rows; it has no Split layout.
+The description is capped at `max-w-3xl` (48rem) and follows the selected section alignment;
+logo rows continue to span the full container.
+The **Show Pause / Play Control** setting defaults on and displays an icon-only button for all rows.
+Its size follows Section Padding: None/Compact 44px, Default 48px, Comfortable 56px. Hidden controls
+leave scrolling active. Visitors can hover to pause an individual row. Reduced-motion preferences
+and disabled scrolling show all logos as wrapping static rows. Screen readers receive each authored
+name once rather than the repeated animation copies. Logos do not navigate; section/footer actions
+use the shared Page, Custom URL, and Media link controls.
 
 ## Related Guides
 

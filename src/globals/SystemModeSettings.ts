@@ -1,3 +1,4 @@
+import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 import type { GlobalConfig, RelationshipFieldSingleValidation } from 'payload'
 
 import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
@@ -83,6 +84,7 @@ export const SystemModeSettings: GlobalConfig = {
   },
   hooks: {
     afterChange: [
+      revalidateGlobalsCacheForGlobal,
       createGlobalAuditHook({
         entityType: 'system_mode_settings',
         feature: 'maintenanceModes',

@@ -1,3 +1,4 @@
+import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 import type { CollectionConfig, Field } from 'payload'
 
 import {
@@ -132,6 +133,7 @@ export const NavigationLinks: CollectionConfig = {
   },
   hooks: {
     afterChange: [
+      revalidateGlobalsCache,
       createDraftPublishQueueHook({
         isActionable: (doc) => (doc as { sourceType?: string | null })?.sourceType !== 'pageSynced',
         sourceAdminPathPrefix: '/admin/collections/navigation-links',

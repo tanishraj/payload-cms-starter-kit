@@ -1,11 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import {
-  getContact33FieldDefinitions,
-  validateContact33FormDefinition,
-} from '@/lib/contact33Form'
+import { getContact33FieldDefinitions, validateContact33FormDefinition } from '@/lib/contact33Form'
 
 const validForm = {
+  _status: 'published',
   fields: [
     {
       label: 'Name',
@@ -37,6 +35,7 @@ const validForm = {
     },
   ],
   slug: 'contact',
+  submissionIntent: 'general',
   submitButtonLabel: 'Send message',
   successMessage: 'Thanks. We will be in touch.',
   title: 'Contact',
@@ -55,6 +54,37 @@ describe('contact33 form contract', () => {
         type: 'select',
       },
     })
+  })
+
+  it('accepts an optional Phone field and rejects a mismatched phone type', () => {
+    const formWithPhone = {
+      ...validForm,
+      fields: [
+        ...validForm.fields,
+        {
+          label: 'Telephone',
+          name: 'phone',
+          placeholder: '+1 555 0123',
+          required: true,
+          type: 'phone',
+        },
+      ],
+    }
+
+    expect(validateContact33FormDefinition(formWithPhone as never)).toBe(true)
+    expect(getContact33FieldDefinitions(formWithPhone as never).phone).toMatchObject({
+      label: 'Telephone',
+      required: true,
+      type: 'phone',
+    })
+    expect(
+      validateContact33FormDefinition({
+        ...formWithPhone,
+        fields: formWithPhone.fields.map((field) =>
+          field.name === 'phone' ? { ...field, type: 'text' } : field,
+        ),
+      } as never),
+    ).toBe('Contact form field "phone" must use the Phone type.')
   })
 
   it.each([
@@ -152,10 +182,7 @@ describe('contact33 form contract', () => {
     })
     expect(byName<{ type?: string }>(layout?.fields ?? [], 'appearance')?.type).toBe('group')
     expect(
-      byName<{ defaultValue?: string; type?: string }>(
-        layout?.fields ?? [],
-        'contentAlignment',
-      ),
+      byName<{ defaultValue?: string; type?: string }>(layout?.fields ?? [], 'contentAlignment'),
     ).toMatchObject({
       defaultValue: 'center',
       type: 'select',
@@ -203,6 +230,7 @@ describe('contact33 form contract', () => {
         collection: 'forms',
         depth: 0,
         id: 'form-id',
+        overrideAccess: false,
       }),
     )
     expect(findByID).toHaveBeenCalledWith(
@@ -210,7 +238,40 @@ describe('contact33 form contract', () => {
         collection: 'forms',
         depth: 0,
         id: 'related-form-id',
+        overrideAccess: false,
       }),
     )
+  })
+
+  it('rejects inaccessible, draft, and review forms in both relationship shapes', async () => {
+    const { Contact33Block } = await import('@/blocks/Contact33/config')
+    const tabs = Contact33Block.fields[0] as {
+      tabs: Array<{ fields: unknown[]; label: string }>
+    }
+    const content = tabs.tabs.find((tab) => tab.label === 'Content')!
+    const form = content.fields.find(
+      (field) =>
+        typeof field === 'object' && field !== null && 'name' in field && field.name === 'form',
+    ) as {
+      validate: (value: unknown, context: unknown) => Promise<true | string>
+    }
+
+    await expect(
+      form.validate(
+        { ...validForm, _status: 'draft' },
+        { req: { payload: { findByID: vi.fn() } } },
+      ),
+    ).resolves.toBe('Select a published general or lead Form.')
+    await expect(
+      form.validate(
+        { ...validForm, submissionIntent: 'review' },
+        { req: { payload: { findByID: vi.fn() } } },
+      ),
+    ).resolves.toBe('Select a published general or lead Form.')
+    await expect(
+      form.validate('inaccessible-form', {
+        req: { payload: { findByID: vi.fn().mockRejectedValue(new Error('Forbidden')) } },
+      }),
+    ).resolves.toBe('Select a published general or lead Form you can access.')
   })
 })

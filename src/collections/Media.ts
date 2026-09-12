@@ -1,3 +1,4 @@
+import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 import {
   APIError,
   type CollectionAfterReadHook,
@@ -137,7 +138,7 @@ export const Media: CollectionConfig = {
     update: requireFeature('media'),
   },
   hooks: {
-    afterChange: [syncMediaToWorkQueue],
+    afterChange: [revalidateGlobalsCache, syncMediaToWorkQueue],
     afterRead: [populateMediaUsage],
     beforeDelete: [preventMediaDeletionWhileInUse],
     beforeOperation: [validateUploadBeforeOperation],

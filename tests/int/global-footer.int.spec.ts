@@ -184,7 +184,7 @@ describe('global footer wiring', () => {
     expect(layoutSource).toContain('const activeFooterID =')
     expect(layoutSource).toContain('const activeFooter =')
     expect(layoutSource).toContain("collection: 'footers'")
-    expect(layoutSource).toContain("payload.findGlobal({ slug: 'site-settings', depth: 1 })")
+    expect(layoutSource).toContain("payload.findGlobal({ slug: 'site-settings', depth: 1, populate: frontendGlobalsPopulate })")
     expect(layoutSource).toContain(
       'const { privacyPolicyUrl, termsAndConditionsUrl } = await resolveLegalPageHrefs(',
     )

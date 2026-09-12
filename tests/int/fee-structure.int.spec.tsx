@@ -324,7 +324,7 @@ describe('FeeStructureBlock schema', () => {
       ),
     ).toBe(true)
     expect(downloadAppearance).toMatchObject({
-      label: 'Download Container Appearance',
+      label: 'Document Container Appearance',
       type: 'group',
     })
     expect(downloadAppearance.fields).toHaveLength(1)

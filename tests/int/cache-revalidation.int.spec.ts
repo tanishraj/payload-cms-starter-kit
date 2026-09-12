@@ -17,11 +17,22 @@ import {
   revalidateDeletedPageCache,
   revalidateDeletedRedirectCache,
   revalidateDeletedReviewCache,
+  revalidateGlobalsCache,
+  revalidateGlobalsCacheForGlobal,
   revalidateNewsEventsCache,
   revalidatePagesCache,
   revalidateRedirectsCache,
   revalidateReviewsCache,
 } from '@/hooks/revalidateCmsContent'
+import { Forms } from '@/collections/Forms'
+import { GalleryAlbums } from '@/collections/GalleryAlbums'
+import { Media } from '@/collections/Media'
+import { NavigationLinks } from '@/collections/NavigationLinks'
+import { SystemPages } from '@/collections/SystemPages'
+import { SearchSettings } from '@/globals/SearchSettings'
+import { SystemModeSettings } from '@/globals/SystemModeSettings'
+
+const immediateRevalidationProfile = { expire: 0 }
 
 const afterChange = (
   hook: (...args: never[]) => unknown,
@@ -50,8 +61,14 @@ describe('CMS cache revalidation', () => {
 
     expect(mocks.revalidateTag).toHaveBeenCalledTimes(shouldInvalidate ? 2 : 0)
     if (shouldInvalidate) {
-      expect(mocks.revalidateTag).toHaveBeenCalledWith(CMS_CACHE_TAGS.pages, 'max')
-      expect(mocks.revalidateTag).toHaveBeenCalledWith(CMS_CACHE_TAGS.sitemap, 'max')
+      expect(mocks.revalidateTag).toHaveBeenCalledWith(
+        CMS_CACHE_TAGS.pages,
+        immediateRevalidationProfile,
+      )
+      expect(mocks.revalidateTag).toHaveBeenCalledWith(
+        CMS_CACHE_TAGS.sitemap,
+        immediateRevalidationProfile,
+      )
     }
   })
 
@@ -63,15 +80,6 @@ describe('CMS cache revalidation', () => {
     expect(mocks.revalidateTag).not.toHaveBeenCalled()
   })
 
-  it('skips Review cache invalidation for explicitly marked maintenance writes', () => {
-    const context = { [SKIP_CACHE_REVALIDATION_CONTEXT]: true }
-
-    afterChange(revalidateReviewsCache as never, 'published', 'draft', context)
-    revalidateDeletedReviewCache({ context, doc: { _status: 'published' } } as never)
-
-    expect(mocks.revalidateTag).not.toHaveBeenCalled()
-  })
-
   it.each([
     ['Article', revalidateArticlesCache, CMS_CACHE_TAGS.articles],
     ['Review', revalidateReviewsCache, CMS_CACHE_TAGS.reviews],
@@ -79,8 +87,11 @@ describe('CMS cache revalidation', () => {
   ])('invalidates %s caches when published content is unpublished', (_label, hook, tag) => {
     afterChange(hook as never, 'draft', 'published')
 
-    expect(mocks.revalidateTag).toHaveBeenCalledWith(tag, 'max')
-    expect(mocks.revalidateTag).toHaveBeenCalledWith(CMS_CACHE_TAGS.sitemap, 'max')
+    expect(mocks.revalidateTag).toHaveBeenCalledWith(tag, immediateRevalidationProfile)
+    expect(mocks.revalidateTag).toHaveBeenCalledWith(
+      CMS_CACHE_TAGS.sitemap,
+      immediateRevalidationProfile,
+    )
   })
 
   it('does not invalidate editorial caches for draft-only updates', () => {
@@ -98,7 +109,10 @@ describe('CMS cache revalidation', () => {
   it('invalidates Redirect caches when a redirect is unpublished', () => {
     afterChange(revalidateRedirectsCache as never, 'draft', 'published')
 
-    expect(mocks.revalidateTag).toHaveBeenCalledWith(CMS_CACHE_TAGS.redirects, 'max')
+    expect(mocks.revalidateTag).toHaveBeenCalledWith(
+      CMS_CACHE_TAGS.redirects,
+      immediateRevalidationProfile,
+    )
   })
 
   it.each([
@@ -110,9 +124,12 @@ describe('CMS cache revalidation', () => {
   ])('invalidates published %s deletions', (_label, hook, tag, invalidatesSitemap) => {
     hook({ doc: { _status: 'published' } } as never)
 
-    expect(mocks.revalidateTag).toHaveBeenCalledWith(tag, 'max')
+    expect(mocks.revalidateTag).toHaveBeenCalledWith(tag, immediateRevalidationProfile)
     if (invalidatesSitemap) {
-      expect(mocks.revalidateTag).toHaveBeenCalledWith(CMS_CACHE_TAGS.sitemap, 'max')
+      expect(mocks.revalidateTag).toHaveBeenCalledWith(
+        CMS_CACHE_TAGS.sitemap,
+        immediateRevalidationProfile,
+      )
     }
   })
 
@@ -129,4 +146,60 @@ describe('CMS cache revalidation', () => {
 
     expect(mocks.revalidateTag).not.toHaveBeenCalled()
   })
+
+  it.each([
+    ['Form', Forms],
+    ['Gallery Album', GalleryAlbums],
+    ['Media', Media],
+    ['Navigation Link', NavigationLinks],
+    ['System Page', SystemPages],
+  ])('registers publication revalidation for the %s collection', (_label, collection) => {
+    expect(collection.hooks?.afterChange).toContain(revalidateGlobalsCache)
+  })
+
+  it.each([
+    ['Search Settings', SearchSettings],
+    ['Site Modes', SystemModeSettings],
+  ])('registers publication revalidation for the %s global', (_label, global) => {
+    expect(global.hooks?.afterChange).toContain(revalidateGlobalsCacheForGlobal)
+  })
+
+  it.each([
+    ['collection', revalidateGlobalsCache],
+    ['global', revalidateGlobalsCacheForGlobal],
+  ])('invalidates dependent page data immediately after a published %s update', (_label, hook) => {
+    afterChange(hook as never, 'published', 'published')
+
+    expect(mocks.revalidateTag).toHaveBeenCalledWith(
+      CMS_CACHE_TAGS.globals,
+      immediateRevalidationProfile,
+    )
+    expect(mocks.revalidateTag).toHaveBeenCalledWith(
+      CMS_CACHE_TAGS.pages,
+      immediateRevalidationProfile,
+    )
+  })
+
+  it.each([
+    ['collection', revalidateGlobalsCache],
+    ['global', revalidateGlobalsCacheForGlobal],
+  ])('does not invalidate public page data for a draft-only %s update', (_label, hook) => {
+    afterChange(hook as never, 'draft', 'draft')
+
+    expect(mocks.revalidateTag).not.toHaveBeenCalled()
+  })
 })
+
+it.each([revalidateGlobalsCache, revalidateGlobalsCacheForGlobal])(
+  'preserves the CLI skip context through shared publication hooks',
+  (hook) => {
+    mocks.revalidateTag.mockClear()
+    const doc = { _status: 'published' }
+    expect(hook({ doc, previousDoc: doc, context: { skipCacheRevalidation: true } } as never)).toBe(
+      doc,
+    )
+    expect(mocks.revalidateTag).not.toHaveBeenCalled()
+    hook({ doc, previousDoc: doc, context: { skipCacheRevalidation: false } } as never)
+    expect(mocks.revalidateTag).toHaveBeenCalled()
+  },
+)

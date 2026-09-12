@@ -179,3 +179,14 @@ so moving that Page beneath a parent does not leave consent UI pointing at its l
   behavior matches the supported adapter.
 
 Use the maintained [feature inventory](../../../../docs/architecture/feature-inventory.md), [content model map](../../../../docs/architecture/content-model-map.md), [runtime/provider runbook](../../../../docs/operations/runtime-and-providers.md), and [developer workflows](../../../../docs/operations/developer-workflows.md) for deeper operational context.
+
+
+## September 2026 delivery backport
+
+Public search and its API share `lib/search.ts`, retaining the starter public-review access helper and bounded API rate limiter. At most 2,000 matching candidates per content type are scanned in 20 batches and ranked within each content type by exact title, prefix, substring, all query words, then metadata-only match, with deterministic ties before UI limits.
+
+`GET /api/media-download/[id]` reads only published publicly accessible Media and streams attachments from the canonical site's Payload file path or configured public S3 origin. Caller URLs and upstream redirects are rejected; requests time out and responses use no-store. Shared file actions and Download List use this endpoint for remote downloads while View actions remain direct. Runtime origin/storage values come from the server-only configuration owner.
+
+CMS tag invalidation now uses immediate expiration (`expire: 0`). Forms, Gallery Albums, Media, Navigation Links, System Pages, Search Settings and Site Modes invalidate their dependent public caches on publication changes. Existing CLI revalidation skip guards remain. Shared shell relationships select routing metadata instead of full Page layouts; nested top-level Pages without parent fields are recognized when stripping internal content. Scroll commit signals track pathname/query changes and position final redirected destinations, retaining same-page fragment behavior.
+
+The optional production database backup workflow is disabled unless the repository enable variable is set. A separate explicitly configured database/private R2 bucket and scoped prefix receive compressed archives and SHA-256 sidecars, with upload length/metadata verification before bounded retention cleanup. This is a logical database backup, not a media or point-in-time backup; see docs/operations/database-backups.md. No production backup is run by implementation or verification.

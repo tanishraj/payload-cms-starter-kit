@@ -50,22 +50,36 @@ const validateContactForm: RelationshipFieldSingleValidation = async (value, { r
     return true
   }
 
+  const validateSelectedForm = (form: Form): true | string => {
+    if (
+      form._status !== 'published' ||
+      (form.submissionIntent !== 'general' && form.submissionIntent !== 'lead')
+    ) {
+      return 'Select a published general or lead Form.'
+    }
+
+    return validateContact33FormDefinition(form)
+  }
+
   if (typeof value === 'object' && value !== null && 'fields' in value) {
-    return validateContact33FormDefinition(value as unknown as Form)
+    return validateSelectedForm(value as unknown as Form)
   }
 
   const formID =
-    typeof value === 'object' && value !== null && 'value' in value
-      ? value.value
-      : value
-  const form = await req.payload.findByID({
-    collection: 'forms',
-    depth: 0,
-    id: formID as string | number,
-    req,
-  })
+    typeof value === 'object' && value !== null && 'value' in value ? value.value : value
+  try {
+    const form = await req.payload.findByID({
+      collection: 'forms',
+      depth: 0,
+      id: formID as string | number,
+      overrideAccess: false,
+      req,
+    })
 
-  return validateContact33FormDefinition(form)
+    return validateSelectedForm(form)
+  } catch {
+    return 'Select a published general or lead Form you can access.'
+  }
 }
 
 export const Contact33Block: Block = {
@@ -96,7 +110,11 @@ export const Contact33Block: Block = {
               type: 'textarea',
             },
             createContentActionsField({ label: 'Section Actions', maxRows: 2 }),
-            createContentActionsField({ name: 'footerActions', label: 'Footer Actions', maxRows: 2 }),
+            createContentActionsField({
+              name: 'footerActions',
+              label: 'Footer Actions',
+              maxRows: 2,
+            }),
             {
               name: 'image',
               type: 'upload',
@@ -124,7 +142,7 @@ export const Contact33Block: Block = {
               validate: validateContactForm,
               admin: {
                 description:
-                  'Select a published general or lead form with name (Text), email (Email), subject (Select), and message (Textarea) fields.',
+                  'Select a published general or lead form with name (Text), email (Email), subject (Select), and message (Textarea) fields. An optional phone field must use the Phone type.',
               },
             },
           ],

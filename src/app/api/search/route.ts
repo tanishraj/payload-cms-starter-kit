@@ -1,15 +1,13 @@
+import { searchPublishedContent } from '@/lib/search'
 import configPromise from '@payload-config'
 import { NextResponse } from 'next/server'
-import { getPayload, type Where } from 'payload'
+import { getPayload } from 'payload'
 
 import {
   getTrustedClientIPAddress,
   InMemoryRateLimiter,
   type RateLimiter,
 } from '@/domains/forms/rateLimiter'
-import { findPublicReviews } from '@/domains/reviews/publicReviewQueries'
-import { resolveNewsEventClassificationRecord } from '@/lib/newsEventClassifications'
-import { resolveSearchPageHrefs } from '@/lib/searchPagePaths'
 
 const RATE_LIMIT = 20
 const RATE_WINDOW_MS = 10_000
@@ -66,122 +64,7 @@ export async function GET(request: Request) {
   }
 
   const payload = await getPayload({ config: configPromise })
-  const textLike = { like: query }
-  const publishedFilter: Where[] = [{ _status: { equals: 'published' } }]
-
-  const [pagesResult, articlesResult, newsEventsResult, reviewsResult] = await Promise.allSettled([
-    payload.find({
-      collection: 'pages',
-      depth: 0,
-      limit: PER_TYPE_LIMIT,
-      select: { id: true, title: true, slug: true, parent: true, metaDescription: true },
-      where: {
-        and: [...publishedFilter, { or: [{ title: textLike }, { metaDescription: textLike }] }],
-      },
-    }),
-    payload.find({
-      collection: 'articles',
-      depth: 0,
-      limit: PER_TYPE_LIMIT,
-      select: { id: true, title: true, slug: true, excerpt: true, authorName: true },
-      where: {
-        and: [
-          ...publishedFilter,
-          { or: [{ title: textLike }, { excerpt: textLike }, { authorName: textLike }] },
-        ],
-      },
-    }),
-    payload.find({
-      collection: 'news-events',
-      depth: 1,
-      limit: PER_TYPE_LIMIT,
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        excerpt: true,
-        classification: true,
-        contentType: true,
-        authorName: true,
-      },
-      where: {
-        and: [
-          ...publishedFilter,
-          { or: [{ title: textLike }, { excerpt: textLike }, { authorName: textLike }] },
-        ],
-      },
-    }),
-    findPublicReviews(payload, {
-      depth: 0,
-      limit: PER_TYPE_LIMIT,
-      select: { id: true, title: true, slug: true, reviewTitle: true, reviewerName: true },
-      where: {
-        and: [{ or: [{ title: textLike }, { reviewTitle: textLike }, { reviewerName: textLike }] }],
-      },
-    }),
-  ])
-
-  const results: SearchResultItem[] = []
-
-  if (pagesResult.status === 'fulfilled') {
-    const pageHrefs = await resolveSearchPageHrefs(pagesResult.value.docs, payload)
-    for (const page of pagesResult.value.docs) {
-      const href = pageHrefs.get(String(page.id))
-      if (!href) continue
-      results.push({
-        id: String(page.id),
-        title: page.title,
-        excerpt: page.metaDescription ?? '',
-        href,
-        type: 'page',
-        label: 'Page',
-      })
-    }
-  }
-
-  if (articlesResult.status === 'fulfilled') {
-    for (const article of articlesResult.value.docs) {
-      results.push({
-        id: String(article.id),
-        title: article.title,
-        excerpt: article.excerpt ?? '',
-        href: `/articles/${article.slug}`,
-        type: 'article',
-        label: 'Article',
-      })
-    }
-  }
-
-  if (newsEventsResult.status === 'fulfilled') {
-    for (const entry of newsEventsResult.value.docs) {
-      const classification = resolveNewsEventClassificationRecord(
-        entry.classification,
-        entry.contentType,
-      )
-
-      results.push({
-        id: String(entry.id),
-        title: entry.title,
-        excerpt: entry.excerpt ?? '',
-        href: `/news-events/${entry.slug}`,
-        type: 'news-event',
-        label: classification?.badgeLabel ?? 'News & Events',
-      })
-    }
-  }
-
-  if (reviewsResult.status === 'fulfilled') {
-    for (const review of reviewsResult.value.docs) {
-      results.push({
-        id: String(review.id),
-        title: review.title,
-        excerpt: review.reviewTitle ?? '',
-        href: `/reviews/${review.slug}`,
-        type: 'review',
-        label: 'Review',
-      })
-    }
-  }
+  const results = await searchPublishedContent(payload, query, PER_TYPE_LIMIT)
 
   return NextResponse.json<SearchResponse>({ results, query, total: results.length })
 }

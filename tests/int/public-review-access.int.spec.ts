@@ -17,6 +17,7 @@ import {
   findPublicReviews,
   publicReviewQueryOptions,
 } from '@/domains/reviews/publicReviewQueries'
+import { searchPublishedContent } from '@/lib/search'
 import { fetchPublishedReviewFeedPage } from '@/lib/reviewFeed'
 import { fetchPublishedReviewRatingSummary } from '@/lib/reviewRatingSummary'
 import { createTestMongoServer } from '../helpers/mongoMemoryServer'
@@ -29,8 +30,7 @@ const publicReviewConsumers = [
   'src/lib/reviewFeed.ts',
   'src/lib/reviewRatingSummary.ts',
   'src/lib/contentEntries.ts',
-  'src/app/api/search/route.ts',
-  'src/app/(frontend)/search/page.tsx',
+  'src/lib/search.ts',
   'src/app/sitemap.ts',
   'src/app/(frontend)/reviews/[slug]/opengraph-image.tsx',
 ] as const
@@ -75,7 +75,7 @@ describe('public Review access boundary', () => {
     const form = await payload.create({
       collection: 'forms',
       data: {
-        fields: [{ label: 'Name', name: 'name', required: true, type: 'text' }],
+        fields: [{ label: 'Reviewer name', name: 'reviewerName', required: true, type: 'text' }],
         slug: 'public-review-boundary',
         submissionIntent: 'review',
         submitButtonLabel: 'Submit',
@@ -259,6 +259,22 @@ describe('public Review access boundary', () => {
       expect(count.totalDocs).toBe(2)
     },
   )
+
+  it('keeps pending and rejected reviews out of ranked search', async () => {
+    const results = await searchPublishedContent(payload, 'submission', 8)
+    expect(
+      results.filter((result) => result.type === 'review').map((result) => result.href),
+    ).toEqual(['/reviews/approved-submission'])
+  })
+
+  it('delegates both search surfaces to the access-enforced shared search', () => {
+    for (const file of ['src/app/api/search/route.ts', 'src/app/(frontend)/search/page.tsx']) {
+      const source = readFileSync(file, 'utf8')
+      expect(source).toContain("from '@/lib/search'")
+      expect(source).toContain('await searchPublishedContent(payload, query, PER_TYPE_LIMIT)')
+      expect(source).not.toMatch(/collection:\s*['"]reviews['"]/)
+    }
+  })
 
   it('routes every public Review consumer through the domain boundary', () => {
     for (const file of publicReviewConsumers) {

@@ -1,3 +1,4 @@
+import { revalidateGlobalsCacheForGlobal } from '@/hooks/revalidateCmsContent'
 import type { ArrayField, GlobalConfig } from 'payload'
 
 import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
@@ -16,6 +17,7 @@ export const SearchSettings: GlobalConfig = {
     readVersions: requireFeature('searchSettings'),
     update: requireFeature('searchSettings'),
   },
+  hooks: { afterChange: [revalidateGlobalsCacheForGlobal] },
   versions: {
     drafts: true,
   },

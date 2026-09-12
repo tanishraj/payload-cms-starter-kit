@@ -64,3 +64,7 @@ pnpm exec tsc --noEmit
 ```
 
 Inspect the manifest and full lockfile diff. Stop if the package-manager command updates packages beyond the approved graph; revert only that attempted dependency change and use a narrower supported refresh. Never solve an advisory by silently adding an override or broadening an exception.
+
+## September 12 feature backport
+
+The SNMIH backport adds exact dependencies `otpauth@9.5.2` and `react-fast-marquee@1.6.5`. Its audit exposed high advisory 1193727 in existing transitive `js-yaml@4.3.1`; a package-scoped in-range refresh moved only js-yaml to `4.3.2`. No overrides or audit exceptions were added. The authoritative audit passes with 0 critical, 0 high, 16 moderate and 4 low findings. The remaining visible findings include DOMPurify, Payload, and baseline-browser-mapping; these remain subject to the existing moderate/low policy.

@@ -88,6 +88,7 @@ export interface Config {
     'work-queue': WorkQueue;
     'operational-audit-events': OperationalAuditEvent;
     users: User;
+    'two-factor-credentials': TwoFactorCredential;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -116,6 +117,7 @@ export interface Config {
     'work-queue': WorkQueueSelect<false> | WorkQueueSelect<true>;
     'operational-audit-events': OperationalAuditEventsSelect<false> | OperationalAuditEventsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'two-factor-credentials': TwoFactorCredentialsSelect<false> | TwoFactorCredentialsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -238,6 +240,8 @@ export interface Page {
         | MediaCarouselBlock
         | ProgramMatrixBlock
         | LogoStripBlock
+        | Logos20Block
+        | Integration23Block
         | BreadcrumbBlock
         | TimelineBlock
         | IconCardShowcaseBlock
@@ -688,6 +692,8 @@ export interface ReusableSection {
         | MediaCarouselBlock
         | ProgramMatrixBlock
         | LogoStripBlock
+        | Logos20Block
+        | Integration23Block
         | BreadcrumbBlock
         | TimelineBlock
         | IconCardShowcaseBlock
@@ -2329,6 +2335,10 @@ export interface QaAccordionBlock {
   splitProportion?: ('balanced' | 'sectionFocus' | 'qaFocus') | null;
   accordionPlacement?: ('left' | 'right') | null;
   sectionVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
+  /**
+   * Positions Contact Prompt links and buttons within the section-content column on desktop. On smaller screens, they follow the supporting content.
+   */
+  supportingActionsPosition?: ('inline' | 'bottom') | null;
   defaultOpenFirst?: boolean | null;
   /**
    * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
@@ -5081,13 +5091,16 @@ export interface Form {
      */
     message?: string | null;
   };
+  /**
+   * Review Submission uses its fixed review fields; it cannot render additional required fields.
+   */
   fields: {
     /**
      * Machine key used in stored submission data.
      */
     name: string;
     label: string;
-    type: 'text' | 'email' | 'textarea' | 'select' | 'checkbox';
+    type: 'text' | 'email' | 'phone' | 'textarea' | 'select' | 'checkbox';
     required?: boolean | null;
     placeholder?: string | null;
     options?:
@@ -5148,7 +5161,7 @@ export interface Contact33Block {
   image: string | Media;
   imageAlt: string;
   /**
-   * Select a published general or lead form with name (Text), email (Email), subject (Select), and message (Textarea) fields.
+   * Select a published general or lead form with name (Text), email (Email), subject (Select), and message (Textarea) fields. An optional phone field must use the Phone type.
    */
   form: string | Form;
   footerActions?:
@@ -6007,6 +6020,318 @@ export interface LogoStripBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Logos20Block".
+ */
+export interface Logos20Block {
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add a row, then add logos inside it. Drag rows or logos to reorder them. Rows alternate scrolling left and right; empty rows are omitted.
+   */
+  rows?:
+    | {
+        logos?:
+          | {
+              name: string;
+              image: string | Media;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  topRow?:
+    | {
+        name: string;
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  bottomRow?:
+    | {
+        name: string;
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  additionalRows?:
+    | {
+        logos?:
+          | {
+              name: string;
+              image: string | Media;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Rows scroll in opposite directions and pause on hover. Reduced-motion preferences always show static logos.
+   */
+  enableMotion?: boolean | null;
+  /**
+   * Shows an icon button that pauses or plays all rows. Its size follows Section Padding.
+   */
+  showPauseControl?: boolean | null;
+  speed?: ('slow' | 'normal' | 'fast') | null;
+  logoHeight?: ('sm' | 'md' | 'lg') | null;
+  showLabels?: boolean | null;
+  grayscale?: boolean | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'logos20';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Integration23Block".
+ */
+export interface Integration23Block {
+  eyebrow?: string | null;
+  title?: string | null;
+  accentTitle?: string | null;
+  description?: string | null;
+  actions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Ordered directory entries. Names remain visible even without a logo.
+   */
+  items: {
+    name: string;
+    /**
+     * Optional logo. Missing images use the name initials.
+     */
+    logo?: (string | null) | Media;
+    /**
+     * Optional information shown when the visitor opens this entry.
+     */
+    description?: string | null;
+    actions?:
+      | {
+          label: string;
+          linkType?: ('page' | 'custom' | 'file') | null;
+          page?: (string | null) | Page;
+          /**
+           * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+           */
+          url?: string | null;
+          openInNewTab?: boolean | null;
+          /**
+           * Choose the Media asset this action should view or download.
+           */
+          file?: (string | null) | Media;
+          fileBehavior?: ('view' | 'download') | null;
+          openFileInNewTab?: boolean | null;
+          mode?: ('link' | 'button') | null;
+          /**
+           * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+           */
+          variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+          /**
+           * Adds a trailing arrow when this action is displayed as a button.
+           */
+          showArrow?: boolean | null;
+          /**
+           * Shows an animated down arrow for this file download.
+           */
+          showFileIcon?: boolean | null;
+          fileIconPosition?: ('left' | 'right') | null;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  footerActions?:
+    | {
+        label: string;
+        linkType?: ('page' | 'custom' | 'file') | null;
+        page?: (string | null) | Page;
+        /**
+         * Use #anchor-id for a section on this page or /page-path#anchor-id for a section on another page.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
+  appearance: {
+    background: 'none' | 'subtle' | 'brand' | 'gradient-subtle' | 'gradient-brand';
+    border: 'none' | 'top' | 'bottom' | 'topAndBottom';
+  };
+  /**
+   * Aligns the section introduction, Introduction Actions, and Footer Actions. Block content keeps its own layout.
+   */
+  contentAlignment: 'left' | 'center' | 'right';
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Split places section content beside the directory on desktop. Compact screens stack content above the grid.
+   */
+  layoutMode?: ('stacked' | 'split') | null;
+  splitProportion?: ('balanced' | 'directoryFocus' | 'sectionFocus') | null;
+  gridPosition?: ('left' | 'right') | null;
+  sectionVerticalAlignment?: ('top' | 'center' | 'bottom') | null;
+  /**
+   * Maximum columns. Smaller screens and narrower split panels automatically use fewer columns.
+   */
+  columns: '1' | '2' | '3' | '4' | '6';
+  /**
+   * Controls each directory entry in both Stacked and Split section layouts.
+   */
+  itemLayout?: ('block' | 'inline') | null;
+  /**
+   * Aligns each logo and name together, independently of the section heading.
+   */
+  itemAlignment?: ('left' | 'center') | null;
+  /**
+   * Ruled keeps horizontal and vertical dividers between items without an outer container border.
+   */
+  gridStyle?: ('grid' | 'ruled') | null;
+  /**
+   * Entries with details or actions open a dialog. Other entries remain static.
+   */
+  enableDetails?: boolean | null;
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'integration23';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "BreadcrumbBlock".
  */
 export interface BreadcrumbBlock {
@@ -6785,9 +7110,33 @@ export interface FeeStructureBlock {
       | null;
     id?: string | null;
   }[];
-  /**
-   * Optional official file visitors can download.
-   */
+  feeDocumentAction?:
+    | {
+        label: string;
+        linkType?: 'file' | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   feeDocument?: (string | null) | Media;
   downloadLabel?: string | null;
   footerActions?:
@@ -6954,9 +7303,33 @@ export interface PGFeeStructureBlock {
       | null;
     id?: string | null;
   }[];
-  /**
-   * Optional official file visitors can download.
-   */
+  feeDocumentAction?:
+    | {
+        label: string;
+        linkType?: 'file' | null;
+        /**
+         * Choose the Media asset this action should view or download.
+         */
+        file?: (string | null) | Media;
+        fileBehavior?: ('view' | 'download') | null;
+        openFileInNewTab?: boolean | null;
+        mode?: ('link' | 'button') | null;
+        /**
+         * Default adapts to the surrounding section or image overlay. Primary always uses the site theme's primary color. White variants stay white and are intended for dark, brand, or image backgrounds.
+         */
+        variant?: ('default' | 'primary' | 'secondary' | 'outline' | 'white' | 'whiteOutline') | null;
+        /**
+         * Adds a trailing arrow when this action is displayed as a button.
+         */
+        showArrow?: boolean | null;
+        /**
+         * Shows an animated down arrow for this file download.
+         */
+        showFileIcon?: boolean | null;
+        fileIconPosition?: ('left' | 'right') | null;
+        id?: string | null;
+      }[]
+    | null;
   feeDocument?: (string | null) | Media;
   downloadLabel?: string | null;
   footerActions?:
@@ -8201,6 +8574,7 @@ export interface FormSubmission {
   landingPage?: string | null;
   submitterName?: string | null;
   submitterEmail?: string | null;
+  submitterPhone?: string | null;
   email?: string | null;
   linkedReview?: (string | null) | Review;
   promotionError?: string | null;
@@ -8879,6 +9253,26 @@ export interface OperationalAuditEvent {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "two-factor-credentials".
+ */
+export interface TwoFactorCredential {
+  id: string;
+  userID: string;
+  revision: number;
+  state:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -8984,6 +9378,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'two-factor-credentials';
+        value: string | TwoFactorCredential;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -9082,6 +9480,8 @@ export interface PagesSelect<T extends boolean = true> {
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
+        logos20?: T | Logos20BlockSelect<T>;
+        integration23?: T | Integration23BlockSelect<T>;
         breadcrumb?: T | BreadcrumbBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
         iconCardShowcase?: T | IconCardShowcaseBlockSelect<T>;
@@ -10125,6 +10525,7 @@ export interface QaAccordionBlockSelect<T extends boolean = true> {
   splitProportion?: T;
   accordionPlacement?: T;
   sectionVerticalAlignment?: T;
+  supportingActionsPosition?: T;
   defaultOpenFirst?: T;
   anchorId?: T;
   id?: T;
@@ -12218,6 +12619,199 @@ export interface LogoStripBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Logos20Block_select".
+ */
+export interface Logos20BlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
+  rows?:
+    | T
+    | {
+        logos?:
+          | T
+          | {
+              name?: T;
+              image?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  topRow?:
+    | T
+    | {
+        name?: T;
+        image?: T;
+        id?: T;
+      };
+  bottomRow?:
+    | T
+    | {
+        name?: T;
+        image?: T;
+        id?: T;
+      };
+  additionalRows?:
+    | T
+    | {
+        logos?:
+          | T
+          | {
+              name?: T;
+              image?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  size?: T;
+  enableMotion?: T;
+  showPauseControl?: T;
+  speed?: T;
+  logoHeight?: T;
+  showLabels?: T;
+  grayscale?: T;
+  anchorId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Integration23Block_select".
+ */
+export interface Integration23BlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  accentTitle?: T;
+  description?: T;
+  actions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
+  items?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        description?: T;
+        actions?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              page?: T;
+              url?: T;
+              openInNewTab?: T;
+              file?: T;
+              fileBehavior?: T;
+              openFileInNewTab?: T;
+              mode?: T;
+              variant?: T;
+              showArrow?: T;
+              showFileIcon?: T;
+              fileIconPosition?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  footerActions?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        page?: T;
+        url?: T;
+        openInNewTab?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
+  appearance?:
+    | T
+    | {
+        background?: T;
+        border?: T;
+      };
+  contentAlignment?: T;
+  size?: T;
+  layoutMode?: T;
+  splitProportion?: T;
+  gridPosition?: T;
+  sectionVerticalAlignment?: T;
+  columns?: T;
+  itemLayout?: T;
+  itemAlignment?: T;
+  gridStyle?: T;
+  enableDetails?: T;
+  anchorId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "BreadcrumbBlock_select".
  */
 export interface BreadcrumbBlockSelect<T extends boolean = true> {
@@ -12676,6 +13270,21 @@ export interface FeeStructureBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  feeDocumentAction?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
+        id?: T;
+      };
   feeDocument?: T;
   downloadLabel?: T;
   footerActions?:
@@ -12780,6 +13389,21 @@ export interface PGFeeStructureBlockSelect<T extends boolean = true> {
               emphasis?: T;
               id?: T;
             };
+        id?: T;
+      };
+  feeDocumentAction?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        file?: T;
+        fileBehavior?: T;
+        openFileInNewTab?: T;
+        mode?: T;
+        variant?: T;
+        showArrow?: T;
+        showFileIcon?: T;
+        fileIconPosition?: T;
         id?: T;
       };
   feeDocument?: T;
@@ -13387,6 +14011,8 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
+        logos20?: T | Logos20BlockSelect<T>;
+        integration23?: T | Integration23BlockSelect<T>;
         breadcrumb?: T | BreadcrumbBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
         iconCardShowcase?: T | IconCardShowcaseBlockSelect<T>;
@@ -13953,6 +14579,7 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
   landingPage?: T;
   submitterName?: T;
   submitterEmail?: T;
+  submitterPhone?: T;
   email?: T;
   linkedReview?: T;
   promotionError?: T;
@@ -14069,6 +14696,17 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "two-factor-credentials_select".
+ */
+export interface TwoFactorCredentialsSelect<T extends boolean = true> {
+  userID?: T;
+  revision?: T;
+  state?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -14391,6 +15029,8 @@ export interface NewsEventsDetailTemplate {
         | MediaCarouselBlock
         | ProgramMatrixBlock
         | LogoStripBlock
+        | Logos20Block
+        | Integration23Block
         | BreadcrumbBlock
         | TimelineBlock
         | IconCardShowcaseBlock
@@ -14680,6 +15320,8 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
         mediaCarousel?: T | MediaCarouselBlockSelect<T>;
         programMatrix?: T | ProgramMatrixBlockSelect<T>;
         logoStrip?: T | LogoStripBlockSelect<T>;
+        logos20?: T | Logos20BlockSelect<T>;
+        integration23?: T | Integration23BlockSelect<T>;
         breadcrumb?: T | BreadcrumbBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
         iconCardShowcase?: T | IconCardShowcaseBlockSelect<T>;

@@ -41,7 +41,7 @@ Production containers require a durable external MongoDB database and `MEDIA_PRO
 - articles with lexical rich text, taxonomies (categories + tags), SEO fields, and live preview
 - moderated reviews promoted from form submissions into public editorial content
 - news and events with type-specific layouts, gallery albums, and live preview
-- 57 selectable Page blocks covering editorial, events, Calendar and Annual Calendar, media, forms, reviews, galleries, offices, and reusable sections
+- 59 selectable Page blocks covering editorial, events, Calendar and Annual Calendar, media, forms, reviews, galleries, offices, and reusable sections
 - production Page block error boundaries that prevent one broken layout block from crashing the remaining Page
 
 **SEO and discoverability**
@@ -156,7 +156,7 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 - [Redirects](docs/guides/redirects.md) — CMS-managed URL redirects
 - [Forms](docs/guides/forms.md) — form definitions and submitter confirmation email
 - [News & Events](docs/guides/news-events.md) — entry authoring, Page-backed listings, live preview, and feed
-- [Page Blocks](docs/guides/blocks.md) — all 57 Page layout choices and their data dependencies
+- [Page Blocks](docs/guides/blocks.md) — all 59 Page layout choices and their data dependencies
 - [Cookie Consent Banner](docs/guides/cookie-consent.md) — consent variants, copy, and analytics behavior
 
 ## Environment
@@ -214,6 +214,14 @@ ambient application configuration. Docker verifiers serialize through one fixed 
 pin Compose to this repository, and use their own empty environment file. See
 [Developer Workflows](docs/operations/developer-workflows.md) for safe lock recovery, browser
 installation, generation, backup, migration, and reconciliation commands.
+
+## Backported capabilities
+
+Optional account two-factor authentication is documented in [Users](docs/guides/users.md).
+[Forms](docs/guides/forms.md) includes phone capture and branded confirmation emails.
+[Page Blocks](docs/guides/blocks.md) includes Partner Directory, Logo Marquee, and unified fee-document actions.
+Remote file download actions stream attachments through a public-media endpoint. Search ranks title matches before weaker matches within each content type, scanning at most 2,000 candidates per type to bound request work.
+[Database backups](docs/operations/database-backups.md) are configurable and disabled until explicitly enabled.
 
 ## Starter Conventions
 
