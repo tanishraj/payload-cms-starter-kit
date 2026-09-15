@@ -229,3 +229,7 @@ For local disk, reconciliation marks records `local_only`. For S3, it checks eac
 Run `pnpm test:e2e:two-factor` for the isolated optional-2FA browser journeys. Install the pinned browser first with `pnpm exec playwright install chromium`. The harness creates a temporary local MongoDB replica and a copied-source Next development fixture; it does not reuse the application database or ignored dotenv files. It needs local socket permissions. Generated screenshots use only disposable test credentials.
 
 `pnpm backup:prod-db` performs a real configured backup; it is not a verification command. Test backup policy with `pnpm exec vitest run tests/int/prod-db-backup.int.spec.ts`. Configure scheduling only through the [database backup runbook](database-backups.md).
+
+## Storybook
+
+Run `pnpm storybook` for the interactive component/block catalogue at http://localhost:6006, or `pnpm build-storybook` for a static build. See [Storybook authoring and preview workflow](storybook.md). Every replacement block includes stories using the actual component and sample data.
