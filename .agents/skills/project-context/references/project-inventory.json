@@ -2175,6 +2175,7 @@
       "audit:prod",
       "backup:prod-db",
       "build",
+      "build-storybook",
       "ci:mongodb:start",
       "ci:mongodb:stop",
       "dev",
@@ -2190,6 +2191,7 @@
       "project-context:update",
       "report:permissions-migration",
       "start",
+      "storybook",
       "test",
       "test:e2e",
       "test:e2e:governance",
@@ -2248,6 +2250,7 @@
       "docs/operations/mongodb-deployment.md",
       "docs/operations/runtime-and-providers.md",
       "docs/operations/starter-clone-checklist.md",
+      "docs/operations/storybook.md",
       "next.config.ts",
       "package.json",
       "src/access/adminFeatures.ts",
@@ -2655,6 +2658,7 @@
       "src/components/profile-carousel-collection.tsx",
       "src/components/profile-carousel.tsx",
       "src/components/rating-spotlight.tsx",
+      "src/components/revamp/ui/button.tsx",
       "src/components/review-feed-list.tsx",
       "src/components/review-feed.tsx",
       "src/components/reviews/ReviewArchivePage.tsx",
@@ -2824,6 +2828,10 @@
       "src/plugins/withFeatureDeletionAudit.ts",
       "src/plugins/withTrash.ts",
       "src/proxy.ts",
+      "src/stories/Accordion.stories.tsx",
+      "src/stories/Button.stories.tsx",
+      "src/stories/Logos20.stories.tsx",
+      "src/stories/revamp/Button.stories.tsx",
       "src/styles/custom.css",
       "src/styles/globals.css",
       "src/styles/themes/theme-snmih-blue.css",
@@ -3079,7 +3087,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "48c169e717041d317c56010e7c8b3a0ea96270c1385de281b4167e766bcada49"
+    "sha256": "afd0eab3b89879cea79a2d2cda770196d23778998924453800f18d504a20e13c"
   },
   "surfaces": {
     "access": [

@@ -1,11 +1,12 @@
 @import 'tailwindcss';
 
-@plugin "@tailwindcss/typography";
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 @import './themes/theme-snmih-green.css';
 @import './themes/theme-snmih-blue.css';
 @import './custom.css';
+
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

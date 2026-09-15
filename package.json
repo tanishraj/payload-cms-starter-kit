@@ -32,7 +32,9 @@
     "verify:docker-image": "tsx scripts/verify-production-image.ts",
     "verify:docker-local": "tsx scripts/verify-local-compose.ts",
     "backup:prod-db": "tsx scripts/backup-prod-db.ts",
-    "test:e2e:two-factor": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.two-factor.config.ts"
+    "test:e2e:two-factor": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.two-factor.config.ts",
+    "storybook": "storybook dev -p 6006 --host 127.0.0.1 --no-open",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.916.0",
@@ -50,6 +52,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cn": "^0.2.6",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "embla-carousel-autoplay": "^8.6.0",
@@ -81,6 +84,10 @@
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",
+    "@storybook/addon-a11y": "10.6.0",
+    "@storybook/addon-docs": "10.6.0",
+    "@storybook/addon-themes": "10.6.0",
+    "@storybook/nextjs-vite": "10.6.0",
     "@testing-library/react": "16.3.2",
     "@types/node": "22.19.9",
     "@types/react": "19.2.17",
@@ -92,6 +99,7 @@
     "jsdom": "28.0.0",
     "prettier": "^3.4.2",
     "shadcn": "^4.16.0",
+    "storybook": "10.6.0",
     "tsx": "4.21.0",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "6.0.5",
