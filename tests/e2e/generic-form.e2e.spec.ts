@@ -97,7 +97,10 @@ for (const block of [
       )
       await page.getByRole('button', { name: 'Publish changes', exact: true }).click()
       const formResponse = await formResponsePromise
-      expect(formResponse.ok()).toBe(true)
+      expect(
+        formResponse.ok(),
+        `Form publication ${formResponse.status()}: ${await formResponse.text()}`,
+      ).toBe(true)
       const { doc: form } = await formResponse.json()
       const authHeaders = { Origin: new URL(page.url()).origin, Referer: page.url() }
       const pageResponse = await page.request.post('/api/pages', {
