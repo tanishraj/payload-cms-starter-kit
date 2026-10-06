@@ -54,6 +54,19 @@ async function fillNewUserCredentials(
   await confirmPassword.fill(account.password)
 }
 
+async function expandContentGrants(page: Page): Promise<void> {
+  const group = page.locator('.collapsible').filter({
+    has: page.getByText(/^Content \(\d+\)$/),
+  })
+  await expect(group).toHaveCount(1)
+  const pagesGrant = group.locator('input[name="features.pages"]')
+  if (!(await pagesGrant.isVisible())) {
+    await group.locator('button.collapsible__toggle').click()
+  }
+  await expect(pagesGrant).toBeVisible()
+  await expect(pagesGrant).toBeEnabled()
+}
+
 async function saveNewUser(page: Page): Promise<Record<string, unknown>> {
   const createResponsePromise = page.waitForResponse(
     (response) =>
@@ -159,7 +172,8 @@ test.describe('governance browser journeys', () => {
       const admin = await saveNewUser(page)
       expect(admin.email).toBe(governanceSecondAdmin.email)
       expect(admin.role).toBe('admin')
-      await page.waitForURL(
+      expect(admin.id).toBeDefined()
+      await expect(page).toHaveURL(
         (url) => url.pathname === `/admin/collections/users/${String(admin.id)}`,
       )
       const readBack = await page.request.get(`/api/users/${String(admin.id)}?depth=0`, {
@@ -178,6 +192,7 @@ test.describe('governance browser journeys', () => {
       await page.goto('/admin/collections/users/create')
       await fillNewUserCredentials(page, accessManager)
       await chooseSelectOption({ fieldID: '#field-role', label: 'Site Manager', page })
+      await expandContentGrants(page)
       const pagesGrant = page.locator('input[name="features.pages"]')
       await expect(pagesGrant).toBeVisible()
       await pagesGrant.check()
@@ -188,7 +203,8 @@ test.describe('governance browser journeys', () => {
         role: 'siteManager',
       })
       expect((manager.features as Record<string, unknown>).pages).toBe(true)
-      await page.waitForURL(
+      expect(manager.id).toBeDefined()
+      await expect(page).toHaveURL(
         (url) => url.pathname === `/admin/collections/users/${String(manager.id)}`,
       )
       return manager
@@ -217,6 +233,7 @@ test.describe('governance browser journeys', () => {
 
       await test.step('replace the Pages grant with Reviews', async () => {
         await page.goto(`/admin/collections/users/${String(createdManager.id)}`)
+        await expandContentGrants(page)
         const currentPagesGrant = page.locator('input[name="features.pages"]')
         const reviewsGrant = page.locator('input[name="features.reviews"]')
         await expect(currentPagesGrant).toBeChecked()

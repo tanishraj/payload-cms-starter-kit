@@ -47,7 +47,8 @@ URI, and supplies an explicit safe value for every runtime-sensitive input to it
 child. Ambient database, Payload secret, origin, production/Vercel, bootstrap, email, token, and S3
 values cannot configure that child. The default requires a local MongoDB replica set named `rs0`;
 MongoDB transactions require replica-set support. E2E starts its own development server and never
-reuses an arbitrary server already listening on port 3000.
+reuses an arbitrary server already listening on port 3000. The child binds explicitly
+to `127.0.0.1`, matching the browser origin and Next.js development-resource policy.
 
 After loading the fixture, Playwright replaces ambient `NODE_OPTIONS` with the fixed
 `react-server` condition and `tsx/esm` import hook required by real workers, and passes the same
@@ -96,7 +97,12 @@ pnpm exec playwright install chromium
 
 `pnpm test:e2e` remains the complete local browser suite. GitHub CI installs bundled Chromium with
 its Linux dependencies and runs only `pnpm test:e2e:governance`, which contains exactly the critical
-feature-grant/revocation and submitted-Review approval journeys.
+feature-grant/revocation and submitted-Review approval journeys. The shared login helper
+uses the accessible Email/Password labels and Log in button of the two-factor-aware
+login view, rather than legacy Payload field IDs. The feature-grant journey opens
+the initially collapsed Content group before editing grants and asserts the saved
+record URL independently of document load events. Persisted access and revoked
+session checks remain required.
 
 `pnpm ci:mongodb:start` and `pnpm ci:mongodb:stop` are GitHub-only controller commands, not local
 database helpers. They reject non-GitHub or mismatched run identity, validate both mutation URIs as

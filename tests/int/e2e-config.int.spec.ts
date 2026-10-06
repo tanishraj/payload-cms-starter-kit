@@ -90,7 +90,7 @@ describe('Playwright database isolation', () => {
       trace: 'on-first-retry',
     })
     expect(config.webServer).toMatchObject({
-      command: 'pnpm exec next dev',
+      command: 'pnpm exec next dev --hostname 127.0.0.1',
       env: {
         ALLOW_FIRST_ADMIN_CREATION: 'false',
         ALLOW_PRODUCTION_EMAIL_OVERRIDE: 'false',
@@ -278,8 +278,8 @@ describe('E2E mutation helpers', () => {
 describe('E2E login navigation', () => {
   it('uses paths relative to Playwright baseURL by default', async () => {
     const page = {
-      click: vi.fn(),
-      fill: vi.fn(),
+      getByLabel: vi.fn(() => ({ fill: vi.fn() })),
+      getByRole: vi.fn(() => ({ click: vi.fn() })),
       goto: vi.fn(),
       locator: vi.fn(() => ({
         toBeVisible: vi.fn(),
@@ -295,6 +295,9 @@ describe('E2E login navigation', () => {
     })
 
     expect(page.goto).toHaveBeenCalledWith('/admin/login')
+    expect(page.getByLabel).toHaveBeenCalledWith('Email', { exact: true })
+    expect(page.getByLabel).toHaveBeenCalledWith('Password', { exact: true })
+    expect(page.getByRole).toHaveBeenCalledWith('button', { name: 'Log in', exact: true })
     expect(page.waitForURL).toHaveBeenCalledWith('/admin')
   })
 })

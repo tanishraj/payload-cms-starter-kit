@@ -4,3 +4,8 @@ allowBuilds:
   mongodb-memory-server: true
   sharp: true
   unrs-resolver: true
+
+# Payload 3.88.0 pins the vulnerable Undici release exactly. Keep the
+# reviewed Payload family while applying its compatible security patch.
+overrides:
+  'payload@3.88.0>undici': 7.29.1

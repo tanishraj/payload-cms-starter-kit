@@ -1,13 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import ts from 'typescript'
 
-const publicRoots = [
-  'src/app/(frontend)',
-  'src/blocks',
-  'src/components',
-  'src/styles',
-] as const
+const publicRoots = ['src/app/(frontend)', 'src/blocks', 'src/components', 'src/styles'] as const
 
 const sourceExtensions = new Set(['.css', '.ts', '.tsx'])
 
@@ -18,7 +14,9 @@ const walk = (root: string): string[] => {
     const absolutePath = path.join(root, entry.name)
     const relativePath = path.relative(process.cwd(), absolutePath)
 
+    // The isolated Neutral workshop has its own upstream radius contract.
     if (relativePath.startsWith('src/components/admin/')) return []
+    if (relativePath.startsWith('src/components/revamp/')) return []
     if (entry.isDirectory()) return walk(absolutePath)
 
     return sourceExtensions.has(path.extname(entry.name)) ? [absolutePath] : []
@@ -32,6 +30,43 @@ const bannedPatterns = [
 ] as const
 
 describe('semantic radius contract', () => {
+  it('keeps the isolated workshop outside public imports until theme integration is reviewed', () => {
+    const imports: string[] = []
+    for (const root of publicRoots) {
+      for (const file of walk(path.resolve(process.cwd(), root))) {
+        if (!['.ts', '.tsx'].includes(path.extname(file))) continue
+        const parsed = ts.createSourceFile(
+          file,
+          fs.readFileSync(file, 'utf8'),
+          ts.ScriptTarget.Latest,
+          true,
+        )
+        const inspect = (node: ts.Node) => {
+          let specifier: ts.Node | undefined
+          if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
+            specifier = node.moduleSpecifier
+          } else if (
+            ts.isCallExpression(node) &&
+            (node.expression.kind === ts.SyntaxKind.ImportKeyword ||
+              (ts.isIdentifier(node.expression) && node.expression.text === 'require'))
+          ) {
+            specifier = node.arguments[0]
+          }
+          if (
+            specifier &&
+            ts.isStringLiteral(specifier) &&
+            /(^|\/)revamp(\/|$)/.test(specifier.text)
+          ) {
+            imports.push(`${path.relative(process.cwd(), file)}: ${specifier.text}`)
+          }
+          ts.forEachChild(node, inspect)
+        }
+        inspect(parsed)
+      }
+    }
+    expect(imports).toEqual([])
+  })
+
   it('uses semantic radius roles throughout the public frontend', () => {
     const violations = publicRoots.flatMap((root) =>
       walk(path.resolve(process.cwd(), root)).flatMap((absolutePath) => {
@@ -41,9 +76,7 @@ describe('semantic radius contract', () => {
         return bannedPatterns.flatMap((pattern) => {
           pattern.lastIndex = 0
 
-          return [...source.matchAll(pattern)].map(
-            (match) => `${relativePath}: ${match[0]}`,
-          )
+          return [...source.matchAll(pattern)].map((match) => `${relativePath}: ${match[0]}`)
         })
       }),
     )
