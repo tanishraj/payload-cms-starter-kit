@@ -145,13 +145,32 @@ export const normalizeFormFieldName = (value: string): string => {
   return value.trim()
 }
 
+const checkboxValues = new Set<unknown>([
+  true,
+  false,
+  'true',
+  'false',
+  'on',
+  'off',
+  '1',
+  '0',
+  '',
+  1,
+  0,
+])
+
+const reservedFormFieldNames = new Set(['constructor', 'prototype', FORM_HONEYPOT_FIELD_NAME])
+
 export const isValidFormFieldName = (value: string): boolean => {
-  return /^[A-Za-z][A-Za-z0-9_]*$/.test(value)
+  return /^[A-Za-z][A-Za-z0-9_]*$/.test(value) && !reservedFormFieldNames.has(value)
 }
 
 export const validateFormFieldDefinitions = (value: unknown): true | string => {
   if (!Array.isArray(value) || value.length === 0) {
     return 'Add at least one field.'
+  }
+  if (value.length > FORM_MAX_FIELDS) {
+    return `Add no more than ${FORM_MAX_FIELDS} fields.`
   }
 
   const seen = new Set<string>()
@@ -169,7 +188,11 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
     }
 
     if (!isValidFormFieldName(name)) {
-      return 'Field names must start with a letter and use only letters, numbers, and underscores.'
+      return 'Field names must start with a letter and use only letters, numbers, and underscores. The names constructor, prototype, and website are reserved.'
+    }
+
+    if (!formFieldTypeOptions.some((option) => option.value === field.type)) {
+      return `Field "${name}" has an unsupported control type.`
     }
 
     if (seen.has(name)) {
@@ -222,7 +245,7 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
   return true
 }
 
-const reviewSubmissionProvidedFieldNames = new Set([
+export const REVIEW_SUBMISSION_FIELD_NAMES = [
   'isGenuineExperience',
   'rating',
   'reviewBody',
@@ -230,7 +253,9 @@ const reviewSubmissionProvidedFieldNames = new Set([
   'reviewerName',
   'reviewTitle',
   'subjectLabel',
-])
+] as const
+
+const reviewSubmissionProvidedFieldNames = new Set<string>(REVIEW_SUBMISSION_FIELD_NAMES)
 
 export const validateFormFieldDefinitionsForIntent = ({
   fields,
@@ -298,13 +323,18 @@ const formatCharacterLimit = (value: number): string => {
 }
 
 export const isFormSubmissionValues = (value: unknown): value is FormSubmissionValues => {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false
+  const prototype = Object.getPrototypeOf(value)
+  return prototype === Object.prototype || prototype === null
 }
 
 export const validateFormSubmission = ({
+  additionalFieldNames = [],
   fields,
   values,
 }: {
+  // Only the fixed review engine supplies additional names; it validates their values.
+  additionalFieldNames?: readonly string[]
   fields: SimpleFormField[]
   values: unknown
 }): {
@@ -323,7 +353,8 @@ export const validateFormSubmission = ({
     }
   }
 
-  if (Object.keys(values).length > FORM_MAX_FIELDS) {
+  const submittedNames = Object.keys(values).filter((name) => name !== FORM_HONEYPOT_FIELD_NAME)
+  if (submittedNames.length > FORM_MAX_FIELDS) {
     return {
       errors: {
         values: `Submit no more than ${FORM_MAX_FIELDS} fields.`,
@@ -332,10 +363,26 @@ export const validateFormSubmission = ({
     }
   }
 
+  const allowedNames = new Set([...fields.map((field) => field.name), ...additionalFieldNames])
+  if (submittedNames.some((name) => !allowedNames.has(name))) {
+    errors.values = 'Submitted values include fields that are not in this form.'
+  }
+  if (
+    Object.hasOwn(values, FORM_HONEYPOT_FIELD_NAME) &&
+    typeof values[FORM_HONEYPOT_FIELD_NAME] !== 'string'
+  ) {
+    errors.values = 'Submitted values contain an invalid field.'
+  }
+
   for (const field of fields) {
-    const rawValue = values[field.name]
+    const rawValue = Object.hasOwn(values, field.name) ? values[field.name] : undefined
 
     if (field.type === 'checkbox') {
+      // Keep finite legacy HTML checkbox encodings; reject arbitrary coercion.
+      if (rawValue !== undefined && !checkboxValues.has(rawValue)) {
+        errors[field.name] = `${field.label} must be a checkbox value.`
+        continue
+      }
       const normalizedValue = normalizeCheckboxValue(rawValue)
       normalizedData[field.name] = normalizedValue
 
@@ -346,6 +393,10 @@ export const validateFormSubmission = ({
       continue
     }
 
+    if (rawValue !== undefined && typeof rawValue !== 'string') {
+      errors[field.name] = `${field.label} must contain text.`
+      continue
+    }
     const normalizedValue = normalizeTextValue(rawValue)
     normalizedData[field.name] = normalizedValue
 

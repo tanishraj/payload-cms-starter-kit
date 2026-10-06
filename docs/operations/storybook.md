@@ -10,6 +10,44 @@ The catalogue starts with a freshly installed `@shadcn/button` in `src/component
 
 `components.json` now directs UI installation to `src/components/revamp/ui`, other components to `src/components/revamp`, and CSS changes to `.storybook/preview.css`. Review CLI dry runs before installing. Do not overwrite legacy files or copy their custom styling into the new catalogue.
 
+## Generic form workshop
+
+Open [Blocks / Generic Form](http://localhost:6006/?path=/story/blocks-generic-form--default)
+or its Docs page. `src/components/revamp/generic-form.tsx` adapts authenticated
+`@shadcnblocks/form-form-patterns-4` and the binary control composition from
+`@shadcnblocks/checkbox-checkbox-standard-1`, retrieved 6 October 2026. Fresh
+Radix Luma Field, Input, Select, Textarea, Checkbox, Label and Separator dependencies
+retain upstream styling. The original max-w-md vertical layout, typography and
+full-width button are preserved; there is no invented visual variant. The form's
+upstream `bg-background` input treatment is intentionally retained.
+
+Each installed form primitive also has its own Docs and Default playground under Components / Forms, with labelled supported props and meaningful alternate states. Checkbox and Select update their controls during interaction.
+
+The Questions control accepts the six currently supported Payload types: Text,
+Email, Phone, Textarea, Select and Checkbox. Edit machine names, labels, options,
+placeholders, required state and contact roles. Other controls configure heading,
+description, submit/pending labels and disabled state. The theme and viewport
+toolbars cover supported appearance and responsive shape. Changing the schema
+resets the demonstration so removed answers cannot carry into another form.
+
+Default, Text Only, Disabled, Unavailable, Long Labels and Two Forms exercise
+configuration and composition. Validation Errors, Successful Submission, Pending,
+Network Failure and Server Field Error run interactions. The examples use synthetic
+answers and local callbacks only; they do not contact the submission API or save
+records. The production-ready presentation takes a typed asynchronous `onSubmit`
+callback, keeping transport and CMS loading outside the workshop.
+
+Client validation shares `validateFormSubmission` with server intake. Errors link
+to controls; validation and server field rejection focus the first invalid control.
+Pending disables controls and blocks repeated submission events. A successful
+confirmation replaces the controls and receives focus. An unconfirmed network
+result preserves answers and allows deliberate retry; it does not claim the
+server failed to store the request. Durable server deduplication is still future work.
+
+This increment does **not** register a public Payload block or import the workshop
+into the site's existing theme. Native form authoring/public rendering/Live Preview
+acceptance and the public theme/radius contract remain the next integration step.
+
 ## Workflow
 
 1. Select a block from Shadcnblocks and fetch original source through its authenticated registry. Install needed fresh shadcn components first.

@@ -25,6 +25,7 @@ import {
   isFormSubmissionValues,
   isReviewFormSubmissionIntent,
   normalizeFormSubmissionIntent,
+  REVIEW_SUBMISSION_FIELD_NAMES,
   validateFormSubmissionMetadata,
   validateFormSubmission,
   type FormSubmissionValues,
@@ -159,6 +160,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
       )
     : formFields
   const { errors, normalizedData } = validateFormSubmission({
+    additionalFieldNames: isReviewSubmission ? REVIEW_SUBMISSION_FIELD_NAMES : [],
     fields: validationFields,
     values: submissionValues,
   })

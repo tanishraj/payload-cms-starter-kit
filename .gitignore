@@ -63,3 +63,6 @@ node_modules/
 
 # Storybook build output
 /storybook-static/
+
+# Storybook local diagnostics
+/debug-storybook.log
