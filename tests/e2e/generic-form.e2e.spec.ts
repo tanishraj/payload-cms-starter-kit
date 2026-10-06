@@ -2,20 +2,54 @@ import { expect, test, type Locator, type Page } from '@playwright/test'
 import { seedTestUser, testUser } from '../helpers/seedUser'
 import { login } from '../helpers/login'
 
-/** Payload adds blank rows first, then supplies their metadata through a debounced server action. */
-async function addNativeRow(page: Page, button: Locator, fieldPath: string) {
+/** Await the editor's own debounced server-state response rather than a fixed delay. */
+async function editNativeForm(
+  page: Page,
+  change: () => Promise<unknown>,
+  fieldPath: string,
+  value?: string | boolean,
+) {
   const route = new URL(page.url()).pathname
-  const metadata = page.waitForResponse(async (response) => {
+  const response = page.waitForResponse(async (response) => {
+    const request = response.request()
     if (
       new URL(response.url()).pathname !== route ||
-      response.request().method() !== 'POST' ||
-      !response.request().headers()['next-action']
+      request.method() !== 'POST' ||
+      !request.headers()['next-action']
     )
       return false
+    if (value !== undefined) {
+      const body = (request.postData() ?? '').replace(/\\+"/g, '"')
+      if (!body.includes(fieldPath) || !body.includes(`"value":${JSON.stringify(value)}`))
+        return false
+    }
     return (await response.text()).includes(fieldPath)
   })
-  await button.click()
-  expect((await metadata).ok()).toBe(true)
+  const [result] = await Promise.all([response, change()])
+  expect(result.ok()).toBe(true)
+}
+
+async function addNativeRow(page: Page, button: Locator, fieldPath: string) {
+  await editNativeForm(page, () => button.click(), fieldPath)
+}
+
+async function fillNativeField(page: Page, fieldPath: string, value: string) {
+  const field = page.locator(`#field-${fieldPath.replaceAll('.', '__')}`)
+  await editNativeForm(page, () => field.fill(value), fieldPath, value)
+  await expect(field).toHaveValue(value)
+}
+
+async function chooseNativeType(page: Page, index: number, label: 'Select' | 'Checkbox') {
+  const fieldPath = `fields.${index}.type`
+  const field = page.locator(`#field-fields__${index}__type`)
+  await field.getByRole('combobox').click()
+  await editNativeForm(
+    page,
+    () => page.getByRole('option', { name: label, exact: true }).click(),
+    fieldPath,
+    label.toLowerCase(),
+  )
+  await expect(field.getByText(label, { exact: true })).toBeVisible()
 }
 
 test('native custom form authoring, publication, public submission and safe preview', async ({
@@ -28,32 +62,33 @@ test('native custom form authoring, publication, public submission and safe prev
   await login({ page, user: testUser })
   await page.goto('/admin/collections/forms/create')
   await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
-  await page.locator('#field-title').fill('Generic enquiry acceptance')
+  await fillNativeField(page, 'title', 'Generic enquiry acceptance')
   const addField = page.getByRole('button', { name: 'Add Field', exact: true })
   await addNativeRow(page, addField, 'fields.0.name')
-  await page.locator('#field-fields__0__name').fill('visitor_name')
-  await page.locator('#field-fields__0__label').fill('Your name')
+  await fillNativeField(page, 'fields.0.name', 'visitor_name')
+  await fillNativeField(page, 'fields.0.label', 'Your name')
   await addNativeRow(page, addField, 'fields.1.name')
-  await page.locator('#field-fields__1__name').fill('preferred_department')
-  await page.locator('#field-fields__1__label').fill('Which department can help?')
-  await page.locator('#field-fields__1__type').getByRole('combobox').click()
-  await page.getByRole('option', { name: 'Select', exact: true }).click()
-  await expect(
-    page.locator('#field-fields__1__type').getByText('Select', { exact: true }),
-  ).toBeVisible()
+  await chooseNativeType(page, 1, 'Select')
+  await fillNativeField(page, 'fields.1.name', 'preferred_department')
+  await fillNativeField(page, 'fields.1.label', 'Which department can help?')
   await addNativeRow(
     page,
     page.getByRole('button', { name: 'Add Option', exact: true }),
     'fields.1.options.0.label',
   )
-  await page.locator('#field-fields__1__options__0__label').fill('Admissions')
-  await page.locator('#field-fields__1__options__0__value').fill('admissions')
-  await page.locator('input[name="fields.1.required"]').check()
+  await fillNativeField(page, 'fields.1.options.0.label', 'Admissions')
+  await fillNativeField(page, 'fields.1.options.0.value', 'admissions')
+  await editNativeForm(
+    page,
+    () => page.locator('input[name="fields.1.required"]').check(),
+    'fields.1.required',
+    true,
+  )
   await addNativeRow(page, addField, 'fields.2.name')
-  await page.locator('#field-fields__2__name').fill('contact_permission')
-  await page.locator('#field-fields__2__label').fill('You may contact me')
-  await page.locator('#field-fields__2__type').getByRole('combobox').click()
-  await page.getByRole('option', { name: 'Checkbox', exact: true }).click()
+  await chooseNativeType(page, 2, 'Checkbox')
+  await fillNativeField(page, 'fields.2.name', 'contact_permission')
+  await fillNativeField(page, 'fields.2.label', 'You may contact me')
+
   const formResponsePromise = page.waitForResponse(
     (r) => new URL(r.url()).pathname === '/api/forms' && r.request().method() === 'POST',
   )
@@ -86,7 +121,7 @@ test('native custom form authoring, publication, public submission and safe prev
       'layout.0.heading',
     )
     await page.getByRole('button', { name: 'Show All', exact: true }).click()
-    await page.locator('#field-layout__0__heading').fill('Ask our team')
+    await fillNativeField(page, 'layout.0.heading', 'Ask our team')
     await page.locator('#field-layout__0__form').getByRole('combobox').click()
     await page.getByRole('option', { name: 'Generic enquiry acceptance', exact: true }).click()
     const publishPromise = page.waitForResponse(
