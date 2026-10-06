@@ -60,8 +60,9 @@ async function expandContentGrants(page: Page): Promise<void> {
   })
   await expect(group).toHaveCount(1)
   const pagesGrant = group.locator('input[name="features.pages"]')
-  if (!(await pagesGrant.isVisible())) {
-    await group.locator('button.collapsible__toggle').click()
+  const toggle = group.locator('button.collapsible__toggle')
+  if ((await toggle.getAttribute('class'))?.includes('collapsible__toggle--collapsed')) {
+    await toggle.click()
   }
   await expect(pagesGrant).toBeVisible()
   await expect(pagesGrant).toBeEnabled()

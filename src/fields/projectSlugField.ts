@@ -85,6 +85,15 @@ export const projectSlugField = (args: ProjectSlugFieldArgs = {}): RowField => {
 
       slug.hooks = {
         ...slug.hooks,
+        beforeValidate: [
+          ...(slug.hooks?.beforeValidate ?? []),
+          // Payload 3.90 generates on beforeChange, after required-field validation.
+          // Supply the initial title-derived value first; retain upstream update policy.
+          ({ data, operation, value }) =>
+            operation === 'create' && !value
+              ? normalizeProjectSlug(data?.[rest.fieldToUse || rest.useAsSlug || 'title'])
+              : value,
+        ],
         beforeDuplicate: [createDuplicateSlug],
       }
 

@@ -387,6 +387,11 @@ export async function seedGovernanceBase(): Promise<GovernanceFixture> {
     import('../../src/payload.config.js'),
   ])
   const payload = await getPayload({ config })
+  // Build collection/version indexes before fixture writes start transactions.
+  await Promise.all([
+    ...Object.values(payload.db.collections).map((model) => model.init()),
+    ...Object.values(payload.db.versions).map((model) => model.init()),
+  ])
 
   await cleanupGovernanceFixturesWithPayload(payload)
 
