@@ -3,10 +3,13 @@ import { withThemeByClassName } from '@storybook/addon-themes'
 import { INITIAL_VIEWPORTS } from 'storybook/viewport'
 
 import './preview.css'
+import './network'
+import { withWebsiteBlockStyles } from './WebsiteBlockDecorator'
 
 const preview: Preview = {
   tags: ['autodocs'],
   decorators: [
+    withWebsiteBlockStyles,
     withThemeByClassName({ themes: { light: '', dark: 'dark' }, defaultTheme: 'light' }),
   ],
   parameters: {

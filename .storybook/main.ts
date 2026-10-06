@@ -2,7 +2,10 @@ import { fileURLToPath } from 'node:url'
 import type { StorybookConfig } from '@storybook/nextjs-vite'
 
 const config: StorybookConfig = {
-  stories: ['../src/stories/revamp/**/*.stories.@(ts|tsx)'],
+  stories: [
+    '../src/stories/revamp/**/*.stories.@(ts|tsx)',
+    '../src/stories/blocks/**/*.stories.@(ts|tsx)',
+  ],
   staticDirs: ['../public'],
   addons: ['@storybook/addon-docs', '@storybook/addon-themes', '@storybook/addon-a11y'],
   framework: {

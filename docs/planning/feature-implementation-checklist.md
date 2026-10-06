@@ -1427,7 +1427,7 @@ exclusions and complete source traceability are in the local scope reference.
   disabled/error/long-content states.
 
   Work: Assess · Priority: Backlog · Baseline: Partial.
-  Initial finding: Storybook exists; new revamp story path currently includes Button. Coverage of all production controls/blocks remains to assess.
+  Increment: All 67 current blocks now have one canonical Storybook entry, Docs and editable Default samples using production components/shared fixtures. Supported padding and long-copy states are included where relevant. Full component/control edge-state acceptance remains open.
   Evidence: [src/stories/revamp/Button.stories.tsx](../../src/stories/revamp/Button.stories.tsx), [docs/operations/storybook.md](../../docs/operations/storybook.md).
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
@@ -1436,7 +1436,7 @@ exclusions and complete source traceability are in the local scope reference.
   for controlled inputs, callback spies and labelled complex fixtures.
 
   Work: Assess · Priority: Backlog · Baseline: Partial.
-  Initial finding: Typed Button playground exists; complete props/state control coverage across the eventual catalogue.
+  Increment: Existing block stories use typed production props and labelled sample controls; Generic Form retains its richer schema/interaction playground. Complete control/edge-state coverage across the eventual catalogue remains open.
   Evidence: [src/stories/revamp/Button.stories.tsx](../../src/stories/revamp/Button.stories.tsx).
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
@@ -1916,6 +1916,8 @@ feature boxes synchronized; record blockers with a concrete next action.
 
 | 2026-10-06 | DF-03/04/09; FORM-02/06; SUBMIT-03/07 | Merged; broader acceptance pending | Codex | Authenticated upstream generic form presentation with six controls/custom names, supported Storybook controls/states, shared strict-value rejection and legacy compatibility. No public block or new environment settings. | [PR #16](https://github.com/tanishraj/payload-cms-starter-kit/pull/16) (presentation commit `93597d2`) | 87 focused form/intake/context tests pass; TypeScript, changed-file lint, generated types and Storybook build pass. Desktop/mobile light/dark and failure/pending/success checks completed; independent UX disposition ship with no material fixes. Scoped design/context documentation recorded. GitHub Quality passed, including both governance journeys and the production build; merged into develop. |
 | 2026-10-06 | DF-03/09; FORM-02; ADMINUX authoring | Merged into develop | Codex | Native Generic Form block, published-only minimal client projection, arbitrary supported custom questions, disabled preview, recoverable transport, open native field/option rows, shared theme. User confirmed reusable Form relationships and rejected a form-specific stylesheet. One Storybook catalogue entry contains interactive and CMS states. Contact6 source retrieved for the next layout feature. | [PR #17](https://github.com/tanishraj/payload-cms-starter-kit/pull/17) (`816ca33f`) | [GitHub Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/37466757847) passes: 2,332 integration tests, one Docker-dependent test skipped, both governance journeys, native form journey and production build. TypeScript, full lint, dependency audit and generated-artifact checks pass. Local Storybook build/catalogue and context checks pass; shared-theme picker thumbnail regenerated and inspected. The native journey awaits Payload row metadata, field-value responses and form readiness. Merged into develop; next branch `feat/contact6-dynamic-form`. No new environment variables/dependencies or data migration. |
+
+| 2026-10-06 | DEV-01/02/03/04/06 | Verified locally; CI pending | Codex | User requested all current blocks in Storybook. Add one canonical entry for each of 67 blocks, reuse production presentations and thumbnail samples, retain Generic Form states, conditionally use existing website CSS and reject CMS API fetches. Contact6 implementation is deferred until this catalogue increment finishes. | `feat/storybook-block-catalogue` | TypeScript, changed-file lint and Storybook build pass; 25 catalogue/fixture/theme checks pass. Live catalogue has 67 blocks and 143 stories; all 67 Default stories render in the browser. Docs controls, website-to-Neutral theme cleanup, dark disabled Generic Form preview and a 390px dark Hero Banner are verified. Final context checks pass; 40 focused catalogue/fixture/theme/context checks pass after inventory refresh. No schema, environment, dependency or data changes. |
 
 ## Completion record template
 

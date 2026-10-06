@@ -57,6 +57,7 @@ const meta = {
   component: GenericForm,
   tags: ['autodocs'],
   parameters: {
+    blockSlug: 'genericForm',
     layout: 'padded',
     docs: {
       description: {
@@ -207,7 +208,6 @@ export const ServerFieldError: Story = {
     await expect(canvas.getByText('Please use a different email address.')).toBeVisible()
   },
 }
-
 
 // Native adapter states stay beside the shared form rather than duplicating the block catalogue.
 export const CMSPreview: Story = {
