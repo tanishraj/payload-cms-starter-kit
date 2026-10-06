@@ -26,6 +26,30 @@ The starter combines a broad, curated block library with structured Payload coll
 themes, editorial governance, live preview, and one-client deployment boundaries. It is a controlled
 institutional publishing system rather than a tenant-switching SaaS page builder.
 
+## Current Enhancement Direction — 6 October 2026
+
+This repository is the implementation home for the carried-forward Forma website
+capabilities. Editors continue using Payload's native administration, block editing
+and Live Preview. The first selected enhancement is dynamic forms and generic
+submissions with configurable labels/names, extensible controls and readable
+revision-aware historical answers. Section-scoped Site Manager access is a retained
+target beyond current feature-wide grants. Existing submitted-review moderation
+remains distinct from ordinary scoped page publication.
+
+The [implementation checklist](docs/planning/feature-implementation-checklist.md)
+tracks the 206 original feature groups and 36 added onboarding/admin UX groups,
+recommendations and verification; the accompanying
+scope reference preserves the full historical inventory. Current source and the
+supported MongoDB runtime remain the implementation baseline. Target requirements
+in that checklist are not claims that functionality is already shipped.
+
+The [admin onboarding and UX plan](docs/planning/admin-onboarding-ux.md) targets
+a working admin/preview path for developers and a real first draft for editors.
+Reuse the current dashboard, page recipes and native editing. Optional guidance
+is skippable, resumable and replayable. Distinguish ready-to-build prerequisites
+from production launch work; Managers receive access-aware tasks. These are target
+requirements pending implementation and usability evidence.
+
 ## Operating Context
 
 Editors compose Pages from approved blocks and manage News & Events through centrally owned
@@ -76,6 +100,9 @@ design work must not fabricate those forms of evidence.
 - Preserve one source of truth for collection-owned records.
 - Make theme, accessibility, preview, and responsive behavior part of every block contract.
 - Prefer calm, durable interaction over decorative novelty.
+- Make the first useful draft easy to reach; teach unfamiliar tasks in context.
+- Show truthful access, save, preview and publication states with clear recovery.
+- Keep developer setup reproducible and production readiness separate from optional learning.
 
 ## Accessibility & Inclusion
 

@@ -4,6 +4,33 @@ Use `.agents/skills/project-context/SKILL.md` for every implementation, review, 
 
 For Payload CMS work, also use `.agents/skills/payload/SKILL.md` and load only the relevant file from `.agents/skills/payload/reference/`.
 
+## Current enhancement scope and tracking
+
+The user moved implementation from Forma to this repository on October 6, 2026.
+Read `docs/planning/feature-implementation-checklist.md` for the current priorities,
+acceptance checklist and work log; `feature-scope-reference.md` beside it preserves
+all carried-forward requirements and deferrals. Use Payload's native editing and
+Live Preview; do not implement a separate visual editor. Dynamic forms and generic
+submissions are the first selected enhancement. Preserve and verify existing
+functionality before replacing it. Update affected checklist entries with actual
+source/test evidence and commit/PR status in each implementation. Native feature
+presence alone is not completion of the broader requirement.
+
+Read `docs/planning/admin-onboarding-ux.md` for developer/Admin/Site Manager
+journeys and ONBOARD/ADMINUX acceptance. Apply contextual help, honest empty/error
+and save/publication states, accessibility and recovery to relevant feature work.
+Keep onboarding skippable/resumable and reuse the existing dashboard/page recipes;
+never treat onboarding state as access authority or automatically publish examples.
+Distinguish local build readiness from production launch requirements. UX plans
+require implementation and real task evidence before their boxes are checked.
+
+Keep this starter's MongoDB/provider/runtime baseline unless a later explicit
+decision changes it. Every introduced environment variable belongs in `.env.example`
+with its purpose and production requirement; never overwrite existing local secret
+files or expose values. Existing UI sourcing and Storybook-first rules below apply
+to new/replacement presentations; historical Forma package paths do not override
+this repository's conventions.
+
 ## UI source requirements
 
 Use `.agents/skills/shadcn/SKILL.md` for UI work. Source blocks directly from Shadcnblocks and components directly from shadcn/ui or Shadcnblocks through their verified registries and CLI/MCP tools. Preserve the selected upstream design, styling, structure, and interactions; do not recreate approximate versions or introduce custom visual alternatives.
