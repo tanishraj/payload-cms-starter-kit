@@ -28,6 +28,7 @@ const eslintConfig = [
       '.agents/**',
       '.claude/**',
       '.next/',
+      'storybook-static/**',
       '.superpowers/**',
       '.understand-anything/**',
       'src/payload-types.ts',

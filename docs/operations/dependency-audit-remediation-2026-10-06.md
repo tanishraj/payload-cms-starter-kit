@@ -72,6 +72,14 @@ Frozen installation, both Payload generators, TypeScript, 46 dependency/version
 policy tests and project-context checks pass on Node 22.13.1. The full integration
 suite initially found 2,266 passing tests, one skipped test and one existing
 Storybook/public-radius boundary failure. Full lint found only generated
-`storybook-static` bundle violations. These existing workshop-boundary issues are
-being fixed in a separate focused commit before publication. The audit still fails
+`storybook-static` bundle violations. Those workshop-boundary issues were fixed in a separate focused commit: generated
+Storybook output is excluded from lint, and public import enforcement protects
+the isolated workshop while the public radius contract remains active. The audit still fails
 on the sole Braces high advisory; no exception is active.
+
+Final local verification: 2,268 integration tests pass with one opt-in Docker test
+skipped; all 64 affected quality/dependency/documentation tests pass. TypeScript
+and full lint pass (one pre-existing AdminUserMenu navigation warning). Payload
+generators have no artifact drift; project context is current. GitHub CI remains
+blocked at the production audit until the Braces decision; browser/governance and
+production-build CI checks have not been claimed as passed. Review draft PR #15.

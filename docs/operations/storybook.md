@@ -26,3 +26,12 @@ Legacy setup stories remain outside the catalogue glob; they are not a dependenc
 `.storybook/main.ts` uses `@storybook/nextjs-vite` with an isolated Next configuration. It does not import Payload configuration. Storybook needs no database or CMS login. Keep credentials, real user data, database clients, and server loaders out of stories. Controls edit only sample props and never save CMS content. Dependencies remain development-only except the upstream components' runtime dependencies.
 
 The Docs addon can expose source code in a published catalogue. Review upstream licensing and public assets before external publication.
+
+## Quality boundaries
+
+The generated `storybook-static/` bundle is ignored by Git and ESLint; lint still
+covers authored stories, workshop configuration and components. The public-site
+semantic radius check excludes the isolated Neutral workshop and separately
+rejects public imports of its revamp catalogue. When integrating that catalogue,
+review/update the public theme contract and this boundary test in the same change.
+Do not silently exempt publicly rendered components.
