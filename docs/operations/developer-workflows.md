@@ -99,7 +99,10 @@ pnpm exec playwright install chromium
 its Linux dependencies and runs only `pnpm test:e2e:governance`, which contains exactly the critical
 feature-grant/revocation and submitted-Review approval journeys. The shared login helper
 uses the accessible Email/Password labels and Log in button of the two-factor-aware
-login view, rather than legacy Payload field IDs.
+login view, rather than legacy Payload field IDs. The feature-grant journey opens
+the initially collapsed Content group before editing grants and asserts the saved
+record URL independently of document load events. Persisted access and revoked
+session checks remain required.
 
 `pnpm ci:mongodb:start` and `pnpm ci:mongodb:stop` are GitHub-only controller commands, not local
 database helpers. They reject non-GitHub or mismatched run identity, validate both mutation URIs as
