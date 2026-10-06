@@ -1,6 +1,7 @@
 # Dependency audit remediation — 6 October 2026
 
-Status: patch changes prepared; merge blocked by one unpatched advisory.
+Status: patches verified locally; exact seven-day Braces exception approved by the
+user on 6 October 2026. GitHub verification remains required before merge.
 
 The Quality run for the planning merge failed before application checks at the
 production dependency audit. The separate `fix/production-dependency-audit` branch
@@ -19,11 +20,13 @@ keeps remediation out of the dynamic-form implementation commit.
   security patch preserves the existing full Payload family rather than expanding
   the task into a CMS upgrade. Other in-range Undici consumers refresh to 7.30.0.
   Remove the override when a reviewed Payload release carries the patch upstream.
-- Keep the audit evaluator and active exception document unchanged.
+- Keep the audit evaluator unchanged. Apply only the explicitly approved Braces
+  exception below, with no renewal or other advisory waiver.
 
 The current authoritative audit reports **0 critical, 1 high, 18 moderate and 5
 low**. Moderate/low entries remain visible under the existing policy. The remaining
-high finding is Braces; the gate correctly fails. This is not a successful audit.
+high finding is Braces, retained visibly and covered only by the approved bounded
+exception below. The authoritative gate passes with exactly this one exception applied.
 
 ## Remaining Braces finding and approval proposal
 
@@ -41,10 +44,9 @@ is unreachable. Crafted nested patterns may still exhaust the process stack if
 they reach this package.
 
 The existing [dependency management policy](dependency-management.md#exception-workflow)
-states: “An exception requires explicit security approval before merge.” The entry
-below is a concrete **proposal only**. It has not been added to
-`security/dependency-audit-exceptions.json` and must not be activated or merged
-without the user's explicit approval of this advisory and temporary risk.
+states: “An exception requires explicit security approval before merge.” The user explicitly approved the exact entry below and its temporary risk in the
+conversation on 6 October 2026. It is now recorded in
+`security/dependency-audit-exceptions.json`; the owner and expiry remain unchanged.
 
 ```json
 {
@@ -62,9 +64,8 @@ without the user's explicit approval of this advisory and temporary risk.
 
 Approval permits applying only this exact entry, rerunning the authoritative audit
 and CI, and merging after other checks pass. It does not waive any other advisory
-or authorize renewal. Without approval, leave both implementation and dependency
-PRs unmerged and keep the active exception document empty while awaiting a fixed
-upstream release or a separately reviewed remediation.
+or authorize renewal. The audit continues to reject expired, mismatched or unrelated
+exceptions; the owner must remove this entry when a reviewed fixed graph is available.
 
 ## Validation before the approval decision
 
@@ -74,12 +75,13 @@ suite initially found 2,266 passing tests, one skipped test and one existing
 Storybook/public-radius boundary failure. Full lint found only generated
 `storybook-static` bundle violations. Those workshop-boundary issues were fixed in a separate focused commit: generated
 Storybook output is excluded from lint, and public import enforcement protects
-the isolated workshop while the public radius contract remains active. The audit still fails
-on the sole Braces high advisory; no exception is active.
+the isolated workshop while the public radius contract remains active. At that initial checkpoint, the audit still failed on the sole Braces high advisory
+and no exception was active. The later explicit user approval is recorded above.
 
 Final local verification: 2,268 integration tests pass with one opt-in Docker test
 skipped; all 64 affected quality/dependency/documentation tests pass. TypeScript
 and full lint pass (one pre-existing AdminUserMenu navigation warning). Payload
-generators have no artifact drift; project context is current. GitHub CI remains
-blocked at the production audit until the Braces decision; browser/governance and
-production-build CI checks have not been claimed as passed. Review draft PR #15.
+generators have no artifact drift; project context is current. After the explicit
+approval, the production audit passes with only advisory 1240992 exempted. GitHub
+CI must verify the governance browser journeys and production build before merge.
+Review [PR #15](https://github.com/tanishraj/payload-cms-starter-kit/pull/15).

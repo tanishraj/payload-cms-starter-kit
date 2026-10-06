@@ -22,7 +22,9 @@ Moderate and low findings remain visible but do not fail the gate and must not b
 
 ## Exception workflow
 
-The default and current policy is no exceptions. `security/dependency-audit-exceptions.json` therefore contains an empty `exceptions` array, and the audit evaluator is unchanged. A reviewed Payload-scoped security patch is
+The default policy is no exceptions. On 6 October 2026, the user explicitly approved
+one exact Braces exception expiring 13 October; the checked-in exception document
+records it, and the audit evaluator is unchanged. A reviewed Payload-scoped security patch is
 configured in `pnpm-workspace.yaml`; it is dependency remediation, not an audit exception.
 
 An exception requires explicit security approval before merge. The approver must identify one high or critical advisory and provide all nine fields required by `security/dependency-audit-exceptions.schema.json`: `advisoryId`, `packageName`, `vulnerableRange`, `installedVersions`, `reachability`, `mitigation`, `owner`, `createdAt`, and `expiresAt`.
@@ -74,6 +76,6 @@ The SNMIH backport adds exact dependencies `otpauth@9.5.2` and `react-fast-marqu
 
 [Remediation and approval proposal](dependency-audit-remediation-2026-10-06.md)
 records the Next.js patch-family refresh, narrow transitive changes, scoped Undici
-patch and the remaining Braces finding. The active exception document is still
-empty, and the authoritative gate still fails on Braces. No exception is approved
-merely because the proposal has been written.
+patch and the remaining Braces finding. The exact Braces entry was explicitly approved by the user on 6 October and is
+active until 13 October. Any renewal or different exception requires new approval;
+the document's existence alone never supplies approval.

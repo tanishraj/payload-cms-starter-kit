@@ -1,4 +1,18 @@
 {
   "schemaVersion": 1,
-  "exceptions": []
+  "exceptions": [
+    {
+      "advisoryId": 1240992,
+      "packageName": "braces",
+      "vulnerableRange": "<=3.0.3",
+      "installedVersions": [
+        "3.0.3"
+      ],
+      "reachability": "Current production paths are Sass/Chokidar filesystem tooling and Payload cloud-storage module discovery via find-node-modules/findup-sync/micromatch. The inspected discovery pattern defaults to the literal node_modules; no direct application use accepting visitor-provided brace patterns was found. This review does not prove all transitive paths unreachable.",
+      "mitigation": "Keep build/watch/module-discovery patterns controlled by trusted code and operators; do not route visitor input into glob patterns. Check for a fixed Braces or parent release, remove this exception immediately when a reviewed fixed graph is available, and let the gate fail at expiry if unresolved. Accept the remaining stack-exhaustion risk for at most seven days.",
+      "owner": "Repository maintainer (tanishraj)",
+      "createdAt": "2026-10-06",
+      "expiresAt": "2026-10-13"
+    }
+  ]
 }
