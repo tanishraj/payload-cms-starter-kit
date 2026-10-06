@@ -54,7 +54,7 @@ async function chooseNativeType(page: Page, index: number, label: 'Select' | 'Ch
 
 for (const block of [
   { slug: 'genericForm', picker: /Generic Form custom questions preview Generic Form/ },
-  { slug: 'contact6', picker: /Contact6 reusable questions and contact cards preview Contact6/ },
+  { slug: 'contact6', picker: /Contact cards and reusable questions preview Contact Cards & Form/ },
 ]) {
   test(
     block.slug + ': native custom form authoring, publication, public submission and safe preview',

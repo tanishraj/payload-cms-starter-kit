@@ -19,7 +19,7 @@ const detailRows = (name: string, label: string): ArrayField => ({
 export const Contact6Block: Block = {
   slug: 'contact6',
   interfaceName: 'Contact6Block',
-  labels: { singular: 'Contact6', plural: 'Contact6' },
+  labels: { singular: 'Contact Cards & Form', plural: 'Contact Cards & Forms' },
   admin: getBlockThumbnailAdmin('contact6'),
   fields: [
     {

@@ -39,7 +39,7 @@ function Contact6StoryPresentation(args: StoryArgs) {
 }
 
 const meta = {
-  title: 'Blocks/Contact6',
+  title: 'Blocks/Contact Cards & Form',
   component: Contact6StoryPresentation,
   tags: ['autodocs'],
 
