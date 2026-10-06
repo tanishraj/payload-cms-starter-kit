@@ -1,6 +1,22 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Locator, type Page } from '@playwright/test'
 import { seedTestUser, testUser } from '../helpers/seedUser'
 import { login } from '../helpers/login'
+
+/** Payload adds blank rows first, then supplies their metadata through a debounced server action. */
+async function addNativeRow(page: Page, button: Locator, fieldPath: string) {
+  const route = new URL(page.url()).pathname
+  const metadata = page.waitForResponse(async (response) => {
+    if (
+      new URL(response.url()).pathname !== route ||
+      response.request().method() !== 'POST' ||
+      !response.request().headers()['next-action']
+    )
+      return false
+    return (await response.text()).includes(fieldPath)
+  })
+  await button.click()
+  expect((await metadata).ok()).toBe(true)
+}
 
 test('native custom form authoring, publication, public submission and safe preview', async ({
   page,
@@ -11,21 +27,29 @@ test('native custom form authoring, publication, public submission and safe prev
   await seedTestUser()
   await login({ page, user: testUser })
   await page.goto('/admin/collections/forms/create')
+  await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
   await page.locator('#field-title').fill('Generic enquiry acceptance')
   const addField = page.getByRole('button', { name: 'Add Field', exact: true })
-  await addField.click()
+  await addNativeRow(page, addField, 'fields.0.name')
   await page.locator('#field-fields__0__name').fill('visitor_name')
   await page.locator('#field-fields__0__label').fill('Your name')
-  await addField.click()
+  await addNativeRow(page, addField, 'fields.1.name')
   await page.locator('#field-fields__1__name').fill('preferred_department')
   await page.locator('#field-fields__1__label').fill('Which department can help?')
   await page.locator('#field-fields__1__type').getByRole('combobox').click()
   await page.getByRole('option', { name: 'Select', exact: true }).click()
-  await page.getByRole('button', { name: 'Add Option', exact: true }).click()
+  await expect(
+    page.locator('#field-fields__1__type').getByText('Select', { exact: true }),
+  ).toBeVisible()
+  await addNativeRow(
+    page,
+    page.getByRole('button', { name: 'Add Option', exact: true }),
+    'fields.1.options.0.label',
+  )
   await page.locator('#field-fields__1__options__0__label').fill('Admissions')
   await page.locator('#field-fields__1__options__0__value').fill('admissions')
   await page.locator('input[name="fields.1.required"]').check()
-  await addField.click()
+  await addNativeRow(page, addField, 'fields.2.name')
   await page.locator('#field-fields__2__name').fill('contact_permission')
   await page.locator('#field-fields__2__label').fill('You may contact me')
   await page.locator('#field-fields__2__type').getByRole('combobox').click()
@@ -51,13 +75,16 @@ test('native custom form authoring, publication, public submission and safe prev
   const { doc: document } = await pageResponse.json()
   try {
     await page.goto(`/admin/collections/pages/${document.id}`)
+    await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
     await page
       .getByRole('button', { name: /Add (Layout|Block)/ })
       .first()
       .click()
-    await page
-      .getByRole('button', { name: /Generic Form custom questions preview Generic Form/ })
-      .click()
+    await addNativeRow(
+      page,
+      page.getByRole('button', { name: /Generic Form custom questions preview Generic Form/ }),
+      'layout.0.heading',
+    )
     await page.getByRole('button', { name: 'Show All', exact: true }).click()
     await page.locator('#field-layout__0__heading').fill('Ask our team')
     await page.locator('#field-layout__0__form').getByRole('combobox').click()
