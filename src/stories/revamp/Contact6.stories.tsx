@@ -21,7 +21,7 @@ function Contact6StoryPresentation(args: StoryArgs) {
       {...args}
       contactInfo={args.contactInfo?.map(({ icon, ...info }) => ({
         ...info,
-        icon: { email: Mail, chat: MessagesSquare, phone: Phone, location: MapPin }[icon],
+        icon: { email: Mail, chat: MessagesSquare, phone: Phone, location: MapPin }[icon] ?? Mail,
       }))}
       form={
         args.unavailable

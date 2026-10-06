@@ -152,7 +152,7 @@ describe('system page block schemas', () => {
     expect(reusableSectionSlugs.slice().sort()).toEqual(
       pageSlugs.filter((slug) => slug !== 'reusableSection').sort(),
     )
-    expect(reusableSectionSlugs).toHaveLength(59)
+    expect(reusableSectionSlugs).toHaveLength(60)
     expect(pageSlugs).toContain('pgFeeStructure')
     expect(reusableSectionSlugs).toContain('pgFeeStructure')
     expect(pageSlugs).toContain('bankDetails')
