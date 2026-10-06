@@ -15,9 +15,9 @@ export interface LoginOptions {
 export async function login({ page, user }: LoginOptions): Promise<void> {
   await page.goto('/admin/login')
 
-  await page.fill('#field-email', user.email)
-  await page.fill('#field-password', user.password)
-  await page.click('button[type="submit"]')
+  await page.getByLabel('Email', { exact: true }).fill(user.email)
+  await page.getByLabel('Password', { exact: true }).fill(user.password)
+  await page.getByRole('button', { name: 'Log in', exact: true }).click()
 
   await page.waitForURL('/admin')
 
