@@ -19,6 +19,13 @@ const defineThumbnail = <const Definition extends BlockThumbnailDefinitionInput>
 
 export const blockThumbnailDefinitions = [
   defineThumbnail({
+    alt: 'Contact6 reusable questions and contact cards preview',
+    filename: 'contact6.jpg',
+    label: 'Contact6',
+    slug: 'contact6',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Generic Form custom questions preview',
     filename: 'generic-form.jpg',
     label: 'Generic Form',

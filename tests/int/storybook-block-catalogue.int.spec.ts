@@ -11,6 +11,7 @@ const storyPaths = [
     .filter((file) => file.endsWith('.stories.tsx'))
     .map((file) => path.join('src/stories/blocks', file)),
   'src/stories/revamp/GenericForm.stories.tsx',
+  'src/stories/revamp/Contact6.stories.tsx',
 ]
 const stories = storyPaths.map((file) => ({ file, source: fs.readFileSync(file, 'utf8') }))
 

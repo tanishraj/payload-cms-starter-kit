@@ -139,7 +139,7 @@ describe('system page block schemas', () => {
     const pageSlugs = collectBlockSlugs(Pages.fields)
     const reusableSectionSlugs = collectBlockSlugs(ReusableSections.fields)
 
-    expect(pageSlugs).toHaveLength(60)
+    expect(pageSlugs).toHaveLength(61)
     expect(pageSlugs).toContain('academicProgrammes')
     expect(pageSlugs).not.toContain('programGrid')
     expect(new Set(pageSlugs).size).toBe(pageSlugs.length)

@@ -234,6 +234,7 @@ export interface Page {
         | ReviewFeedBlock
         | ReviewSubmissionBlock
         | GenericFormBlock
+        | Contact6Block
         | Contact33Block
         | TeamShowcaseBlock
         | Services21Block
@@ -687,6 +688,7 @@ export interface ReusableSection {
         | ReviewFeedBlock
         | ReviewSubmissionBlock
         | GenericFormBlock
+        | Contact6Block
         | Contact33Block
         | TeamShowcaseBlock
         | Services21Block
@@ -5131,7 +5133,7 @@ export interface GenericFormBlock {
   heading?: string | null;
   description?: string | null;
   /**
-   * Create and publish a Form under Forms first, then select it here. All six supported controls, custom names and labels work. Live Preview never sends submissions. Review Forms use the Review Submission block.
+   * Select a published general or lead Form. Use the relationship drawer to create or edit reusable questions. Fields define labels, names, options and required state; this block controls their presentation. Live Preview never submits. Review Forms use Review Submission.
    */
   form: string | Form;
   size: 'none' | 'compact' | 'default' | 'comfortable';
@@ -5142,6 +5144,60 @@ export interface GenericFormBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'genericForm';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Contact6Block".
+ */
+export interface Contact6Block {
+  heading?: string | null;
+  description?: string | null;
+  formTitle?: string | null;
+  formDescription?: string | null;
+  /**
+   * Select a published general or lead Form. Use the relationship drawer to create or edit reusable questions. Fields define labels, names, options and required state; this block controls their presentation. Live Preview never submits. Review Forms use Review Submission.
+   */
+  form: string | Form;
+  /**
+   * Optional ways to contact you beside the form. Do not claim live chat is available unless you provide a working link.
+   */
+  contactInfo?:
+    | {
+        icon: 'email' | 'chat' | 'phone' | 'location';
+        title: string;
+        description?: string | null;
+        value: string;
+        /**
+         * Optional site path, anchor, https://, mailto: or tel: URL. Empty means plain text.
+         */
+        href?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  officeHoursTitle?: string | null;
+  officeHours?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  contactDetailsTitle?: string | null;
+  contactDetails?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact6';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -9535,6 +9591,7 @@ export interface PagesSelect<T extends boolean = true> {
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
         genericForm?: T | GenericFormBlockSelect<T>;
+        contact6?: T | Contact6BlockSelect<T>;
         contact33?: T | Contact33BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
@@ -12171,6 +12228,47 @@ export interface GenericFormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Contact6Block_select".
+ */
+export interface Contact6BlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  formTitle?: T;
+  formDescription?: T;
+  form?: T;
+  contactInfo?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        value?: T;
+        href?: T;
+        id?: T;
+      };
+  officeHoursTitle?: T;
+  officeHours?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  contactDetailsTitle?: T;
+  contactDetails?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  size?: T;
+  anchorId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "Contact33Block_select".
  */
 export interface Contact33BlockSelect<T extends boolean = true> {
@@ -14080,6 +14178,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
         genericForm?: T | GenericFormBlockSelect<T>;
+        contact6?: T | Contact6BlockSelect<T>;
         contact33?: T | Contact33BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
@@ -15113,6 +15212,7 @@ export interface NewsEventsDetailTemplate {
         | ReviewFeedBlock
         | ReviewSubmissionBlock
         | GenericFormBlock
+        | Contact6Block
         | Contact33Block
         | TeamShowcaseBlock
         | Services21Block
@@ -15405,6 +15505,7 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
         genericForm?: T | GenericFormBlockSelect<T>;
+        contact6?: T | Contact6BlockSelect<T>;
         contact33?: T | Contact33BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;

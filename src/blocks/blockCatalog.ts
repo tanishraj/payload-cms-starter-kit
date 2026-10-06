@@ -12,6 +12,7 @@ import { BreadcrumbBlock } from '@/blocks/Breadcrumb/config'
 import { CalendarBlock } from '@/blocks/Calendar/config'
 import { AnnualCalendarBlock } from '@/blocks/AnnualCalendar/config'
 import { Contact24Block } from '@/blocks/Contact24/config'
+import { Contact6Block } from '@/blocks/Contact6/config'
 import { GenericFormBlock } from '@/blocks/GenericForm/config'
 import { Contact33Block } from '@/blocks/Contact33/config'
 import { ContentHighlightsBlock } from '@/blocks/ContentHighlights/config'
@@ -164,6 +165,7 @@ export const pageBlockGroupDefinitions = [
       ReviewFeedBlock,
       ReviewSubmissionBlock,
       GenericFormBlock,
+      Contact6Block,
       Contact33Block,
       TeamShowcaseBlock,
       Services21Block,

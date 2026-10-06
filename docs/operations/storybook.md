@@ -61,10 +61,10 @@ feature checklist and deployment gates.
 
 ## Existing block catalogue
 
-All 67 current block entries appear once under **Blocks**: 60 Page blocks,
+All 68 current block entries appear once under **Blocks**: 61 Page blocks,
 three header/footer choices, three system choices and the template-only News & Events
 Content block.
-The 66 picker definitions plus the template-only block define the coverage check.
+The 67 picker definitions plus the template-only block define the coverage check.
 `src/stories/blocks/*.stories.tsx` imports the production component or its existing
 browser-safe presentation; it reuses `src/block-thumbnails/fixtures.tsx` sample
 props through `support/fixtureArgs.ts`. Default is the editable playground;
@@ -119,3 +119,9 @@ the client-safe Live Preview adapter disables submission. Production inherits th
 website’s shared shadcn tokens rather than shipping a separate Neutral form palette.
 The public import/radius guard admits only this reviewed adapter into the revamp
 presentation. Select portals remain within the form’s inherited theme context.
+
+## Contact6
+
+[Blocks / Contact6](http://localhost:6006/?path=/story/blocks-contact6--default) is the single canonical entry for the authenticated upstream layout and native adapter. Questions, labels/names, supported control types, options, required state, contact cards, footer content and button/pending text have controls. Icon choices serialize as email/chat/phone/location in stories and native CMS; the presentation receives typed Lucide objects. Callbacks stay separate from object controls. Default, one question, long content, validation, confirmation, pending, network failure, unavailable and disabled CMS states use synthetic data. Website CMS Preview mounts the real website theme with submissions disabled; all other workshop states use upstream Neutral.
+
+Browser review: custom-name submission and confirmation, validation focus, disabled preview, 390px wrapping, dark mode and website-theme preview. WCAG A/AA axe scans report no violations for website preview or Neutral dark. Upstream Neutral light muted text on muted surfaces/Select reports a contrast violation; the shared official palette is preserved, so that workshop state is not certified as WCAG AA. Production must be checked with the chosen website theme.

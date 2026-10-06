@@ -24,6 +24,7 @@ import { RatingSpotlightBlockComponent } from './RatingSpotlight/Component'
 import { ReviewFeedBlockComponent } from './ReviewFeed/Component'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
 import { Contact24BlockComponent } from './Contact24/Component'
+import { Contact6BlockComponent } from './Contact6/Component'
 import { GenericFormBlockComponent } from './GenericForm/Component'
 import { Contact33BlockComponent } from './Contact33/Component'
 import { FeatureSpotlightBlockComponent } from './FeatureSpotlight/Component'
@@ -142,6 +143,8 @@ function renderPageBlockContent(
       return wrap(<StudentExperienceBlockComponent {...block} />)
     case 'reviewSubmission':
       return wrap(<ReviewSubmissionBlockComponent {...block} />)
+    case 'contact6':
+      return wrap(<Contact6BlockComponent {...block} />)
     case 'genericForm':
       return wrap(<GenericFormBlockComponent {...block} />)
     case 'contact33':

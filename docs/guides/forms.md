@@ -174,6 +174,6 @@ or server failures retain answers and report an unconfirmed result. Retry is man
 server idempotency and stale-client revision handling remain pending. A response lost
 after persistence can still make a deliberate retry create another submission.
 
-The same engine is intended for sourced form layouts such as Shadcnblocks `contact6`:
+The same engine powers the sourced Shadcnblocks `contact6` layout:
 the layout can differ while editors choose a reusable schema rather than inheriting
-hard-coded example questions. Contact6 integration is the next separate feature.
+hard-coded example questions. Contact6 is available in Advanced Library, Pages, Reusable Sections and detail templates. Select a published General/Lead Form; use the native relationship drawer to create or edit it. Configure contact cards, message-card introduction and office hours on the block. The first two short questions share a row on wider screens; a textarea/checkbox in that pair keeps both stacked. Remaining questions fill the form width. Question order, names, labels and required state belong to the reusable Form. Publishing that Form updates all blocks selecting it; draft-only edits stay out of public pages. Live Preview disables all controls. An unavailable Form still leaves the alternative contact cards visible.
