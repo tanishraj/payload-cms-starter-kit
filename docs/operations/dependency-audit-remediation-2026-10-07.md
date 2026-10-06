@@ -9,6 +9,9 @@ During Contact6 acceptance, the authoritative production audit reported new high
 - Preserve Next.js, React, runtime/provider choices and the existing Braces exception expiring 2026-10-13. No new exception or approval is inferred.
 - Update the real-S3 compatibility assertion: disabled client uploads no longer mount a provider under Payload 3.90; its import-map dependency stays available, and no signed-upload endpoint is exposed.
 - Regenerate Payload types/import map and inspect the graph diff. No live data migration is run.
+- Supply title-derived create slugs before validation: Payload 3.90 moved its experimental helper to beforeChange, which can validate the still-empty required slug first. Preserve explicit URLs and upstream update/duplicate behavior. Real Payload/MongoDB regression covers publication, rename stability and chosen URLs.
+- Initialize disposable governance collection/version models before transactional fixture writes to avoid index/catalog creation races.
+- Make browser login wait for DOM plus Dashboard readiness; inspect the actual grant-group collapsed state rather than treating temporarily absent conditional children as collapse.
 - Correct the existing TOTP replay test to reuse the enrollment code. Generating a new code at assertion time can cross a 30-second step and validly succeed; the test must reject replay of the exact used code.
 
 ## Upstream upgrade review

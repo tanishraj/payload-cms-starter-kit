@@ -93,7 +93,7 @@ Read [adminFeatures.ts](../../../../src/access/adminFeatures.ts), [featureAccess
   and the Payload fallback. H1 remains reserved for the surrounding document title.
 - [buildSEOFields.ts](../../../../src/fields/buildSEOFields.ts) defines reusable route SEO controls.
 - [cmsLinkFields.ts](../../../../src/fields/cmsLinkFields.ts) defines reusable Navigation Link relationships.
-- [projectSlugField.ts](../../../../src/fields/projectSlugField.ts) wraps Payload's generated slug field for all slug-based collections. It collapses separators and assigns the first available `-copy`, `-copy-2`, and later suffix while preserving existing stored slugs.
+- [projectSlugField.ts](../../../../src/fields/projectSlugField.ts) wraps Payload's generated slug field for all slug-based collections. It supplies missing create slugs before validation under Payload 3.90 without changing existing or explicitly chosen URLs. It collapses separators and assigns the first available `-copy`, `-copy-2`, and later suffix while preserving existing stored slugs.
 
 Anonymous reads of draft-enabled public collections are constrained to published documents at the
 Payload access layer. Submitted Reviews additionally require approved moderation, and internal
