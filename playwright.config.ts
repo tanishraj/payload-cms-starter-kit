@@ -43,7 +43,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm exec next dev',
+    command: 'pnpm exec next dev --hostname 127.0.0.1',
     env: {
       ALLOW_FIRST_ADMIN_CREATION: 'false',
       ALLOW_PRODUCTION_EMAIL_OVERRIDE: 'false',

@@ -22,7 +22,10 @@ Moderate and low findings remain visible but do not fail the gate and must not b
 
 ## Exception workflow
 
-The default and current policy is no exceptions. `security/dependency-audit-exceptions.json` therefore contains an empty `exceptions` array, and no override is configured in `package.json`.
+The default policy is no exceptions. On 6 October 2026, the user explicitly approved
+one exact Braces exception expiring 13 October; the checked-in exception document
+records it, and the audit evaluator is unchanged. A reviewed Payload-scoped security patch is
+configured in `pnpm-workspace.yaml`; it is dependency remediation, not an audit exception.
 
 An exception requires explicit security approval before merge. The approver must identify one high or critical advisory and provide all nine fields required by `security/dependency-audit-exceptions.schema.json`: `advisoryId`, `packageName`, `vulnerableRange`, `installedVersions`, `reachability`, `mitigation`, `owner`, `createdAt`, and `expiresAt`.
 
@@ -68,3 +71,11 @@ Inspect the manifest and full lockfile diff. Stop if the package-manager command
 ## September 12 feature backport
 
 The SNMIH backport adds exact dependencies `otpauth@9.5.2` and `react-fast-marquee@1.6.5`. Its audit exposed high advisory 1193727 in existing transitive `js-yaml@4.3.1`; a package-scoped in-range refresh moved only js-yaml to `4.3.2`. No overrides or audit exceptions were added. The authoritative audit passes with 0 critical, 0 high, 16 moderate and 4 low findings. The remaining visible findings include DOMPurify, Payload, and baseline-browser-mapping; these remain subject to the existing moderate/low policy.
+
+## October 2026 remediation in progress
+
+[Remediation and approval proposal](dependency-audit-remediation-2026-10-06.md)
+records the Next.js patch-family refresh, narrow transitive changes, scoped Undici
+patch and the remaining Braces finding. The exact Braces entry was explicitly approved by the user on 6 October and is
+active until 13 October. Any renewal or different exception requires new approval;
+the document's existence alone never supplies approval.

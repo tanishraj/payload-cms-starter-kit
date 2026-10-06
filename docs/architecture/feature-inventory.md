@@ -270,7 +270,7 @@ The redirect proxy excludes Next.js internals, APIs, Admin, and common static/me
 
 - The supported toolchain is Node.js `22.17.0` within `>=22.13.0 <23` and pnpm `11.17.0`.
   The Next.js compatibility group (`next`, `@next/third-parties`, and `eslint-config-next`) is exact
-  `16.3.4`; the complete direct Payload family is exact `3.88.0`; direct Sharp and PostCSS are exact
+  `16.3.6`; the complete direct Payload family is exact `3.88.0`; direct Sharp and PostCSS are exact
   `0.35.4` and `8.5.26` respectively. Payload CLI and generator scripts keep the `react-server`
   condition, and generated Payload types and the Admin import map are checked for drift.
 - Playwright and every mutating E2E helper accept only a dedicated loopback MongoDB database named

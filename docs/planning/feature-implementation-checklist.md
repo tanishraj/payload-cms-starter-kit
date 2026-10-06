@@ -1881,6 +1881,7 @@ feature boxes synchronized; record blockers with a concrete next action.
 | 2026-10-06 | DF-01–10; FORM/SUBMIT | Selected | — | Dynamic forms and generic submissions are the first enhancement. | — | User selected this priority; implementation has not started in this tracking task. |
 | 2026-10-06 | All 206 groups | Assess | — | Initial read-only source findings; full acceptance audit pending. | Baseline 180d0e2 | Source presence only; no runtime-completion claims. |
 | 2026-10-06 | ONBOARD-01–20; ADMINUX-01–16 | Assess | — | Add developer/Admin/Manager journeys, resumable contextual help, build/launch readiness and usability acceptance. Reuse dashboard and page recipes; preserve dynamic forms as first enhancement. | — | Source/document inspection only; no application UI shipped by this planning change. |
+| 2026-10-06 | Dependency gate prerequisite | Approved bounded exception | Codex | Prepare Next.js and transitive security patches on a separate branch. Remaining Braces 3.0.3 has no published fixed version; user approved only the exact Braces entry expiring 2026-10-13. | [PR #15](https://github.com/tanishraj/payload-cms-starter-kit/pull/15) | 2,268 integration tests pass; one Docker test skipped. TypeScript/full lint/generators/context pass. [Concrete remediation/proposal](../operations/dependency-audit-remediation-2026-10-06.md). Production audit passes with only the exact approved entry; GitHub governance/build verification remains required before merge. |
 
 ## Completion record template
 
