@@ -326,7 +326,9 @@ async function cleanupGovernanceFixturesWithPayload(
     [SKIP_CACHE_REVALIDATION_CONTEXT]: true,
   })
   await deleteExactDocument(payload, 'form-submissions', records.submission)
-  await deleteExactDocument(payload, 'forms', records.form)
+  await deleteExactDocument(payload, 'forms', records.form, {
+    [SKIP_CACHE_REVALIDATION_CONTEXT]: true,
+  })
   await deleteExactDocument(payload, 'categories', records.category)
 
   await deleteExactDocument(payload, 'users', records.users.governanceSecondAdmin)

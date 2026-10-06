@@ -34,25 +34,38 @@ export const GenericFormBlock: Block = {
   labels: { singular: 'Generic Form', plural: 'Generic Forms' },
   admin: getBlockThumbnailAdmin('genericForm'),
   fields: [
-    { name: 'heading', type: 'text', defaultValue: 'Get in touch' },
-    { name: 'description', type: 'textarea' },
     {
-      name: 'form',
-      type: 'relationship',
-      relationTo: 'forms',
-      required: true,
-      filterOptions: {
-        and: [
-          { _status: { equals: 'published' } },
-          { submissionIntent: { in: ['general', 'lead'] } },
-        ],
-      },
-      validate: validateGenericFormRelationship,
-      admin: {
-        description:
-          'Create and publish a Form under Forms first, then select it here. All six supported controls, custom names and labels work. Live Preview never sends submissions. Review Forms use the Review Submission block.',
-      },
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            { name: 'heading', type: 'text', defaultValue: 'Get in touch' },
+            { name: 'description', type: 'textarea' },
+            {
+              name: 'form',
+              type: 'relationship',
+              relationTo: 'forms',
+              required: true,
+              filterOptions: {
+                and: [
+                  { _status: { equals: 'published' } },
+                  { submissionIntent: { in: ['general', 'lead'] } },
+                ],
+              },
+              validate: validateGenericFormRelationship,
+              admin: {
+                description:
+                  'Create and publish a Form under Forms first, then select it here. All six supported controls, custom names and labels work. Live Preview never sends submissions. Review Forms use the Review Submission block.',
+              },
+            },
+          ],
+        },
+        {
+          label: 'Theme Settings',
+          fields: [createSectionPaddingField()],
+        },
+      ],
     },
-    createSectionPaddingField(),
   ],
 }

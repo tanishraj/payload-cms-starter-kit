@@ -543,7 +543,9 @@ Fee Structure and PG Fee Structure use `feeDocumentAction`, a one-row file-only 
 
 `genericForm` is a content-only Advanced Library block available in Pages, Reusable
 Sections and Page-compatible detail templates. Heading/description and padding wrap
-the reviewed schema-driven revamp form. The server adapter loads only published
+the reviewed schema-driven revamp form. Native fields follow the existing Content
+and Theme Settings tabs; only supported padding is exposed in Theme Settings.
+The server adapter loads only published
 General/Lead definitions through an access-enforced minimal query, cached under
 the shared global tag. Form publication/unpublication and deletion invalidate that
 cache. The relationship validator rechecks the selected ID with `req` and

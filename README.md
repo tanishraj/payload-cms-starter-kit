@@ -168,7 +168,7 @@ See [docs/architecture/content-model-map.md](docs/architecture/content-model-map
 - [Redirects](docs/guides/redirects.md) — CMS-managed URL redirects
 - [Forms](docs/guides/forms.md) — form definitions and submitter confirmation email
 - [News & Events](docs/guides/news-events.md) — entry authoring, Page-backed listings, live preview, and feed
-- [Page Blocks](docs/guides/blocks.md) — all 59 Page layout choices and their data dependencies
+- [Page Blocks](docs/guides/blocks.md) — all 60 Page layout choices and their data dependencies
 - [Cookie Consent Banner](docs/guides/cookie-consent.md) — consent variants, copy, and analytics behavior
 
 ## Environment
