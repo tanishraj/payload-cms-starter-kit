@@ -11,7 +11,7 @@
  * FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
  * Adaptations: typed schema, shared validation, unique IDs, submission states.
  */
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
 import { Controller, useForm, type Resolver, type ResolverResult } from 'react-hook-form'
 
 import { Button } from '@/components/revamp/ui/button'
@@ -74,6 +74,8 @@ const maxLengths = {
   textarea: FORM_MAX_TEXTAREA_LENGTH,
 }
 
+const subscribeToHydration = () => () => {}
+
 /** Presentation only. The caller owns fetching, form identity and persistence. */
 function FormPresentation({
   fields,
@@ -90,6 +92,12 @@ function FormPresentation({
     layout === 'contact6' &&
     fields.length >= 2 &&
     fields.slice(0, 2).every((field) => field.type !== 'textarea' && field.type !== 'checkbox')
+  // The server-rendered form must not submit to the page before React is ready.
+  const hydrated = useSyncExternalStore(
+    subscribeToHydration,
+    () => true,
+    () => false,
+  )
   const prefix = useId()
   const [selectContainer, setSelectContainer] = useState<HTMLDivElement | null>(null)
   const messageRef = useRef<HTMLParagraphElement>(null)
@@ -124,7 +132,7 @@ function FormPresentation({
   }, [result])
 
   const pending = form.formState.isSubmitting
-  const inactive = disabled || pending
+  const inactive = !hydrated || disabled || pending
   const hasErrors = Boolean(form.formState.errors.answers)
   const submitAnswers = async ({ answers, website }: Answers) => {
     if (disabled || submittingRef.current || result?.success) return
@@ -159,6 +167,7 @@ function FormPresentation({
   return (
     <div className={cn('w-full', layout === 'stacked' && 'max-w-md')} ref={setSelectContainer}>
       <form
+        method="post"
         className="flex flex-col gap-4"
         noValidate
         onSubmit={(event) => {
@@ -170,8 +179,11 @@ function FormPresentation({
         }}
         aria-labelledby={heading ? `${prefix}-heading` : undefined}
         aria-label={heading ? undefined : formLabel}
-        aria-busy={pending}
+        aria-busy={!hydrated || pending}
       >
+        <noscript>
+          <FieldDescription>Enable JavaScript to send this form.</FieldDescription>
+        </noscript>
         {(heading || description) && (
           <div className="flex flex-col gap-2">
             {heading && (
@@ -347,6 +359,7 @@ function FormPresentation({
                 {...form.register('website')}
                 id={`${prefix}-website`}
                 tabIndex={-1}
+                disabled={inactive}
                 autoComplete="off"
               />
             </div>
