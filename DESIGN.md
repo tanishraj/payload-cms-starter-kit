@@ -192,3 +192,9 @@ Surface details, source provenance and story controls: [Generic Form brief](.imp
 - **Don't** replace the inherited shared-surface controls with a custom visual alternative.
 - **Don't** invent layout or style variants that the selected source and component API do not support.
 - **Don't** describe workshop review as completed CMS, native-admin or production acceptance.
+
+Integration update, 6 October 2026: the native Generic Form adapter inherits shared
+website shadcn theme tokens. The user explicitly rejected a form-specific stylesheet;
+no Neutral palette override is shipped on public pages. The Neutral workshop remains
+the source-review environment. Reusable Forms own the questions; form blocks own the
+selected upstream layout. Contact6 is the next sourced layout, with dynamic questions.

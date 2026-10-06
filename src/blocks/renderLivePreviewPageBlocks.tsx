@@ -35,6 +35,7 @@ import { RatingSpotlightPreviewBlockComponent } from './RatingSpotlight/PreviewC
 import { ReviewFeedPreviewBlockComponent } from './ReviewFeed/PreviewComponent'
 import { ReviewSubmissionBlockComponent } from './ReviewSubmission/Component'
 import { Contact24PreviewBlockComponent } from './Contact24/PreviewComponent'
+import { GenericFormPreviewBlockComponent } from './GenericForm/PreviewComponent'
 import { Contact33BlockComponent } from './Contact33/Component'
 import { TeamShowcaseBlockComponent } from './TeamShowcase/Component'
 import { StatsStripBlockComponent } from './StatsStrip/Component'
@@ -149,6 +150,8 @@ function renderLivePreviewPageBlockContent(
       return <StudentExperienceBlockComponent key={key} {...block} />
     case 'reviewSubmission':
       return <ReviewSubmissionBlockComponent key={key} {...block} />
+    case 'genericForm':
+      return <GenericFormPreviewBlockComponent key={key} {...block} />
     case 'contact33':
       return <Contact33BlockComponent key={key} {...block} />
     case 'contact24':

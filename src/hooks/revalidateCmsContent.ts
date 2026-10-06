@@ -126,6 +126,13 @@ export const revalidateDeletedNewsEventClassificationCache: CollectionAfterDelet
   return doc
 }
 
+export const revalidateDeletedFormCache: CollectionAfterDeleteHook = ({ context, doc }) => {
+  if (context?.[SKIP_CACHE_REVALIDATION_CONTEXT] !== true) {
+    revalidateTags(CMS_CACHE_TAGS.globals, CMS_CACHE_TAGS.pages)
+  }
+  return doc
+}
+
 /**
  * Revalidates shared shell and Page data after a published relationship-backed
  * record changes. This covers headers, footers, reusable sections, Forms,

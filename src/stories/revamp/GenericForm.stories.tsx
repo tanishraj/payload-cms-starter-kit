@@ -1,7 +1,12 @@
+import type { ComponentProps } from 'react'
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { GenericForm, type GenericFormResult } from '@/components/revamp/generic-form'
 import type { SimpleFormField } from '@/lib/forms'
+import { GenericFormBlockPresentation } from '@/blocks/GenericForm/Presentation'
+import type { RegularBlockSize } from '@/blocks/shared/blockSpacing'
+
+type StoryArgs = ComponentProps<typeof GenericForm> & { size?: RegularBlockSize }
 
 const exampleFields: SimpleFormField[] = [
   {
@@ -50,12 +55,13 @@ const exampleFields: SimpleFormField[] = [
 const meta = {
   title: 'Blocks/Generic Form',
   component: GenericForm,
+  tags: ['autodocs'],
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Six current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. Synthetic data and local demonstration callbacks only; no CMS reads, writes or network requests. Payload integration follows workshop review. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
+          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Six current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
       },
     },
   },
@@ -89,9 +95,9 @@ const meta = {
         'Caller-owned asynchronous submission. Returns confirmation or field errors. Throws for an unconfirmed network result.',
     },
   },
-} satisfies Meta<typeof GenericForm>
+} satisfies Meta<StoryArgs>
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<StoryArgs>
 
 export const Default: Story = {}
 export const TextOnly: Story = {
@@ -200,4 +206,51 @@ export const ServerFieldError: Story = {
     await expect(canvas.getByLabelText(/Email address/)).toHaveFocus()
     await expect(canvas.getByText('Please use a different email address.')).toBeVisible()
   },
+}
+
+
+// Native adapter states stay beside the shared form rather than duplicating the block catalogue.
+export const CMSPreview: Story = {
+  name: 'CMS preview',
+  args: { size: 'compact' },
+  argTypes: {
+    size: {
+      name: 'Section padding',
+      control: 'select',
+      options: ['none', 'compact', 'default', 'comfortable'],
+    },
+    disabled: { control: false },
+    pendingLabel: { control: false },
+  },
+  render: (args) => (
+    <GenericFormBlockPresentation
+      heading={args.heading}
+      description={args.description}
+      size={args.size}
+      preview
+      definition={{
+        slug: 'storybook-example',
+        fields: args.fields,
+        submitButtonLabel: args.submitButtonLabel ?? 'Submit',
+      }}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByText(/Preview only — submissions are disabled/)).toBeVisible()
+    await expect(canvas.getByRole('button', { name: 'Send enquiry' })).toBeDisabled()
+  },
+}
+
+export const CMSUnavailable: Story = {
+  name: 'CMS unavailable form',
+  render: (args) => (
+    <GenericFormBlockPresentation
+      heading={args.heading}
+      description={args.description}
+      size={args.size}
+      definition={null}
+      preview
+    />
+  ),
 }

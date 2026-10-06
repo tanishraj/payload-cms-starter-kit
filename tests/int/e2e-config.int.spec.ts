@@ -102,8 +102,7 @@ describe('Playwright database isolation', () => {
           'mongodb://127.0.0.1:27017/payload-cms-starter-kit_test?replicaSet=rs0&directConnection=true',
         NEXT_PUBLIC_SERVER_URL: 'http://127.0.0.1:3000',
         NODE_ENV: 'development',
-        NODE_OPTIONS:
-          '--no-deprecation --no-experimental-strip-types --conditions=react-server --import=tsx/esm',
+        NODE_OPTIONS: '--no-deprecation --no-experimental-strip-types',
         PAYLOAD_SECRET: 'e2e-only-payload-secret-32-characters',
         RESEND_API_KEY: '',
         RESEND_FROM_EMAIL: '',

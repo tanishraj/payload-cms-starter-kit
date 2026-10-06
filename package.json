@@ -34,7 +34,8 @@
     "backup:prod-db": "tsx scripts/backup-prod-db.ts",
     "test:e2e:two-factor": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.two-factor.config.ts",
     "storybook": "storybook dev -p 6006 --host 127.0.0.1 --no-open",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test:e2e:forms": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.config.ts tests/e2e/generic-form.e2e.spec.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.916.0",

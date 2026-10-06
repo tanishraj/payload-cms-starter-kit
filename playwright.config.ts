@@ -54,7 +54,8 @@ export default defineConfig({
       MEDIA_PROVIDER: 'localDisk',
       NEXT_PUBLIC_SERVER_URL: 'http://127.0.0.1:3000',
       NODE_ENV: 'development',
-      NODE_OPTIONS: e2eNodeOptions,
+      // Next owns its server/client React contexts; only the fixture worker uses react-server.
+      NODE_OPTIONS: '--no-deprecation --no-experimental-strip-types',
       PAYLOAD_SECRET: 'e2e-only-payload-secret-32-characters',
       RESEND_API_KEY: '',
       RESEND_FROM_EMAIL: '',

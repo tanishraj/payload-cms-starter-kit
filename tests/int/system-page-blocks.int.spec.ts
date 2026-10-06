@@ -139,7 +139,7 @@ describe('system page block schemas', () => {
     const pageSlugs = collectBlockSlugs(Pages.fields)
     const reusableSectionSlugs = collectBlockSlugs(ReusableSections.fields)
 
-    expect(pageSlugs).toHaveLength(59)
+    expect(pageSlugs).toHaveLength(60)
     expect(pageSlugs).toContain('academicProgrammes')
     expect(pageSlugs).not.toContain('programGrid')
     expect(new Set(pageSlugs).size).toBe(pageSlugs.length)
@@ -152,7 +152,7 @@ describe('system page block schemas', () => {
     expect(reusableSectionSlugs.slice().sort()).toEqual(
       pageSlugs.filter((slug) => slug !== 'reusableSection').sort(),
     )
-    expect(reusableSectionSlugs).toHaveLength(58)
+    expect(reusableSectionSlugs).toHaveLength(59)
     expect(pageSlugs).toContain('pgFeeStructure')
     expect(reusableSectionSlugs).toContain('pgFeeStructure')
     expect(pageSlugs).toContain('bankDetails')

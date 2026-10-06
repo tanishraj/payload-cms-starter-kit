@@ -26,6 +26,7 @@ const expectedRunSteps = [
   ['Lint', 'pnpm lint'],
   ['Run integration tests', 'pnpm test:int'],
   ['Run critical governance journeys', 'pnpm test:e2e:governance'],
+  ['Run native dynamic-form journey', 'pnpm test:e2e:forms'],
   ['Build the Vercel production application', 'pnpm build'],
   ['Stop isolated MongoDB replica', 'pnpm ci:mongodb:stop'],
 ] as const
@@ -180,6 +181,7 @@ describe('quality workflow contract', () => {
     expect(driftIndex).toBe(importMapIndex + 1)
     expect(runCommands.filter((command) => command.includes('test:e2e'))).toEqual([
       'pnpm test:e2e:governance',
+      'pnpm test:e2e:forms',
     ])
 
     for (const forbidden of [

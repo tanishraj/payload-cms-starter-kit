@@ -471,3 +471,15 @@ use the shared Page, Custom URL, and Media link controls.
 - [Gallery Albums](./gallery-albums.md)
 - [Office Locations](./office-locations.md)
 - [News & Events](./news-events.md)
+
+### Generic Form
+
+Add **Generic Form** from **Advanced Library** to a Page or Reusable Section.
+Choose a published General/Lead Form, then configure heading, description and
+section padding. Its six supported controls use the selected definition’s custom
+names, labels, options and required state. Edit questions through the Form relationship
+drawer; publication of a shared Form affects all uses. Live Preview is read-only for
+submissions. See the [Forms guide](forms.md#build-a-form-with-your-own-questions).
+Presentation source: authenticated `@shadcnblocks/form-form-patterns-4`, with
+`@shadcnblocks/checkbox-checkbox-standard-1` and their official shadcn dependencies.
+The block uses the shared website theme and retains the reviewed upstream structure.

@@ -8,7 +8,7 @@ import {
   requireFeature,
 } from '@/access/featureAccess'
 import { projectSlugField } from '@/fields/projectSlugField'
-import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
+import { revalidateDeletedFormCache, revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 import {
   FORM_MAX_FIELDS,
   formFieldTypeOptions,
@@ -44,6 +44,7 @@ export const Forms: CollectionConfig = {
   },
   hooks: {
     afterChange: [revalidateGlobalsCache],
+    afterDelete: [revalidateDeletedFormCache],
   },
   timestamps: true,
   fields: [
@@ -177,8 +178,8 @@ export const Forms: CollectionConfig = {
       },
       admin: {
         description:
-          'Review Submission uses its fixed review fields; it cannot render additional required fields.',
-        initCollapsed: true,
+          'Generic Form renders all these fields with your labels and machine names. Review Submission uses its fixed review fields; it cannot render additional required fields.',
+        initCollapsed: false,
       },
       fields: [
         {
@@ -266,7 +267,7 @@ export const Forms: CollectionConfig = {
             plural: 'Options',
           },
           admin: {
-            initCollapsed: true,
+            initCollapsed: false,
             condition: (_, siblingData) => siblingData?.type === 'select',
           },
           fields: [

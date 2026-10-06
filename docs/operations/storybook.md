@@ -73,3 +73,16 @@ semantic radius check excludes the isolated Neutral workshop and separately
 rejects public imports of its revamp catalogue. When integrating that catalogue,
 review/update the public theme contract and this boundary test in the same change.
 Do not silently exempt publicly rendered components.
+
+### Native generic form adapter
+
+`Blocks/Generic Form` is the single catalogue entry for this block. Its CMS preview
+story documents the production adapter’s heading, description,
+questions and padding, plus disabled preview and unavailable states.
+Validation, submission and unavailable states live in that same entry; all workshop
+submissions use synthetic callbacks or are disabled in CMS preview.
+The native public adapter owns transport and server-projected published definitions;
+the client-safe Live Preview adapter disables submission. Production inherits the
+website’s shared shadcn tokens rather than shipping a separate Neutral form palette.
+The public import/radius guard admits only this reviewed adapter into the revamp
+presentation. Select portals remain within the form’s inherited theme context.

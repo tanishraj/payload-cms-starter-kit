@@ -59,9 +59,14 @@ track the proof; the FORM/SUBMIT groups below track the complete capability.
 - [ ] **DF-02 — Define stable identities and revisions.** Separate field ID from
   label/name/order; define published schema identity and stored-answer metadata.
   Preserve existing forms/submissions through an explicit compatibility policy.
-- [ ] **DF-03 — Prove custom fields.** Author text/select/checkbox fields through
+- [x] **DF-03 — Prove custom fields.** Author text/select/checkbox fields through
   Payload, including `preferred_department` with a custom label, options and
   required validation. Use the shared production renderer, without fixed contact keys.
+
+  Evidence: [native browser journey](../../tests/e2e/generic-form.e2e.spec.ts) passed
+  on an isolated test database: editor-authored text/select/checkbox questions,
+  public validation and submission, readable typed answers, draft isolation and
+  disabled Live Preview. Shared renderer tests cover all six currently supported types.
 - [ ] **DF-04 — Prove validation/intake.** Client and server agree; reject malformed,
   extra and inactive hidden values. Store valid typed answers against their schema
   revision and prevent accidental duplicate submissions.
@@ -89,9 +94,10 @@ content fingerprints, immutable readable answer rows and legacy compatibility ar
 implemented. Client revision negotiation/retention and browser/database acceptance
 remain. DF-03/04/09 now also have workshop evidence: an authenticated upstream
 generic presentation renders the six current control types, shares strict scalar
-validation, and exercises accessible errors/pending/success/retry. Native Payload
-block/public/Live Preview integration, conditional values, stale revisions and
-server duplicate protection remain; these boxes stay open.
+validation, and exercises accessible errors/pending/success/retry. Native Generic Form block/public/disabled Live Preview integration is implemented
+and passed the native browser journey. Conditional values, stale revisions and server
+duplicate protection remain; broader boxes stay open. Form blocks use shared theme
+tokens and select reusable schemas; their example question lists are not authoritative.
 [Implementation audit](dynamic-forms-implementation.md) records boundaries.
 
 ## Delivery sequence
@@ -604,14 +610,20 @@ exclusions and complete source traceability are in the local scope reference.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
   Increment evidence: [dynamic-form history audit](dynamic-forms-implementation.md). Full feature acceptance remains incomplete.
 
-- [ ] **FORM-02 — Configurable fields.** Adding a supported control with a custom
+- [x] **FORM-02 — Configurable fields.** Adding a supported control with a custom
   label/name works without a new collection column, endpoint, hand-coded renderer
   or email template. Do not require fields literally named `name`, `email` or `message`.
 
-  Work: Assess · Priority: First enhancement · Baseline: Partial.
-  Initial finding: Configurable labels/names exist, but Contact33 still constrains names and types.
-  Evidence: [src/collections/Forms.ts](../../src/collections/Forms.ts), [src/lib/contact33Form.ts](../../src/lib/contact33Form.ts).
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Work: Verified locally · Priority: First enhancement · Baseline: Partial.
+  The Generic Form block selects reusable definitions and renders the six supported
+  controls without fixed keys. Contact33 remains a compatible historical presentation.
+  Evidence: [Forms](../../src/collections/Forms.ts), [shared renderer](../../src/components/revamp/generic-form.tsx),
+  [native browser journey](../../tests/e2e/generic-form.e2e.spec.ts),
+  [integration contracts](../../tests/int/generic-form-integration.int.spec.tsx).
+  Owner: Codex · Commit/PR: `feat/generic-form-payload-integration` · Verified on: 2026-10-06.
+  Acceptance: custom text/select/checkbox fields authored in Payload, public submission
+  stored under custom names with readable answers; no new collection columns,
+  endpoint or email template. FORM-03's broader control catalogue remains open.
 
 - [ ] **FORM-03 — Initial control catalogue.** Text, multiline text, email, phone, URL,
   number, single select, multi-select, radio group, checkbox, checkbox group,
@@ -1903,6 +1915,7 @@ feature boxes synchronized; record blockers with a concrete next action.
 | 2026-10-06 | Dependency gate prerequisite | Merged; bounded exception active | Codex | Prepare Next.js and transitive security patches on a separate branch. Remaining Braces 3.0.3 has no published fixed version; user approved only the exact Braces entry expiring 2026-10-13. | [PR #15](https://github.com/tanishraj/payload-cms-starter-kit/pull/15) | 2,268 integration tests pass; one Docker test skipped. TypeScript/full lint/generators/context pass. [Concrete remediation/proposal](../operations/dependency-audit-remediation-2026-10-06.md). Production audit passes with only the exact approved entry; GitHub Quality passes, including both governance journeys and the production build; merged into develop. |
 
 | 2026-10-06 | DF-03/04/09; FORM-02/06; SUBMIT-03/07 | Workshop implemented; broader acceptance pending | Codex | Authenticated upstream generic form presentation with six controls/custom names, supported Storybook controls/states, shared strict-value rejection and legacy compatibility. No public block or new environment settings. | [PR #16](https://github.com/tanishraj/payload-cms-starter-kit/pull/16) (presentation commit `93597d2`) | 87 focused form/intake/context tests pass; TypeScript, changed-file lint, generated types and Storybook build pass. Desktop/mobile light/dark and failure/pending/success checks completed; independent UX disposition ship with no material fixes. Scoped design/context documentation recorded. GitHub Quality is required before merge; current run/result is recorded on PR #16. |
+| 2026-10-06 | DF-03/09; FORM-02; ADMINUX authoring | Verified locally; CI pending | Codex | Native Generic Form block, published-only minimal client projection, arbitrary supported custom questions, disabled preview, recoverable transport, open native field/option rows, shared theme. User confirmed reusable Form relationships and rejected a form-specific stylesheet. One Storybook catalogue entry contains interactive and CMS states. Contact6 source retrieved for the next layout feature. | `feat/generic-form-payload-integration` | 184 focused tests, TypeScript, changed-file lint, context check and Storybook build pass. Native custom-field publication/submission/draft-isolation/disabled-preview journey passes on disposable MongoDB; shared-theme picker thumbnail regenerated and inspected. GitHub Quality remains the merge gate. No new environment variables/dependencies or data migration. |
 
 ## Completion record template
 

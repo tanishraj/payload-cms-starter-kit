@@ -13,6 +13,7 @@ import {
   SKIP_CACHE_REVALIDATION_CONTEXT,
   revalidateArticlesCache,
   revalidateDeletedArticleCache,
+  revalidateDeletedFormCache,
   revalidateDeletedNewsEventCache,
   revalidateDeletedPageCache,
   revalidateDeletedRedirectCache,
@@ -47,6 +48,26 @@ const afterChange = (
   } as never)
 
 describe('CMS cache revalidation', () => {
+  it('invalidates published form dependencies on deletion and respects fixture bypass', () => {
+    mocks.revalidateTag.mockClear()
+    revalidateDeletedFormCache({ doc: {}, context: {} } as never)
+    expect(mocks.revalidateTag).toHaveBeenCalledWith(
+      CMS_CACHE_TAGS.globals,
+      immediateRevalidationProfile,
+    )
+    expect(mocks.revalidateTag).toHaveBeenCalledWith(
+      CMS_CACHE_TAGS.pages,
+      immediateRevalidationProfile,
+    )
+    mocks.revalidateTag.mockClear()
+    revalidateDeletedFormCache({
+      doc: {},
+      context: { [SKIP_CACHE_REVALIDATION_CONTEXT]: true },
+    } as never)
+    expect(mocks.revalidateTag).not.toHaveBeenCalled()
+    expect(Forms.hooks?.afterDelete).toContain(revalidateDeletedFormCache)
+  })
+
   beforeEach(() => {
     vi.clearAllMocks()
   })

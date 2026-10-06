@@ -53,7 +53,7 @@ Production containers require a durable external MongoDB database and `MEDIA_PRO
 - articles with lexical rich text, taxonomies (categories + tags), SEO fields, and live preview
 - moderated reviews promoted from form submissions into public editorial content
 - news and events with type-specific layouts, gallery albums, and live preview
-- 59 selectable Page blocks covering editorial, events, Calendar and Annual Calendar, media, forms, reviews, galleries, offices, and reusable sections
+- 60 selectable Page blocks covering editorial, events, Calendar and Annual Calendar, media, forms, reviews, galleries, offices, and reusable sections
 - production Page block error boundaries that prevent one broken layout block from crashing the remaining Page
 
 **SEO and discoverability**

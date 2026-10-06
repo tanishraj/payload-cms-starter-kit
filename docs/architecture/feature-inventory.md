@@ -19,7 +19,7 @@ This is the maintained technical map of the starter. It records what is register
 
 | Group          | Collection                             | Responsibilities                                                                                                     |
 | -------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Content        | Pages                                  | Hierarchical routes, 59-block layouts, native drafts, SEO, live preview, page-owned links, path-change redirects     |
+| Content        | Pages                                  | Hierarchical routes, 60-block layouts, native drafts, SEO, live preview, page-owned links, path-change redirects     |
 | Content        | Articles                               | Long-form Lexical content, topics/tags, related content, SEO, native drafts, live preview                            |
 | News & Events  | News & Events                          | Single-choice classifications, event validation/registration, taxonomy, block/detail/feed data, drafts, live preview |
 | News & Events  | Classifications                        | Public labels, Story/Event behavior, and Calendar colors used by entries, badges, tabs, dates, and validation        |

@@ -2,7 +2,7 @@
 
 ## What This Section Is
 
-`Forms` defines public form schemas, success copy, notification recipients, intent, and optional submitter confirmation. Pages expose these through the dedicated `Contact Form` and `Review Submission` blocks; there is no generic form block.
+`Forms` defines public form schemas, success copy, notification recipients, intent, and optional submitter confirmation. Pages expose these through `Generic Form`, the fixed-layout `Contact Form`, and `Review Submission` blocks. A form block owns its presentation; its selected reusable Form owns the questions. You can edit that Form through Payload’s relationship drawer without leaving the Page.
 
 In North Valley Medical College, this is the section you would use for forms such as `Admission Enquiry`, `Request Prospectus`, or `Student Experience Review`.
 
@@ -11,7 +11,7 @@ In North Valley Medical College, this is the section you would use for forms suc
 Use `Forms` when you need to:
 
 - collect information from website visitors
-- configure a Form selected by Contact Form or Review Submission
+- configure a reusable Form selected by Generic Form, Contact Form or Review Submission
 - decide whether submissions behave like general enquiries, leads, or review intake
 - notify internal staff when a valid submission arrives
 
@@ -139,3 +139,41 @@ If submissions are not behaving as expected, first review the form field definit
 - [Form Submissions](./form-submissions.md)
 - [Reviews](./reviews.md)
 - [Work Queue](./work-queue.md)
+
+## Build a form with your own questions
+
+1. Open **Forms**, create a definition, and choose General or Lead intent.
+2. Add controls with your labels and machine names. For example, add Text
+   `visitor_name`, required Select `preferred_department` labelled “Which department
+   can help?”, and Checkbox `contact_permission`. Enter each select option’s label
+   and stored value. Field and option rows open ready to edit.
+3. Set the submit label and confirmation message, then explicitly publish the Form.
+4. In a Page, add **Generic Form** from **Advanced Library**, select that Form,
+   and set the heading, description and section padding. Save and inspect Live Preview.
+5. Publish the Page to accept responses. Review original questions and readable
+   answers under **Form Submissions**, subject to your feature access.
+
+Text, Email, Phone, Textarea, Select and Checkbox work with arbitrary valid custom
+machine names. Names must be unique, begin with a letter, and contain only letters,
+numbers or underscores; `website`, `constructor` and `prototype` are reserved.
+Adding more control types needs shared renderer and validation support; it is not
+arbitrary HTML input code. General/Lead definitions can be shared by multiple blocks.
+Review-intent Forms retain their dedicated workflow.
+
+The block uses shared website theme tokens and upstream components; there is no
+form-specific palette or stylesheet. Storybook retains the selected Neutral workshop
+foundation. Live Preview shows disabled controls and never sends requests to intake.
+Public pages always load the selected published Form. Saving a Form draft does not
+change live questions; publishing shared changes affects every use. Missing,
+unpublished, invalid or review-only definitions show an unavailable message.
+
+Required/options/type checks share the server validator. The public adapter posts
+to `/api/forms/[slug]/submit`, includes the current landing page, disables duplicate
+clicks while pending, and displays server confirmation only after acceptance. Network
+or server failures retain answers and report an unconfirmed result. Retry is manual;
+server idempotency and stale-client revision handling remain pending. A response lost
+after persistence can still make a deliberate retry create another submission.
+
+The same engine is intended for sourced form layouts such as Shadcnblocks `contact6`:
+the layout can differ while editors choose a reusable schema rather than inheriting
+hard-coded example questions. Contact6 integration is the next separate feature.
