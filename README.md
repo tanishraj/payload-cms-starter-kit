@@ -2,6 +2,18 @@
 
 This repository is an editorial-first marketing CMS starter built to be copied for one client website at a time. It includes governed pages, articles, news and events, reviews, forms, media, navigation, system pages, SEO, analytics consent, operational queues, and feature-based admin access.
 
+## Enhancement roadmap
+
+Implementation continues in this repository using Payload's native block editing
+and Live Preview. The carried-forward Forma requirements and progress live in the
+[feature implementation checklist](docs/planning/feature-implementation-checklist.md),
+with the complete [scope reference](docs/planning/feature-scope-reference.md).
+The [admin onboarding and UX plan](docs/planning/admin-onboarding-ux.md) adds
+developer setup, role-aware first-page journeys and everyday usability acceptance.
+These are planned enhancements; current instructions below describe shipped setup.
+Dynamic forms and generic submissions are the first selected enhancement.
+Update the checklist with each relevant implementation and its verification evidence.
+
 ## Supported Starter Contract
 
 - local development: `MongoDB` plus local-disk uploads
