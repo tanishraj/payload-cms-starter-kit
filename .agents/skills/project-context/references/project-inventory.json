@@ -2986,6 +2986,7 @@
       "src/stories/blocks/timeline.stories.tsx",
       "src/stories/blocks/videoEmbed.stories.tsx",
       "src/stories/revamp/Button.stories.tsx",
+      "src/stories/revamp/Card.stories.tsx",
       "src/stories/revamp/Checkbox.stories.tsx",
       "src/stories/revamp/Contact6.stories.tsx",
       "src/stories/revamp/Field.stories.tsx",
@@ -3258,7 +3259,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "162bd128d9926d242a60cbfe6af517a43c075bbf5b82a2eed9f12d7e88c22d99"
+    "sha256": "7ea1820c7de50630c494f950a8e0862be2142e1c0d58981cea12c50b6ca1275d"
   },
   "surfaces": {
     "access": [
