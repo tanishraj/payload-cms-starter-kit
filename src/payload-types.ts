@@ -5102,6 +5102,10 @@ export interface Form {
     label: string;
     type: 'text' | 'email' | 'phone' | 'textarea' | 'select' | 'checkbox';
     required?: boolean | null;
+    /**
+     * Optional: use this answer for inbox contact details and confirmation emails. Each role can be assigned once; choose Text for name, Email for email, or Phone for phone. Leave empty for ordinary questions.
+     */
+    contactRole?: ('name' | 'email' | 'phone') | null;
     placeholder?: string | null;
     options?:
       | {
@@ -8580,6 +8584,41 @@ export interface FormSubmission {
   promotionError?: string | null;
   submittedAt: string;
   lastActionAt?: string | null;
+  /**
+   * Identity of the published definition used when this submission was received.
+   */
+  formRevision?: string | null;
+  formSnapshot?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Questions and readable answers captured at submission time. Later form changes do not alter them. Older submissions may only have Submitted Data.
+   */
+  answers?:
+    | {
+        label?: string | null;
+        displayValue?: string | null;
+        name?: string | null;
+        fieldID?: string | null;
+        type?: string | null;
+        value?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   data:
     | {
         [k: string]: unknown;
@@ -14549,6 +14588,7 @@ export interface FormsSelect<T extends boolean = true> {
         label?: T;
         type?: T;
         required?: T;
+        contactRole?: T;
         placeholder?: T;
         options?:
           | T
@@ -14585,6 +14625,19 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
   promotionError?: T;
   submittedAt?: T;
   lastActionAt?: T;
+  formRevision?: T;
+  formSnapshot?: T;
+  answers?:
+    | T
+    | {
+        label?: T;
+        displayValue?: T;
+        name?: T;
+        fieldID?: T;
+        type?: T;
+        value?: T;
+        id?: T;
+      };
   data?: T;
   updatedAt?: T;
   createdAt?: T;

@@ -47,7 +47,15 @@ Nine globals are registered:
 - NavigationLinks provide reusable destinations and page-synchronized records. Headers and Footers provide versioned shell presets.
 - SystemPages pair one type with its matching block and are referenced from system modes.
 - Media owns server-side public marketing-asset uploads, extension/MIME/signature format validation before Payload file generation or replacement cleanup, alt requirements, usage detection, deletion guards, storage health, queue sync, and audit events. Format validation is not malware scanning; private or arbitrary document intake requires a separate collection and private bucket path with external scanning and quarantine. GalleryAlbums own ordered reusable image sets.
-- Forms define general, lead, and review-intent inputs and notifications. FormSubmissions own immutable submitted data plus operational state, activity, assignment, and optional Review promotion.
+- Forms define general, lead, and review-intent inputs and notifications. An optional per-field
+  `contactRole` maps one Text/Email/Phone control to submitter name/email/phone with arbitrary machine
+  names; uniqueness/type validation applies. Legacy alias lookup remains only for unassigned roles.
+  FormSubmissions own immutable raw data, captured published intake snapshots/content fingerprints
+  and native read-only original question/answer rows, plus operational state, activity, assignment
+  and optional Review promotion. Snapshots preserve Payload array-row IDs where present and original
+  select labels; legacy submissions remain raw-data-only without backfill. The fingerprint is not a
+  Payload version ID. Existing Contact33/Review public presentations remain fixed; generic rendering,
+  stale-client revision negotiation and flattened exports require separate work.
 - WorkQueue stores deduplicated actionable conditions. OperationalAuditEvents stores selected immutable operational history. Both record their source feature for Site Manager row filtering. Users own authentication, Admin/Site Manager roles, and feature grants.
 
 ## Feature and Publication Governance

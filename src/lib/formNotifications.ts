@@ -1,3 +1,4 @@
+import { formatFormAnswer } from '@/lib/formSubmissionSnapshot'
 import { DEFAULT_SITE_TIME_ZONE, type SiteTimeZone } from '@/lib/siteTimeZone'
 import type { Form } from '@/payload-types'
 
@@ -11,16 +12,8 @@ const escapeHTML = (value: string): string =>
 
 type FormDefinitionField = Form['fields'][number]
 
-const formatSubmissionValue = (field: FormDefinitionField, value: boolean | string): string => {
-  if (typeof value === 'boolean') return value ? 'Yes' : 'No'
-  if (field.type === 'select' && value) {
-    return field.options?.find((option) => option.value === value)?.label || value
-  }
-  return value || '—'
-}
-
 const formatHTMLSubmissionValue = (field: FormDefinitionField, value: boolean | string): string => {
-  const displayValue = formatSubmissionValue(field, value)
+  const displayValue = formatFormAnswer(field, value)
   if (displayValue === '—') return displayValue
   if (field.type === 'email' && typeof value === 'string') {
     return `<a href="${escapeHTML(`mailto:${value}`)}" style="color: #2557a7; text-decoration: underline;">${escapeHTML(displayValue)}</a>`
@@ -91,7 +84,7 @@ export const buildFormNotificationEmail = ({
     return {
       htmlValue: formatHTMLSubmissionValue(field, value),
       label: field.label,
-      value: formatSubmissionValue(field, value),
+      value: formatFormAnswer(field, value),
     }
   })
   const submittedAtLabel = formatFormSubmissionDate(submittedAt, timeZone)

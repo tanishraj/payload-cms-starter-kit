@@ -280,4 +280,108 @@ describe('API', () => {
       }),
     )
   })
+  it('retains original form answers through schema changes and operational updates', async () => {
+    const { buildFormSubmissionSnapshot } = await import('@/lib/formSubmissionSnapshot')
+    const admin = await payload.create({
+      collection: 'users',
+      data: { email: 'form-history-admin@example.test', password: 'test-password', role: 'admin' },
+      overrideAccess: true,
+    })
+    const form = await payload.create({
+      collection: 'forms',
+      data: {
+        title: 'Custom Department Enquiry',
+        slug: 'custom-department-enquiry',
+        _status: 'published',
+        submissionIntent: 'general',
+        submitButtonLabel: 'Send',
+        successMessage: 'Received.',
+        fields: [
+          { label: 'Work email', name: 'work_email', type: 'email', contactRole: 'email' },
+          {
+            label: 'Preferred department',
+            name: 'preferred_department',
+            type: 'select',
+            options: [{ label: 'Admissions', value: 'admissions' }],
+          },
+          { label: 'Consent', name: 'consent', type: 'checkbox' },
+        ],
+      },
+      draft: false,
+      overrideAccess: false,
+      user: admin,
+    })
+    const values = {
+      work_email: 'person@example.test',
+      preferred_department: 'admissions',
+      consent: true,
+    }
+    const captured = buildFormSubmissionSnapshot(form, values)
+    const submission = await payload.create({
+      collection: 'form-submissions',
+      data: {
+        ...captured,
+        data: values,
+        form: form.id,
+        status: 'new',
+        submissionIntent: 'general',
+        submittedAt: new Date().toISOString(),
+        submitterEmail: values.work_email,
+      },
+      overrideAccess: true,
+    })
+    expect(submission.answers?.[1]).toMatchObject({
+      fieldID: form.fields[1].id,
+      label: 'Preferred department',
+      name: 'preferred_department',
+      displayValue: 'Admissions',
+      value: { raw: 'admissions' },
+    })
+    expect(submission.answers?.[2].value).toEqual({ raw: true })
+
+    await payload.update({
+      collection: 'forms',
+      id: form.id,
+      data: {
+        fields: [
+          {
+            ...form.fields[1],
+            label: 'New department question',
+            name: 'department',
+            options: [{ label: 'Student services', value: 'admissions' }],
+          },
+          form.fields[0],
+        ],
+      },
+      draft: false,
+      overrideAccess: false,
+      user: admin,
+    })
+    const updated = await payload.update({
+      collection: 'form-submissions',
+      id: submission.id,
+      data: {
+        status: 'in_review',
+        internalNotes: 'Follow up.',
+        answers: [],
+        formRevision: 'tampered',
+        formSnapshot: { title: 'tampered' },
+      },
+      overrideAccess: false,
+      user: admin,
+    })
+    expect(updated.status).toBe('in_review')
+    expect(updated.internalNotes).toBe('Follow up.')
+    const stored = await payload.findByID({
+      collection: 'form-submissions',
+      id: submission.id,
+      depth: 0,
+      overrideAccess: false,
+      user: admin,
+    })
+    expect(stored.formRevision).toBe(captured.formRevision)
+    expect(stored.formSnapshot).toEqual(captured.formSnapshot)
+    expect(stored.answers).toEqual(submission.answers)
+    expect(stored.data).toEqual(values)
+  })
 })

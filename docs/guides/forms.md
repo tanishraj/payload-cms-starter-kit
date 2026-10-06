@@ -66,7 +66,32 @@ To configure it:
 5. Write a plain-text message body confirming receipt and next steps.
 6. Save and publish the form.
 
-The CMS looks for a submitted email using the normalized keys `submitterEmail`, then `reviewerEmail`, then `email`. If none exists, no confirmation is sent even when enabled. Internal notifications and submitter confirmations share the same responsive email shell branded with Site Identity.
+Choose **Use answer as → Submitter email** on one Email field to use a custom
+name such as `work_email` for inbox contact details and confirmation delivery.
+Similarly, one Text field may supply the submitter name and one Phone field may
+supply the submitter phone. Labels and machine names stay configurable. Each role
+may be assigned once, and the CMS validates its control type. Leave ordinary
+questions unassigned. An explicitly mapped but empty answer does not fall back to
+a different email field.
+
+Without an explicit role, the CMS looks for a submitted email using the normalized keys `submitterEmail`, then `reviewerEmail`, then `email`. If none exists, no confirmation is sent even when enabled. Internal notifications and submitter confirmations share the same responsive email shell branded with Site Identity.
+
+## Submission History
+
+New submissions retain the published intake definition, its content fingerprint,
+and read-only original questions/answers. A select answer includes its original
+option label; a checkbox reads Yes/No. Form labels, names, order and options can
+later change without rewriting those captured answers. Payload field-row IDs
+identify fields where present; names are not treated as immutable identity.
+
+This is a submission-history foundation, not a generic public form presentation.
+The existing Contact Form and Review Submission field restrictions above still
+apply. Assign contact roles only to fields the selected presentation actually
+collects. A visitor currently submits against the latest published definition;
+client revision negotiation and stale-form recovery are not implemented yet.
+Older submissions keep their original raw data and are not retroactively labelled
+using today's schema. No database migration/backfill is required for these optional
+history fields. See [Form Submissions](./form-submissions.md).
 
 ## Spam Protection And Failure Handling
 
