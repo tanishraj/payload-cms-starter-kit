@@ -97,7 +97,7 @@ components:
 
 This document describes the existing `.storybook` and `src/components/revamp` workshop only. The workshop inherits official shadcn Neutral in light and dark modes, fresh Radix Luma presentation dependencies, Lucide icons and system sans-serif typography. Its character is calm, readable and rounded, with semantic color roles and restrained interaction feedback.
 
-The shipped Generic Form preserves authenticated Shadcnblocks composition while connecting typed questions and submission states. This is a record of the workshop source, not a replacement identity for the existing SNMIH production website. Production integration is future work. The finish-review disposition is **ship for the workshop**, with no material fixes and an empty detector result reported by the reviewer; this does not establish browser/CMS/native-admin acceptance or production launch readiness.
+The shipped Generic Form preserves authenticated Shadcnblocks composition while connecting typed questions and submission states. This is a record of the workshop source, not a replacement identity for the existing SNMIH production website. At workshop approval, production integration was still future work; the native adapter added below now uses the existing website theme. The finish-review disposition is **ship for the workshop**, with no material fixes and an empty detector result reported by the reviewer; this does not establish browser/CMS/native-admin acceptance or production launch readiness.
 
 **Key Characteristics:**
 

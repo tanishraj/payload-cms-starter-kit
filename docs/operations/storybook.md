@@ -4,7 +4,7 @@ Run `pnpm storybook` and open http://localhost:6006. Source changes reload live.
 
 ## Current foundation
 
-The selected foundation is official shadcn **Neutral**, light/dark, **Radix Luma**, Lucide icons, and system sans-serif typography. `.storybook/neutral.css` stores unmodified official tokens from https://ui.shadcn.com/r/colors/neutral.json (retrieved 2026-09-12). `.storybook/preview.css` supplies the official semantic Tailwind mappings and baseline styles. No legacy website CSS is imported. Production's current theme is unchanged until integration.
+The selected foundation is official shadcn **Neutral**, light/dark, **Radix Luma**, Lucide icons, and system sans-serif typography. `.storybook/neutral.css` stores unmodified official tokens from https://ui.shadcn.com/r/colors/neutral.json (retrieved 2026-09-12). `.storybook/preview.css` supplies the official semantic Tailwind mappings and baseline styles. No legacy website CSS is imported. The production adapter inherits the existing website theme; the workshop remains independently Neutral.
 
 The catalogue starts with a freshly installed `@shadcn/button` in `src/components/revamp/ui/button.tsx`. Its Docs and Default playground expose upstream variants and sizes, label, disabled state, type, accessible label, and sample icon compositions. Additional stories cover variants, icons and link composition. Button source is installed directly through the official CLI and retains upstream styling.
 
@@ -44,9 +44,11 @@ confirmation replaces the controls and receives focus. An unconfirmed network
 result preserves answers and allows deliberate retry; it does not claim the
 server failed to store the request. Durable server deduplication is still future work.
 
-This increment does **not** register a public Payload block or import the workshop
-into the site's existing theme. Native form authoring/public rendering/Live Preview
-acceptance and the public theme/radius contract remain the next integration step.
+The native Generic Form block now uses this presentation with the website's shared
+theme. Its publication/submission/draft-isolation/disabled-preview journey passed on
+an isolated test database. CMS preview and unavailable adapter states are included
+in this same catalogue entry; production readiness remains subject to the broader
+feature checklist and deployment gates.
 
 ## Workflow
 
