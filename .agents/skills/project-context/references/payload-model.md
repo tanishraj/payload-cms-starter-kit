@@ -93,7 +93,7 @@ Read [adminFeatures.ts](../../../../src/access/adminFeatures.ts), [featureAccess
   and the Payload fallback. H1 remains reserved for the surrounding document title.
 - [buildSEOFields.ts](../../../../src/fields/buildSEOFields.ts) defines reusable route SEO controls.
 - [cmsLinkFields.ts](../../../../src/fields/cmsLinkFields.ts) defines reusable Navigation Link relationships.
-- [projectSlugField.ts](../../../../src/fields/projectSlugField.ts) wraps Payload's generated slug field for all slug-based collections. It collapses separators and assigns the first available `-copy`, `-copy-2`, and later suffix while preserving existing stored slugs.
+- [projectSlugField.ts](../../../../src/fields/projectSlugField.ts) wraps Payload's generated slug field for all slug-based collections. It supplies missing create slugs before validation under Payload 3.90 without changing existing or explicitly chosen URLs. It collapses separators and assigns the first available `-copy`, `-copy-2`, and later suffix while preserving existing stored slugs.
 
 Anonymous reads of draft-enabled public collections are constrained to published documents at the
 Payload access layer. Submitted Reviews additionally require approved moderation, and internal
@@ -112,3 +112,7 @@ Run `pnpm generate:types` after schema changes and keep
 Users can enroll their own account in optional TOTP two-factor authentication through password-confirmed Users endpoints. A hidden TwoFactorCredentials collection denies all ordinary API access and stores encrypted secrets, hashed recovery codes, compare-and-swap revisions, attempt counters, and a session cutoff. Login and password reset enforce enabled factors. One-time authenticator steps and recovery codes cannot be replayed. Settings changes invalidate existing sessions. Independent security-state writes intentionally survive failed login transaction rollback; account deletion cleanup uses the request transaction. Existing first-admin policy, feature governance and user field protections remain authoritative.
 
 Forms support a Phone field with international-friendly formatting, 7–15 digit validation, and constrained Contact33 input. FormSubmissions stores immutable searchable submitterPhone. Review-intent forms reject required fields that the fixed Review Submission UI cannot provide. Notification and confirmation emails use site identity, timezone-aware dates, readable select labels and clickable contacts. Existing request-body, field-value, metadata and rate limits remain enforced.
+
+## Payload 3.90.2 auth/storage baseline
+
+Generated user types include `resetPasswordRequestedAt`; password changes/reset revoke other sessions under upstream hardened authentication. Existing MongoDB/provider/access configuration is retained. Raster/PDF-only upload policy and server validation remain authoritative; no restricted-file or unsafe-fetch opt-in. Operators must recreate pending scheduled publish/unpublish events after upgrading if present. See `docs/operations/dependency-audit-remediation-2026-10-07.md`.

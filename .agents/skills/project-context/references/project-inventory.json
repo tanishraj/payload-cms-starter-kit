@@ -2191,7 +2191,7 @@
   "project": {
     "frameworks": {
       "next": "16.3.6",
-      "payload": "3.88.0",
+      "payload": "3.90.2",
       "react": "19.2.7",
       "tailwindcss": "^4.3.2",
       "typescript": "5.7.3",
@@ -2273,6 +2273,7 @@
       "docs/guides/work-queue.md",
       "docs/operations/database-backups.md",
       "docs/operations/dependency-audit-remediation-2026-10-06.md",
+      "docs/operations/dependency-audit-remediation-2026-10-07.md",
       "docs/operations/dependency-management.md",
       "docs/operations/developer-workflows.md",
       "docs/operations/editorial-governance.md",
@@ -3214,7 +3215,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "2f1560643333d31e2d8daa5201bebba7fe0ed4a983920f659b38e50d09d92069"
+    "sha256": "d9f91182b833df3730a4e32c69935dae52dc9b662865959f86c22425956ce645"
   },
   "surfaces": {
     "access": [

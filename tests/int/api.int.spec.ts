@@ -26,7 +26,10 @@ describe('API', () => {
     const { default: config } = await import('@/payload.config')
     const payloadConfig = await config
     payload = await getPayload({ config: payloadConfig })
-    await Promise.all(Object.values(payload.db.collections).map((model) => model.init()))
+    await Promise.all([
+      ...Object.values(payload.db.collections).map((model) => model.init()),
+      ...Object.values(payload.db.versions).map((model) => model.init()),
+    ])
   }, 120000)
 
   afterAll(async () => {
@@ -72,6 +75,31 @@ describe('API', () => {
     expect(Array.isArray(categories.docs)).toBe(true)
     expect(articles).toBeDefined()
     expect(Array.isArray(articles.docs)).toBe(true)
+  })
+
+  it('publishes a title-derived Form slug before validation and preserves chosen URLs', async () => {
+    const data = {
+      title: 'An Editor’s Enquiry',
+      slug: '',
+      fields: [{ label: 'Your question', name: 'custom_question', type: 'text' as const }],
+      submissionIntent: 'general' as const,
+      submitButtonLabel: 'Send',
+      successMessage: 'Received',
+      _status: 'published' as const,
+    }
+    const generated = await payload.create({ collection: 'forms', data })
+    expect(generated.slug).toBe('an-editors-enquiry')
+    const renamed = await payload.update({
+      collection: 'forms',
+      id: generated.id,
+      data: { title: 'A different title' },
+    })
+    expect(renamed.slug).toBe(generated.slug)
+    const chosen = await payload.create({
+      collection: 'forms',
+      data: { ...data, slug: 'chosen-enquiry-url' },
+    })
+    expect(chosen.slug).toBe('chosen-enquiry-url')
   })
 
   it('enforces two-role feature permissions through the Payload Local API', async () => {

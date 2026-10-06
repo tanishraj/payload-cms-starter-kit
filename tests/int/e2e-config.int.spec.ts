@@ -293,10 +293,10 @@ describe('E2E login navigation', () => {
       user: { email: 'test@example.com', password: 'password' },
     })
 
-    expect(page.goto).toHaveBeenCalledWith('/admin/login')
+    expect(page.goto).toHaveBeenCalledWith('/admin/login', { waitUntil: 'domcontentloaded' })
     expect(page.getByLabel).toHaveBeenCalledWith('Email', { exact: true })
     expect(page.getByLabel).toHaveBeenCalledWith('Password', { exact: true })
     expect(page.getByRole).toHaveBeenCalledWith('button', { name: 'Log in', exact: true })
-    expect(page.waitForURL).toHaveBeenCalledWith('/admin')
+    expect(page.waitForURL).toHaveBeenCalledWith('/admin', { waitUntil: 'domcontentloaded' })
   })
 })

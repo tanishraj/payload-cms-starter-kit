@@ -14,7 +14,7 @@ describe('Payload S3 Admin compatibility', () => {
     vi.resetModules()
   })
 
-  it('keeps disabled S3 Admin providers resolvable from a localDisk-generated import map', async () => {
+  it('keeps S3 Admin dependencies resolvable without mounting a disabled client uploader', async () => {
     process.env = {
       ...ORIGINAL_ENV,
       ALLOW_FIRST_ADMIN_CREATION: 'false',
@@ -66,22 +66,16 @@ describe('Payload S3 Admin compatibility', () => {
 
     const s3Dependency = fakeS3Config.admin?.dependencies?.[S3_CLIENT_UPLOAD_HANDLER_PATH]
     const s3Provider = (fakeS3Config.admin?.components?.providers ?? []).find(
-      (provider) =>
-        typeof provider === 'object' && provider.path === S3_CLIENT_UPLOAD_HANDLER_PATH,
+      (provider) => typeof provider === 'object' && provider.path === S3_CLIENT_UPLOAD_HANDLER_PATH,
     )
 
     expect(s3Dependency).toEqual({
       path: S3_CLIENT_UPLOAD_HANDLER_PATH,
       type: 'function',
     })
-    expect(s3Provider).toMatchObject({
-      clientProps: {
-        collectionSlug: 'media',
-        enabled: false,
-        serverHandlerPath: S3_CLIENT_UPLOAD_ENDPOINT_PATH,
-      },
-      path: S3_CLIENT_UPLOAD_HANDLER_PATH,
-    })
+    // Payload 3.90 registers a client provider only when clientUploads is enabled.
+    // This starter intentionally keeps uploads server-side.
+    expect(s3Provider).toBeUndefined()
     expect(fakeS3Config.endpoints ?? []).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({
