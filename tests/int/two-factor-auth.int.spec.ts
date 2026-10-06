@@ -53,13 +53,15 @@ const enroll = async (user: Awaited<ReturnType<typeof account>>) => {
   const setupResponse = await settings(user, { action: 'setup', password })
   expect(setupResponse.status).toBe(200)
   const setup = await setupResponse.json()
+  const enrollmentCode = createAuthenticator(setup.secret).generate()
   const enabled = await settings(user, {
     action: 'enable',
     password,
-    code: createAuthenticator(setup.secret).generate(),
+    code: enrollmentCode,
   })
   expect(enabled.status).toBe(200)
   return {
+    enrollmentCode,
     secret: setup.secret as string,
     ...((await enabled.json()) as { recoveryCodes: string[] }),
   }
@@ -132,12 +134,10 @@ describe('optional two-factor authentication with real Payload and MongoDB', () 
   it('requires a valid code, blocks replay, consumes recovery codes once, and invalidates old sessions', async () => {
     const user = await account('siteManager')
     await login(user.email)
-    const { secret, recoveryCodes } = await enroll(user)
+    const { recoveryCodes, enrollmentCode } = await enroll(user)
     await expect(login(user.email)).rejects.toThrow('authenticator code')
     await expect(login(user.email, 'bad-code')).rejects.toThrow('Invalid or already used')
-    await expect(login(user.email, createAuthenticator(secret).generate())).rejects.toThrow(
-      'Invalid or already used',
-    )
+    await expect(login(user.email, enrollmentCode)).rejects.toThrow('Invalid or already used')
     expect((await payload.findByID({ collection: 'users', id: user.id })).sessions).toHaveLength(0)
     const recovered = await login(user.email, recoveryCodes[0])
     expect(recovered.user?.id).toBe(user.id)
