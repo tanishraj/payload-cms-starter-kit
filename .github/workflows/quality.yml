@@ -73,6 +73,8 @@ jobs:
         run: pnpm test:int
       - name: Run critical governance journeys
         run: pnpm test:e2e:governance
+      - name: Run native dynamic-form journey
+        run: pnpm test:e2e:forms
       - name: Build the Vercel production application
         run: pnpm build
       - name: Stop isolated MongoDB replica

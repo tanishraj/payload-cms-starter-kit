@@ -151,7 +151,16 @@
   --color-color-2: var(--color-2);
   --color-color-1: var(--color-1);
 
-  /* Public surface roles: cards/controls cap at 12px; compact details cap at 4px. */
+  /* Official Luma mappings for the reviewed upstream form dependencies. */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Public semantic roles: cards/controls cap at 12px; compact details cap at 4px. */
   --radius-card: min(var(--radius, 0.625rem), 0.75rem);
   --radius-control: min(var(--radius, 0.625rem), 0.75rem);
   --radius-compact: min(calc(var(--radius, 0.625rem) * 0.5), 0.25rem);

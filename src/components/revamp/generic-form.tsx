@@ -81,6 +81,7 @@ function FormPresentation({
   onSubmit,
 }: GenericFormProps) {
   const prefix = useId()
+  const [selectContainer, setSelectContainer] = useState<HTMLDivElement | null>(null)
   const messageRef = useRef<HTMLParagraphElement>(null)
   const submittingRef = useRef(false)
   const [result, setResult] = useState<GenericFormResult | null>(null)
@@ -146,7 +147,7 @@ function FormPresentation({
   }
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-md" ref={setSelectContainer}>
       <form
         className="flex flex-col gap-4"
         noValidate
@@ -255,7 +256,7 @@ function FormPresentation({
                                 placeholder={definition.placeholder || 'Choose an option'}
                               />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent container={selectContainer}>
                               <SelectGroup>
                                 {definition.options?.map((option) => (
                                   <SelectItem key={option.value} value={option.value}>

@@ -51,8 +51,9 @@ reuses an arbitrary server already listening on port 3000. The child binds expli
 to `127.0.0.1`, matching the browser origin and Next.js development-resource policy.
 
 After loading the fixture, Playwright replaces ambient `NODE_OPTIONS` with the fixed
-`react-server` condition and `tsx/esm` import hook required by real workers, and passes the same
-options to a direct Next.js development-server launch. The focused
+`react-server` condition and `tsx/esm` import hook required by real workers. The Next.js
+development-server child receives normal framework-managed React contexts, without
+forcing those worker import options onto client/server compilation. The focused
 `playwright.runtime-import.config.ts` probe runs a real worker/helper Payload-config import without
 starting the server or connecting to MongoDB.
 

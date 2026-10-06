@@ -37,6 +37,7 @@ import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Componen
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Component'
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
+import { GenericFormBlockPresentation } from '@/blocks/GenericForm/Presentation'
 import { Contact33BlockComponent } from '@/blocks/Contact33/Component'
 import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
 import { TestimonialSpotlightBlockComponent } from '@/blocks/TestimonialSpotlight/Component'
@@ -1806,6 +1807,37 @@ export const blockThumbnailFixtures = {
       form={reviewFormFixture}
       size="compact"
       title="Tell us about your experience."
+    />
+  ),
+  genericForm: (
+    <GenericFormBlockPresentation
+      heading="Ask our team"
+      description="Choose a department and tell us how we can help."
+      size="compact"
+      preview
+      definition={{
+        slug: 'thumbnail-only',
+        submitButtonLabel: 'Send enquiry',
+        fields: [
+          { name: 'visitor_name', label: 'Your name', type: 'text', required: true },
+          {
+            name: 'preferred_department',
+            label: 'Which department can help?',
+            type: 'select',
+            required: true,
+            options: [
+              { label: 'Admissions', value: 'admissions' },
+              { label: 'Student services', value: 'services' },
+            ],
+          },
+          { name: 'enquiry_details', label: 'How can we help?', type: 'textarea', required: true },
+          {
+            name: 'contact_permission',
+            label: 'You may contact me about this enquiry',
+            type: 'checkbox',
+          },
+        ],
+      }}
     />
   ),
   contact33: (

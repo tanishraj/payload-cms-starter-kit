@@ -233,7 +233,15 @@ describe('website theme contracts', () => {
     expect(globalsSource).toContain(
       '--radius-compact: min(calc(var(--radius, 0.625rem) * 0.5), 0.25rem);',
     )
-    expect(globalsSource).not.toMatch(/--radius-(?:xs|sm|md|lg|xl|2xl|3xl|4xl):/)
+    // Reviewed upstream dependencies share the official workshop mappings;
+    // existing website surfaces still use the capped semantic roles above.
+    const workshopSource = fs.readFileSync(
+      path.resolve(process.cwd(), '.storybook/preview.css'),
+      'utf8',
+    )
+    const radiusMappings = /--radius-(?:sm|md|lg|xl|2xl|3xl|4xl):[^;]+;/g
+    expect(globalsSource.match(radiusMappings)).toEqual(workshopSource.match(radiusMappings))
+    expect(globalsSource).not.toContain('--radius-xs:')
   })
 
   it('uses the semantic link, radius, and filled-action hover contracts', () => {

@@ -91,9 +91,9 @@ describe('curated block catalog', () => {
     const pageSlugs = pageBuilderBlocks.map((block) => block.slug)
     const advancedSlugs = slugsForGroup(pageBuilderBlocks, blockPickerGroups.advanced)
 
-    expect(pageSlugs).toHaveLength(59)
+    expect(pageSlugs).toHaveLength(60)
     expect(new Set(pageSlugs).size).toBe(pageSlugs.length)
-    expect(advancedSlugs).toHaveLength(39)
+    expect(advancedSlugs).toHaveLength(40)
     expect(advancedSlugs).toContain('integration23')
     expect(advancedSlugs).toContain('logos20')
     expect(advancedSlugs).toContain('bankDetails')

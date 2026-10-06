@@ -233,6 +233,7 @@ export interface Page {
         | RatingSpotlightBlock
         | ReviewFeedBlock
         | ReviewSubmissionBlock
+        | GenericFormBlock
         | Contact33Block
         | TeamShowcaseBlock
         | Services21Block
@@ -685,6 +686,7 @@ export interface ReusableSection {
         | RatingSpotlightBlock
         | ReviewFeedBlock
         | ReviewSubmissionBlock
+        | GenericFormBlock
         | Contact33Block
         | TeamShowcaseBlock
         | Services21Block
@@ -5092,7 +5094,7 @@ export interface Form {
     message?: string | null;
   };
   /**
-   * Review Submission uses its fixed review fields; it cannot render additional required fields.
+   * Generic Form renders all these fields with your labels and machine names. Review Submission uses its fixed review fields; it cannot render additional required fields.
    */
   fields: {
     /**
@@ -5120,6 +5122,26 @@ export interface Form {
   createdAt: string;
   deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GenericFormBlock".
+ */
+export interface GenericFormBlock {
+  heading?: string | null;
+  description?: string | null;
+  /**
+   * Create and publish a Form under Forms first, then select it here. All six supported controls, custom names and labels work. Live Preview never sends submissions. Review Forms use the Review Submission block.
+   */
+  form: string | Form;
+  size: 'none' | 'compact' | 'default' | 'comfortable';
+  /**
+   * Optional stable link target. Enter a value such as admissions, then link to #admissions on this page or /page-path#admissions from another page.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'genericForm';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -9512,6 +9534,7 @@ export interface PagesSelect<T extends boolean = true> {
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
+        genericForm?: T | GenericFormBlockSelect<T>;
         contact33?: T | Contact33BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
@@ -12135,6 +12158,19 @@ export interface ReviewSubmissionBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GenericFormBlock_select".
+ */
+export interface GenericFormBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  form?: T;
+  size?: T;
+  anchorId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "Contact33Block_select".
  */
 export interface Contact33BlockSelect<T extends boolean = true> {
@@ -14043,6 +14079,7 @@ export interface ReusableSectionsSelect<T extends boolean = true> {
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
+        genericForm?: T | GenericFormBlockSelect<T>;
         contact33?: T | Contact33BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;
@@ -15075,6 +15112,7 @@ export interface NewsEventsDetailTemplate {
         | RatingSpotlightBlock
         | ReviewFeedBlock
         | ReviewSubmissionBlock
+        | GenericFormBlock
         | Contact33Block
         | TeamShowcaseBlock
         | Services21Block
@@ -15366,6 +15404,7 @@ export interface NewsEventsDetailTemplateSelect<T extends boolean = true> {
         ratingSpotlight?: T | RatingSpotlightBlockSelect<T>;
         reviewFeed?: T | ReviewFeedBlockSelect<T>;
         reviewSubmission?: T | ReviewSubmissionBlockSelect<T>;
+        genericForm?: T | GenericFormBlockSelect<T>;
         contact33?: T | Contact33BlockSelect<T>;
         teamShowcase?: T | TeamShowcaseBlockSelect<T>;
         services21?: T | Services21BlockSelect<T>;

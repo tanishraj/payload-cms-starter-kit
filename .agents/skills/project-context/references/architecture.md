@@ -200,5 +200,14 @@ and `checkbox-checkbox-standard-1` with the six current Payload control types,
 arbitrary field definitions and the shared browser-safe form validator.
 `GenericForm` owns accessible local interaction and accepts an asynchronous
 submission callback; CMS loading and API transport remain caller-owned. Stories
-use only synthetic data/local callbacks. This increment does not register a
-public block, change the public theme or weaken its radius/import boundary.
+use only synthetic data/local callbacks. The native `genericForm` block now uses that presentation through a published-only
+server adapter, an explicit client transport and a client-safe disabled preview.
+Production inherits existing shared website tokens; the public import guard permits
+only its reviewed adapter, and official Luma radius mappings serve its dependencies.
+There is no form-specific palette or global website-theme replacement.
+
+The native dynamic-form browser journey runs through `pnpm test:e2e:forms` on the
+required loopback test database and is a Quality gate. The fixture worker retains
+the `react-server`/tsx options needed for Payload config import, while the Next web
+server uses its normal framework-managed React contexts. Forcing `react-server`
+globally on Next breaks its public frontend compilation/SSR.

@@ -19,6 +19,13 @@ const defineThumbnail = <const Definition extends BlockThumbnailDefinitionInput>
 
 export const blockThumbnailDefinitions = [
   defineThumbnail({
+    alt: 'Generic Form custom questions preview',
+    filename: 'generic-form.jpg',
+    label: 'Generic Form',
+    slug: 'genericForm',
+    stageAlignment: 'top',
+  }),
+  defineThumbnail({
     alt: 'Logo Marquee two-row partner logo preview',
     filename: 'logos20.jpg',
     label: 'Logo Marquee',

@@ -2,7 +2,7 @@
 
 ## How The Block System Works
 
-Pages use an ordered block layout. Editors can collapse, reorder, duplicate, and remove blocks; most visual sections share appearance and responsive spacing controls. A block error boundary isolates a failing block so the remainder of the Page can still render. Live preview uses the production renderer for every Page block, including blocks reached through Reusable Sections; inspect desktop, tablet, and mobile sizes before publishing.
+Pages use an ordered block layout. Editors can collapse, reorder, duplicate, and remove blocks; most visual sections share appearance and responsive spacing controls. A block error boundary isolates a failing block so the remainder of the Page can still render. Live Preview uses the shared production presentations for every Page block, including blocks reached through Reusable Sections; inspect desktop, tablet, and mobile sizes before publishing.
 
 `Reusable Section` references a shared block stack. Reusable Sections intentionally cannot contain another Reusable Section; runtime rendering also stops nesting after depth 10.
 
@@ -90,6 +90,7 @@ The setting follows the selected presentation. Content Highlights applies it to 
 | Review Feed              | Paginated review list                        | Uses `/api/review-feed` after the initial render                                                                                                                                                                                                                                                                                                     |
 | Review Submission        | Public review form                           | Requires a Form with review intent                                                                                                                                                                                                                                                                                                                   |
 | Contact Form             | General or lead form                         | Requires a Form definition                                                                                                                                                                                                                                                                                                                           |
+| Generic Form | Custom questions and generic enquiries | Reusable published General/Lead Form; heading, description and section padding; shared website theme; submissions disabled in preview |
 | Regional Offices         | Office/map cards                             | Reads Office Locations                                                                                                                                                                                                                                                                                                                               |
 | Team Showcase            | Team member grid                             | Structured profile fields and independent card backgrounds                                                                                                                                                                                                                                                                                           |
 | Services                 | Service cards                                | Repeating service items                                                                                                                                                                                                                                                                                                                              |
@@ -471,3 +472,15 @@ use the shared Page, Custom URL, and Media link controls.
 - [Gallery Albums](./gallery-albums.md)
 - [Office Locations](./office-locations.md)
 - [News & Events](./news-events.md)
+
+### Generic Form
+
+Add **Generic Form** from **Advanced Library** to a Page or Reusable Section.
+Choose a published General/Lead Form, then configure heading, description and
+section padding. Its six supported controls use the selected definition’s custom
+names, labels, options and required state. Edit questions through the Form relationship
+drawer; publication of a shared Form affects all uses. Live Preview is read-only for
+submissions. See the [Forms guide](forms.md#build-a-form-with-your-own-questions).
+Presentation source: authenticated `@shadcnblocks/form-form-patterns-4`, with
+`@shadcnblocks/checkbox-checkbox-standard-1` and their official shadcn dependencies.
+The block uses the shared website theme and retains the reviewed upstream structure.

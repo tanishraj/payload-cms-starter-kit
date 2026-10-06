@@ -30,7 +30,7 @@ const bannedPatterns = [
 ] as const
 
 describe('semantic radius contract', () => {
-  it('keeps the isolated workshop outside public imports until theme integration is reviewed', () => {
+  it('allows only the reviewed scoped Generic Form adapter to import the revamp presentation', () => {
     const imports: string[] = []
     for (const root of publicRoots) {
       for (const file of walk(path.resolve(process.cwd(), root))) {
@@ -64,7 +64,10 @@ describe('semantic radius contract', () => {
         inspect(parsed)
       }
     }
-    expect(imports).toEqual([])
+    expect(imports.sort()).toEqual([
+      'src/blocks/GenericForm/Presentation.tsx: @/components/revamp/generic-form',
+      'src/blocks/GenericForm/Presentation.tsx: @/components/revamp/ui/field',
+    ])
   })
 
   it('uses semantic radius roles throughout the public frontend', () => {

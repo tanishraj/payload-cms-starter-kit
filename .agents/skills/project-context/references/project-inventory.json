@@ -441,6 +441,22 @@
       },
       {
         "clientFiles": [],
+        "componentPath": "src/blocks/GenericForm/Component.tsx",
+        "configPath": "src/blocks/GenericForm/config.ts",
+        "files": [
+          "src/blocks/GenericForm/Component.tsx",
+          "src/blocks/GenericForm/Presentation.tsx",
+          "src/blocks/GenericForm/PreviewComponent.tsx",
+          "src/blocks/GenericForm/config.ts"
+        ],
+        "interfaceName": "GenericFormBlock",
+        "presentationPath": "src/blocks/GenericForm/Presentation.tsx",
+        "previewComponentPath": "src/blocks/GenericForm/PreviewComponent.tsx",
+        "slug": "genericForm",
+        "symbol": "GenericFormBlock"
+      },
+      {
+        "clientFiles": [],
         "componentPath": "src/blocks/HeaderNavbar12/Component.tsx",
         "configPath": "src/blocks/HeaderNavbar12/config.ts",
         "files": [
@@ -1060,6 +1076,7 @@
       "GalleryAlbumTabsBlock",
       "GalleryCoverflowBlock",
       "GalleryShowcaseBlock",
+      "GenericFormBlock",
       "HeaderNavbar12Block",
       "HeroBannerBlock",
       "HeroCarouselBlock",
@@ -1123,6 +1140,7 @@
       "imageMosaic",
       "studentExperience",
       "reviewSubmission",
+      "genericForm",
       "contact33",
       "contact24",
       "ratingSpotlight",
@@ -1202,6 +1220,7 @@
       "ratingSpotlight",
       "reviewFeed",
       "reviewSubmission",
+      "genericForm",
       "contact33",
       "teamShowcase",
       "services21",
@@ -1245,6 +1264,7 @@
       "imageMosaic",
       "studentExperience",
       "reviewSubmission",
+      "genericForm",
       "contact33",
       "contact24",
       "ratingSpotlight",
@@ -1323,6 +1343,7 @@
       "ratingSpotlight",
       "reviewFeed",
       "reviewSubmission",
+      "genericForm",
       "contact33",
       "teamShowcase",
       "services21",
@@ -1656,6 +1677,7 @@
         "public/block-thumbnails/gallery-album-tabs.jpg",
         "public/block-thumbnails/gallery-coverflow.jpg",
         "public/block-thumbnails/gallery-showcase.jpg",
+        "public/block-thumbnails/generic-form.jpg",
         "public/block-thumbnails/header-navbar-12.jpg",
         "public/block-thumbnails/hero-banner.jpg",
         "public/block-thumbnails/hero-carousel.jpg",
@@ -1696,6 +1718,10 @@
         "public/block-thumbnails/video-embed.jpg"
       ],
       "definitions": [
+        {
+          "filename": "generic-form.jpg",
+          "slug": "genericForm"
+        },
         {
           "filename": "logos20.jpg",
           "slug": "logos20"
@@ -1987,6 +2013,7 @@
         "heroBanner",
         "heroCarousel",
         "reviewSubmission",
+        "genericForm",
         "contact33",
         "contact24",
         "reviewFeed",
@@ -2194,6 +2221,7 @@
       "storybook",
       "test",
       "test:e2e",
+      "test:e2e:forms",
       "test:e2e:governance",
       "test:e2e:two-factor",
       "test:int",
@@ -2404,6 +2432,10 @@
       "src/blocks/GalleryCoverflow/config.ts",
       "src/blocks/GalleryShowcase/Component.tsx",
       "src/blocks/GalleryShowcase/config.ts",
+      "src/blocks/GenericForm/Component.tsx",
+      "src/blocks/GenericForm/Presentation.tsx",
+      "src/blocks/GenericForm/PreviewComponent.tsx",
+      "src/blocks/GenericForm/config.ts",
       "src/blocks/HeaderNavbar12/Component.tsx",
       "src/blocks/HeaderNavbar12/LogoHeightField.tsx",
       "src/blocks/HeaderNavbar12/config.ts",
@@ -2780,6 +2812,8 @@
       "src/lib/formSubmissionSnapshot.ts",
       "src/lib/forms.ts",
       "src/lib/frontendSession.ts",
+      "src/lib/genericForm.server.ts",
+      "src/lib/genericFormShared.ts",
       "src/lib/headerNavigation.ts",
       "src/lib/legalPagePaths.ts",
       "src/lib/media.ts",
@@ -2819,6 +2853,7 @@
       "src/lib/siteTimeZone.ts",
       "src/lib/siteUrl.ts",
       "src/lib/stripInternalMediaFields.ts",
+      "src/lib/submitGenericForm.ts",
       "src/lib/systemPageActions.ts",
       "src/lib/systemPageTypes.ts",
       "src/lib/taxonomy.ts",
@@ -2858,6 +2893,7 @@
       "tests/e2e/admin.e2e.spec.ts",
       "tests/e2e/calendar.e2e.spec.ts",
       "tests/e2e/frontend.e2e.spec.ts",
+      "tests/e2e/generic-form.e2e.spec.ts",
       "tests/e2e/governance.e2e.spec.ts",
       "tests/helpers/governanceFixtures.ts",
       "tests/helpers/login.ts",
@@ -2964,6 +3000,8 @@
       "tests/int/gallery-album-tabs.int.spec.tsx",
       "tests/int/gallery-albums.int.spec.ts",
       "tests/int/gallery-showcase.int.spec.ts",
+      "tests/int/generic-form-integration.int.spec.tsx",
+      "tests/int/generic-form-loader.int.spec.tsx",
       "tests/int/generic-form.int.spec.tsx",
       "tests/int/global-announcement.int.spec.ts",
       "tests/int/global-footer.int.spec.ts",
@@ -3108,7 +3146,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "c2fe59fa4f0555cbf55f13dc3ad9babe79e9aef9cda51ac124ef6923094c93bf"
+    "sha256": "9c7acff7d28bb2642ea3812539902b00effb530fb51fbac172ade296861d045b"
   },
   "surfaces": {
     "access": [
@@ -3174,6 +3212,8 @@
       "src/lib/formSubmissionSnapshot.ts",
       "src/lib/forms.ts",
       "src/lib/frontendSession.ts",
+      "src/lib/genericForm.server.ts",
+      "src/lib/genericFormShared.ts",
       "src/lib/headerNavigation.ts",
       "src/lib/legalPagePaths.ts",
       "src/lib/media.ts",
@@ -3213,6 +3253,7 @@
       "src/lib/siteTimeZone.ts",
       "src/lib/siteUrl.ts",
       "src/lib/stripInternalMediaFields.ts",
+      "src/lib/submitGenericForm.ts",
       "src/lib/systemPageActions.ts",
       "src/lib/systemPageTypes.ts",
       "src/lib/taxonomy.ts",
@@ -3266,6 +3307,7 @@
       "tests/e2e/admin.e2e.spec.ts",
       "tests/e2e/calendar.e2e.spec.ts",
       "tests/e2e/frontend.e2e.spec.ts",
+      "tests/e2e/generic-form.e2e.spec.ts",
       "tests/e2e/governance.e2e.spec.ts",
       "tests/int/about-section.int.spec.tsx",
       "tests/int/academic-programmes-client.int.spec.tsx",
@@ -3361,6 +3403,8 @@
       "tests/int/gallery-album-tabs.int.spec.tsx",
       "tests/int/gallery-albums.int.spec.ts",
       "tests/int/gallery-showcase.int.spec.ts",
+      "tests/int/generic-form-integration.int.spec.tsx",
+      "tests/int/generic-form-loader.int.spec.tsx",
       "tests/int/generic-form.int.spec.tsx",
       "tests/int/global-announcement.int.spec.ts",
       "tests/int/global-footer.int.spec.ts",
