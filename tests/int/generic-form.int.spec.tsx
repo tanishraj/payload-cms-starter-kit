@@ -94,6 +94,30 @@ describe('generic form presentation', () => {
     expect(document.activeElement).toBe(screen.getByLabelText(/Your question/))
     expect((screen.getByLabelText(/Your question/) as HTMLInputElement).value).toBe(' My question ')
   })
+  it('focuses a server-rejected answer after a genuinely pending request re-enables controls', async () => {
+    let resolve!: (value: GenericFormResult) => void
+    const onSubmit = vi.fn(
+      () =>
+        new Promise<GenericFormResult>((done) => {
+          resolve = done
+        }),
+    )
+    render(<GenericForm fields={fields} onSubmit={onSubmit} />)
+    answer()
+    submit()
+    await waitFor(() =>
+      expect((screen.getByLabelText(/Your question/) as HTMLInputElement).disabled).toBe(true),
+    )
+    await act(async () =>
+      resolve({
+        success: false,
+        message: 'Correct this answer.',
+        errors: { custom_question: 'Please clarify your question.' },
+      }),
+    )
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByLabelText(/Your question/)))
+  })
+
   it('uses unique labels/IDs for multiple instances on one page', () => {
     render(
       <>

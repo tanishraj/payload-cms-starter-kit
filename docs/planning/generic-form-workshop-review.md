@@ -15,7 +15,7 @@ The artifact is [GenericForm](../../src/components/revamp/generic-form.tsx), wit
 synthetic [stories](../../src/stories/revamp/GenericForm.stories.tsx). The bounded
 browser review captured desktop/mobile in both themes, mobile validation errors,
 and desktop network-error, pending and success states. No horizontal overflow
-was reported. Server-field rejection also completed without browser errors.
+was reported. Server-field rejection also completed without browser errors; the actual browser focused the reply_to input with aria-invalid=true. A deferred-response test covers rejection after controls have entered the disabled pending state.
 The detector reported no findings. Screenshots were supplied to an independent
 reviewer; they are local review artifacts, not published website assets.
 
