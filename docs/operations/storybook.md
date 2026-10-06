@@ -4,7 +4,7 @@ Run `pnpm storybook` and open http://localhost:6006. Source changes reload live.
 
 ## Current foundation
 
-The selected foundation is official shadcn **Neutral**, light/dark, **Radix Luma**, Lucide icons, and system sans-serif typography. `.storybook/neutral.css` stores unmodified official tokens from https://ui.shadcn.com/r/colors/neutral.json (retrieved 2026-09-12). `.storybook/preview.css` supplies the official semantic Tailwind mappings and baseline styles. No legacy website CSS is imported. The production adapter inherits the existing website theme; the workshop remains independently Neutral.
+The selected foundation is official shadcn **Neutral**, light/dark, **Radix Luma**, Lucide icons, and system sans-serif typography. `.storybook/neutral.css` stores unmodified official tokens from https://ui.shadcn.com/r/colors/neutral.json (retrieved 2026-09-12). `.storybook/preview.css` supplies the official semantic Tailwind mappings and baseline styles. Revamp component stories keep this isolated foundation. Existing website block stories conditionally load their actual production stylesheet through the decorator described below. The production adapter inherits the existing website theme; the workshop remains independently Neutral.
 
 The catalogue starts with a freshly installed `@shadcn/button` in `src/components/revamp/ui/button.tsx`. Its Docs and Default playground expose upstream variants and sizes, label, disabled state, type, accessible label, and sample icon compositions. Additional stories cover variants, icons and link composition. Button source is installed directly through the official CLI and retains upstream styling.
 
@@ -59,7 +59,38 @@ feature checklist and deployment gates.
 5. Review the component/block in desktop/mobile and light/dark previews. Add interaction checks for important behavior; accessibility results remain advisory until reviewed.
 6. Once the Storybook version is agreed, add Payload fields/adapters matching the same configuration. Use Payload Live Preview for actual content, access, uploads and page composition. Do not maintain duplicate presentation implementations.
 
-Legacy setup stories remain outside the catalogue glob; they are not a dependency of the revamp. Storybook currently shows the new Button, not all old blocks.
+## Existing block catalogue
+
+All 67 current block entries appear once under **Blocks**: 60 Page blocks,
+three header/footer choices, three system choices and the template-only News & Events
+Content block.
+The 66 picker definitions plus the template-only block define the coverage check.
+`src/stories/blocks/*.stories.tsx` imports the production component or its existing
+browser-safe presentation; it reuses `src/block-thumbnails/fixtures.tsx` sample
+props through `support/fixtureArgs.ts`. Default is the editable playground;
+Docs and supported padding/long-content examples accompany each entry where relevant.
+The existing Generic Form entry remains in `src/stories/revamp`, with its richer
+interactive and CMS states. No second Revamp or Existing Blocks catalogue is enabled.
+
+Reusable Section demonstrates the real `PageBlockStack` with shared production
+fixtures; Storybook does not resolve its CMS relationship. News & Events Content
+uses the real detail component and one synthetic article. Forms and data-driven
+blocks use local definitions/snapshots. Storybook intercepts same-origin `/api/`
+fetches with an explicit unavailable response: submissions, downloads and additional
+CMS pages/months cannot load or persist records. Use Payload Live Preview for those
+integration journeys. Existing unsupported combinations are not new builder features.
+
+`websiteBlock: true` opts an existing block into `.storybook/WebsiteBlockDecorator.tsx`.
+It mounts the production CSS once while website stories are visible, selects the
+existing SNMIH Blue preset, and restores the Neutral workshop after the last website
+story unmounts. Light/dark and viewport toolbars still work. Next layout font
+variables use their system fallbacks here; no remote font loading is needed.
+The stylesheet is compiled from production sources, without copying palettes or
+restyling blocks. Neutral revamp stories do not mount it.
+
+Old foundation-only `src/stories/Button`, `Accordion` and `Logos20` files remain
+outside the globs; Logo Marquee has its one canonical block entry in the new catalogue.
+New/replacement presentations still follow the authenticated upstream revamp workflow.
 
 ## Runtime boundary
 

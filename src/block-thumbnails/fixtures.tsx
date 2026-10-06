@@ -30,12 +30,12 @@ import { Cta39BlockComponent } from '@/blocks/Cta39/Component'
 import { HeaderNavbar12BlockComponent } from '@/blocks/HeaderNavbar12/Component'
 import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
 import { HeroCarouselBlockComponent } from '@/blocks/HeroCarousel/Component'
-import { ImageMosaicBlockComponent } from '@/blocks/ImageMosaic/Component'
+import { ImageMosaicBlockPresentation } from '@/blocks/ImageMosaic/Presentation'
 import { StudentExperienceBlockComponent } from '@/blocks/StudentExperience/Component'
 import { NewsEventsHighlightsBlockPresentation } from '@/blocks/NewsEventsHighlights/Presentation'
 import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Component'
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
-import { RatingSpotlightBlockComponent } from '@/blocks/RatingSpotlight/Component'
+import { RatingSpotlightBlockPresentation } from '@/blocks/RatingSpotlight/Presentation'
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
 import { GenericFormBlockPresentation } from '@/blocks/GenericForm/Presentation'
 import { Contact33BlockComponent } from '@/blocks/Contact33/Component'
@@ -1549,7 +1549,7 @@ export const blockThumbnailFixtures = {
     />
   ),
   imageMosaic: (
-    <ImageMosaicBlockComponent
+    <ImageMosaicBlockPresentation
       actions={[
         {
           label: 'Explore all spaces',
@@ -1954,7 +1954,8 @@ export const blockThumbnailFixtures = {
     />
   ),
   ratingSpotlight: (
-    <RatingSpotlightBlockComponent
+    <RatingSpotlightBlockPresentation
+      liveSummary={null}
       actions={[
         {
           mode: 'button',

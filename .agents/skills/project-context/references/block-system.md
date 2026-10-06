@@ -562,3 +562,17 @@ The integrated adapter uses shared website shadcn tokens with upstream Luma radi
 mappings. Other public surfaces retain semantic radius roles. There is no form-only
 theme. The explicit import allowlist is limited to this adapter; upstream Select
 portals stay inside the form scope so theme inheritance remains consistent.
+
+## Existing blocks in Storybook
+
+The catalogue now covers all 66 picker thumbnail definitions and the template-only
+`newsEventsContent` block, with one `Blocks/<label>` entry per slug. Generic Form
+retains its existing entry; remaining stories live in `src/stories/blocks` and reuse
+the production thumbnail fixture props. Image Mosaic and Rating Spotlight fixtures
+import their browser-safe production presentations directly, rather than adapters
+that import server loaders; their manual fixture output is unchanged. Reusable
+Section is a production PageBlockStack composition, not a mocked CMS relationship.
+Existing blocks mount their production stylesheet only in Storybook's website-block
+decorator; the revamp workshop remains Neutral. CMS requests are unavailable there.
+Coverage, duplicate-title and API-isolation checks live in
+`tests/int/storybook-block-catalogue.int.spec.ts`; see the Storybook operation guide.

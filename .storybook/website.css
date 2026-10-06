@@ -1,0 +1,14 @@
+/* Existing blocks use their production styles, not a rewritten workshop theme. */
+@import '../src/styles/globals.css';
+@source '../src/blocks';
+@source '../src/components';
+@source '../src/lib';
+@source '../src/stories/blocks';
+
+/* Next's layout normally supplies these font variables. Keep its documented
+   system fallbacks in this independent, network-free preview. */
+:root[data-theme-color='snmih-blue'] {
+  --font-inter: ui-sans-serif, system-ui, sans-serif;
+  --font-playfair-display: ui-serif, Georgia, serif;
+  --font-ibm-plex-mono: ui-monospace, SFMono-Regular, monospace;
+}

@@ -1,6 +1,6 @@
 # Dynamic forms: first implementation audit
 
-Updated: 6 October 2026 (Asia/Dubai). This records the backend foundation and generic-form workshop increment.
+Updated: 6 October 2026 (Asia/Dubai). This records the backend foundation, generic-form workshop and native Payload integration.
 
 | Seam | Current path and remaining gap |
 | --- | --- |
@@ -25,7 +25,7 @@ form edits preserving historical data, and denial of answer/snapshot mutation wh
 operational updates succeed. These checks do not certify admin-browser UX, a
 production database deployment. The separate native browser journey now proves the public generic path on disposable MongoDB. Record actual commands/results in the implementation checklist.
 
-The native Generic Form journey is verified locally; GitHub Quality is the merge gate. Next layout: authenticated Shadcnblocks contact6, using the same reusable Form engine and shared website theme rather than fixed example inputs.
+The native Generic Form increment is merged into develop through [PR #17](https://github.com/tanishraj/payload-cms-starter-kit/pull/17). [GitHub Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/37466757847) passed 2,332 integration tests (one Docker-dependent test skipped), both governance journeys, the native form journey and the production build. Next layout: authenticated Shadcnblocks contact6, using the same reusable Form engine and shared website theme rather than fixed example inputs.
 Follow with expected-revision/stale-client policy, additional controls/conditional intake,
 generic exports and retry/duplicate behavior. DF-02 and the broader FORM/SUBMIT
 groups remain incomplete until their full acceptance passes.
