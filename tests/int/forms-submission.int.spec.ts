@@ -246,6 +246,66 @@ describe('form submission model', () => {
     expect(payloadMocks.update).not.toHaveBeenCalled()
   })
 
+  it('captures arbitrary fields and uses a custom email role for confirmation', async () => {
+    payloadMocks.find.mockResolvedValue({
+      docs: [
+        {
+          fields: [
+            {
+              id: 'mail-id',
+              label: 'Work email',
+              name: 'work_email',
+              type: 'email',
+              contactRole: 'email',
+            },
+            {
+              id: 'dept-id',
+              label: 'Preferred department',
+              name: 'preferred_department',
+              type: 'select',
+              options: [{ label: 'Admissions', value: 'admissions' }],
+            },
+          ],
+          id: 'custom-form',
+          title: 'Department enquiry',
+          slug: 'custom',
+          submissionIntent: 'general',
+          notificationRecipients: [],
+          successMessage: 'Received.',
+          submitterReply: { enabled: true },
+        },
+      ],
+    })
+    payloadMocks.create.mockResolvedValue({ id: 'submission-id' })
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/custom/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          values: { work_email: 'person@example.com', preferred_department: 'admissions' },
+        }),
+      }),
+      { params: Promise.resolve({ slug: 'custom' }) },
+    )
+    expect(response.status).toBe(200)
+    const stored = payloadMocks.create.mock.calls[0][0].data
+    expect(stored.submitterEmail).toBe('person@example.com')
+    expect(stored.formRevision).toMatch(/^[a-f0-9]{64}$/)
+    expect(stored.formSnapshot.title).toBe('Department enquiry')
+    expect(stored.answers[1]).toEqual({
+      displayValue: 'Admissions',
+      fieldID: 'dept-id',
+      label: 'Preferred department',
+      name: 'preferred_department',
+      type: 'select',
+      value: { raw: 'admissions' },
+    })
+    expect(payloadMocks.sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ to: 'person@example.com' }),
+    )
+  })
+
   it('returns 415 when the JSON Content-Type is missing', async () => {
     payloadMocks.find.mockResolvedValue({
       docs: [

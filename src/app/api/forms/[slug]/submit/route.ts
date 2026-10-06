@@ -19,6 +19,7 @@ import {
   getNotificationRecipients,
 } from '@/lib/formNotifications'
 import { emitFormSubmissionEvent } from '@/lib/formSubmissionEvents'
+import { buildFormSubmissionSnapshot } from '@/lib/formSubmissionSnapshot'
 import {
   getSubmissionContactMetadata,
   isFormSubmissionValues,
@@ -36,6 +37,8 @@ import type { Form } from '@/payload-types'
 
 const toSimpleFields = (form: Form): SimpleFormField[] => {
   return (form.fields ?? []).map((field) => ({
+    contactRole: field.contactRole ?? null,
+    id: field.id ?? null,
     label: field.label,
     name: field.name,
     options:
@@ -198,11 +201,12 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
     email: submitterEmail,
     name: submitterName,
     phone: submitterPhone,
-  } = getSubmissionContactMetadata(submissionData)
+  } = getSubmissionContactMetadata(submissionData, formFields)
   const submittedAt = new Date()
   const submission = await payload.create({
     collection: 'form-submissions',
     data: {
+      ...buildFormSubmissionSnapshot({ ...form, fields: formFields }, submissionData),
       data: submissionData,
       campaign: submissionMetadata.campaign,
       email: submitterEmail,

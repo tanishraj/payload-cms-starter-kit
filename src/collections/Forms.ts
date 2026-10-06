@@ -234,6 +234,21 @@ export const Forms: CollectionConfig = {
           ],
         },
         {
+          name: 'contactRole',
+          label: 'Use answer as',
+          type: 'select',
+          options: [
+            { label: 'Submitter name', value: 'name' },
+            { label: 'Submitter email', value: 'email' },
+            { label: 'Submitter phone', value: 'phone' },
+          ],
+          admin: {
+            isClearable: true,
+            description:
+              'Optional: use this answer for inbox contact details and confirmation emails. Each role can be assigned once; choose Text for name, Email for email, or Phone for phone. Leave empty for ordinary questions.',
+          },
+        },
+        {
           name: 'placeholder',
           type: 'text',
           admin: {

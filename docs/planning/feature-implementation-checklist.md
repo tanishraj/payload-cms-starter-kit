@@ -50,9 +50,12 @@ registered current functionality; this checklist describes target acceptance.
 These proof tasks break down the selected first enhancement. Their checkboxes
 track the proof; the FORM/SUBMIT groups below track the complete capability.
 
-- [ ] **DF-01 — Map the current path.** Review Forms, validation, all form block
+- [x] **DF-01 — Map the current path.** Review Forms, validation, all form block
   presentations, intake, stored answers, inbox, exports, notifications and existing
   tests. Record what is reusable and which presentations require fixed names.
+
+  Evidence: [current path audit](dynamic-forms-implementation.md); source mapping
+  complete, broad capability acceptance still pending.
 - [ ] **DF-02 — Define stable identities and revisions.** Separate field ID from
   label/name/order; define published schema identity and stored-answer metadata.
   Preserve existing forms/submissions through an explicit compatibility policy.
@@ -80,6 +83,11 @@ track the proof; the FORM/SUBMIT groups below track the complete capability.
 - [ ] **DF-10 — Close acceptance and document.** Focused integration/browser/manual
   checks pass; examples and operator/developer guides describe the actual behavior.
   Update corresponding FORM/SUBMIT groups with commit and verification evidence.
+
+DF-02 is in progress: published intake snapshots, Payload field-row identity,
+content fingerprints, immutable readable answer rows and legacy compatibility are
+implemented. Client revision negotiation/retention and browser/database acceptance
+remain. [Implementation audit](dynamic-forms-implementation.md) records boundaries.
 
 ## Delivery sequence
 
@@ -585,10 +593,11 @@ exclusions and complete source traceability are in the local scope reference.
   A Page Form block selects a form; authorized users can create/edit that related
   form and return to the page. No separate visual form editor is required.
 
-  Work: Assess · Priority: First enhancement · Baseline: Partial.
+  Work: In progress · Priority: First enhancement · Baseline: Partial.
   Initial finding: Reusable Payload form definitions exist; generic public composition and full preview flow remain to assess.
   Evidence: [src/collections/Forms.ts](../../src/collections/Forms.ts).
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Increment evidence: [dynamic-form history audit](dynamic-forms-implementation.md). Full feature acceptance remains incomplete.
 
 - [ ] **FORM-02 — Configurable fields.** Adding a supported control with a custom
   label/name works without a new collection column, endpoint, hand-coded renderer
@@ -658,17 +667,19 @@ exclusions and complete source traceability are in the local scope reference.
   and submission configuration against a published form revision. Form drafts
   must not alter live forms.
 
-  Work: Assess · Priority: First enhancement · Baseline: Partial.
+  Work: In progress · Priority: First enhancement · Baseline: Partial.
   Initial finding: Forms use native drafts. A published schema-revision/snapshot contract still needs assessment.
   Evidence: [src/collections/Forms.ts](../../src/collections/Forms.ts), [src/collections/FormSubmissions.ts](../../src/collections/FormSubmissions.ts).
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Increment evidence: [dynamic-form history audit](dynamic-forms-implementation.md). Full feature acceptance remains incomplete.
 
 - [ ] **SUBMIT-02 — Historical answers.** Submissions reference the exact published
   revision and retain field-label/key metadata or an immutable schema snapshot.
   Store typed answers by stable field ID; display/export with submitted labels/names.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: In progress · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Increment evidence: [dynamic-form history audit](dynamic-forms-implementation.md). Full feature acceptance remains incomplete.
 
 - [ ] **SUBMIT-03 — Generic server validation.** Load an allowed published revision;
   validate types, required rules, conditions, options and request/value sizes;
@@ -708,8 +719,9 @@ exclusions and complete source traceability are in the local scope reference.
   optional field-selected reply-to and inbox title; team notifications and optional
   submitter confirmation. Submitted values never choose arbitrary recipients.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: In progress · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Increment evidence: [dynamic-form history audit](dynamic-forms-implementation.md). Full feature acceptance remains incomplete.
 
 - [ ] **SUBMIT-09 — Reliable delivery.** Persist valid submissions before sending
   notifications; retry failed notifications without losing/duplicating answers.
@@ -1841,9 +1853,10 @@ handoff. Manager section guidance depends on verified ACCESS work.
 
 - [ ] **ADMINUX-15 — Generic inbox and safe testing.** Custom answers are readable and labelled, with discoverable status/filter/export actions. Test submissions are marked, authorized and excluded from ordinary inbox/export/notifications by default.
 
-  Work: Assess · Priority: First enhancement · Baseline: Partial.
+  Work: In progress · Priority: First enhancement · Baseline: Partial.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Increment evidence: [dynamic-form history audit](dynamic-forms-implementation.md). Full feature acceptance remains incomplete.
 
 - [ ] **ADMINUX-16 — Accessible and resilient admin flows.** Verify keyboard/focus/labels/errors/status announcements, zoom/reflow, narrow screens, long labels and recoverable network interruptions. Retries do not duplicate drafts or submissions.
 
@@ -1881,7 +1894,8 @@ feature boxes synchronized; record blockers with a concrete next action.
 | 2026-10-06 | DF-01–10; FORM/SUBMIT | Selected | — | Dynamic forms and generic submissions are the first enhancement. | — | User selected this priority; implementation has not started in this tracking task. |
 | 2026-10-06 | All 206 groups | Assess | — | Initial read-only source findings; full acceptance audit pending. | Baseline 180d0e2 | Source presence only; no runtime-completion claims. |
 | 2026-10-06 | ONBOARD-01–20; ADMINUX-01–16 | Assess | — | Add developer/Admin/Manager journeys, resumable contextual help, build/launch readiness and usability acceptance. Reuse dashboard and page recipes; preserve dynamic forms as first enhancement. | — | Source/document inspection only; no application UI shipped by this planning change. |
-| 2026-10-06 | Dependency gate prerequisite | Approved bounded exception | Codex | Prepare Next.js and transitive security patches on a separate branch. Remaining Braces 3.0.3 has no published fixed version; user approved only the exact Braces entry expiring 2026-10-13. | [PR #15](https://github.com/tanishraj/payload-cms-starter-kit/pull/15) | 2,268 integration tests pass; one Docker test skipped. TypeScript/full lint/generators/context pass. [Concrete remediation/proposal](../operations/dependency-audit-remediation-2026-10-06.md). Production audit passes with only the exact approved entry; GitHub governance/build verification remains required before merge. |
+| 2026-10-06 | DF-01; DF-02; FORM-01; SUBMIT-01/02/08; ADMINUX-15 | In progress | Codex | Map current form paths; add custom contact roles and immutable published-intake snapshots/readable answers. Preserve legacy forms/data; no backfill or new environment settings. | [PR #14](https://github.com/tanishraj/payload-cms-starter-kit/pull/14) | 49 focused form/API/documentation/context tests pass after syncing develop on Node 22.13.1; TypeScript, changed-file lint and context checks pass. Isolated MongoDB 8.0.29 verifies persistence and immutable operational updates. Generic renderer, stale revisions, exports and admin-browser acceptance remain. |
+| 2026-10-06 | Dependency gate prerequisite | Merged; bounded exception active | Codex | Prepare Next.js and transitive security patches on a separate branch. Remaining Braces 3.0.3 has no published fixed version; user approved only the exact Braces entry expiring 2026-10-13. | [PR #15](https://github.com/tanishraj/payload-cms-starter-kit/pull/15) | 2,268 integration tests pass; one Docker test skipped. TypeScript/full lint/generators/context pass. [Concrete remediation/proposal](../operations/dependency-audit-remediation-2026-10-06.md). Production audit passes with only the exact approved entry; GitHub Quality passes, including both governance journeys and the production build; merged into develop. |
 
 ## Completion record template
 

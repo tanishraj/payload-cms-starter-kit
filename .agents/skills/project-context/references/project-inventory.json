@@ -2769,6 +2769,7 @@
       "src/lib/formNotifications.ts",
       "src/lib/formSpamProtection.ts",
       "src/lib/formSubmissionEvents.ts",
+      "src/lib/formSubmissionSnapshot.ts",
       "src/lib/forms.ts",
       "src/lib/frontendSession.ts",
       "src/lib/headerNavigation.ts",
@@ -2938,6 +2939,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/form-notifications.int.spec.ts",
+      "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",
       "tests/int/forms-submission.int.spec.ts",
       "tests/int/frontend-layout-cache.int.spec.ts",
@@ -3088,7 +3090,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "9f98c96d6ccd235333a1a9fe93ec2e30ac6a10b9296bcf8eca1778221c45080b"
+    "sha256": "2e3b238b625b62c94a8c8fcb0c33dd289b0f89598df024eb7f2fa6a0c00a13e5"
   },
   "surfaces": {
     "access": [
@@ -3151,6 +3153,7 @@
       "src/lib/formNotifications.ts",
       "src/lib/formSpamProtection.ts",
       "src/lib/formSubmissionEvents.ts",
+      "src/lib/formSubmissionSnapshot.ts",
       "src/lib/forms.ts",
       "src/lib/frontendSession.ts",
       "src/lib/headerNavigation.ts",
@@ -3331,6 +3334,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/form-notifications.int.spec.ts",
+      "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",
       "tests/int/forms-submission.int.spec.ts",
       "tests/int/frontend-layout-cache.int.spec.ts",

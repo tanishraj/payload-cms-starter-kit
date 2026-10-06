@@ -38,7 +38,7 @@ Handle a new `Admission Enquiry` submission for North Valley Medical College:
 1. Open `Form Submissions`.
 2. Sort or filter to find records with status `New`.
 3. Open the incoming admissions submission.
-4. Review the read-only submitted data and confirm the enquiry is valid.
+4. Review **Original Questions and Answers** for the captured question labels and readable answers. For older records without this section, inspect **Submitted Data**. Confirm the enquiry is valid.
 5. Set the `owner` to the staff member responsible for follow-up.
 6. Add `internalNotes` such as preferred callback timing or program interest context.
 7. Change status from `New` to `In Review` while the admissions conversation is active.
@@ -50,6 +50,34 @@ Expected website result:
 - the public form continues working normally
 - internal staff can see clear progress on the submission
 - related `Action Queue` items open or resolve automatically based on submission status
+
+## Original Questions and Answers
+
+New entries capture each declared field's original label, machine name, stable
+Payload row ID where available, type and typed value. The hidden JSON value uses `{ raw: value }` so Payload does not
+parse ordinary answer strings as JSON text. Select options use the label
+that existed at intake; checkboxes display Yes or No. These fields remain read-only
+when an operator changes status, assignment or notes. The underlying raw Submitted
+Data remains available for compatibility and existing integrations.
+
+The Form Revision fingerprint and hidden schema snapshot identify the captured
+published intake definition. They are not a Payload version-record ID and do not
+claim to retain every presentation setting. The fingerprint excludes submitted
+values, placeholders and option-row IDs, while including form identity/title,
+intent, field order/identity, names, labels, types, required state, contact roles
+and select labels/values. Historical answers are read from the submission, not
+reconstructed from the current Form.
+
+Existing records may have no snapshot or answer list. Read their raw data as
+legacy evidence; do not assume today's question labels describe those old answers.
+No bulk backfill or database mutation is required for this additive change.
+Review-engine answers absent from a legacy Form's declared fields remain captured
+under their original keys without inventing a field-row ID. Review-only dependency
+access continues to receive just the sanitized reference, not answer history.
+
+Native export/API consumers may use `answers` and `formSnapshot` for new records,
+with `data` as the legacy fallback. A flattened operator CSV and export-browser
+acceptance are not delivered by this increment.
 
 ## Best Practices
 

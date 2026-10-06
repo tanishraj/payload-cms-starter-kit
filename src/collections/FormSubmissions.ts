@@ -221,6 +221,40 @@ export const FormSubmissions: CollectionConfig = {
       },
     },
     {
+      name: 'formRevision',
+      type: 'text',
+      access: immutableSubmissionFieldAccess,
+      admin: {
+        readOnly: true,
+        description: 'Identity of the published definition used when this submission was received.',
+      },
+    },
+    {
+      name: 'formSnapshot',
+      type: 'json',
+      access: immutableSubmissionFieldAccess,
+      admin: { hidden: true, readOnly: true },
+    },
+    {
+      name: 'answers',
+      label: 'Original Questions and Answers',
+      type: 'array',
+      access: immutableSubmissionFieldAccess,
+      admin: {
+        readOnly: true,
+        description:
+          'Questions and readable answers captured at submission time. Later form changes do not alter them. Older submissions may only have Submitted Data.',
+      },
+      fields: [
+        { name: 'label', label: 'Question', type: 'text', admin: { readOnly: true } },
+        { name: 'displayValue', label: 'Answer', type: 'textarea', admin: { readOnly: true } },
+        { name: 'name', label: 'Field Name', type: 'text', admin: { readOnly: true } },
+        { name: 'fieldID', type: 'text', admin: { hidden: true, readOnly: true } },
+        { name: 'type', type: 'text', admin: { hidden: true, readOnly: true } },
+        { name: 'value', type: 'json', admin: { hidden: true, readOnly: true } },
+      ],
+    },
+    {
       name: 'data',
       label: 'Submitted Data',
       type: 'json',

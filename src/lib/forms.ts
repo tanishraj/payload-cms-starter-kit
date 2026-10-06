@@ -49,7 +49,11 @@ export type SimpleFormFieldOption = {
   value: string
 }
 
+export type FormContactRole = 'name' | 'email' | 'phone'
+
 export type SimpleFormField = {
+  contactRole?: FormContactRole | null
+  id?: string | null
   name: string
   label: string
   options?: SimpleFormFieldOption[] | null
@@ -151,6 +155,7 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
   }
 
   const seen = new Set<string>()
+  const contactRoles = new Set<string>()
 
   for (const field of value) {
     if (!field || typeof field !== 'object') {
@@ -172,6 +177,22 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
     }
 
     seen.add(name)
+
+    if (field.contactRole) {
+      const roleTypes = { name: 'text', email: 'email', phone: 'phone' } as const
+      if (!Object.hasOwn(roleTypes, field.contactRole)) {
+        return `Field "${name}" has an unsupported contact role.`
+      }
+      if (contactRoles.has(field.contactRole)) {
+        return `Choose only one field for the submitter ${field.contactRole}.`
+      }
+      const expectedType = roleTypes[field.contactRole as FormContactRole]
+      if (field.type !== expectedType) {
+        const typeLabel = expectedType[0].toUpperCase() + expectedType.slice(1)
+        return `The submitter ${field.contactRole} field must use the ${typeLabel} type.`
+      }
+      contactRoles.add(field.contactRole)
+    }
 
     if (field.type === 'select') {
       const options = Array.isArray(field.options) ? field.options : []
@@ -389,19 +410,19 @@ const getFirstNormalizedStringValue = (
 
 export const getSubmissionContactMetadata = (
   values: Record<string, boolean | string>,
+  fields: SimpleFormField[] = [],
 ): {
   email?: string
   name?: string
   phone?: string
 } => {
-  const email = getFirstNormalizedStringValue(values, ['submitterEmail', 'reviewerEmail', 'email'])
-  const name = getFirstNormalizedStringValue(values, [
-    'submitterName',
-    'reviewerName',
-    'fullName',
-    'name',
-  ])
-  const phone = getFirstNormalizedStringValue(values, [
+  const getContactValue = (role: FormContactRole, legacyKeys: string[]) => {
+    const mappedField = fields.find((field) => field.contactRole === role)
+    return getFirstNormalizedStringValue(values, mappedField ? [mappedField.name] : legacyKeys)
+  }
+  const email = getContactValue('email', ['submitterEmail', 'reviewerEmail', 'email'])
+  const name = getContactValue('name', ['submitterName', 'reviewerName', 'fullName', 'name'])
+  const phone = getContactValue('phone', [
     'submitterPhone',
     'phone',
     'phoneNumber',

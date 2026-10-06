@@ -1,7 +1,7 @@
 # Dependency audit remediation — 6 October 2026
 
 Status: patches verified locally; exact seven-day Braces exception approved by the
-user on 6 October 2026. GitHub verification remains required before merge.
+user on 6 October 2026. GitHub Quality passed and PR #15 merged into develop.
 
 The Quality run for the planning merge failed before application checks at the
 production dependency audit. The separate `fix/production-dependency-audit` branch
@@ -83,5 +83,7 @@ skipped; all 64 affected quality/dependency/documentation tests pass. TypeScript
 and full lint pass (one pre-existing AdminUserMenu navigation warning). Payload
 generators have no artifact drift; project context is current. After the explicit
 approval, the production audit passes with only advisory 1240992 exempted. GitHub
-CI must verify the governance browser journeys and production build before merge.
+Quality run 37430061738 passed all checks, including both governance browser
+journeys and the production build. The repaired local governance journeys also
+pass in a disposable MongoDB/Webpack fixture.
 Review [PR #15](https://github.com/tanishraj/payload-cms-starter-kit/pull/15).
