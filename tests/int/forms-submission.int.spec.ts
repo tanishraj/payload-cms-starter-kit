@@ -306,6 +306,42 @@ describe('form submission model', () => {
     )
   })
 
+  it.each([
+    { question: { nested: 'bad' } },
+    { question: 'valid', extra: 'undeclared' },
+    { question: 'valid', permission: 'yes' },
+  ])('rejects malformed or undeclared answers before persistence (%s)', async (values) => {
+    payloadMocks.find.mockResolvedValue({
+      docs: [
+        {
+          id: 'generic',
+          slug: 'generic',
+          title: 'Generic',
+          fields: [
+            { name: 'question', label: 'Question', type: 'text' },
+            { name: 'permission', label: 'Permission', type: 'checkbox' },
+          ],
+          submissionIntent: 'general',
+          notificationRecipients: [],
+        },
+      ],
+    })
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/generic/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ values }),
+      }),
+      { params: Promise.resolve({ slug: 'generic' }) },
+    )
+    expect(response.status).toBe(400)
+    expect((await response.json()).errors).toBeTruthy()
+    expect(payloadMocks.create).not.toHaveBeenCalled()
+    expect(payloadMocks.sendEmail).not.toHaveBeenCalled()
+    expect(eventMocks.emitFormSubmissionEvent).not.toHaveBeenCalled()
+  })
+
   it('returns 415 when the JSON Content-Type is missing', async () => {
     payloadMocks.find.mockResolvedValue({
       docs: [

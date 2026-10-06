@@ -1,12 +1,12 @@
 # Dynamic forms: first implementation audit
 
-Updated: 6 October 2026 (Asia/Dubai). This records the first backend increment.
+Updated: 6 October 2026 (Asia/Dubai). This records the backend foundation and generic-form workshop increment.
 
 | Seam | Current path and remaining gap |
 | --- | --- |
 | Authoring | [Forms](../../src/collections/Forms.ts) provides reusable draft/published schemas with six control types, editable labels/names/options and required state. Optional contact roles now support custom metadata names. Additional controls, grouping, conditions and authoring helpers remain. |
-| Definition validation | [forms](../../src/lib/forms.ts) checks names, select options, role uniqueness/type and fixed-review required-field restrictions. Strict rejection of undeclared/malformed values remains acceptance work. |
-| Public presentations | [Contact33](../../src/blocks/Contact33/Component.tsx), its [schema adapter](../../src/lib/contact33Form.ts), and [Review Submission](../../src/blocks/ReviewSubmission/Component.tsx) still expect their fixed fields. New custom controls need a verified upstream generic presentation and Storybook proof. |
+| Definition validation | [forms](../../src/lib/forms.ts) checks names, select options, role uniqueness/type and fixed-review required-field restrictions. Rejects unsupported types/reserved names and schemas over 100 fields. Shared intake rejects undeclared answers, malformed scalar values and non-plain answer records; known legacy checkbox encodings remain supported. The fixed review engine explicitly allows its seven separately validated extra keys. Conditions/hidden fields and stale revisions remain. |
+| Public presentations | [Contact33](../../src/blocks/Contact33/Component.tsx), its [schema adapter](../../src/lib/contact33Form.ts), and [Review Submission](../../src/blocks/ReviewSubmission/Component.tsx) still expect their fixed fields. The authenticated upstream [GenericForm](../../src/components/revamp/generic-form.tsx) now renders all six current controls from arbitrary field definitions in [Storybook](../operations/storybook.md#generic-form-workshop). Caller-owned transport is separate. Native Payload block registration and public/Live Preview integration remain. |
 | Intake | [POST route](../../src/app/api/forms/[slug]/submit/route.ts) reads published Forms, enforces body/rate/honeypot controls, validates answers, stores data, then emits events/promotes reviews/sends email. The accepted revision is currently the latest published definition read for that request. |
 | Captured history | [snapshot helper](../../src/lib/formSubmissionSnapshot.ts) captures ordered field IDs/names/labels/types/options/roles, form identity/title/intent, typed values and readable answers. Content fingerprint is deterministic and excludes answer values. This is not a Payload version ID or a full presentation archive. |
 | Inbox and access | [FormSubmissions](../../src/collections/FormSubmissions.ts) now displays captured questions/answers through native read-only fields. Original data remains immutable and operational edits remain available. Review dependency reads continue to strip private history. Native rendering still needs browser acceptance. |
@@ -25,9 +25,9 @@ form edits preserving historical data, and denial of answer/snapshot mutation wh
 operational updates succeed. These checks do not certify admin-browser UX, a
 production database deployment or public generic rendering. Record actual commands/results in the implementation checklist.
 
-Next: verified upstream generic form presentation in the revamp Storybook catalogue,
-then native Payload block integration and end-to-end custom field creation/submission.
-Follow with expected-revision/stale-client policy, additional controls, strict intake,
+Next: integrate the reviewed generic form workshop with a native Payload block,
+then verify custom-field authoring, public submission and Live Preview end to end.
+Follow with expected-revision/stale-client policy, additional controls/conditional intake,
 generic exports and retry/duplicate behavior. DF-02 and the broader FORM/SUBMIT
 groups remain incomplete until their full acceptance passes.
 
@@ -35,3 +35,15 @@ Verification: 36 form/API regression tests and 16 documentation/context tests pa
 on supported Node 22.13.1; TypeScript, changed-file lint and project-context checks
 pass. The API suite uses its disposable `_test` replica and cleanup, not the local
 application database. Payload types were regenerated. No environment additions.
+
+## Generic workshop verification
+
+Authenticated Pro retrieval succeeded with the updated ignored local registry key;
+no credentials are copied into source, stories or logs. No new dependency, runtime
+environment variable or database migration is introduced. `onSubmit` callbacks
+in stories are demonstrations only. Shared strict-value changes are active in
+the existing API, with route tests proving rejection occurs before persistence,
+email or event emission. Browser review covers desktop/mobile, light/dark,
+validation, pending, unconfirmed requests and confirmation; final evidence is
+recorded in the checklist. A browser retry can still duplicate a previously stored
+request after a lost response; client locking is not server idempotency.

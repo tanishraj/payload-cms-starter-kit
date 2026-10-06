@@ -5096,7 +5096,7 @@ export interface Form {
    */
   fields: {
     /**
-     * Machine key used in stored submission data.
+     * Unique key stored with answers, such as preferred_department. Start with a letter; use letters, numbers and underscores. The names constructor, prototype and website are reserved.
      */
     name: string;
     label: string;

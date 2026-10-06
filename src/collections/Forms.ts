@@ -10,6 +10,7 @@ import {
 import { projectSlugField } from '@/fields/projectSlugField'
 import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 import {
+  FORM_MAX_FIELDS,
   formFieldTypeOptions,
   formSubmissionIntentOptions,
   isTextLikeFormFieldType,
@@ -164,6 +165,7 @@ export const Forms: CollectionConfig = {
       type: 'array',
       required: true,
       minRows: 1,
+      maxRows: FORM_MAX_FIELDS,
       validate: (value, { data }) =>
         validateFormFieldDefinitionsForIntent({
           fields: value,
@@ -187,7 +189,8 @@ export const Forms: CollectionConfig = {
               type: 'text',
               required: true,
               admin: {
-                description: 'Machine key used in stored submission data.',
+                description:
+                  'Unique key stored with answers, such as preferred_department. Start with a letter; use letters, numbers and underscores. The names constructor, prototype and website are reserved.',
                 width: '50%',
               },
               validate: (value: unknown) => {
@@ -197,7 +200,7 @@ export const Forms: CollectionConfig = {
 
                 return isValidFormFieldName(value.trim())
                   ? true
-                  : 'Use only letters, numbers, and underscores. Names must start with a letter.'
+                  : 'Names must start with a letter and use only letters, numbers and underscores. Do not use constructor, prototype or website.'
               },
             },
             {

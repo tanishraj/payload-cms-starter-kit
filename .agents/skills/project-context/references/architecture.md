@@ -58,7 +58,7 @@ React Server Components load public CMS data. Focused client components own inte
   have focused route handlers. The public redirect map is served from `/api/public-redirects`,
   leaving `/api/redirects` exclusively owned by Payload's collection REST API so Admin create,
   update, and delete requests reach Payload. Public form JSON is media-type checked and byte-bounded before parsing,
-  and its schema-backed values and known metadata have explicit size limits. Form submission and
+  and its schema-backed values and known metadata have explicit size limits. Schema values reject undeclared names, malformed scalar types and non-plain objects; the fixed review engine alone opts into its known extra keys and separately validates them. Form submission and
   search share bounded, periodically pruned in-memory rate-limiter behavior with `Retry-After`;
   this is single-instance defense in depth, while coordinated production enforcement belongs in
   Vercel WAF or a durable shared store. Forwarded client addresses contribute to limiter identity
@@ -194,3 +194,11 @@ The optional production database backup workflow is disabled unless the reposito
 ## Storybook preview workspace
 
 Storybook 10.6 uses the Next.js Vite framework with an isolated `.storybook/next.config.mjs`. The revamp starts with fresh upstream Radix Luma components in `src/components/revamp`; `components.json` routes installs there and targets `.storybook/preview.css`. Only `src/stories/revamp/**/*.stories.tsx` appears in the catalogue. The preview uses isolated Tailwind CSS and official shadcn Neutral tokens; it imports no legacy website CSS or Payload configuration. Every new component/block requires Docs, Default and supported configuration controls with sample data and provenance. Complete Storybook presentation before adding matching Payload fields/adapters. `pnpm storybook` serves localhost:6006; `pnpm build-storybook` emits ignored static output. See `docs/operations/storybook.md`.
+
+The generic form workshop adapts authenticated Shadcnblocks `form-form-patterns-4`
+and `checkbox-checkbox-standard-1` with the six current Payload control types,
+arbitrary field definitions and the shared browser-safe form validator.
+`GenericForm` owns accessible local interaction and accepts an asynchronous
+submission callback; CMS loading and API transport remain caller-owned. Stories
+use only synthetic data/local callbacks. This increment does not register a
+public block, change the public theme or weaken its radius/import boundary.

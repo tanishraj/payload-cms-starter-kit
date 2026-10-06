@@ -96,7 +96,7 @@ history fields. See [Form Submissions](./form-submissions.md).
 ## Spam Protection And Failure Handling
 
 - the submission endpoint accepts `application/json` (including parameters such as `charset=utf-8`) and rejects request bodies larger than 256 KiB
-- each submission may contain at most 100 value keys; email fields allow 320 characters, text fields allow 500, and textarea fields allow 10,000
+- each schema/submission may contain at most 100 question/answer keys (the transport-only website honeypot is excluded); email fields allow 320 characters, text fields allow 500, and textarea fields allow 10,000
 - campaign and source metadata allow 500 characters, landing-page metadata allows 2,048, and unrecognized metadata keys are discarded
 - the hidden honeypot key is `website`; suspected bots receive a neutral success response
 - the built-in limiter allows five attempts per IP and form slug per ten minutes
@@ -104,6 +104,8 @@ history fields. See [Form Submissions](./form-submissions.md).
 - client forwarding headers are used for limiter identity only on the documented Vercel deployment, where the platform owns those headers; the first normalized address is length-capped before it becomes a limiter key
 - every rate-limited response includes `Retry-After` so clients know when to try again
 - required, email, phone, select-option, and checkbox-acceptance rules come from the Form schema
+- undeclared answer keys and malformed text/select/checkbox values are rejected instead of silently discarded or coerced; review submissions separately validate their known fixed fields
+- Text, Email, Phone, Textarea and Select answers must be strings; Checkbox answers should be booleans (known legacy HTML encodings are also accepted)
 - phone values preserve their readable formatting, allow common international punctuation, and must contain 7 to 15 digits
 - notification, confirmation, downstream-event, and review-promotion failures are logged without changing a successful visitor response after the submission is stored
 
@@ -111,7 +113,9 @@ Production deployments should enforce coordinated limits at Vercel WAF or throug
 
 ## Best Practices
 
-- keep field names machine-safe and stable because they are used in stored submission data
+- use unique machine-safe names: start with a letter, followed by letters, numbers or underscores; constructor, prototype and website are reserved
+- keep names stable because they are used in stored submission data; an older definition using a newly reserved name must be renamed before saving
+- preview the new generic six-control presentation in [Storybook](../operations/storybook.md#generic-form-workshop); it is not yet a selectable public block
 - use clear labels that non-technical operators can understand later
 - use the exact field name `phone` with the Phone type when the Contact Form should collect a number
 - keep phone collection on general or lead Contact Forms; Review Submission intentionally does not request it

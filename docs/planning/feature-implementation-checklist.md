@@ -87,7 +87,12 @@ track the proof; the FORM/SUBMIT groups below track the complete capability.
 DF-02 is in progress: published intake snapshots, Payload field-row identity,
 content fingerprints, immutable readable answer rows and legacy compatibility are
 implemented. Client revision negotiation/retention and browser/database acceptance
-remain. [Implementation audit](dynamic-forms-implementation.md) records boundaries.
+remain. DF-03/04/09 now also have workshop evidence: an authenticated upstream
+generic presentation renders the six current control types, shares strict scalar
+validation, and exercises accessible errors/pending/success/retry. Native Payload
+block/public/Live Preview integration, conditional values, stale revisions and
+server duplicate protection remain; these boxes stay open.
+[Implementation audit](dynamic-forms-implementation.md) records boundaries.
 
 ## Delivery sequence
 
@@ -1896,6 +1901,8 @@ feature boxes synchronized; record blockers with a concrete next action.
 | 2026-10-06 | ONBOARD-01–20; ADMINUX-01–16 | Assess | — | Add developer/Admin/Manager journeys, resumable contextual help, build/launch readiness and usability acceptance. Reuse dashboard and page recipes; preserve dynamic forms as first enhancement. | — | Source/document inspection only; no application UI shipped by this planning change. |
 | 2026-10-06 | DF-01; DF-02; FORM-01; SUBMIT-01/02/08; ADMINUX-15 | In progress | Codex | Map current form paths; add custom contact roles and immutable published-intake snapshots/readable answers. Preserve legacy forms/data; no backfill or new environment settings. | [PR #14](https://github.com/tanishraj/payload-cms-starter-kit/pull/14) | 49 focused form/API/documentation/context tests pass after syncing develop on Node 22.13.1; TypeScript, changed-file lint and context checks pass. Isolated MongoDB 8.0.29 verifies persistence and immutable operational updates. Generic renderer, stale revisions, exports and admin-browser acceptance remain. |
 | 2026-10-06 | Dependency gate prerequisite | Merged; bounded exception active | Codex | Prepare Next.js and transitive security patches on a separate branch. Remaining Braces 3.0.3 has no published fixed version; user approved only the exact Braces entry expiring 2026-10-13. | [PR #15](https://github.com/tanishraj/payload-cms-starter-kit/pull/15) | 2,268 integration tests pass; one Docker test skipped. TypeScript/full lint/generators/context pass. [Concrete remediation/proposal](../operations/dependency-audit-remediation-2026-10-06.md). Production audit passes with only the exact approved entry; GitHub Quality passes, including both governance journeys and the production build; merged into develop. |
+
+| 2026-10-06 | DF-03/04/09; FORM-02/06; SUBMIT-03/07 | Workshop implemented; broader acceptance pending | Codex | Authenticated upstream generic form presentation with six controls/custom names, supported Storybook controls/states, shared strict-value rejection and legacy compatibility. No public block or new environment settings. | [PR #16](https://github.com/tanishraj/payload-cms-starter-kit/pull/16) (presentation commit `93597d2`) | 87 focused form/intake/context tests pass; TypeScript, changed-file lint, generated types and Storybook build pass. Desktop/mobile light/dark and failure/pending/success checks completed; independent UX disposition ship with no material fixes. Scoped design/context documentation recorded. GitHub Quality is required before merge; current run/result is recorded on PR #16. |
 
 ## Completion record template
 

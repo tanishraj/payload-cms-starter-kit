@@ -1,0 +1,472 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-06T08:25:32.742356+00:00",
+  "title": "Design System: Revamp Workshop",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Background",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-background": {
+        "role": "neutral",
+        "displayName": "Dark Background",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Foreground",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-foreground": {
+        "role": "neutral",
+        "displayName": "Dark Foreground",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Primary",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-primary": {
+        "role": "primary",
+        "displayName": "Dark Primary",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "primary-foreground": {
+        "role": "primary",
+        "displayName": "Primary Foreground",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-primary-foreground": {
+        "role": "primary",
+        "displayName": "Dark Primary Foreground",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Muted Foreground",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-muted-foreground": {
+        "role": "neutral",
+        "displayName": "Dark Muted Foreground",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "input": {
+        "role": "neutral",
+        "displayName": "Input",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-input": {
+        "role": "neutral",
+        "displayName": "Dark Input",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "ring": {
+        "role": "neutral",
+        "displayName": "Ring",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-ring": {
+        "role": "neutral",
+        "displayName": "Dark Ring",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "popover": {
+        "role": "neutral",
+        "displayName": "Popover",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-popover": {
+        "role": "neutral",
+        "displayName": "Dark Popover",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "popover-foreground": {
+        "role": "neutral",
+        "displayName": "Popover Foreground",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-popover-foreground": {
+        "role": "neutral",
+        "displayName": "Dark Popover Foreground",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "accent": {
+        "role": "neutral",
+        "displayName": "Accent",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-accent": {
+        "role": "neutral",
+        "displayName": "Dark Accent",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "accent-foreground": {
+        "role": "neutral",
+        "displayName": "Accent Foreground",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "dark-accent-foreground": {
+        "role": "neutral",
+        "displayName": "Dark Accent Foreground",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.65 0 0)",
+          "oklch(0.8 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      },
+      "destructive": {
+        "role": "primary",
+        "displayName": "Destructive",
+        "tonalRamp": [
+          "oklch(0.15 0.245 27.325)",
+          "oklch(0.25 0.245 27.325)",
+          "oklch(0.35 0.245 27.325)",
+          "oklch(0.45 0.245 27.325)",
+          "oklch(0.55 0.245 27.325)",
+          "oklch(0.65 0.245 27.325)",
+          "oklch(0.8 0.245 27.325)",
+          "oklch(0.95 0.245 27.325)"
+        ]
+      },
+      "dark-destructive": {
+        "role": "primary",
+        "displayName": "Dark Destructive",
+        "tonalRamp": [
+          "oklch(0.15 0.191 22.216)",
+          "oklch(0.25 0.191 22.216)",
+          "oklch(0.35 0.191 22.216)",
+          "oklch(0.45 0.191 22.216)",
+          "oklch(0.55 0.191 22.216)",
+          "oklch(0.65 0.191 22.216)",
+          "oklch(0.8 0.191 22.216)",
+          "oklch(0.95 0.191 22.216)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "title": {
+        "displayName": "Form title",
+        "purpose": "Bold h2 introducing the form."
+      },
+      "body": {
+        "displayName": "Supporting copy",
+        "purpose": "Descriptions, required guidance, status and error messages."
+      },
+      "label": {
+        "displayName": "Question label",
+        "purpose": "Associated question text; wraps at snug line height."
+      }
+    },
+    "shadows": [
+      {
+        "name": "select-menu",
+        "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+        "purpose": "Inherited large shadow on the opened select menu; the form itself is flat."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-state-transition",
+        "value": "150ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Inherited color, shadow and background state transitions; Button uses transition-all."
+      },
+      {
+        "name": "button-press",
+        "value": "translateY(1px)",
+        "purpose": "Inherited active movement for a direct button action."
+      },
+      {
+        "name": "select-duration",
+        "value": "100ms",
+        "purpose": "Inherited menu animation duration; item-aligned mode disables animation."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "md",
+        "value": "48rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Submit button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default Luma primary action; Generic Form makes it full width.",
+      "html": "<button type=\"button\" class=\"ds-submit\">Send enquiry</button>",
+      "css": ".ds-submit{font-family:ui-sans-serif,system-ui,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\";display:inline-flex;align-items:center;justify-content:center;width:100%;height:2.25rem;padding:0 .75rem;border:1px solid transparent;border-radius:calc(var(--radius)*2.6);background:var(--primary);color:var(--primary-foreground);font-size:.875rem;font-weight:500;line-height:1.25rem;transition:all .15s cubic-bezier(.4,0,.2,1);outline:none}.ds-submit:hover{background:color-mix(in oklch,var(--primary) 80%,transparent)}.ds-submit:active{transform:translateY(1px)}.ds-submit:focus-visible{border-color:var(--ring);box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 30%,transparent)}.ds-submit[aria-invalid=\"true\"]{border-color:var(--destructive);box-shadow:0 0 0 3px color-mix(in oklch,var(--destructive) 20%,transparent)}:host-context(.dark) .ds-submit[aria-invalid=\"true\"]{border-color:color-mix(in oklch,var(--destructive) 50%,transparent);box-shadow:0 0 0 3px color-mix(in oklch,var(--destructive) 40%,transparent)}.ds-submit:disabled{opacity:.5;cursor:not-allowed;pointer-events:none}"
+    },
+    {
+      "name": "Text answer",
+      "kind": "input",
+      "refersTo": "form-input",
+      "description": "Canvas-matching answer field, with responsive entered-text size and associated label.",
+      "html": "<div class=\"ds-text-field\"><label for=\"ds-answer\">Your question</label><input id=\"ds-answer\" class=\"ds-answer\" placeholder=\"Enter an answer\" /></div>",
+      "css": ".ds-text-field{font-family:ui-sans-serif,system-ui,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\";display:flex;flex-direction:column;gap:.75rem;color:var(--foreground)}.ds-text-field label{font-size:.875rem;font-weight:500;line-height:1.375}.ds-answer{font-family:ui-sans-serif,system-ui,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\";color:var(--foreground);background:var(--background);border:1px solid transparent;outline:none;transition:color .15s cubic-bezier(.4,0,.2,1),box-shadow .15s cubic-bezier(.4,0,.2,1),background-color .15s cubic-bezier(.4,0,.2,1);width:100%;min-width:0;height:2.25rem;padding:.25rem .75rem;border-radius:calc(var(--radius)*2.2);font-size:1rem;line-height:1.5rem}.ds-answer::placeholder{color:var(--muted-foreground)}@media(min-width:48rem){.ds-answer{font-size:.875rem;line-height:1.25rem}}.ds-answer:focus-visible{border-color:var(--ring);box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 30%,transparent)}.ds-answer[aria-invalid=\"true\"]{border-color:var(--destructive);box-shadow:0 0 0 3px color-mix(in oklch,var(--destructive) 20%,transparent)}:host-context(.dark) .ds-answer[aria-invalid=\"true\"]{border-color:color-mix(in oklch,var(--destructive) 50%,transparent);box-shadow:0 0 0 3px color-mix(in oklch,var(--destructive) 40%,transparent)}.ds-answer:disabled{opacity:.5;cursor:not-allowed;pointer-events:none}"
+    },
+    {
+      "name": "Long answer",
+      "kind": "input",
+      "refersTo": "form-textarea",
+      "description": "Non-resizing multiline answer in the original form surface.",
+      "html": "<div class=\"ds-long-field\"><label for=\"ds-details\">How can we help?</label><textarea id=\"ds-details\" rows=\"5\" class=\"ds-details\" placeholder=\"Tell us what you would like to know.\"></textarea></div>",
+      "css": ".ds-long-field{font-family:ui-sans-serif,system-ui,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\";display:flex;flex-direction:column;gap:.75rem;color:var(--foreground)}.ds-long-field label{font-size:.875rem;font-weight:500;line-height:1.375}.ds-details{font-family:ui-sans-serif,system-ui,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\";color:var(--foreground);background:var(--background);border:1px solid transparent;outline:none;transition:color .15s cubic-bezier(.4,0,.2,1),box-shadow .15s cubic-bezier(.4,0,.2,1),background-color .15s cubic-bezier(.4,0,.2,1);width:100%;min-height:4rem;field-sizing:content;resize:none;padding:.75rem;border-radius:calc(var(--radius)*1.8);font-size:1rem;line-height:1.5rem}.ds-details::placeholder{color:var(--muted-foreground)}@media(min-width:48rem){.ds-details{font-size:.875rem;line-height:1.25rem}}.ds-details:focus-visible{border-color:var(--ring);box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 30%,transparent)}.ds-details[aria-invalid=\"true\"]{border-color:var(--destructive);box-shadow:0 0 0 3px color-mix(in oklch,var(--destructive) 20%,transparent)}:host-context(.dark) .ds-details[aria-invalid=\"true\"]{border-color:color-mix(in oklch,var(--destructive) 50%,transparent);box-shadow:0 0 0 3px color-mix(in oklch,var(--destructive) 40%,transparent)}.ds-details:disabled{opacity:.5;cursor:not-allowed;pointer-events:none}"
+    },
+    {
+      "name": "Select trigger",
+      "kind": "custom",
+      "refersTo": "form-select",
+      "description": "Static visual sample of the Radix trigger; the application component owns menu behavior.",
+      "html": "<div class=\"ds-select-field\"><span id=\"ds-select-label\">Preferred department</span><button type=\"button\" class=\"ds-select\" aria-labelledby=\"ds-select-label\" aria-haspopup=\"listbox\"><span>Choose a department</span><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/></svg></button></div>",
+      "css": ".ds-select-field{font-family:ui-sans-serif,system-ui,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\";display:flex;flex-direction:column;gap:.75rem;color:var(--foreground)}.ds-select-field>span{font-size:.875rem;font-weight:500;line-height:1.375}.ds-select{font-family:ui-sans-serif,system-ui,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\";color:var(--foreground);background:var(--background);border:1px solid transparent;outline:none;transition:color .15s cubic-bezier(.4,0,.2,1),box-shadow .15s cubic-bezier(.4,0,.2,1),background-color .15s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:space-between;gap:.375rem;width:100%;height:2.25rem;padding:.5rem .75rem;border-radius:calc(var(--radius)*2.2);font-size:.875rem;line-height:1.25rem;text-align:left}.ds-select span,.ds-select svg{color:var(--muted-foreground)}.ds-select svg{flex-shrink:0;pointer-events:none}.ds-select:focus-visible{border-color:var(--ring);box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 30%,transparent)}.ds-select[aria-invalid=\"true\"]{border-color:var(--destructive);box-shadow:0 0 0 3px color-mix(in oklch,var(--destructive) 20%,transparent)}:host-context(.dark) .ds-select[aria-invalid=\"true\"]{border-color:color-mix(in oklch,var(--destructive) 50%,transparent);box-shadow:0 0 0 3px color-mix(in oklch,var(--destructive) 40%,transparent)}.ds-select:disabled{opacity:.5;cursor:not-allowed;pointer-events:none}"
+    },
+    {
+      "name": "Selected checkbox",
+      "kind": "custom",
+      "description": "Static visual sample of the selected Radix checkbox and wrapping label.",
+      "html": "<div class=\"ds-checkbox-field\"><button type=\"button\" role=\"checkbox\" aria-checked=\"true\" aria-labelledby=\"ds-checkbox-label\" class=\"ds-checkbox\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg></button><span id=\"ds-checkbox-label\">You may contact me about this enquiry</span></div>",
+      "css": ".ds-checkbox-field{font-family:ui-sans-serif,system-ui,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\";display:flex;align-items:center;gap:.5rem;color:var(--foreground)}.ds-checkbox-field>span{font-size:.875rem;font-weight:500;line-height:1.375}.ds-checkbox{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:1rem;height:1rem;padding:0;border:1px solid var(--primary);border-radius:5px;background:var(--primary);color:var(--primary-foreground);outline:none;transition:box-shadow .15s cubic-bezier(.4,0,.2,1)}.ds-checkbox:focus-visible{border-color:var(--ring);box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 30%,transparent)}.ds-checkbox[aria-invalid=\"true\"]{border-color:var(--destructive);box-shadow:0 0 0 3px color-mix(in oklch,var(--destructive) 20%,transparent)}:host-context(.dark) .ds-checkbox[aria-invalid=\"true\"]{border-color:color-mix(in oklch,var(--destructive) 50%,transparent);box-shadow:0 0 0 3px color-mix(in oklch,var(--destructive) 40%,transparent)}.ds-checkbox:disabled{opacity:.5;cursor:not-allowed;pointer-events:none}"
+    },
+    {
+      "name": "Field error",
+      "kind": "custom",
+      "description": "Text alert complements invalid control color; no decorative callout surface.",
+      "html": "<div role=\"alert\" class=\"ds-error\">Please correct the highlighted fields and try again.</div>",
+      "css": ".ds-error{font-family:ui-sans-serif,system-ui,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\";font-size:.875rem;line-height:1.25rem;font-weight:400;color:var(--destructive)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Official Neutral / Radix Luma",
+    "overview": "This document describes the existing `.storybook` and `src/components/revamp` workshop only. The workshop inherits official shadcn Neutral in light and dark modes, fresh Radix Luma presentation dependencies, Lucide icons and system sans-serif typography. Its character is calm, readable and rounded, with semantic color roles and restrained interaction feedback.\n\nThe shipped Generic Form preserves authenticated Shadcnblocks composition while connecting typed questions and submission states. This is a record of the workshop source, not a replacement identity for the existing SNMIH production website. Production integration is future work. The finish-review disposition is **ship for the workshop**, with no material fixes and an empty detector result reported by the reviewer; this does not establish browser/CMS/native-admin acceptance or production launch readiness.",
+    "keyCharacteristics": [
+      "Official Neutral light/dark semantics with state-specific error color.",
+      "System sans-serif hierarchy and Lucide pictograms inherited from upstream.",
+      "Rounded Luma controls and flat form surfaces.",
+      "Preserved upstream compositions with caller-owned data and persistence."
+    ],
+    "rules": [
+      {
+        "name": "The Semantic Theme Rule",
+        "body": "Use the workshop's existing semantic roles and official light/dark values; preserve the production theme boundary.",
+        "section": "colors"
+      },
+      {
+        "name": "The Upstream Composition Rule",
+        "body": "Preserve selected source structure and default presentation; typed integration props configure supported content and behavior.",
+        "section": "layout"
+      }
+    ],
+    "dos": [
+      "Do use the official workshop semantic roles in both theme modes.",
+      "Do preserve authenticated upstream structure, styling and interactions.",
+      "Do expose supported content and behavior through typed props and labelled Storybook controls.",
+      "Do pair invalid color with field messages, associated descriptions and focus recovery.",
+      "Do keep transport and persistence with the caller and demonstration data synthetic."
+    ],
+    "donts": [
+      "Don't apply this workshop identity to the existing SNMIH production themes or public site without a separate integration decision.",
+      "Don't replace the inherited shared-surface controls with a custom visual alternative.",
+      "Don't invent layout or style variants that the selected source and component API do not support.",
+      "Don't describe workshop review as completed CMS, native-admin or production acceptance."
+    ]
+  }
+}

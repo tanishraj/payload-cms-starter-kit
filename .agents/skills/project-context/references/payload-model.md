@@ -55,7 +55,12 @@ Nine globals are registered:
   and optional Review promotion. Snapshots preserve Payload array-row IDs where present and original
   select labels; legacy submissions remain raw-data-only without backfill. The fingerprint is not a
   Payload version ID. Existing Contact33/Review public presentations remain fixed; generic rendering,
-  stale-client revision negotiation and flattened exports require separate work.
+  stale-client revision negotiation and flattened exports require separate work. Shared form validation
+  rejects non-plain answer records, undeclared names and malformed scalar values; checkbox inputs keep
+  finite legacy HTML encodings. The fixed review engine explicitly opts into its seven separately
+  validated extra keys. Authoring reserves constructor/prototype/website, validates supported types,
+  and caps schemas at 100 fields. A separate generic workshop demonstrates the six current controls
+  through the same validator; it is not yet a public block or CMS preview integration.
 - WorkQueue stores deduplicated actionable conditions. OperationalAuditEvents stores selected immutable operational history. Both record their source feature for Site Manager row filtering. Users own authentication, Admin/Site Manager roles, and feature grants.
 
 ## Feature and Publication Governance
