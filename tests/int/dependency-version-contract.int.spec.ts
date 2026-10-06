@@ -31,7 +31,7 @@ const compatibilityGroups = [
       '@payloadcms/storage-s3',
       '@payloadcms/ui',
     ],
-    version: '3.88.0',
+    version: '3.90.2',
   },
 ] as const
 
@@ -42,7 +42,7 @@ const exactDirectDependencyTargets = [
   },
   {
     name: 'sharp',
-    version: '0.35.4',
+    version: '0.35.5',
   },
 ] as const
 

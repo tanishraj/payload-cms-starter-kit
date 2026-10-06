@@ -5,7 +5,6 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
 
-# Payload 3.88.0 pins the vulnerable Undici release exactly. Keep the
-# reviewed Payload family while applying its compatible security patch.
+# Payload 3.90.2 pins the vulnerable Undici release exactly. Apply its reviewed compatible security patch without changing other consumers.
 overrides:
-  'payload@3.88.0>undici': 7.29.1
+  'payload@3.90.2>undici': 7.29.1

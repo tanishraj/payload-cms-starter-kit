@@ -2,7 +2,7 @@
 
 ## Runtime and Layers
 
-This is one editorial marketing application: Payload CMS 3.88.0 and Next.js 16 share a Node.js 22.17.0 App Router process within the supported `>=22.13.0 <23` range, using pnpm 11.17.0, React 19, Tailwind CSS 4, MongoDB, and TypeScript. The main entry points are [Payload configuration](../../../../src/payload.config.ts) and the [App Router](../../../../src/app).
+This is one editorial marketing application: Payload CMS 3.90.2 and Next.js 16 share a Node.js 22.17.0 App Router process within the supported `>=22.13.0 <23` range, using pnpm 11.17.0, React 19, Tailwind CSS 4, MongoDB, and TypeScript. The main entry points are [Payload configuration](../../../../src/payload.config.ts) and the [App Router](../../../../src/app).
 
 The repository has eight practical layers:
 
@@ -211,3 +211,7 @@ required loopback test database and is a Quality gate. The fixture worker retain
 the `react-server`/tsx options needed for Payload config import, while the Next web
 server uses its normal framework-managed React contexts. Forcing `react-server`
 globally on Next breaks its public frontend compilation/SSR.
+
+## October 7 security patch baseline
+
+The aligned Payload family is 3.90.2 and Sharp is 0.35.5. The existing scoped Undici override targets Payload 3.90.2 only (7.29.1); other consumers retain their own graph. See the October 7 dependency remediation for upstream compatibility review, scheduled-job operator action and verification. Braces exception policy/expiry remains unchanged.

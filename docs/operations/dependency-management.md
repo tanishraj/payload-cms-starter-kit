@@ -79,3 +79,7 @@ records the Next.js patch-family refresh, narrow transitive changes, scoped Undi
 patch and the remaining Braces finding. The exact Braces entry was explicitly approved by the user on 6 October and is
 active until 13 October. Any renewal or different exception requires new approval;
 the document's existence alone never supplies approval.
+
+## October 7 Payload and Sharp refresh
+
+[Upgrade review](dependency-audit-remediation-2026-10-07.md) records newly published blocking advisories, the aligned Payload 3.90.2/Sharp 0.35.5 patch and the existing Undici patch retargeted to Payload 3.90.2. Braces approval and its expiration are unchanged. Operators must recreate pending scheduled publish/unpublish events after upgrade where applicable.

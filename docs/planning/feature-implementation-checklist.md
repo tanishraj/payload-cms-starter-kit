@@ -1940,3 +1940,5 @@ Documentation updated:
 The project-context skill inventory remains the technical source map. This tracker
 owns progress against the carried-forward requirements; operator documentation
 owns the instructions for shipped behavior.
+
+| 2026-10-07 | Dependency prerequisite for Contact6 | In progress | Codex | New Payload/Sharp high/critical advisories patch the aligned Payload family to 3.90.2 and Sharp to 0.35.5; retarget the existing scoped Undici patch because upstream pins 7.29.0. TOTP replay acceptance reuses the exact enrollment code across a clock boundary. | Branch: `fix/payload-sharp-security-patches` | [Upgrade review](../operations/dependency-audit-remediation-2026-10-07.md). Audit/regressions/generators/CI pending. Braces approval unchanged; no new environment setting or live data migration. |
