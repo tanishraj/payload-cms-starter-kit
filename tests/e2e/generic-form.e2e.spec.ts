@@ -61,11 +61,12 @@ for (const block of [
     async ({ page, browser }, testInfo) => {
       testInfo.setTimeout(240_000)
       page.setDefaultTimeout(20_000)
+      const formTitle = `Generic enquiry acceptance ${block.slug} ${testInfo.retry}`
       await seedTestUser()
       await login({ page, user: testUser })
       await page.goto('/admin/collections/forms/create', { waitUntil: 'domcontentloaded' })
       await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
-      await fillNativeField(page, 'title', 'Generic enquiry acceptance')
+      await fillNativeField(page, 'title', formTitle)
       const addField = page.getByRole('button', { name: 'Add Field', exact: true })
       await addNativeRow(page, addField, 'fields.0.name')
       await fillNativeField(page, 'fields.0.name', 'visitor_name')
@@ -107,7 +108,7 @@ for (const block of [
         headers: authHeaders,
         data: {
           title: 'Generic form acceptance',
-          slug: 'native-' + block.slug + '-acceptance',
+          slug: `native-${block.slug}-acceptance-${testInfo.retry}`,
           _status: 'draft',
           layout: [],
         },
@@ -131,7 +132,7 @@ for (const block of [
         await page.getByRole('button', { name: 'Show All', exact: true }).click()
         await fillNativeField(page, 'layout.0.heading', 'Ask our team')
         await page.locator('#field-layout__0__form').getByRole('combobox').click()
-        await page.getByRole('option', { name: 'Generic enquiry acceptance', exact: true }).click()
+        await page.getByRole('option', { name: formTitle, exact: true }).click()
         const publishPromise = page.waitForResponse(
           (r) =>
             new URL(r.url()).pathname === `/api/pages/${document.id}` &&
@@ -166,7 +167,7 @@ for (const block of [
           await visitor.getByRole('button', { name: 'Submit', exact: true }).click()
           const intake = await intakePromise
           expect(intake.ok(), `Intake ${intake.status()}: ${await intake.text()}`).toBe(true)
-          expect(await intake.json()).toMatchObject({ success: true })
+          expect(await intake.json()).toMatchObject({ message: form.successMessage })
           await expect(
             visitor
               .getByRole('status')
