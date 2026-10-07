@@ -1,3 +1,4 @@
+import { renderToString } from 'react-dom/server'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { GenericForm, type GenericFormResult } from '@/components/revamp/generic-form'
@@ -25,6 +26,18 @@ const answer = () =>
 const submit = () => fireEvent.click(screen.getByRole('button', { name: 'Send Message' }))
 
 describe('generic form presentation', () => {
+  it('keeps server-rendered controls inactive and never defaults answers to GET', () => {
+    const container = document.createElement('div')
+    container.innerHTML = renderToString(
+      <GenericForm fields={fields} onSubmit={async () => success} />,
+    )
+    expect(container.querySelector('form')?.getAttribute('method')).toBe('post')
+    for (const control of container.querySelectorAll('input, button')) {
+      expect(control.hasAttribute('disabled')).toBe(true)
+    }
+    expect(container.textContent).toContain('Enable JavaScript to send this form.')
+  })
+
   it('focuses the first invalid control and associates its error with the control', async () => {
     const onSubmit = vi.fn(async () => success)
     render(<GenericForm fields={fields} onSubmit={onSubmit} />)

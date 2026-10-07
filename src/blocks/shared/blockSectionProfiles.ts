@@ -45,6 +45,7 @@ export const blockSectionProfiles = {
   reviewFeed: 'standard',
   reviewSubmission: 'standard',
   genericForm: 'contentOnly',
+  contact6: 'contentOnly',
   contact33: 'standard',
   teamShowcase: 'standard',
   services21: 'standard',

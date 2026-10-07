@@ -11,7 +11,7 @@
  * FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
  * Adaptations: typed schema, shared validation, unique IDs, submission states.
  */
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
 import { Controller, useForm, type Resolver, type ResolverResult } from 'react-hook-form'
 
 import { Button } from '@/components/revamp/ui/button'
@@ -32,6 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/revamp/ui/select'
+import { cn } from '@/lib/utils'
 import { Textarea } from '@/components/revamp/ui/textarea'
 import {
   FORM_HONEYPOT_FIELD_NAME,
@@ -52,7 +53,10 @@ export type GenericFormResult = {
   errors?: FormSubmissionErrors
 }
 export type GenericFormProps = {
+  /** Contact6 preserves its first two short controls in a responsive split row. */
+  layout?: 'stacked' | 'contact6'
   fields: SimpleFormField[]
+  formLabel?: string
   heading?: string
   description?: string
   submitButtonLabel?: string
@@ -70,16 +74,30 @@ const maxLengths = {
   textarea: FORM_MAX_TEXTAREA_LENGTH,
 }
 
+const subscribeToHydration = () => () => {}
+
 /** Presentation only. The caller owns fetching, form identity and persistence. */
 function FormPresentation({
   fields,
+  layout = 'stacked',
   heading = 'Get in touch',
+  formLabel = 'Enquiry form',
   description,
   submitButtonLabel = 'Send Message',
   pendingLabel = 'Sending…',
   disabled = false,
   onSubmit,
 }: GenericFormProps) {
+  const splitFirstRow =
+    layout === 'contact6' &&
+    fields.length >= 2 &&
+    fields.slice(0, 2).every((field) => field.type !== 'textarea' && field.type !== 'checkbox')
+  // The server-rendered form must not submit to the page before React is ready.
+  const hydrated = useSyncExternalStore(
+    subscribeToHydration,
+    () => true,
+    () => false,
+  )
   const prefix = useId()
   const [selectContainer, setSelectContainer] = useState<HTMLDivElement | null>(null)
   const messageRef = useRef<HTMLParagraphElement>(null)
@@ -114,7 +132,7 @@ function FormPresentation({
   }, [result])
 
   const pending = form.formState.isSubmitting
-  const inactive = disabled || pending
+  const inactive = !hydrated || disabled || pending
   const hasErrors = Boolean(form.formState.errors.answers)
   const submitAnswers = async ({ answers, website }: Answers) => {
     if (disabled || submittingRef.current || result?.success) return
@@ -147,8 +165,9 @@ function FormPresentation({
   }
 
   return (
-    <div className="w-full max-w-md" ref={setSelectContainer}>
+    <div className={cn('w-full', layout === 'stacked' && 'max-w-md')} ref={setSelectContainer}>
       <form
+        method="post"
         className="flex flex-col gap-4"
         noValidate
         onSubmit={(event) => {
@@ -159,9 +178,12 @@ function FormPresentation({
           void form.handleSubmit(submitAnswers)(event)
         }}
         aria-labelledby={heading ? `${prefix}-heading` : undefined}
-        aria-label={heading ? undefined : 'Enquiry form'}
-        aria-busy={pending}
+        aria-label={heading ? undefined : formLabel}
+        aria-busy={!hydrated || pending}
       >
+        <noscript>
+          <FieldDescription>Enable JavaScript to send this form.</FieldDescription>
+        </noscript>
         {(heading || description) && (
           <div className="flex flex-col gap-2">
             {heading && (
@@ -192,8 +214,13 @@ function FormPresentation({
                   : 'Please correct the highlighted fields and try again.'}
               </FieldError>
             )}
-            <FieldGroup>
-              {fields.map((definition) => (
+            <FieldGroup
+              className={cn(
+                layout === 'contact6' && 'gap-6',
+                splitFirstRow && 'grid sm:grid-cols-2',
+              )}
+            >
+              {fields.map((definition, index) => (
                 <Controller
                   key={definition.id ?? definition.name}
                   name={`answers.${definition.name}`}
@@ -216,7 +243,11 @@ function FormPresentation({
                     const value = typeof field.value === 'string' ? field.value : ''
                     if (definition.type === 'checkbox')
                       return (
-                        <Field data-invalid={fieldState.invalid} data-disabled={inactive}>
+                        <Field
+                          className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
+                          data-invalid={fieldState.invalid}
+                          data-disabled={inactive}
+                        >
                           <Field orientation="horizontal" className="gap-2">
                             <Checkbox
                               {...a11y}
@@ -236,7 +267,11 @@ function FormPresentation({
                         </Field>
                       )
                     return (
-                      <Field data-invalid={fieldState.invalid} data-disabled={inactive}>
+                      <Field
+                        className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
+                        data-invalid={fieldState.invalid}
+                        data-disabled={inactive}
+                      >
                         <FieldLabel htmlFor={id}>{label}</FieldLabel>
                         {definition.type === 'select' ? (
                           <Select
@@ -250,7 +285,7 @@ function FormPresentation({
                               {...a11y}
                               ref={field.ref}
                               onBlur={field.onBlur}
-                              className="bg-background"
+                              className={cn(layout === 'stacked' && 'bg-background')}
                             >
                               <SelectValue
                                 placeholder={definition.placeholder || 'Choose an option'}
@@ -277,7 +312,7 @@ function FormPresentation({
                             maxLength={maxLengths.textarea}
                             rows={5}
                             placeholder={definition.placeholder ?? undefined}
-                            className="resize-none bg-background"
+                            className={cn('resize-none', layout === 'stacked' && 'bg-background')}
                           />
                         ) : (
                           <Input
@@ -306,7 +341,7 @@ function FormPresentation({
                                     : undefined
                             }
                             placeholder={definition.placeholder ?? undefined}
-                            className="bg-background"
+                            className={cn(layout === 'stacked' && 'bg-background')}
                           />
                         )}
                         {fieldState.invalid && (
@@ -324,6 +359,7 @@ function FormPresentation({
                 {...form.register('website')}
                 id={`${prefix}-website`}
                 tabIndex={-1}
+                disabled={inactive}
                 autoComplete="off"
               />
             </div>

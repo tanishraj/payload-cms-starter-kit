@@ -25,7 +25,7 @@ form edits preserving historical data, and denial of answer/snapshot mutation wh
 operational updates succeed. These checks do not certify admin-browser UX, a
 production database deployment. The separate native browser journey now proves the public generic path on disposable MongoDB. Record actual commands/results in the implementation checklist.
 
-The native Generic Form increment is merged into develop through [PR #17](https://github.com/tanishraj/payload-cms-starter-kit/pull/17). [GitHub Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/37466757847) passed 2,332 integration tests (one Docker-dependent test skipped), both governance journeys, the native form journey and the production build. Next layout: authenticated Shadcnblocks contact6, using the same reusable Form engine and shared website theme rather than fixed example inputs.
+The native Generic Form increment is merged into develop through [PR #17](https://github.com/tanishraj/payload-cms-starter-kit/pull/17). [GitHub Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/37466757847) passed 2,332 integration tests (one Docker-dependent test skipped), both governance journeys, the native form journey and the production build. Contact6 is the next native increment: authenticated upstream layout, editable cards/hours and reusable questions through the same Form engine and shared website theme. Its implementation and native acceptance are tracked in the checklist; no fixed example-input schema is introduced.
 Follow with expected-revision/stale-client policy, additional controls/conditional intake,
 generic exports and retry/duplicate behavior. DF-02 and the broader FORM/SUBMIT
 groups remain incomplete until their full acceptance passes.
@@ -46,3 +46,7 @@ email or event emission. Browser review covers desktop/mobile, light/dark,
 validation, pending, unconfirmed requests and confirmation; final evidence is
 recorded in the checklist. A browser retry can still duplicate a previously stored
 request after a lost response; client locking is not server idempotency.
+
+### Contact6 implementation boundary (2026-10-07)
+
+Adds the sourced presentation, fresh Card dependency source, one Storybook entry, native config/server/preview adapters, canonical registration, content-only section profile, generated types and picker fixture/JPEG. Both dynamic-form blocks share `createGenericFormField` and the published access-enforced loader/projection. The generic renderer gains only a typed Contact6 presentation layout; validation/state/transport stay shared. No package dependency, runtime environment variable or data migration. Native browser acceptance runs both Generic Form and Contact6 using the same custom text/select/checkbox authoring journey. Navigation waits for DOM then real editor readiness instead of unrelated whole-page load completion.

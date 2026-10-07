@@ -37,6 +37,7 @@ import { ProfileCarouselBlockComponent } from '@/blocks/ProfileCarousel/Componen
 import { QaAccordionBlockComponent } from '@/blocks/QaAccordion/Component'
 import { RatingSpotlightBlockPresentation } from '@/blocks/RatingSpotlight/Presentation'
 import { ReviewSubmissionBlockComponent } from '@/blocks/ReviewSubmission/Component'
+import { Contact6BlockPresentation } from '@/blocks/Contact6/Presentation'
 import { GenericFormBlockPresentation } from '@/blocks/GenericForm/Presentation'
 import { Contact33BlockComponent } from '@/blocks/Contact33/Component'
 import { FeatureSpotlightBlockComponent } from '@/blocks/FeatureSpotlight/Component'
@@ -1807,6 +1808,46 @@ export const blockThumbnailFixtures = {
       form={reviewFormFixture}
       size="compact"
       title="Tell us about your experience."
+    />
+  ),
+  contact6: (
+    <Contact6BlockPresentation
+      heading="Contact Us"
+      description="Choose a department and tell us how we can help."
+      formTitle="Send an enquiry"
+      formDescription="Our team will reply as soon as possible."
+      size="none"
+      preview
+      contactInfo={[
+        {
+          icon: 'email',
+          title: 'Email',
+          description: 'Admissions and general enquiries',
+          value: 'hello@example.com',
+          href: 'mailto:hello@example.com',
+        },
+        {
+          icon: 'phone',
+          title: 'Phone',
+          description: 'Monday to Friday',
+          value: '+971 50 123 4567',
+          href: 'tel:+971501234567',
+        },
+      ]}
+      officeHours={[
+        { label: 'Monday - Friday', value: '9 AM - 6 PM' },
+        { label: 'Sunday', value: 'Closed' },
+      ]}
+      contactDetails={[{ label: 'Office', value: 'Student Support Centre' }]}
+      definition={{
+        slug: 'thumbnail-only',
+        submitButtonLabel: 'Send enquiry',
+        fields: [
+          { name: 'visitor_name', label: 'Your name', type: 'text', required: true },
+          { name: 'reply_address', label: 'Your email', type: 'email', required: true },
+          { name: 'question', label: 'How can we help?', type: 'textarea' },
+        ],
+      }}
     />
   ),
   genericForm: (

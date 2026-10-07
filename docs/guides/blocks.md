@@ -484,3 +484,7 @@ submissions. See the [Forms guide](forms.md#build-a-form-with-your-own-questions
 Presentation source: authenticated `@shadcnblocks/form-form-patterns-4`, with
 `@shadcnblocks/checkbox-checkbox-standard-1` and their official shadcn dependencies.
 The block uses the shared website theme and retains the reviewed upstream structure.
+
+## Contact6
+
+Contact Cards & Form (sourced from Contact6) in Advanced Library combines editable contact cards with a reusable Form and optional office-hours/contact-information footer. It retains authenticated Shadcnblocks `contact6` layout and inherits the website theme. Select a published General/Lead Form; its questions and submission label apply across every block selecting it. Use the relationship drawer to manage the Form without leaving the page. The first two short questions share a responsive row; remaining questions are full width, and a textarea or checkbox in the first pair keeps them stacked. Only supported section padding is exposed in Theme Settings. Links accept site paths/anchors, HTTP(S), email or telephone destinations; no fake live-chat transport is supplied. Forms define the six currently supported controls and arbitrary valid names/labels. Live Preview never submits. Existing fixed contact blocks stay compatible.

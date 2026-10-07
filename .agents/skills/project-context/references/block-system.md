@@ -2,13 +2,13 @@
 
 ## Registries
 
-[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 20-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library. Pages expose 60 blocks and Reusable Sections expose the 59 non-recursive choices.
+[blockCatalog.ts](../../../../src/blocks/blockCatalog.ts) is the server-only canonical Payload schema catalog for Page-compatible blocks. It assigns native Admin groups in this order: Start, Explain, Explore, Prove, Convert, and Advanced Library. The first five groups contain the client-approved 20-block vocabulary; all remaining Page-compatible blocks stay registered under Advanced Library. Pages expose 61 blocks and Reusable Sections expose the 60 non-recursive choices.
 
 Calendar is an Explore block backed only by selected active Event-behavior News & Events classifications. Editors choose one to five ordered classifications, while each classification centrally owns its semantic Calendar color. The complete toolbar, month/timeline panel, and Upcoming panel inherit the selected section surface; framed Tabs and Select controls share a true 44px height, and adjacent-month dates can be muted or hidden. The server renders the configured `Asia/Kolkata`-first current month and stable next-four Upcoming snapshot; visitor times remain timezone-correct but omit technical GMT/UTC suffixes. Desktop starts with a Sunday-first six-week grid, phones receive Timeline-first output, and `/api/calendar-events` supplies validated public or authenticated-draft month projections. Multi-day/all-day ranges are inclusive, day cells cap at two links before `+N more`, filtering never changes Upcoming, and production/live preview share the same serializable presentation contract. Editors may configure one sidebar action targeting a Page, Custom URL, or File and choose Button or Link presentation, while the existing document label remains the panel heading. Upcoming, its legend, and the action share one semantic sidebar; the rail matches the desktop calendar height and pins the action region to its bottom, while compact layouts keep natural source order and height. The sidebar action remains outside the month snapshot and cache identity.
 
 Annual Calendar is the twelve-month Explore companion to Calendar. It uses the same strict one-to-five active Event-classification scope, site timezone, semantic calendar tones, section appearance/actions/alignment/spacing, and next-four Upcoming semantics. Editors use either the current calendar year or two day-only date pickers whose selected months define exactly twelve consecutive inclusive months; selected days are ignored. One shared normalizer owns production query bounds, persistent cache keys, authenticated preview scopes, the derived period label, and twelve month keys, while invalid custom periods fail closed before querying News & Events. Visitors receive a chronological Year Stream with a semantic spine, 10px square month markers, inset semantic month dividers, compact Current and event-count metadata, linked event cards, and lightweight empty-month copy. Coming Next remains independent of the selected period and stays beside the stream on desktop and below it on smaller screens. Calendar and Annual Calendar share one sidebar Download Panel field composer and resolver. The visible PDF Document Label remains `calendarPdfTitle`, while one canonical shared action supports Page, Custom URL, File View, or File Download destinations and Button or editorial Link presentation. Explicit variants, new-tab behavior, navigation arrows, and download-icon settings pass through unchanged. A non-empty new action is authoritative; rows saved by the preceding restricted schema use Button only as their missing-mode compatibility fallback. Hidden legacy PDF Media/label fields remain a no-migration fallback only when the new action is empty. The semantic panel stays at the bottom of the full-height desktop sidebar and renders through the canonical shared Content Actions system. Embedded Upcoming/action regions avoid nested landmarks and borders, and Annual Calendar intentionally gives up its former sticky sidebar to satisfy this full-height contract. Compact layouts retain natural flow, long labels wrap within the 20rem rail, and unresolved destinations produce no public link. Event queries, response snapshots, and cache identity remain unchanged. The block intentionally exposes no visitor navigation, view, filter, or pagination controls, and the uncommitted Month/Year controls require no migration.
 
-[Pages.ts](../../../../src/collections/Pages.ts) consumes the complete 60-block Page registry. [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) consumes the same registry without `reusableSection`, preventing direct recursion. [NewsEventsDetailTemplate.ts](../../../../src/globals/NewsEventsDetailTemplate.ts) consumes the Page registry plus `newsEventsContent`, which appears first under Template Core. The [block operator guide](../../../../docs/guides/blocks.md) owns the editor-facing group membership and per-deployment customization instructions.
+[Pages.ts](../../../../src/collections/Pages.ts) consumes the complete 61-block Page registry. [ReusableSections.ts](../../../../src/collections/ReusableSections.ts) consumes the same registry without `reusableSection`, preventing direct recursion. [NewsEventsDetailTemplate.ts](../../../../src/globals/NewsEventsDetailTemplate.ts) consumes the Page registry plus `newsEventsContent`, which appears first under Template Core. The [block operator guide](../../../../docs/guides/blocks.md) owns the editor-facing group membership and per-deployment customization instructions.
 
 The catalog imports schema config only. Production and live-preview renderer switches remain explicit and separate so server/client boundaries are not mixed.
 
@@ -16,7 +16,7 @@ The catalog imports schema config only. Production and live-preview renderer swi
 
 [pageRecipes.ts](../../../../src/page-recipes/pageRecipes.ts) defines the two code-owned full-page creation recipes. Blank produces an empty layout. Landing produces `pageHeader` followed by `breadcrumb`; it copies the Page title into Page Header, selects an empty eyebrow as its top content to suppress the header's built-in breadcrumb, and configures the standalone Breadcrumb for automatic hierarchy resolution.
 
-Recipes create editable drafts and never restrict the canonical 60-block registry. After creation, editors can remove or reorder recipe blocks and add any Page block. The guided setup replaces only full-page Page creation; relationship-drawer creation delegates to Payload's native form so the parent relationship workflow remains intact.
+Recipes create editable drafts and never restrict the canonical 61-block registry. After creation, editors can remove or reorder recipe blocks and add any Page block. The guided setup replaces only full-page Page creation; relationship-drawer creation delegates to Payload's native form so the parent relationship workflow remains intact.
 
 Restricted shell/system registries are separate:
 
@@ -556,16 +556,16 @@ all submission controls. Neither preview nor thumbnails import the server loader
 Only the public questions, slug and button label cross into the client; private
 notification/reply/editor data remains outside it. Transport posts arbitrary supported
 machine names to existing intake. It reports server success, field validation,
-rate-limit waits and unconfirmed failures without automatic retries.
+rate-limit waits and unconfirmed failures without automatic retries. Server-rendered controls remain disabled until hydration, and the HTML fallback uses POST so early interactions cannot put answers in a query string.
 
 The integrated adapter uses shared website shadcn tokens with upstream Luma radius
 mappings. Other public surfaces retain semantic radius roles. There is no form-only
-theme. The explicit import allowlist is limited to this adapter; upstream Select
+theme. The explicit import allowlist is limited to the Generic Form and Contact6 adapters; upstream Select
 portals stay inside the form scope so theme inheritance remains consistent.
 
 ## Existing blocks in Storybook
 
-The catalogue now covers all 66 picker thumbnail definitions and the template-only
+The catalogue now covers all 67 picker thumbnail definitions and the template-only
 `newsEventsContent` block, with one `Blocks/<label>` entry per slug. Generic Form
 retains its existing entry; remaining stories live in `src/stories/blocks` and reuse
 the production thumbnail fixture props. Image Mosaic and Rating Spotlight fixtures
@@ -576,3 +576,7 @@ Existing blocks mount their production stylesheet only in Storybook's website-bl
 decorator; the revamp workshop remains Neutral. CMS requests are unavailable there.
 Coverage, duplicate-title and API-isolation checks live in
 `tests/int/storybook-block-catalogue.int.spec.ts`; see the Storybook operation guide.
+
+## Contact6 reusable form layout
+
+`contact6` is an Advanced Library content-only Page block, also available to Reusable Sections and detail templates. The sourced revamp presentation owns contact cards, form card and footer shape. The native adapter maps four icon choices to Lucide objects and posts via the same `submitGenericForm`. Both dynamic blocks use `blocks/shared/genericFormField.ts` to revalidate published General/Lead relationships with request access. The server adapter uses the existing minimal published loader; preview projects authorized data and disables submission. No new endpoint, form palette or fixed inputs. The shared renderer supports the original stacked presentation plus Contact6's responsive first-two-short-controls row; arbitrary question names and all six current types retain one validation/state engine. See forms/block/Storybook guides and checklist for review evidence and the upstream Neutral light contrast limitation.
