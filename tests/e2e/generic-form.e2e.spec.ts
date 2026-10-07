@@ -157,7 +157,16 @@ for (const block of [
           expect(await menu.evaluate((element) => !!element.closest('section'))).toBe(true)
           await visitor.getByRole('option', { name: 'Admissions', exact: true }).click()
           await visitor.getByRole('checkbox', { name: 'You may contact me', exact: true }).check()
+          const intakePromise = visitor.waitForResponse(
+            (response) =>
+              new URL(response.url()).pathname === `/api/forms/${form.slug}/submit` &&
+              response.request().method() === 'POST',
+            { timeout: 120_000 },
+          )
           await visitor.getByRole('button', { name: 'Submit', exact: true }).click()
+          const intake = await intakePromise
+          expect(intake.ok(), `Intake ${intake.status()}: ${await intake.text()}`).toBe(true)
+          expect(await intake.json()).toMatchObject({ success: true })
           await expect(
             visitor
               .getByRole('status')
@@ -198,7 +207,10 @@ for (const block of [
             visitor.getByText('Which department can help?', { exact: false }),
           ).toBeVisible()
           await expect(visitor.getByText('Draft-only question', { exact: true })).toHaveCount(0)
-          await page.goto(`/preview/page/${document.id}`, { waitUntil: 'domcontentloaded' })
+          await page.goto(`/preview/page/${document.id}`, {
+            waitUntil: 'domcontentloaded',
+            timeout: 120_000, // The complete preview renderer compiles cold on the CI dev server.
+          })
           await expect(page.getByText(/Preview only — submissions are disabled/)).toBeVisible()
           await expect(page.getByRole('button', { name: 'Submit', exact: true })).toBeDisabled()
           expect(

@@ -3260,7 +3260,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "621ad4c4734597e00f2a04c45832b03c496eb2fbc2b8fae48ce2ef3a7ec15621"
+    "sha256": "f38dea88b9494ffbd92acbf5c6a78c888f5a721136d8f58d0389a5468255d203"
   },
   "surfaces": {
     "access": [
