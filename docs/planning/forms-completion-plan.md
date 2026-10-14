@@ -6,7 +6,7 @@ This is the delivery sequence for the existing [implementation checklist](featur
 
 ## Implemented foundation
 
-Reusable Payload Forms selected by native page blocks; fourteen shared controls with custom labels/names; generic intake and readable original answers; draft isolation; changed-question recovery; durable accepted-attempt duplicate protection; canonical Storybook presentations. These increments have test and merge evidence, but do not complete every broad FORM/SUBMIT acceptance group.
+Reusable Payload Forms selected by native page blocks; fifteen shared controls with custom labels/names; generic intake and readable original answers; draft isolation; changed-question recovery; durable accepted-attempt duplicate protection; canonical Storybook presentations. These increments have test and merge evidence, but do not complete every broad FORM/SUBMIT acceptance group.
 
 ## Remaining delivery sequence
 
@@ -84,3 +84,23 @@ files after Form deletion and trash retention. Fresh production build inspects
 73 traces with no private uploads. Types, lint (one existing warning), Payload
 generators, context checks/tests and unchanged approved-exception audit pass.
 Exact-head Quality/merge evidence remains pending.
+
+## Latest handoff — 2026-10-15
+
+[PR #29](https://github.com/tanishraj/payload-cms-starter-kit/pull/29) merged
+into develop as `2d18b58a` after [exact-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38630786542)
+passed on `c32cca69`. CI: 2,665 integration tests pass/one Docker-dependent skip;
+Generic Form and Contact6 native journeys both pass first attempt (7.2m).
+Production/private-artifact check passes (73 traces, no private uploads).
+Governance: Review approval passes first attempt; Admin feature-grant journey
+passes on retry after the Pages grant did not become visible within five seconds
+inside the Content group. Broader VERIFY/AdminUX repeatability remains open;
+no assertion or warning was suppressed. The earlier failed upload-route run is
+retained in this document. No new environment/dependency/database migration/style.
+
+Ordered layout/display entries and one-level question groups are merged, including
+canonical Payload ownership of submit/upload/private-download APIs. See the
+[layout contract](form-layout-entries.md). The verified feature branch is removed;
+continue on fresh `feat/form-appearance-controls`. Build supported appearance
+settings next, then conditions as a separate bounded increment. Full forms
+acceptance and broad scope/provider/UX reliability work remain tracked.

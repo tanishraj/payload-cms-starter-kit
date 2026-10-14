@@ -121,3 +121,22 @@ files after Form deletion and trash retention. Fresh production build inspects
 73 traces with no private uploads. Types, lint (one existing warning), Payload
 generators, context checks/tests and unchanged approved-exception audit pass.
 Exact-head Quality/merge evidence remains pending.
+
+## Merged handoff — 2026-10-15
+
+[PR #29](https://github.com/tanishraj/payload-cms-starter-kit/pull/29) merged
+into develop as `2d18b58a` after [exact-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38630786542)
+passed on `c32cca69`. CI: 2,665 integration tests pass/one Docker-dependent skip;
+Generic Form and Contact6 native journeys both pass first attempt (7.2m).
+Production/private-artifact check passes (73 traces, no private uploads).
+Governance: Review approval passes first attempt; Admin feature-grant journey
+passes on retry after the Pages grant did not become visible within five seconds
+inside the Content group. Broader VERIFY/AdminUX repeatability remains open;
+no assertion or warning was suppressed. The earlier failed upload-route run is
+retained in this document. No new environment/dependency/database migration/style.
+
+The verified feature tip is deleted locally/remotely; develop is preserved.
+Fresh `feat/form-appearance-controls` is created from this merge before any new
+implementation. Next: source-supported size/shape/variant/layout settings, followed
+by stable-ID declarative conditions. FORM-04/DF-07/08 remain open for their full
+appearance/condition/acceptance scope; this handoff verifies the layout increment.
