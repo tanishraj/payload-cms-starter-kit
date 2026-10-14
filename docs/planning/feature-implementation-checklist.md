@@ -1,6 +1,6 @@
 # Website feature implementation checklist
 
-Updated: 7 October 2026 (Asia/Dubai).
+Updated: 14 October 2026 (Asia/Dubai).
 
 ## Current direction
 
@@ -22,6 +22,11 @@ archives the full earlier inventory, rationale, numerical proposals and deferred
 scope so future work does not depend on opening the Forma repository.
 [Technical feature inventory](../architecture/feature-inventory.md) describes
 registered current functionality; this checklist describes target acceptance.
+
+The [complete-catalogue Wayfinder map](../../.scratch/website-builder-catalogue/map.md)
+tracks remaining planning decisions. Its [coverage index](../../.scratch/website-builder-catalogue/coverage.md)
+routes all 242 groups and ten separate DF proof steps. Planning tickets and confirmed
+directions do not complete feature acceptance; this file remains the implementation tracker.
 
 ## How to maintain the checklist
 
@@ -386,12 +391,13 @@ exclusions and complete source traceability are in the local scope reference.
   Work: Assess · Priority: Backlog · Baseline: Not yet assessed.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
-- [ ] **DESIGN-07 — Configurable breakpoints [Decision needed].** Retain the requested
-  site-level breakpoint capability and impact preview. The earlier implementation
-  proposal generates bounded CSS; fixed V1 breakpoints are an explicit fallback,
-  not an unnoticed downgrade. Reassess against the starter's upstream layouts.
+- [ ] **DESIGN-07 — Configurable breakpoints [Later].** Retain the requested
+  site-level breakpoint capability and impact preview. The user accepted selected
+  upstream blocks’ fixed breakpoints initially on 2026-10-14; configurable
+  breakpoints remain a later planned capability. Detailed rollout constraints
+  belong to [Define theme, supported props and responsive rollout](../../.scratch/website-builder-catalogue/issues/12-themes-props-responsive.md).
 
-  Work: Assess · Priority: Decision · Baseline: Not yet assessed.
+  Work: Deferred · Priority: Later · Baseline: Not yet assessed.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **DESIGN-08 — Capability settings.** Admins enable supported component options
@@ -808,6 +814,9 @@ exclusions and complete source traceability are in the local scope reference.
 - [ ] **ACCESS-05 — Shared resources.** Users, grants, integrations, site settings and
   global header/footer default to Admin-only. Managers may select approved shared
   published resources without gaining permission to mutate their originals.
+  User-confirmed direction (2026-10-14): Managers create/manage section-owned
+  Forms and reusable content; Admins control resources shared across sections.
+  Detailed sharing/move/migration policy and enforcement remain unverified.
 
   Work: Assess · Priority: Backlog · Baseline: Not yet assessed.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
@@ -1893,8 +1902,8 @@ first enhancement.
 
 Keep the current MongoDB/provider/runtime contract. Reassess only if a concrete
 requirement needs a change. Remaining choices include launch languages/URLs,
-retention and backup objectives, supported runtime breakpoints, generic collection
-expansion, source-license suitability and release timing. These do not block
+retention and backup objectives, later configurable-breakpoint constraints, generic
+collection expansion, source-license suitability and release timing. These do not block
 creating or maintaining this checklist.
 
 Record-content moderation for public review submissions is an existing separate
@@ -1919,6 +1928,7 @@ feature boxes synchronized; record blockers with a concrete next action.
 | 2026-10-06 | DEV-01/02/03/04/06 | Merged into develop | Codex | User requested all current blocks in Storybook. Add one canonical entry for each of 67 blocks, reuse production presentations and thumbnail samples, retain Generic Form states, conditionally use existing website CSS and reject CMS API fetches. Contact6 implementation is deferred until this catalogue increment finishes. | [PR #18](https://github.com/tanishraj/payload-cms-starter-kit/pull/18) (`652cb34e`) | TypeScript, changed-file lint and Storybook build pass; 25 catalogue/fixture/theme checks pass. Live catalogue has 67 blocks and 143 stories; all 67 Default stories render in the browser. Docs controls, website-to-Neutral theme cleanup, dark disabled Generic Form preview and a 390px dark Hero Banner are verified. Final context checks pass; 40 focused catalogue/fixture/theme/context checks pass after inventory refresh. [GitHub Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/37471101257) passes the full regression suite, governance/form browser journeys and production build. Merged into develop; fresh next-feature branch `feat/contact6-reusable-form`. No schema, environment, dependency or data changes. |
 | 2026-10-07 | DF-03/09; FORM-02; DEV-01/03 | Merged into develop | Codex | Contact Cards & Form, sourced from Contact6 through authenticated CLI, selects a reusable Form and shares generic validation/intake. Editable cards/hours, first-two-short-question responsive row, shared website theme, disabled preview and one canonical Storybook entry. | [PR #19](https://github.com/tanishraj/payload-cms-starter-kit/pull/19) (`0f6ed635`) | [GitHub Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/37664823414) passes 2,351 integration tests (one Docker-dependent test skipped), both governance journeys, both native form authoring/publication/submission/draft-isolation/disabled-preview journeys and production build. TypeScript, full lint (one existing warning), dependency audit and generated-artifact checks pass. Local focused checks and Storybook build pass; browser verifies custom-name submission and 390px wrapping. Website preview and Neutral dark have no scoped WCAG A/AA violations; upstream Neutral light muted-text contrast remains documented. Dependency prerequisite PR #20 merged first; approved Braces exception unchanged. No new environment variables or live data migration. Fresh next-feature branch: `feat/form-control-catalogue`. Broader control/revision/condition/idempotency boxes remain open. |
 | 2026-10-07 | Dependency prerequisite for Contact6 | Merged into develop | Codex | Patch new Payload/Sharp advisories with aligned Payload 3.90.2 and Sharp 0.35.5; retain scoped Undici 7.29.1. Align disabled S3 client-upload compatibility, replay the exact enrollment TOTP code and preserve initial generated slugs before required validation. Await disposable fixture indexes and native browser readiness. | [PR #20](https://github.com/tanishraj/payload-cms-starter-kit/pull/20) (`f440365e`) | [Upgrade review](../operations/dependency-audit-remediation-2026-10-07.md). [GitHub Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/37529400212) passes 2,336 integration tests (one Docker-dependent test skipped), governance/native-form browser journeys and production build. Audit, TypeScript/lint, generated artifacts, 71 focused dependency/storage/auth/context checks and 21 API/slug/navigation/fixture checks pass. Braces approval unchanged; no new environment setting or live data migration. Operators must recreate pending scheduled publish/unpublish jobs where applicable. The Admin grant/revoke journey passed on retry after a conditional-field readiness timeout; browser repeatability remains an ADMINUX/VERIFY follow-up. |
+| 2026-10-14 | Full catalogue planning; ACCESS; DF-02/06; DESIGN-07; FORM-08/DEV | Charted; acceptance unchanged | User / Codex | Plan all 242 groups. Confirm section-owned resources with Admin-managed shared resources and independent inbox access; stale-form refresh preserving compatible answers; fixed upstream breakpoints initially/configurable later; explicit typed registrations with small helpers. Create a local Wayfinder map and open decision tickets; preserve dynamic forms first. | Current planning branch; see Git history for this change. | Read-only document/source review; coverage/dependency/link integrity passes; project-context update is a checked no-op, context check passes and all 15 focused project-context tests pass. No child decision resolved or application behavior changed. Braces exception expired on 2026-10-13; fresh audit/remediation required before the next implementation merge, no extension approved. |
 
 ## Completion record template
 
