@@ -74,6 +74,10 @@ Previously recorded evidence remains separate: the [Contact Cards & Form CI run]
 
 [updateFormSubmissionActivity](../../src/hooks/updateFormSubmissionActivity.ts) normalizes only numeric owner IDs, while generated MongoDB User/FormSubmission relationships use string IDs. An isolated call with original owner `manager-old` and new owner `manager-new`, otherwise unchanged, reports `ownerChanged: true` and `activityTimestampAdded: false`. Existing numeric-owner tests do not catch this. Capture a regression test and fix in the inbox increment; this baseline does not modify production behavior.
 
+### Owner-activity follow-up — 14 October 2026
+
+The bounded owner-activity fix is implemented on `fix/form-submission-owner-activity`. Six new string-owner regression cases reproduced the defect before the change. All 40 focused hook/intake/API tests now pass, including real disposable-Mongo persistence with an authorized Site Manager, unchanged timestamps, immutable answers and denied reassignment without the feature grant. Raw/populated string IDs and legacy finite numeric IDs are handled consistently. Merge/CI evidence belongs in the implementation checklist; this does not certify the full inbox/export or section-scope capability.
+
 ## Fresh checks and exclusions
 
 Fresh command: `pnpm test:int` targeting forms-dynamic-history, forms-submission, forms-phone, forms-strict-values, form-notifications, generic-form-loader/integration/presentation, admin-features, feature-access-matrix/controls, user-feature-administration, two-role-feature-permissions-migration, public-content-access, preview-access and request-limits suites. Result: 16 suites, 172 tests pass. Isolated synthetic string-owner hook reproduction confirms the defect above.

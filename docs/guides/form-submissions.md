@@ -51,6 +51,12 @@ Expected website result:
 - internal staff can see clear progress on the submission
 - related `Action Queue` items open or resolve automatically based on submission status
 
+## Last Action At
+
+Assigning, changing or removing an owner updates **Last Action At**, even when status and notes stay the same. Changing status or meaningful notes also records activity. Saving the same owner, or an update that leaves the owner unchanged, does not create a new activity timestamp. Raw and populated owner relationships are treated consistently.
+
+Existing recorded dates are retained; this fix does not reconstruct past owner changes. Submission answers remain read-only, and assignment still requires submission-management permission.
+
 ## Original Questions and Answers
 
 New entries capture each declared field's original label, machine name, stable

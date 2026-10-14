@@ -39,3 +39,9 @@ After applying the approved entry, the authoritative production audit passes wit
 ## Inventory repair before merge
 
 The first approved-renewal Quality run passed the audit and 2,369 integration tests but failed the deterministic inventory contract. The final approval documentation had been edited after inventory generation; operations documentation participates in the source digest. The exact failure was reproduced locally. Regenerate only after all monitored documentation edits, then rerun the unchanged inventory contract and CI setup sequence before pushing. This is a stale generated artifact, not a test-policy exception or application change.
+
+## Merge record
+
+[GitHub Quality run 38529685828](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38529685828) passed the authoritative audit, generated-artifact checks, TypeScript/lint, 2,370 integration tests (one Docker-dependent skip), both governance journeys, both native form journeys and production build. The repaired inventory test also passed among all 15 local context tests, including in a fresh checkout before push. The check was not weakened.
+
+PR #22 merged into `develop` on 14 October as `6d5b9a49b56fe0e5c4382b61a8616676487f63c3`. The exact verified feature branch was deleted locally and remotely. The approved Braces expiry remains 21 October; this merge does not authorize another renewal. The next inbox increment starts from that merged commit on a fresh branch.

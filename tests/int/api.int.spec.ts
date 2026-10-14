@@ -412,4 +412,90 @@ describe('API', () => {
     expect(stored.answers).toEqual(submission.answers)
     expect(stored.data).toEqual(values)
   })
+  it('persists owner-only activity for an authorized Manager and preserves unchanged timestamps and answers', async () => {
+    const makeUser = (email: string, granted: boolean) =>
+      payload.create({
+        collection: 'users',
+        overrideAccess: true,
+        data: {
+          email,
+          password: 'test-password',
+          role: 'siteManager',
+          features: { formSubmissions: granted },
+        },
+      })
+    const operator = await makeUser('activity-operator@example.test', true)
+    const secondOwner = await makeUser('activity-second@example.test', true)
+    const denied = await makeUser('activity-denied@example.test', false)
+    const form = await payload.create({
+      collection: 'forms',
+      data: {
+        title: 'Activity form',
+        slug: 'activity-form',
+        _status: 'published',
+        submissionIntent: 'general',
+        submitButtonLabel: 'Send',
+        successMessage: 'Received',
+        fields: [{ name: 'question', label: 'Question', type: 'text' }],
+      },
+    })
+    const oldAction = '2000-01-01T00:00:00.000Z'
+    const submission = await payload.create({
+      collection: 'form-submissions',
+      data: {
+        form: form.id,
+        data: { question: 'Original answer' },
+        submissionIntent: 'general',
+        submittedAt: new Date().toISOString(),
+        lastActionAt: oldAction,
+      },
+    })
+    expect(typeof operator.id).toBe('string')
+    const update = (data: {
+      owner?: string | null
+      internalNotes?: string
+      lastActionAt?: string
+    }) =>
+      payload.update({
+        collection: 'form-submissions',
+        id: submission.id,
+        data,
+        depth: 0,
+        overrideAccess: false,
+        user: operator,
+      })
+    for (const owner of [operator.id, secondOwner.id, null]) {
+      await payload.update({
+        collection: 'form-submissions',
+        id: submission.id,
+        data: { lastActionAt: oldAction },
+        overrideAccess: true,
+      })
+      const updated = await update({ owner })
+      expect(updated.owner ?? null).toBe(owner)
+      expect(Date.parse(updated.lastActionAt!)).toBeGreaterThan(Date.parse(oldAction))
+      expect(updated.data).toEqual(submission.data)
+      expect(updated.submittedAt).toBe(submission.submittedAt)
+    }
+    const assigned = await update({ owner: operator.id })
+    expect((await update({ owner: operator.id })).lastActionAt).toBe(assigned.lastActionAt)
+    expect((await update({ internalNotes: '' })).lastActionAt).toBe(assigned.lastActionAt)
+    expect((await update({ lastActionAt: oldAction })).lastActionAt).toBe(assigned.lastActionAt)
+    await expect(
+      payload.update({
+        collection: 'form-submissions',
+        id: submission.id,
+        data: { owner: secondOwner.id },
+        overrideAccess: false,
+        user: denied,
+      }),
+    ).rejects.toThrow()
+    const stored = await payload.findByID({
+      collection: 'form-submissions',
+      id: submission.id,
+      depth: 0,
+    })
+    expect(stored.owner).toBe(operator.id)
+    expect(stored.lastActionAt).toBe(assigned.lastActionAt)
+  })
 })
