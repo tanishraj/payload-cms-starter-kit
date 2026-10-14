@@ -1,14 +1,20 @@
+import { validateFormFieldDefinitions, type SimpleFormField } from '@/lib/forms'
 import type { GenericFormResult } from '@/components/revamp/generic-form'
 
 /** No automatic retry: a lost response may follow a successfully stored submission. */
 export async function submitGenericForm(
   slug: string,
   values: Record<string, boolean | string>,
+  revision?: string,
 ): Promise<GenericFormResult> {
   const response = await fetch(`/api/forms/${encodeURIComponent(slug)}/submit`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ values, metadata: { landingPage: window.location.href } }),
+    body: JSON.stringify({
+      values,
+      formRevision: revision,
+      metadata: { landingPage: window.location.href },
+    }),
     signal: AbortSignal.timeout(30_000),
   })
   const body: unknown = await response.json()
@@ -21,6 +27,33 @@ export async function submitGenericForm(
     throw new Error('Unconfirmed submission response')
   }
   if (response.ok) return { success: true, message: body.message }
+  if (response.status === 409 && 'code' in body && body.code === 'FORM_CHANGED' && 'form' in body) {
+    const updated = body.form
+    if (
+      updated &&
+      typeof updated === 'object' &&
+      'slug' in updated &&
+      updated.slug === slug &&
+      'revision' in updated &&
+      typeof updated.revision === 'string' &&
+      /^[a-f0-9]{64}$/.test(updated.revision) &&
+      'fields' in updated &&
+      validateFormFieldDefinitions(updated.fields) === true &&
+      'submitButtonLabel' in updated &&
+      typeof updated.submitButtonLabel === 'string'
+    ) {
+      return {
+        success: false,
+        message: body.message,
+        updatedForm: {
+          fields: updated.fields as SimpleFormField[],
+          revision: updated.revision,
+          submitButtonLabel: updated.submitButtonLabel,
+        },
+      }
+    }
+    throw new Error('Unconfirmed changed-form response')
+  }
   if (response.status === 429) {
     const seconds = Number(response.headers.get('Retry-After'))
     const wait =

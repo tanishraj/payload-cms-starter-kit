@@ -20,6 +20,7 @@ import {
 } from '@/lib/formNotifications'
 import { emitFormSubmissionEvent } from '@/lib/formSubmissionEvents'
 import { buildFormSubmissionSnapshot } from '@/lib/formSubmissionSnapshot'
+import { projectPublishedGenericForm } from '@/lib/genericFormRevision.server'
 import {
   getSubmissionContactMetadata,
   isFormSubmissionValues,
@@ -90,7 +91,11 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
     )
   }
 
-  let payloadBody: { metadata?: unknown; values?: FormSubmissionValues } | null = null
+  let payloadBody: {
+    metadata?: unknown
+    values?: FormSubmissionValues
+    formRevision?: unknown
+  } | null = null
 
   try {
     payloadBody = await readBoundedJSON(request, {
@@ -112,6 +117,28 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
       },
       { status },
     )
+  }
+
+  // Revisionless legacy Contact33/Review clients retain their existing protocol.
+  // Generic clients always send the revision delivered with their published definition.
+  if (payloadBody?.formRevision !== undefined) {
+    if (
+      typeof payloadBody.formRevision !== 'string' ||
+      !/^[a-f0-9]{64}$/.test(payloadBody.formRevision)
+    ) {
+      return NextResponse.json({ message: 'Invalid form revision.' }, { status: 400 })
+    }
+    const published = projectPublishedGenericForm(form)
+    if (!published || published.revision !== payloadBody.formRevision) {
+      return NextResponse.json(
+        {
+          code: 'FORM_CHANGED',
+          message: 'The questions have changed. Review the updated form before submitting again.',
+          form: published,
+        },
+        { status: 409, headers: { 'Cache-Control': 'no-store' } },
+      )
+    }
   }
 
   const submissionValues = payloadBody?.values ?? {}

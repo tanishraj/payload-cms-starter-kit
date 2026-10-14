@@ -44,6 +44,13 @@ confirmation replaces the controls and receives focus. An unconfirmed network
 result preserves answers and allows deliberate retry; it does not claim the
 server failed to store the request. Durable server deduplication is still future work.
 
+Changed Questions demonstrates published-revision recovery in this same catalogue
+entry. It preserves a renamed field by stable ID, clears a changed-type answer,
+focuses an explanation and waits for deliberate resubmission. It uses synthetic
+callbacks, not the API. See [revision recovery](../planning/form-revision-recovery.md)
+for the production protocol and legacy-client boundary.
+
+
 The native Generic Form block now uses this presentation with the website's shared
 theme. Its publication/submission/draft-isolation/disabled-preview journey passed on
 an isolated test database. CMS preview and unavailable adapter states are included

@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from '@/components/revamp/ui/select'
 import { cn } from '@/lib/utils'
+import { recoverFormAnswers } from '@/lib/recoverFormAnswers'
 import { Textarea } from '@/components/revamp/ui/textarea'
 import {
   FORM_HONEYPOT_FIELD_NAME,
@@ -51,6 +52,7 @@ export type GenericFormResult = {
   success: boolean
   message: string
   errors?: FormSubmissionErrors
+  updatedForm?: { fields: SimpleFormField[]; revision: string; submitButtonLabel: string }
 }
 export type GenericFormProps = {
   /** Contact6 preserves its first two short controls in a responsive split row. */
@@ -62,7 +64,11 @@ export type GenericFormProps = {
   submitButtonLabel?: string
   pendingLabel?: string
   disabled?: boolean
-  onSubmit: (values: Record<string, boolean | string>) => Promise<GenericFormResult>
+  revision?: string
+  onSubmit: (
+    values: Record<string, boolean | string>,
+    revision?: string,
+  ) => Promise<GenericFormResult>
 }
 
 type Answers = { answers: Record<string, boolean | string>; website: string }
@@ -78,16 +84,23 @@ const subscribeToHydration = () => () => {}
 
 /** Presentation only. The caller owns fetching, form identity and persistence. */
 function FormPresentation({
-  fields,
+  fields: initialFields,
+  revision: initialRevision,
   layout = 'stacked',
   heading = 'Get in touch',
   formLabel = 'Enquiry form',
   description,
-  submitButtonLabel = 'Send Message',
+  submitButtonLabel: initialSubmitLabel = 'Send Message',
   pendingLabel = 'Sending…',
   disabled = false,
   onSubmit,
 }: GenericFormProps) {
+  const [fields, setFields] = useState(initialFields)
+  const [revision, setRevision] = useState(initialRevision)
+  const [updatedSubmitLabel, setSubmitButtonLabel] = useState<string | null>(null)
+  const submitButtonLabel = updatedSubmitLabel ?? initialSubmitLabel
+  const [recoveryMessage, setRecoveryMessage] = useState<string | null>(null)
+  const recoveryRef = useRef<HTMLParagraphElement>(null)
   const splitFirstRow =
     layout === 'contact6' &&
     fields.length >= 2 &&
@@ -131,6 +144,10 @@ function FormPresentation({
     if (result?.success) messageRef.current?.focus()
   }, [result])
 
+  useEffect(() => {
+    if (recoveryMessage) recoveryRef.current?.focus()
+  }, [recoveryMessage, revision])
+
   const pending = form.formState.isSubmitting
   const inactive = !hydrated || disabled || pending
   const hasErrors = Boolean(form.formState.errors.answers)
@@ -140,8 +157,29 @@ function FormPresentation({
     setResult(null)
     form.clearErrors('root')
     try {
-      const response = await onSubmit({ ...answers, [FORM_HONEYPOT_FIELD_NAME]: website })
+      const submittedValues = { ...answers, [FORM_HONEYPOT_FIELD_NAME]: website }
+      const response = revision
+        ? await onSubmit(submittedValues, revision)
+        : await onSubmit(submittedValues)
+      if (!response.success && response.updatedForm) {
+        const updated = response.updatedForm
+        const recovered = recoverFormAnswers(fields, updated.fields, answers)
+        setFields(updated.fields)
+        setRevision(updated.revision)
+        setSubmitButtonLabel(updated.submitButtonLabel)
+        form.reset({ answers: recovered.values, website: '' })
+        setRecoveryMessage(
+          `The questions have changed. Your compatible answers are still here. ${
+            recovered.clearedLabels.length
+              ? `These answers were cleared because their questions changed: ${recovered.clearedLabels.join(', ')}. `
+              : ''
+          }Review the updated questions before submitting again.`,
+        )
+        setResult(null)
+        return
+      }
       setResult(response)
+      if (response.success) setRecoveryMessage(null)
       if (!response.success) {
         let firstInvalid: string | undefined
         for (const field of fields) {
@@ -181,6 +219,11 @@ function FormPresentation({
         aria-label={heading ? undefined : formLabel}
         aria-busy={!hydrated || pending}
       >
+        {recoveryMessage && (
+          <FieldDescription ref={recoveryRef} role="status" tabIndex={-1}>
+            {recoveryMessage}
+          </FieldDescription>
+        )}
         <noscript>
           <FieldDescription>Enable JavaScript to send this form.</FieldDescription>
         </noscript>
@@ -197,7 +240,7 @@ function FormPresentation({
         <FieldDescription
           ref={messageRef}
           tabIndex={result?.success ? -1 : undefined}
-          role="status"
+          role={recoveryMessage && !pending ? undefined : 'status'}
           className="empty:hidden"
         >
           {result?.success ? result.message : pending ? pendingLabel : ''}
@@ -378,5 +421,5 @@ export function GenericForm(props: GenericFormProps) {
     return <FieldError>This form is unavailable. Please try another way to contact us.</FieldError>
   }
   // Replacing the schema must drop removed answers and reset validation/status.
-  return <FormPresentation key={JSON.stringify(props.fields)} {...props} />
+  return <FormPresentation key={JSON.stringify([props.revision, props.fields])} {...props} />
 }

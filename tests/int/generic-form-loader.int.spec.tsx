@@ -38,6 +38,7 @@ describe('published generic form loader', () => {
           overrideAccess: false,
           select: {
             slug: true,
+            title: true,
             fields: true,
             submitButtonLabel: true,
             submissionIntent: true,

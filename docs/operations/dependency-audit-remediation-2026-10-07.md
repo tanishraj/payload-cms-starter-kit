@@ -22,4 +22,6 @@ This starter uses MongoDB, so no relational migration is needed. Regenerated aut
 
 ## Verification
 
-Dependency audit, aligned-version/policy tests, generated-artifact consistency, TypeScript/lint, integration/browser governance and production build remain merge gates. Final evidence is tracked in the feature checklist/PR. No environment settings were introduced.
+[PR #20](https://github.com/tanishraj/payload-cms-starter-kit/pull/20) merged into develop at `f440365ebed26e5fb02bf171c6b3d95bec6e9db8`. [Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/37529400212) passed 2,336 integration tests (one Docker-dependent test skipped), governance/native-form browser journeys, production build, dependency audit, generated-artifact consistency and TypeScript/lint. The authoritative audit reports no critical findings; the sole high finding remains the exact approved Braces exception through October 13. Focused dependency/storage/auth/context checks passed locally. No environment settings were introduced.
+
+The Admin grant/revoke browser journey required one CI retry after its conditional permissions field was not ready within the assertion window. The retry exercises the full access assertions and passed; deterministic first-attempt browser readiness remains tracked for ADMINUX/VERIFY follow-up. The final combined Contact6 run passed both governance journeys without retry.

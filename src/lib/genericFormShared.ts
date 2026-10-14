@@ -2,6 +2,7 @@ import { validateFormFieldDefinitions, type SimpleFormField } from '@/lib/forms'
 import type { Form } from '@/payload-types'
 
 export type GenericFormDefinition = {
+  revision?: string
   slug: string
   fields: SimpleFormField[]
   submitButtonLabel: string

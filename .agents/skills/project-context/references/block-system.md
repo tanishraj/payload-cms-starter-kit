@@ -553,10 +553,15 @@ cache. The relationship validator rechecks the selected ID with `req` and
 
 The separate preview adapter projects populated authorized draft data and disables
 all submission controls. Neither preview nor thumbnails import the server loader.
-Only the public questions, slug and button label cross into the client; private
+Only the public questions, slug, button label and revision fingerprint cross into the client; private
 notification/reply/editor data remains outside it. Transport posts arbitrary supported
 machine names to existing intake. It reports server success, field validation,
-rate-limit waits and unconfirmed failures without automatic retries. Server-rendered controls remain disabled until hydration, and the HTML fallback uses POST so early interactions cannot put answers in a query string.
+rate-limit waits and unconfirmed failures without automatic retries. The published loader uses the v2 cache namespace.
+Generic Form and Contact6 send the rendered fingerprint; stale intake returns a
+sanitized 409 before persistence/notifications. The shared renderer preserves only
+valid answers with unchanged unique row IDs/control types, explains cleared answers
+and requires review and deliberate resubmission. Revisionless legacy clients retain
+their protocol. Server-rendered controls remain disabled until hydration, and the HTML fallback uses POST so early interactions cannot put answers in a query string.
 
 The integrated adapter uses shared website shadcn tokens with upstream Luma radius
 mappings. Other public surfaces retain semantic radius roles. There is no form-only
@@ -579,4 +584,4 @@ Coverage, duplicate-title and API-isolation checks live in
 
 ## Contact6 reusable form layout
 
-`contact6` is an Advanced Library content-only Page block, also available to Reusable Sections and detail templates. The sourced revamp presentation owns contact cards, form card and footer shape. The native adapter maps four icon choices to Lucide objects and posts via the same `submitGenericForm`. Both dynamic blocks use `blocks/shared/genericFormField.ts` to revalidate published General/Lead relationships with request access. The server adapter uses the existing minimal published loader; preview projects authorized data and disables submission. No new endpoint, form palette or fixed inputs. The shared renderer supports the original stacked presentation plus Contact6's responsive first-two-short-controls row; arbitrary question names and all six current types retain one validation/state engine. See forms/block/Storybook guides and checklist for review evidence and the upstream Neutral light contrast limitation.
+`contact6` is labelled **Contact Cards & Form** in Payload and its single canonical Storybook entry. It is an Advanced Library content-only Page block, also available to Reusable Sections and detail templates. The sourced revamp presentation owns contact cards, form card and footer shape. The native adapter maps four icon choices to Lucide objects and posts via the same `submitGenericForm`. Both dynamic blocks use `blocks/shared/genericFormField.ts` to revalidate published General/Lead relationships with request access. The server adapter uses the existing minimal published loader; preview projects authorized data and disables submission. No new endpoint, form palette or fixed inputs. The shared renderer supports the original stacked presentation plus Contact6's responsive first-two-short-controls row; arbitrary question names and all six current types retain one validation/state engine. See forms/block/Storybook guides and checklist for review evidence and the upstream Neutral light contrast limitation.

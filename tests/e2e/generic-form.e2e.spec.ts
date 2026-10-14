@@ -158,6 +158,53 @@ for (const block of [
           expect(await menu.evaluate((element) => !!element.closest('section'))).toBe(true)
           await visitor.getByRole('option', { name: 'Admissions', exact: true }).click()
           await visitor.getByRole('checkbox', { name: 'You may contact me', exact: true }).check()
+          // Publish after the visitor has loaded and answered the old revision.
+          const changed = await page.request.patch(`/api/forms/${form.id}`, {
+            headers: authHeaders,
+            data: {
+              _status: 'published',
+              fields: form.fields.map((field: { name: string }) =>
+                field.name === 'visitor_name'
+                  ? { ...field, name: 'visitor_full_name', label: 'Full name' }
+                  : field.name === 'contact_permission'
+                    ? { ...field, type: 'text', label: 'Contact preference' }
+                    : field,
+              ),
+            },
+          })
+          expect(changed.ok()).toBe(true)
+          const stalePromise = visitor.waitForResponse(
+            (response) =>
+              new URL(response.url()).pathname === `/api/forms/${form.slug}/submit` &&
+              response.request().method() === 'POST',
+            { timeout: 120_000 },
+          )
+          await visitor.getByRole('button', { name: 'Submit', exact: true }).click()
+          const staleResponse = await stalePromise
+          expect(staleResponse.status()).toBe(409)
+          const stale = await staleResponse.json()
+          expect(stale.code).toBe('FORM_CHANGED')
+          expect(JSON.stringify(stale)).not.toContain('notificationRecipients')
+          await expect(
+            visitor.getByRole('status').filter({ hasText: 'The questions have changed.' }),
+          ).toBeFocused()
+          await expect(visitor.getByLabel('Full name', { exact: true })).toHaveValue('Visitor')
+          await expect(visitor.getByRole('combobox')).toHaveText('Admissions')
+          await expect(visitor.getByLabel('Contact preference', { exact: true })).toHaveValue('')
+          await expect(
+            visitor.getByText(
+              /These answers were cleared because their questions changed: You may contact me/,
+            ),
+          ).toBeVisible()
+          expect(
+            await page.request
+              .get(`/api/form-submissions?where[form][equals]=${form.id}&depth=0`, {
+                headers: authHeaders,
+              })
+              .then((r) => r.json())
+              .then((body) => body.totalDocs),
+          ).toBe(0)
+          await visitor.getByLabel('Contact preference', { exact: true }).fill('Email is best')
           const intakePromise = visitor.waitForResponse(
             (response) =>
               new URL(response.url()).pathname === `/api/forms/${form.slug}/submit` &&
@@ -180,6 +227,7 @@ for (const block of [
           expect(submissions.ok()).toBe(true)
           const { docs } = await submissions.json()
           expect(docs).toHaveLength(1)
+          expect(docs[0].formRevision).toBe(stale.form.revision)
           expect(docs[0].answers).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -187,7 +235,11 @@ for (const block of [
                 label: 'Which department can help?',
                 displayValue: 'Admissions',
               }),
-              expect.objectContaining({ name: 'contact_permission', value: { raw: true } }),
+              expect.objectContaining({ name: 'visitor_full_name', value: { raw: 'Visitor' } }),
+              expect.objectContaining({
+                name: 'contact_permission',
+                value: { raw: 'Email is best' },
+              }),
             ]),
           )
 
