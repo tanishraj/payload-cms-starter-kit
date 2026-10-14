@@ -39,14 +39,15 @@ export function Contact6BlockPresentation({
               fields: definition.fields,
               revision: definition.revision,
               submitButtonLabel: definition.submitButtonLabel,
+              protectRetries: true,
               disabled: preview,
-              onSubmit: (values, revision) =>
+              onSubmit: (values, revision, submissionKey) =>
                 preview
                   ? Promise.resolve({
                       success: false,
                       message: 'Submissions are disabled in preview.',
                     })
-                  : submitGenericForm(definition.slug, values, revision),
+                  : submitGenericForm(definition.slug, values, revision, submissionKey),
             }
           : null
       }

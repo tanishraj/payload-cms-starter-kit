@@ -222,3 +222,7 @@ globally on Next breaks its public frontend compilation/SSR.
 ## October 7 security patch baseline
 
 The aligned Payload family is 3.90.2 and Sharp is 0.35.5. The existing scoped Undici override targets Payload 3.90.2 only (7.29.1); other consumers retain their own graph. See the October 7 dependency remediation for upstream compatibility review, scheduled-job operator action and verification. Braces exception policy/expiry remains unchanged.
+
+## Generic submission retries
+
+Generic Form and Contact6 share durable receipt lookup and optional unique sparse Mongo key hashes via `formSubmissionIdempotency.server.ts`. Public intake verifies the installed constraint, persists before notification, returns stored confirmations on matching retries and refuses key reuse with changed answers. Client keys survive unconfirmed responses in memory; explicit new responses mint new keys. See [retry contract](../../../../docs/planning/form-submission-retries.md); notification delivery recovery remains separate work.

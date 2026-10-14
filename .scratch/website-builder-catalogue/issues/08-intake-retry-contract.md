@@ -24,3 +24,5 @@ Consult the [confirmed planning brief](../brief.md). Grilling sessions use the W
 ## Comments
 
 Charted on 2026-10-14. No decision resolution or implementation acceptance is recorded.
+
+2026-10-14: User approved durable attempt keys for the submission lifetime, matching-retry receipt replay and explicit new responses on changed answers. The bounded implementation is on `feat/form-submission-idempotency`; see `docs/planning/form-submission-retries.md`. This does not resolve the broader ticket, its dependency or remaining delivery/abuse/test-mode decisions.

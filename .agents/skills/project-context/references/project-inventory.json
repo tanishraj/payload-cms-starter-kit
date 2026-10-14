@@ -2852,6 +2852,7 @@
       "src/lib/formNotifications.ts",
       "src/lib/formSpamProtection.ts",
       "src/lib/formSubmissionEvents.ts",
+      "src/lib/formSubmissionIdempotency.server.ts",
       "src/lib/formSubmissionSnapshot.ts",
       "src/lib/forms.ts",
       "src/lib/frontendSession.ts",
@@ -3106,6 +3107,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/form-answer-recovery.int.spec.ts",
+      "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",
@@ -3263,7 +3265,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "9446fe74aa68bb98b50ba2d4a2e4454e933039aba0f59ced6a07cbb27dbda99f"
+    "sha256": "22ef5087ea9a115af6b7959a96dae96e943f964ef66b246002ad3d3107e1c126"
   },
   "surfaces": {
     "access": [
@@ -3327,6 +3329,7 @@
       "src/lib/formNotifications.ts",
       "src/lib/formSpamProtection.ts",
       "src/lib/formSubmissionEvents.ts",
+      "src/lib/formSubmissionIdempotency.server.ts",
       "src/lib/formSubmissionSnapshot.ts",
       "src/lib/forms.ts",
       "src/lib/frontendSession.ts",
@@ -3515,6 +3518,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/form-answer-recovery.int.spec.ts",
+      "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",

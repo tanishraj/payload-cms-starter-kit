@@ -19,6 +19,11 @@ import {
   getNotificationRecipients,
 } from '@/lib/formNotifications'
 import { emitFormSubmissionEvent } from '@/lib/formSubmissionEvents'
+import {
+  findSubmissionReceipt,
+  hasSubmissionKeyIndex,
+  submissionIdentity,
+} from '@/lib/formSubmissionIdempotency.server'
 import { buildFormSubmissionSnapshot } from '@/lib/formSubmissionSnapshot'
 import { projectPublishedGenericForm } from '@/lib/genericFormRevision.server'
 import {
@@ -60,6 +65,76 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
     config: configPromise,
   })
 
+  let payloadBody: {
+    metadata?: unknown
+    values?: FormSubmissionValues
+    formRevision?: unknown
+    submissionKey?: unknown
+  } | null = null
+
+  try {
+    payloadBody = await readBoundedJSON(request, {
+      maxBytes: PUBLIC_JSON_BODY_MAX_BYTES,
+    })
+  } catch (error) {
+    const status =
+      error instanceof RequestBodyError
+        ? {
+            body_too_large: 413,
+            invalid_json: 400,
+            unsupported_media_type: 415,
+          }[error.code]
+        : 400
+
+    return NextResponse.json(
+      {
+        message: 'Invalid form submission payload.',
+      },
+      { status },
+    )
+  }
+
+  const identity =
+    payloadBody?.submissionKey === undefined
+      ? null
+      : submissionIdentity(
+          slug,
+          payloadBody.submissionKey,
+          payloadBody.values,
+          payloadBody.formRevision,
+        )
+  if (payloadBody?.submissionKey !== undefined && !identity) {
+    return NextResponse.json({ message: 'Invalid submission request.' }, { status: 400 })
+  }
+  const receiptResponse = (
+    receipt: NonNullable<Awaited<ReturnType<typeof findSubmissionReceipt>>>,
+  ) => {
+    if (receipt.submissionRequestHash !== identity?.submissionRequestHash) {
+      return NextResponse.json(
+        {
+          code: 'SUBMISSION_KEY_REUSED',
+          message:
+            'An earlier response was already received. Start a new response to send these answers.',
+        },
+        { status: 409, headers: { 'Cache-Control': 'no-store' } },
+      )
+    }
+    return NextResponse.json(
+      { message: receipt.submissionConfirmation ?? 'Your response was received.' },
+      { headers: { 'Cache-Control': 'no-store' } },
+    )
+  }
+  if (identity) {
+    const receipt = await findSubmissionReceipt(payload, identity.submissionKeyHash)
+    if (receipt) return receiptResponse(receipt)
+    if (!(await hasSubmissionKeyIndex(payload))) {
+      return NextResponse.json(
+        { message: 'Submission service is temporarily unavailable.' },
+        { status: 503 },
+      )
+    }
+  }
+
   const result = await payload.find({
     collection: 'forms',
     where: {
@@ -88,34 +163,6 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
         message: 'The requested form is not available.',
       },
       { status: 404 },
-    )
-  }
-
-  let payloadBody: {
-    metadata?: unknown
-    values?: FormSubmissionValues
-    formRevision?: unknown
-  } | null = null
-
-  try {
-    payloadBody = await readBoundedJSON(request, {
-      maxBytes: PUBLIC_JSON_BODY_MAX_BYTES,
-    })
-  } catch (error) {
-    const status =
-      error instanceof RequestBodyError
-        ? {
-            body_too_large: 413,
-            invalid_json: 400,
-            unsupported_media_type: 415,
-          }[error.code]
-        : 400
-
-    return NextResponse.json(
-      {
-        message: 'Invalid form submission payload.',
-      },
-      { status },
     )
   }
 
@@ -232,25 +279,41 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
     phone: submitterPhone,
   } = getSubmissionContactMetadata(submissionData, formFields)
   const submittedAt = new Date()
-  const submission = await payload.create({
-    collection: 'form-submissions',
-    data: {
-      ...buildFormSubmissionSnapshot({ ...form, fields: formFields }, submissionData),
-      data: submissionData,
-      campaign: submissionMetadata.campaign,
-      email: submitterEmail,
-      form: form.id,
-      landingPage: submissionMetadata.landingPage,
-      source: submissionMetadata.source,
-      status: 'new',
-      submissionIntent,
-      submittedAt: submittedAt.toISOString(),
-      submitterEmail,
-      submitterName,
-      submitterPhone,
-    },
-    overrideAccess: true,
-  })
+  let submission
+  try {
+    submission = await payload.create({
+      collection: 'form-submissions',
+      data: {
+        ...(identity ? { ...identity, submissionConfirmation: form.successMessage } : {}),
+        ...buildFormSubmissionSnapshot({ ...form, fields: formFields }, submissionData),
+        data: submissionData,
+        campaign: submissionMetadata.campaign,
+        email: submitterEmail,
+        form: form.id,
+        landingPage: submissionMetadata.landingPage,
+        source: submissionMetadata.source,
+        status: 'new',
+        submissionIntent,
+        submittedAt: submittedAt.toISOString(),
+        submitterEmail,
+        submitterName,
+        submitterPhone,
+      },
+      overrideAccess: true,
+    })
+  } catch (error) {
+    // A concurrent request may have committed while this request was creating.
+    if (identity) {
+      const receipt = await findSubmissionReceipt(payload, identity.submissionKeyHash)
+      if (receipt) return receiptResponse(receipt)
+      payload.logger.error({ err: error, msg: 'Unable to confirm form submission storage.' })
+      return NextResponse.json(
+        { message: 'Unable to confirm submission storage.' },
+        { status: 503 },
+      )
+    }
+    throw error
+  }
 
   if (reviewValidation) {
     try {

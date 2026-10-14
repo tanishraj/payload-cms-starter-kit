@@ -69,6 +69,15 @@ export const FormSubmissions: CollectionConfig = {
   },
   timestamps: true,
   fields: [
+    ...(['submissionKeyHash', 'submissionRequestHash', 'submissionConfirmation'] as const).map(
+      (name) => ({
+        name,
+        type: 'text' as const,
+        ...(name === 'submissionKeyHash' ? { unique: true } : {}),
+        access: { read: () => false, update: () => false },
+        admin: { hidden: true, readOnly: true },
+      }),
+    ),
     {
       name: 'form',
       type: 'relationship',

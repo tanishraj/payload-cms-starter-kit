@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { expect, fn, userEvent, within } from 'storybook/test'
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test'
 import { GenericForm, type GenericFormResult } from '@/components/revamp/generic-form'
 import type { SimpleFormField } from '@/lib/forms'
 import { GenericFormBlockPresentation } from '@/blocks/GenericForm/Presentation'
@@ -79,6 +79,10 @@ const meta = {
     })),
   },
   argTypes: {
+    protectRetries: {
+      control: false,
+      description: 'Caller-owned retry protection; uses one in-memory random key per attempt.',
+    },
     revision: {
       control: false,
       description: 'Caller-owned published identity; never an editor-entered option.',
@@ -314,5 +318,95 @@ export const ChangedQuestions: Story = {
     await userEvent.type(canvas.getByLabelText(/Email address/), 'alex@example.test')
     await userEvent.click(canvas.getByRole('button', { name: 'Send updated enquiry' }))
     await expect(canvas.getByRole('status')).toHaveTextContent('Demo received.')
+  },
+}
+
+const createLostConfirmationDemo = () => {
+  const received = new Set<string>()
+  return async (
+    _values: Record<string, boolean | string>,
+    _revision?: string,
+    key?: string,
+  ): Promise<GenericFormResult> => {
+    if (!key) throw new Error('Missing demo attempt key')
+    if (!received.has(key)) {
+      received.add(key)
+      throw new Error('Demo response lost after storage')
+    }
+    return {
+      success: true,
+      message: 'Demo original confirmation returned. No second response saved.',
+    }
+  }
+}
+const createDifferentResponseDemo = () => {
+  let acceptedKey: string | undefined
+  return async (
+    _values: Record<string, boolean | string>,
+    _revision?: string,
+    key?: string,
+  ): Promise<GenericFormResult> => {
+    acceptedKey ??= key
+    if (key === acceptedKey)
+      return {
+        success: false,
+        requestKeyConflict: true,
+        message:
+          'An earlier response was already received. Start a new response to send different answers.',
+      }
+    return { success: true, message: 'Demo new response received.' }
+  }
+}
+
+export const LostConfirmation: Story = {
+  name: 'Lost confirmation — reuse the same attempt',
+  args: {
+    protectRetries: true,
+    fields: [{ name: 'question', label: 'Your question', type: 'text', required: true }],
+    onSubmit: fn(createLostConfirmationDemo()),
+  },
+  beforeEach: ({ args }) => {
+    ;(args.onSubmit as ReturnType<typeof fn>).mockImplementation(createLostConfirmationDemo())
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    await userEvent.type(canvas.getByLabelText(/Your question/), 'Please send the details')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await canvas.findByText(/We couldn’t confirm your submission/)
+    await waitFor(() => expect(canvas.getByRole('button', { name: 'Send enquiry' })).toBeEnabled())
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(await canvas.findByRole('status')).toHaveTextContent(
+      'Demo original confirmation returned.',
+    )
+    const calls = (args.onSubmit as ReturnType<typeof fn>).mock.calls
+    await expect(calls[0][2]).toEqual(calls[1][2])
+    await expect(calls[0][2]).toMatch(/^[a-f0-9-]{36}$/)
+  },
+}
+
+export const DifferentResponse: Story = {
+  name: 'Different answers — explicitly start a new response',
+  args: {
+    protectRetries: true,
+    fields: [{ name: 'question', label: 'Your question', type: 'text', required: true }],
+    onSubmit: fn(createDifferentResponseDemo()),
+  },
+  beforeEach: ({ args }) => {
+    ;(args.onSubmit as ReturnType<typeof fn>).mockImplementation(createDifferentResponseDemo())
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    await userEvent.type(canvas.getByLabelText(/Your question/), 'My updated question')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await waitFor(() => expect(canvas.getByRole('status')).toHaveFocus())
+    await expect(canvas.getByRole('button', { name: 'Send enquiry' })).toBeDisabled()
+    await userEvent.click(canvas.getByRole('button', { name: 'Start a new response' }))
+    await expect(canvas.getByLabelText(/Your question/)).toHaveValue('My updated question')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await waitFor(() =>
+      expect(canvas.getByRole('status')).toHaveTextContent('Demo new response received.'),
+    )
+    const calls = (args.onSubmit as ReturnType<typeof fn>).mock.calls
+    await expect(calls[0][2]).not.toEqual(calls[1][2])
   },
 }
