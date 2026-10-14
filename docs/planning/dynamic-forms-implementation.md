@@ -50,3 +50,12 @@ request after a lost response; client locking is not server idempotency.
 ### Contact6 implementation boundary (2026-10-07)
 
 Adds the sourced presentation, fresh Card dependency source, one Storybook entry, native config/server/preview adapters, canonical registration, content-only section profile, generated types and picker fixture/JPEG. Both dynamic-form blocks share `createGenericFormField` and the published access-enforced loader/projection. The generic renderer gains only a typed Contact6 presentation layout; validation/state/transport stay shared. No package dependency, runtime environment variable or data migration. Native browser acceptance runs both Generic Form and Contact6 using the same custom text/select/checkbox authoring journey. Navigation waits for DOM then real editor readiness instead of unrelated whole-page load completion.
+
+## Published-revision recovery increment
+
+2026-10-14: Generic Form and Contact Cards & Form now send their published snapshot
+fingerprint. A stale submission returns the current public questions before writes
+or email; recovery preserves compatible stable-ID/type answers, explains clearing
+and requires deliberate resubmission. [Recovery contract and evidence](form-revision-recovery.md)
+records the legacy revisionless-client boundary. Existing path findings above are
+historical; complete identity/options/exports/idempotency acceptance remains open.

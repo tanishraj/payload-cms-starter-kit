@@ -28,3 +28,7 @@ Charted on 2026-10-14. No decision resolution or implementation acceptance is re
 ### Confirmed recovery direction — 2026-10-14
 
 The user authorized implementing stale-form recovery: preserve answers only for unchanged field IDs/control types when still valid; keep selected options only while their values exist; explain cleared incompatible answers; require review and a new deliberate submission. This settles the recovery increment, not the complete revision/option lifecycle ticket. Implementation may proceed on a fresh feature branch without treating all remaining identity/export policy as resolved.
+
+### Implementation checkpoint — 2026-10-14
+
+The authorized [published-revision recovery increment](../../../docs/planning/form-revision-recovery.md) is implemented and locally verified for both generic layouts. Full regression, native database/browser journeys and production/Storybook builds pass; the dependency audit blocks merge. This ticket remains open for the broader field/option identity, lifecycle and historical export policies; no second Wayfinder ticket is resolved by this session.

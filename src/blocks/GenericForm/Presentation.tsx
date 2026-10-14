@@ -46,15 +46,16 @@ export function GenericFormBlockPresentation({
             heading={heading?.trim() ?? ''}
             description={description?.trim() || undefined}
             fields={definition.fields}
+            revision={definition.revision}
             submitButtonLabel={definition.submitButtonLabel}
             disabled={preview}
-            onSubmit={(values) =>
+            onSubmit={(values, revision) =>
               preview
                 ? Promise.resolve({
                     success: false,
                     message: 'Submissions are disabled in preview.',
                   })
-                : submitGenericForm(definition.slug, values)
+                : submitGenericForm(definition.slug, values, revision)
             }
           />
         ) : (

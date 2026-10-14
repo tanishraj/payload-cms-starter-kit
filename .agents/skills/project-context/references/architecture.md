@@ -205,6 +205,13 @@ server adapter, an explicit client transport and a client-safe disabled preview.
 Production inherits existing shared website tokens; the public import guard permits
 only its reviewed adapter, and official Luma radius mappings serve its dependencies.
 There is no form-specific palette or global website-theme replacement.
+Published generic definitions include a server-only-computed history fingerprint.
+Generic transports send it as `formRevision`; stale requests receive a sanitized
+409 before storage/notifications, and the shared form recovers only compatible
+stable-ID answers for review and deliberate resubmission. The loader uses the v2
+cache namespace; legacy revisionless clients retain their existing protocol.
+See `docs/planning/form-revision-recovery.md` for precise boundaries.
+
 
 The native dynamic-form browser journey runs through `pnpm test:e2e:forms` on the
 required loopback test database and is a Quality gate. The fixture worker retains

@@ -54,8 +54,12 @@ Nine globals are registered:
   and native read-only original question/answer rows, plus operational state, activity, assignment
   and optional Review promotion. Snapshots preserve Payload array-row IDs where present and original
   select labels; legacy submissions remain raw-data-only without backfill. The fingerprint is not a
-  Payload version ID. Existing Contact33/Review public presentations remain fixed; generic rendering,
-  stale-client revision negotiation and flattened exports require separate work. Shared form validation
+  Payload version ID. Existing Contact33/Review public presentations remain fixed and revisionless for
+  compatibility. Generic Form and Contact6 now carry the published fingerprint;
+  stale intake returns a sanitized 409 changed-form definition before persistence
+  or notifications. The shared client preserves valid answers by unchanged unique
+  row ID/control type, explains cleared answers and requires deliberate resubmission.
+  Full identity lifecycle, durable idempotency and flattened exports remain separate work. Shared form validation
   rejects non-plain answer records, undeclared names and malformed scalar values; checkbox inputs keep
   finite legacy HTML encodings. The fixed review engine explicitly opts into its seven separately
   validated extra keys. Authoring reserves constructor/prototype/website, validates supported types,

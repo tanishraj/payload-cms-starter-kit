@@ -2856,6 +2856,7 @@
       "src/lib/forms.ts",
       "src/lib/frontendSession.ts",
       "src/lib/genericForm.server.ts",
+      "src/lib/genericFormRevision.server.ts",
       "src/lib/genericFormShared.ts",
       "src/lib/headerNavigation.ts",
       "src/lib/legalPagePaths.ts",
@@ -2876,6 +2877,7 @@
       "src/lib/operationalAudit.ts",
       "src/lib/pageBreadcrumbs.ts",
       "src/lib/pagePaths.ts",
+      "src/lib/recoverFormAnswers.ts",
       "src/lib/redirects.ts",
       "src/lib/reviewFeed.ts",
       "src/lib/reviewFeedShared.ts",
@@ -3103,6 +3105,7 @@
       "tests/int/footer-minimal.int.spec.tsx",
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
+      "tests/int/form-answer-recovery.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",
@@ -3260,7 +3263,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "ebb3039221c0166f838b03159c371d47a3999ec1ff9d1d06f52f4a855c6b601c"
+    "sha256": "9446fe74aa68bb98b50ba2d4a2e4454e933039aba0f59ced6a07cbb27dbda99f"
   },
   "surfaces": {
     "access": [
@@ -3328,6 +3331,7 @@
       "src/lib/forms.ts",
       "src/lib/frontendSession.ts",
       "src/lib/genericForm.server.ts",
+      "src/lib/genericFormRevision.server.ts",
       "src/lib/genericFormShared.ts",
       "src/lib/headerNavigation.ts",
       "src/lib/legalPagePaths.ts",
@@ -3348,6 +3352,7 @@
       "src/lib/operationalAudit.ts",
       "src/lib/pageBreadcrumbs.ts",
       "src/lib/pagePaths.ts",
+      "src/lib/recoverFormAnswers.ts",
       "src/lib/redirects.ts",
       "src/lib/reviewFeed.ts",
       "src/lib/reviewFeedShared.ts",
@@ -3509,6 +3514,7 @@
       "tests/int/footer-minimal.int.spec.tsx",
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
+      "tests/int/form-answer-recovery.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",

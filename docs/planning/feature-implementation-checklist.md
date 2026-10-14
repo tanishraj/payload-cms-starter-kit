@@ -95,15 +95,16 @@ track the proof; the FORM/SUBMIT groups below track the complete capability.
   Update corresponding FORM/SUBMIT groups with commit and verification evidence.
 
 DF-02 is in progress: published intake snapshots, Payload field-row identity,
-content fingerprints, immutable readable answer rows and legacy compatibility are
-implemented. Client revision negotiation/retention and browser/database acceptance
-remain. DF-03/04/09 now also have workshop evidence: an authenticated upstream
-generic presentation renders the six current control types, shares strict scalar
-validation, and exercises accessible errors/pending/success/retry. Native Generic Form block/public/disabled Live Preview integration is implemented
-and passed the native browser journey. Conditional values, stale revisions and server
-duplicate protection remain; broader boxes stay open. Form blocks use shared theme
-tokens and select reusable schemas; their example question lists are not authoritative.
-[Implementation audit](dynamic-forms-implementation.md) records boundaries.
+content fingerprints, immutable readable answers and legacy compatibility exist.
+The generic-client stale-revision recovery increment is implemented; full identity,
+retention and remaining acceptance stay open. DF-03/04/09 have workshop and recorded
+native browser evidence for the six current controls, custom names, strict scalar
+validation, accessible feedback and disabled Live Preview. Conditions, complete
+revision lifecycle and durable server duplicate protection remain. Form blocks use
+shared theme tokens and select reusable schemas; example questions are not authoritative.
+[Implementation audit](dynamic-forms-implementation.md), [baseline assessment](forms-access-baseline.md)
+and [recovery increment](form-revision-recovery.md) distinguish shipped source, fresh
+tests and remaining acceptance.
 
 ## Delivery sequence
 
@@ -620,7 +621,7 @@ exclusions and complete source traceability are in the local scope reference.
   label/name works without a new collection column, endpoint, hand-coded renderer
   or email template. Do not require fields literally named `name`, `email` or `message`.
 
-  Work: Merged into develop · Priority: First enhancement · Baseline: Partial.
+  Work: Merged into develop · Priority: First enhancement · Baseline: Source present.
   The Generic Form block selects reusable definitions and renders the six supported
   controls without fixed keys. Contact Cards & Form adds the sourced Contact6 layout
   through the same contract. Contact33 remains a compatible historical presentation.
@@ -644,7 +645,7 @@ exclusions and complete source traceability are in the local scope reference.
 - [ ] **FORM-04 — Layout entries.** Headings, descriptions, separators and field groups;
   supported width, spacing, size, shape, variant and responsive presentation.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: Assess · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **FORM-05 — Identity and configuration.** Stable field ID separate from editable
@@ -668,21 +669,21 @@ exclusions and complete source traceability are in the local scope reference.
 - [ ] **FORM-07 — Conditions.** Declarative show/require rules reference stable field
   IDs; client and server agree. No executable configuration.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: Assess · Priority: First enhancement · Baseline: Gap.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **FORM-08 — Extensibility.** One registered implementation adds a genuinely new
   control type with rendering, validation and answer formatting. Unknown/incomplete
   controls cannot publish as working. “Any control” means this extensible contract.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: Assess · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **FORM-09 — Follow-on controls [Later].** Rating, range, date range, repeaters and
   multi-step flows. Password/payment capture needs dedicated domain integrations,
   not ordinary stored form answers.
 
-  Work: Deferred · Priority: Later · Baseline: Not yet assessed.
+  Work: Deferred · Priority: Later · Baseline: Gap.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 ### Form intake, submissions and notifications
@@ -710,33 +711,35 @@ exclusions and complete source traceability are in the local scope reference.
   reject unknown fields. Hidden inactive answers are omitted; a required checkbox
   must be checked, not simply present.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: Assess · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **SUBMIT-04 — Revision changes.** Define a bounded accepted-revision policy for
   in-flight visitors; a retired schema returns a recoverable form-changed message
   and preserves safe values for review instead of reinterpreting them silently.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: In progress · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+
+  Increment evidence: [generic published-revision recovery](form-revision-recovery.md); legacy revisionless clients and full lifecycle acceptance remain outside this increment.
 
 - [ ] **SUBMIT-05 — Uploads.** Type/size validation, scoped access, private storage
   where appropriate, lifecycle cleanup and separately authorized attachment reads.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: Assess · Priority: First enhancement · Baseline: Gap.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **SUBMIT-06 — Spam and duplicate protection.** Server-side abuse controls/rate
   limits; duplicate-request handling and deduplicated notification delivery.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: Assess · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **SUBMIT-07 — Visitor feedback.** Labelled field errors and summary, focus first
   invalid field, pending state, success message and retry without unnecessary
   re-entry. Do not expose private data or uploads through public caches.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: Assess · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **SUBMIT-08 — Configurable notification mappings.** Approved recipients/handlers,
@@ -751,14 +754,14 @@ exclusions and complete source traceability are in the local scope reference.
   notifications; retry failed notifications without losing/duplicating answers.
   Display delivery state separately from successful submission storage.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: Assess · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **SUBMIT-10 — Operational inbox.** Separately scoped access, owner, internal notes,
   New/In progress/Resolved/Spam states, follow-up and readable generic answers.
   Submitted answers remain distinct from mutable staff workflow metadata.
 
-  Work: Assess · Priority: First enhancement · Baseline: Source present.
+  Work: Assess · Priority: First enhancement · Baseline: Partial.
   Initial finding: Submission operations and queue hooks exist; recheck generic answers and separate row-level scope.
   Evidence: [src/collections/FormSubmissions.ts](../../src/collections/FormSubmissions.ts), [src/hooks/syncFormSubmissionToWorkQueue.ts](../../src/hooks/syncFormSubmissionToWorkQueue.ts).
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
@@ -766,13 +769,13 @@ exclusions and complete source traceability are in the local scope reference.
 - [ ] **SUBMIT-11 — Exports/integrations.** Authorized export and webhook mappings use
   the submitted revision's field names; renames/removals preserve historical meaning.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: Assess · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **SUBMIT-12 — Test mode.** Clearly labelled form testing without real notifications
   or ordinary production submissions; Storybook never calls production services.
 
-  Work: Assess · Priority: First enhancement · Baseline: Not yet assessed.
+  Work: Assess · Priority: First enhancement · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 ### Accounts, roles and scoped permissions
@@ -808,7 +811,7 @@ exclusions and complete source traceability are in the local scope reference.
   parent scope. New roots, scope reassignment and cross-scope moves are Admin-only
   by default. Slug changes cannot expand permissions.
 
-  Work: Assess · Priority: Backlog · Baseline: Not yet assessed.
+  Work: Assess · Priority: Backlog · Baseline: Gap.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **ACCESS-05 — Shared resources.** Users, grants, integrations, site settings and
@@ -818,34 +821,34 @@ exclusions and complete source traceability are in the local scope reference.
   Forms and reusable content; Admins control resources shared across sections.
   Detailed sharing/move/migration policy and enforcement remain unverified.
 
-  Work: Assess · Priority: Backlog · Baseline: Not yet assessed.
+  Work: Assess · Priority: Backlog · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **ACCESS-06 — Separate resource permissions.** Scoped media upload/use, protected
   shared-asset replacement/deletion, collection publication and form-inbox access
   independent from permission to place a Form block.
 
-  Work: Assess · Priority: Backlog · Baseline: Not yet assessed.
+  Work: Assess · Priority: Backlog · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **ACCESS-07 — Every entry point.** Enforce scope for Payload Admin, REST, enabled
   GraphQL, user-acting Local API, preview/history/restore, upload, jobs and any future
   import route. Hidden navigation is not access control.
 
-  Work: Assess · Priority: Backlog · Baseline: Not yet assessed.
+  Work: Assess · Priority: Backlog · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **ACCESS-08 — Grant changes.** Managers cannot self-assign scope. Revocation
   applies to subsequent saves, publication, restore and scheduled execution.
 
-  Work: Assess · Priority: Backlog · Baseline: Not yet assessed.
+  Work: Assess · Priority: Backlog · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **ACCESS-09 — Permission diagnostics [Recommended].** Effective-access summary
   for Admin; manageable sections and scoped tasks for Managers. Relationship pickers,
   counts and impact summaries must not expose private out-of-scope records.
 
-  Work: Assess · Priority: Candidate · Baseline: Not yet assessed.
+  Work: Assess · Priority: Candidate · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 ### Drafts, autosave, conflicts, publication and history
@@ -1930,6 +1933,7 @@ feature boxes synchronized; record blockers with a concrete next action.
 | 2026-10-07 | Dependency prerequisite for Contact6 | Merged into develop | Codex | Patch new Payload/Sharp advisories with aligned Payload 3.90.2 and Sharp 0.35.5; retain scoped Undici 7.29.1. Align disabled S3 client-upload compatibility, replay the exact enrollment TOTP code and preserve initial generated slugs before required validation. Await disposable fixture indexes and native browser readiness. | [PR #20](https://github.com/tanishraj/payload-cms-starter-kit/pull/20) (`f440365e`) | [Upgrade review](../operations/dependency-audit-remediation-2026-10-07.md). [GitHub Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/37529400212) passes 2,336 integration tests (one Docker-dependent test skipped), governance/native-form browser journeys and production build. Audit, TypeScript/lint, generated artifacts, 71 focused dependency/storage/auth/context checks and 21 API/slug/navigation/fixture checks pass. Braces approval unchanged; no new environment setting or live data migration. Operators must recreate pending scheduled publish/unpublish jobs where applicable. The Admin grant/revoke journey passed on retry after a conditional-field readiness timeout; browser repeatability remains an ADMINUX/VERIFY follow-up. |
 | 2026-10-14 | Full catalogue planning; ACCESS; DF-02/06; DESIGN-07; FORM-08/DEV | Charted; acceptance unchanged | User / Codex | Plan all 242 groups. Confirm section-owned resources with Admin-managed shared resources and independent inbox access; stale-form refresh preserving compatible answers; fixed upstream breakpoints initially/configurable later; explicit typed registrations with small helpers. Create a local Wayfinder map and open decision tickets; preserve dynamic forms first. | Current planning branch; see Git history for this change. | Read-only document/source review; coverage/dependency/link integrity passes; project-context update is a checked no-op, context check passes and all 15 focused project-context tests pass. No child decision resolved or application behavior changed. Braces exception expired on 2026-10-13; fresh audit/remediation required before the next implementation merge, no extension approved. |
 | 2026-10-14 | FORM-01–09; SUBMIT-01–12; ACCESS-01–09; DF-01–10 | Baseline assessed; full acceptance unchanged | Codex | Resolve the first Wayfinder baseline task with [reuse/gap/evidence assessment](forms-access-baseline.md); record string-ID owner activity defect for inbox work. User authorizes the bounded stale-form recovery increment; detailed identity policy remains open. | See Git history for baseline commit. | 172 focused tests pass in 16 suites; isolated hook reproduction confirms owner defect. Prior native journeys remain separate evidence. Fresh production audit fails on high Braces/Next findings and expired exception; merge prerequisite. No app/environment/data changes or checkbox updates. |
+| 2026-10-14 | DF-02/04/06/09; SUBMIT-01/04/07; FORM-05/06; DEV-03 | Implemented increment; merge blocked by dependency audit | Codex | [Published revision recovery](form-revision-recovery.md): reject stale generic requests before storage/email, return public updated questions, preserve only valid same-ID/type answers, explain clearing and require review/resubmission. Both generic layouts share the path; legacy revisionless clients preserved. | Feature branch `feat/form-revision-recovery`; see Git history. | 65 focused recovery/story tests and 16 documentation/context tests pass. Full isolated regression: 2,364 pass, one Docker-dependent skip; both native form journeys pass without retry in the final run, including stale rejection/no storage, stable-ID preservation, changed-type clearing and one reviewed resubmission. Production/Storybook builds, TypeScript and full lint pass (one existing warning). Fixture import order fixed after local loader diagnosis. Context inventory/references updated and check passes. Production audit fails on high Braces/Next findings and expired exception; no waiver extended. No new environment/dependency/schema/migration changes. Broad feature/proof boxes remain open. |
 
 ## Completion record template
 

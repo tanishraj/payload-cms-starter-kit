@@ -2,6 +2,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Field } from 'payload'
 
 import { FormSubmissions } from '@/collections/FormSubmissions'
+import { projectPublishedGenericForm } from '@/lib/genericFormRevision.server'
+import type { Form } from '@/payload-types'
+
 import { updateFormSubmissionActivity } from '@/hooks/updateFormSubmissionActivity'
 
 const payloadMocks = vi.hoisted(() => {
@@ -97,6 +100,107 @@ describe('form submission model', () => {
     eventMocks.emitFormSubmissionEvent.mockResolvedValue(undefined)
     payloadMocks.sendEmail.mockResolvedValue(undefined)
   })
+
+  it('rejects stale answers before writes or notifications and returns only the current public definition', async () => {
+    const published = {
+      id: 'revision-form',
+      slug: 'revised',
+      title: 'Enquiry',
+      _status: 'published',
+      submissionIntent: 'general',
+      submitButtonLabel: 'Send',
+      successMessage: 'Received',
+      internalNotes: 'private note',
+      notificationRecipients: [{ email: 'private@example.test' }],
+      fields: [
+        {
+          id: 'field-1',
+          name: 'new_name',
+          label: 'Updated question',
+          type: 'text',
+          required: true,
+        },
+      ],
+    } as Form
+    payloadMocks.find.mockResolvedValue({ docs: [published] })
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/revised/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formRevision: '0'.repeat(64), values: { old_name: 'Alex' } }),
+      }),
+      { params: Promise.resolve({ slug: 'revised' }) },
+    )
+    expect(response.status).toBe(409)
+    expect(response.headers.get('Cache-Control')).toBe('no-store')
+    const body = await response.json()
+    expect(body.form).toEqual(projectPublishedGenericForm(published))
+    expect(JSON.stringify(body)).not.toContain('private')
+    expect(payloadMocks.create).not.toHaveBeenCalled()
+    expect(payloadMocks.sendEmail).not.toHaveBeenCalled()
+    expect(eventMocks.emitFormSubmissionEvent).not.toHaveBeenCalled()
+  })
+
+  it('accepts the refreshed revision and stores that same snapshot identity', async () => {
+    const published = {
+      id: 'revision-form',
+      slug: 'revised',
+      title: 'Enquiry',
+      _status: 'published',
+      submissionIntent: 'general',
+      submitButtonLabel: 'Send',
+      successMessage: 'Received',
+      fields: [
+        {
+          id: 'field-1',
+          name: 'new_name',
+          label: 'Updated question',
+          type: 'text',
+          required: true,
+        },
+      ],
+    } as Form
+    const revision = projectPublishedGenericForm(published)?.revision
+    payloadMocks.find.mockResolvedValue({ docs: [published] })
+    payloadMocks.create.mockResolvedValue({ id: 'stored-submission' })
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/revised/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formRevision: revision, values: { new_name: 'Alex' } }),
+      }),
+      { params: Promise.resolve({ slug: 'revised' }) },
+    )
+    expect(response.status).toBe(200)
+    expect(payloadMocks.create).toHaveBeenCalledTimes(1)
+    expect(payloadMocks.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ formRevision: revision, data: { new_name: 'Alex' } }),
+      }),
+    )
+  })
+
+  it.each([null, false, [], 'short'])(
+    'rejects a malformed expected revision before writing: %s',
+    async (formRevision) => {
+      payloadMocks.find.mockResolvedValue({
+        docs: [{ id: 'form', slug: 'enquiry', _status: 'published' }],
+      })
+      const { POST } = await loadRouteModule()
+      const response = await POST(
+        new Request('http://localhost/api/forms/enquiry/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formRevision, values: {} }),
+        }),
+        { params: Promise.resolve({ slug: 'enquiry' }) },
+      )
+      expect(response.status).toBe(400)
+      expect(payloadMocks.create).not.toHaveBeenCalled()
+    },
+  )
 
   it('stores operator-friendly submission fields', () => {
     const statusField = getField('status')

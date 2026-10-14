@@ -3,10 +3,9 @@ import { getRequiredTestDatabaseURI } from './testDatabaseSafety'
 async function getTestPayload() {
   process.env.MONGODB_URI = getRequiredTestDatabaseURI()
 
-  const [{ getPayload }, { default: config }] = await Promise.all([
-    import('payload'),
-    import('../../src/payload.config.js'),
-  ])
+  // Config imports Payload too; load it first to avoid fixture ESM-loader deadlocks.
+  const { getPayload } = await import('payload')
+  const { default: config } = await import('../../src/payload.config.js')
 
   return getPayload({ config })
 }

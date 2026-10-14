@@ -3,7 +3,7 @@ import config from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
-import { projectGenericForm } from '@/lib/genericFormShared'
+import { projectPublishedGenericForm } from '@/lib/genericFormRevision.server'
 
 export const getPublishedGenericForm = unstable_cache(
   async (id: string) => {
@@ -24,14 +24,15 @@ export const getPublishedGenericForm = unstable_cache(
       },
       select: {
         slug: true,
+        title: true,
         fields: true,
         submitButtonLabel: true,
         submissionIntent: true,
         _status: true,
       },
     })
-    return projectGenericForm(result.docs[0] ?? null)
+    return projectPublishedGenericForm(result.docs[0] ?? null)
   },
-  ['published-generic-form'],
+  ['published-generic-form-v2'],
   { tags: [CMS_CACHE_TAGS.globals], revalidate: false },
 )

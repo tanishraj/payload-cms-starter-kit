@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { projectGenericForm } from '@/lib/genericFormShared'
 import { submitGenericForm } from '@/lib/submitGenericForm'
 import { GenericFormPreviewBlockComponent } from '@/blocks/GenericForm/PreviewComponent'
+import { Contact6BlockPresentation } from '@/blocks/Contact6/Presentation'
 import { GenericFormBlockPresentation } from '@/blocks/GenericForm/Presentation'
 import { validateGenericFormRelationship } from '@/blocks/GenericForm/config'
 import type { Form } from '@/payload-types'
@@ -123,6 +124,100 @@ describe('generic form CMS integration', () => {
       metadata: { landingPage: window.location.href },
     })
   })
+  it.each([GenericFormBlockPresentation, Contact6BlockPresentation])(
+    'refreshes changed questions without posting automatically and reuses the new revision for deliberate submission: %s',
+    async (Presentation) => {
+      const revision = '1'.repeat(64)
+      const nextRevision = '2'.repeat(64)
+      const fetch = vi.fn<typeof globalThis.fetch>()
+      fetch.mockResolvedValueOnce(
+        Response.json(
+          {
+            code: 'FORM_CHANGED',
+            message: 'Questions changed.',
+            form: {
+              slug: form.slug,
+              revision: nextRevision,
+              submitButtonLabel: 'Send updated enquiry',
+              fields: [
+                {
+                  id: 'question-id',
+                  name: 'new_department',
+                  label: 'Updated department',
+                  type: 'text',
+                  required: true,
+                },
+              ],
+            },
+          },
+          { status: 409 },
+        ),
+      )
+      fetch.mockResolvedValueOnce(Response.json({ message: 'Received after review.' }))
+      vi.stubGlobal('fetch', fetch)
+      render(
+        <Presentation
+          size="default"
+          definition={{
+            slug: form.slug,
+            revision,
+            submitButtonLabel: 'Send enquiry',
+            fields: [
+              {
+                id: 'question-id',
+                name: 'old_department',
+                label: 'Original department',
+                type: 'text',
+                required: true,
+              },
+            ],
+          }}
+        />,
+      )
+      fireEvent.change(screen.getByLabelText(/Original department/), {
+        target: { value: 'Library' },
+      })
+      fireEvent.click(screen.getByRole('button', { name: 'Send enquiry' }))
+      await waitFor(() => expect(screen.getByLabelText(/Updated department/)).toBeTruthy())
+      expect((screen.getByLabelText(/Updated department/) as HTMLInputElement).value).toBe(
+        'Library',
+      )
+      expect(screen.getByRole('status')).toBe(document.activeElement)
+      expect(fetch).toHaveBeenCalledTimes(1)
+      expect(JSON.parse(fetch.mock.calls[0][1]?.body as string).formRevision).toBe(revision)
+      fireEvent.click(screen.getByRole('button', { name: 'Send updated enquiry' }))
+      await waitFor(() =>
+        expect(screen.getByRole('status').textContent).toBe('Received after review.'),
+      )
+      expect(JSON.parse(fetch.mock.calls[1][1]?.body as string)).toMatchObject({
+        formRevision: nextRevision,
+        values: { new_department: 'Library' },
+      })
+    },
+  )
+
+  it('rejects malformed changed-form responses rather than treating them as a successful refresh', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () =>
+        Response.json(
+          {
+            code: 'FORM_CHANGED',
+            message: 'Changed',
+            form: {
+              slug: 'custom',
+              revision: '2'.repeat(64),
+              fields: [{ name: 'constructor', label: 'Unsafe', type: 'text' }],
+              submitButtonLabel: 'Send',
+            },
+          },
+          { status: 409 },
+        ),
+      ),
+    )
+    await expect(submitGenericForm('custom', {}, '1'.repeat(64))).rejects.toThrow('Unconfirmed')
+  })
+
   it('preserves server field errors and rate-limit retry information', async () => {
     vi.stubGlobal(
       'fetch',

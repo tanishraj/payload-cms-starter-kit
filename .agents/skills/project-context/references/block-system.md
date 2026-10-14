@@ -553,10 +553,15 @@ cache. The relationship validator rechecks the selected ID with `req` and
 
 The separate preview adapter projects populated authorized draft data and disables
 all submission controls. Neither preview nor thumbnails import the server loader.
-Only the public questions, slug and button label cross into the client; private
+Only the public questions, slug, button label and revision fingerprint cross into the client; private
 notification/reply/editor data remains outside it. Transport posts arbitrary supported
 machine names to existing intake. It reports server success, field validation,
-rate-limit waits and unconfirmed failures without automatic retries. Server-rendered controls remain disabled until hydration, and the HTML fallback uses POST so early interactions cannot put answers in a query string.
+rate-limit waits and unconfirmed failures without automatic retries. The published loader uses the v2 cache namespace.
+Generic Form and Contact6 send the rendered fingerprint; stale intake returns a
+sanitized 409 before persistence/notifications. The shared renderer preserves only
+valid answers with unchanged unique row IDs/control types, explains cleared answers
+and requires review and deliberate resubmission. Revisionless legacy clients retain
+their protocol. Server-rendered controls remain disabled until hydration, and the HTML fallback uses POST so early interactions cannot put answers in a query string.
 
 The integrated adapter uses shared website shadcn tokens with upstream Luma radius
 mappings. Other public surfaces retain semantic radius roles. There is no form-only

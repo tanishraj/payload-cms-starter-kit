@@ -79,6 +79,10 @@ const meta = {
     })),
   },
   argTypes: {
+    revision: {
+      control: false,
+      description: 'Caller-owned published identity; never an editor-entered option.',
+    },
     fields: {
       name: 'Questions and controls',
       control: 'object',
@@ -253,4 +257,62 @@ export const CMSUnavailable: Story = {
       preview
     />
   ),
+}
+
+export const ChangedQuestions: Story = {
+  name: 'Changed questions — preserve compatible answers',
+  args: {
+    revision: '1'.repeat(64),
+    fields: [
+      { id: 'name-field', name: 'visitor', label: 'Your name', type: 'text', required: true },
+      { id: 'details-field', name: 'details', label: 'Your question', type: 'textarea' },
+    ],
+    onSubmit: fn(
+      async (
+        _values: Record<string, boolean | string>,
+        revision?: string,
+      ): Promise<GenericFormResult> =>
+        revision === '2'.repeat(64)
+          ? { success: true, message: 'Demo received. No information has been saved or sent.' }
+          : {
+              success: false,
+              message: 'The form has changed.',
+              updatedForm: {
+                revision: '2'.repeat(64),
+                submitButtonLabel: 'Send updated enquiry',
+                fields: [
+                  {
+                    id: 'name-field',
+                    name: 'full_name',
+                    label: 'Full name',
+                    type: 'text',
+                    required: true,
+                  },
+                  {
+                    id: 'details-field',
+                    name: 'details',
+                    label: 'Email address',
+                    type: 'email',
+                    required: true,
+                  },
+                ],
+              },
+            },
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.type(canvas.getByLabelText(/Your name/), 'Alex Taylor')
+    await userEvent.type(canvas.getByLabelText(/Your question/), 'I would like to visit')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(canvas.getByRole('status')).toHaveFocus()
+    await expect(canvas.getByLabelText(/Full name/)).toHaveValue('Alex Taylor')
+    await expect(canvas.getByLabelText(/Email address/)).toHaveValue('')
+    await expect(canvas.getByRole('status')).toHaveTextContent(
+      'These answers were cleared because their questions changed: Your question',
+    )
+    await userEvent.type(canvas.getByLabelText(/Email address/), 'alex@example.test')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send updated enquiry' }))
+    await expect(canvas.getByRole('status')).toHaveTextContent('Demo received.')
+  },
 }
