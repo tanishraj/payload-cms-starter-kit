@@ -135,6 +135,7 @@ describe('form field configuration', () => {
     expect(recoverFormAnswers([field], next, { question: 'A longer answer' })).toEqual({
       values: { renamed: '' },
       clearedLabels: ['Question'],
+      partiallyClearedLabels: [],
     })
   })
 })

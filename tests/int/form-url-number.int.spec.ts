@@ -169,6 +169,7 @@ describe('decimal number form control', () => {
     expect(recoverFormAnswers([original], [next], { quantity: '2.50' })).toEqual({
       values: { quantity: '' },
       clearedLabels: ['Quantity'],
+      partiallyClearedLabels: [],
     })
     expect(recoverFormAnswers([original], [next], { quantity: '3' }).values).toEqual({
       quantity: '3',

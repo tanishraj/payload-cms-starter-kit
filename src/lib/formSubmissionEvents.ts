@@ -1,3 +1,4 @@
+import type { FormAnswers } from '@/lib/forms'
 export type FormSubmissionEventInput = {
   campaign?: string
   formId: string | number
@@ -11,7 +12,7 @@ export type FormSubmissionEventInput = {
   submitterEmail?: string
   submitterName?: string
   submitterPhone?: string
-  values: Record<string, boolean | string>
+  values: FormAnswers
 }
 
 // Starter seam for project-specific lead routing or downstream automation.

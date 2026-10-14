@@ -55,3 +55,29 @@ describe('form notification email', () => {
     expect(email.text).toContain('We received your message.')
   })
 })
+
+it('formats multiple original choice labels and escapes their HTML', () => {
+  const email = buildFormNotificationEmail({
+    form: {
+      fields: [
+        {
+          name: 'topics',
+          label: 'Interests',
+          type: 'multiSelect',
+          options: [
+            { label: '<script>Alpha</script>', value: 'alpha' },
+            { label: 'Beta & Gamma', value: 'beta' },
+          ],
+        },
+      ],
+      title: 'Choices',
+      slug: 'choices',
+    } as never,
+    siteName: 'Example',
+    submittedAt: new Date('2026-10-14T00:00:00.000Z'),
+    values: { topics: ['alpha', 'beta'] },
+  })
+  expect(email.text).toContain('Interests: <script>Alpha</script>; Beta & Gamma')
+  expect(email.html).toContain('&lt;script&gt;Alpha&lt;/script&gt;; Beta &amp; Gamma')
+  expect(email.html).not.toContain('<script>')
+})

@@ -2733,13 +2733,19 @@
       "src/components/profile-carousel.tsx",
       "src/components/rating-spotlight.tsx",
       "src/components/revamp/contact6.tsx",
+      "src/components/revamp/form-choice-control.tsx",
       "src/components/revamp/generic-form.tsx",
       "src/components/revamp/ui/button.tsx",
       "src/components/revamp/ui/card.tsx",
       "src/components/revamp/ui/checkbox.tsx",
+      "src/components/revamp/ui/command.tsx",
+      "src/components/revamp/ui/dialog.tsx",
       "src/components/revamp/ui/field.tsx",
+      "src/components/revamp/ui/input-group.tsx",
       "src/components/revamp/ui/input.tsx",
       "src/components/revamp/ui/label.tsx",
+      "src/components/revamp/ui/popover.tsx",
+      "src/components/revamp/ui/radio-group.tsx",
       "src/components/revamp/ui/select.tsx",
       "src/components/revamp/ui/separator.tsx",
       "src/components/revamp/ui/textarea.tsx",
@@ -3109,6 +3115,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/form-answer-recovery.int.spec.ts",
+      "tests/int/form-choice-controls.int.spec.ts",
       "tests/int/form-field-configuration.int.spec.ts",
       "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
@@ -3270,7 +3277,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "69b96a615ba950f2e6f2ef5669b0539ead86715bc3d712a4ecab39a098539872"
+    "sha256": "d37837c713a1869fd87008b8aa4a7097289f60e9bc95902e8c2a43952af1ac65"
   },
   "surfaces": {
     "access": [
@@ -3524,6 +3531,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/form-answer-recovery.int.spec.ts",
+      "tests/int/form-choice-controls.int.spec.ts",
       "tests/int/form-field-configuration.int.spec.ts",
       "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",

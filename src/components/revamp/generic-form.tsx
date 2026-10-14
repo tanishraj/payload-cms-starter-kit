@@ -1,5 +1,7 @@
 'use client'
 
+import type { FormAnswers } from '@/lib/forms'
+
 /**
  * Source: @shadcnblocks/form-form-patterns-4 (authenticated, 2026-10-06).
  * Checkbox composition: @shadcnblocks/checkbox-checkbox-standard-1.
@@ -22,7 +24,10 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldSet,
+  FieldLegend,
 } from '@/components/revamp/ui/field'
+import { FormChoiceControl } from '@/components/revamp/form-choice-control'
 import { Input } from '@/components/revamp/ui/input'
 import {
   Select,
@@ -39,6 +44,7 @@ import {
   FORM_HONEYPOT_FIELD_NAME,
   getFormFieldMaxLength,
   getFormInitialAnswers,
+  isMultipleChoiceFormFieldType,
   supportsFormTextLimits,
   sanitizePhoneNumberInput,
   validateFormFieldDefinitions,
@@ -67,13 +73,13 @@ export type GenericFormProps = {
   revision?: string
   protectRetries?: boolean
   onSubmit: (
-    values: Record<string, boolean | string>,
+    values: FormAnswers,
     revision?: string,
     submissionKey?: string,
   ) => Promise<GenericFormResult>
 }
 
-type Answers = { answers: Record<string, boolean | string>; website: string }
+type Answers = { answers: FormAnswers; website: string }
 
 const subscribeToHydration = () => () => {}
 
@@ -100,7 +106,12 @@ function FormPresentation({
   const splitFirstRow =
     layout === 'contact6' &&
     fields.length >= 2 &&
-    fields.slice(0, 2).every((field) => field.type !== 'textarea' && field.type !== 'checkbox')
+    fields
+      .slice(0, 2)
+      .every(
+        (field) =>
+          !['textarea', 'checkbox', 'radio', 'checkboxGroup', 'multiSelect'].includes(field.type),
+      )
   // The server-rendered form must not submit to the page before React is ready.
   const hydrated = useSyncExternalStore(
     subscribeToHydration,
@@ -171,7 +182,7 @@ function FormPresentation({
             recovered.clearedLabels.length
               ? `These answers were cleared because their questions changed: ${recovered.clearedLabels.join(', ')}. `
               : ''
-          }Review the updated questions before submitting again.`,
+          }${recovered.partiallyClearedLabels.length ? `Removed choices were cleared in: ${recovered.partiallyClearedLabels.join(', ')}. Remaining selections are still here. ` : ''}Review the updated questions before submitting again.`,
         )
         setResult(null)
         return
@@ -246,9 +257,11 @@ function FormPresentation({
         </FieldDescription>
         {!result?.success && (
           <>
-            {fields.some((field) => field.required) && (
-              <FieldDescription>Fields marked * are required.</FieldDescription>
-            )}
+            {fields.some(
+              (field) =>
+                field.required ||
+                (isMultipleChoiceFormFieldType(field.type) && (field.minSelections ?? 0) > 0),
+            ) && <FieldDescription>Fields marked * are required.</FieldDescription>}
             {!result?.requestKeyConflict && (hasErrors || result?.success === false) && (
               <FieldError>
                 {result?.success === false
@@ -287,22 +300,70 @@ function FormPresentation({
                     const id = `${prefix}-${definition.name}`
                     const errorId = `${id}-error`
                     const helpId = `${id}-help`
+                    const multiple = isMultipleChoiceFormFieldType(definition.type)
+                    const minimum = Math.max(
+                      definition.required ? 1 : 0,
+                      definition.minSelections ?? 0,
+                    )
+                    const maximum = definition.maxSelections
+                    const isRequired = Boolean(definition.required) || (multiple && minimum > 0)
+                    const selectionHelp = multiple
+                      ? maximum != null && minimum === maximum
+                        ? `Choose exactly ${minimum} option${minimum === 1 ? '' : 's'}.`
+                        : maximum != null
+                          ? minimum > 0
+                            ? `Choose ${minimum}–${maximum} options.`
+                            : `Choose up to ${maximum} option${maximum === 1 ? '' : 's'}.`
+                          : minimum > 0
+                            ? `Choose at least ${minimum} option${minimum === 1 ? '' : 's'}.`
+                            : ''
+                      : ''
+                    const helpText = [definition.helpText, selectionHelp].filter(Boolean).join(' ')
                     const a11y = {
                       id,
                       'aria-invalid': fieldState.invalid,
-                      'aria-required': Boolean(definition.required),
+                      'aria-required': isRequired,
                       'aria-describedby':
-                        [definition.helpText ? helpId : null, fieldState.invalid ? errorId : null]
+                        [helpText ? helpId : null, fieldState.invalid ? errorId : null]
                           .filter(Boolean)
                           .join(' ') || undefined,
                     }
                     const label = (
                       <>
                         {definition.label}
-                        {definition.required && <span aria-hidden="true"> *</span>}
+                        {isRequired && <span aria-hidden="true"> *</span>}
                       </>
                     )
                     const value = typeof field.value === 'string' ? field.value : ''
+                    if (
+                      definition.type === 'radio' ||
+                      isMultipleChoiceFormFieldType(definition.type)
+                    )
+                      return (
+                        <FieldSet
+                          className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
+                          disabled={inactive}
+                        >
+                          <FieldLegend variant="label" id={`${id}-label`}>
+                            {label}
+                          </FieldLegend>
+                          <FormChoiceControl
+                            {...a11y}
+                            aria-labelledby={`${id}-label`}
+                            definition={definition}
+                            value={field.value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            controlRef={field.ref}
+                            disabled={inactive}
+                            container={selectContainer}
+                          />
+                          {helpText && <FieldDescription id={helpId}>{helpText}</FieldDescription>}
+                          {fieldState.invalid && (
+                            <FieldError id={errorId} errors={[fieldState.error]} />
+                          )}
+                        </FieldSet>
+                      )
                     if (definition.type === 'checkbox')
                       return (
                         <Field
@@ -323,9 +384,7 @@ function FormPresentation({
                             />
                             <FieldLabel htmlFor={id}>{label}</FieldLabel>
                           </Field>
-                          {definition.helpText && (
-                            <FieldDescription id={helpId}>{definition.helpText}</FieldDescription>
-                          )}
+                          {helpText && <FieldDescription id={helpId}>{helpText}</FieldDescription>}
                           {fieldState.invalid && (
                             <FieldError id={errorId} errors={[fieldState.error]} />
                           )}
@@ -428,9 +487,7 @@ function FormPresentation({
                             className={cn(layout === 'stacked' && 'bg-background')}
                           />
                         )}
-                        {definition.helpText && (
-                          <FieldDescription id={helpId}>{definition.helpText}</FieldDescription>
-                        )}
+                        {helpText && <FieldDescription id={helpId}>{helpText}</FieldDescription>}
                         {fieldState.invalid && (
                           <FieldError id={errorId} errors={[fieldState.error]} />
                         )}

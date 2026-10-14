@@ -352,6 +352,92 @@ describe('form submission model', () => {
     expect(stored.formSnapshot.fields[1]).toMatchObject({ minValue: 0.5, maxValue: 4, step: 2 })
   })
 
+  it('validates and captures multiple choices through intake and readable notifications', async () => {
+    const published = {
+      id: 'choice-form',
+      slug: 'choices',
+      title: 'Choices',
+      _status: 'published',
+      submissionIntent: 'general',
+      submitButtonLabel: 'Send',
+      successMessage: 'Received',
+      notificationRecipients: [{ email: 'internal@example.test' }],
+      fields: [
+        {
+          id: 'radio',
+          name: 'email',
+          label: 'Route',
+          type: 'radio',
+          required: true,
+          options: [{ label: 'Admissions', value: 'admissions' }],
+        },
+        {
+          id: 'topics',
+          name: 'topics',
+          label: 'Interests',
+          type: 'checkboxGroup',
+          minSelections: 1,
+          maxSelections: 2,
+          options: [
+            { label: 'Admissions', value: 'admissions' },
+            { label: 'Library', value: 'library' },
+          ],
+        },
+        {
+          id: 'services',
+          name: 'services',
+          label: 'Services',
+          type: 'multiSelect',
+          options: [{ label: 'Library', value: 'library' }],
+        },
+      ],
+    } as Form
+    payloadMocks.find.mockResolvedValue({ docs: [published] })
+    payloadMocks.create.mockResolvedValue({ id: 'saved', createdAt: '2026-10-14T00:00:00.000Z' })
+    const { POST } = await loadRouteModule()
+    const request = (values: unknown) =>
+      POST(
+        new Request('http://localhost/api/forms/choices/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ values }),
+        }),
+        { params: Promise.resolve({ slug: 'choices' }) },
+      )
+    const rejected = await request({ email: 'admissions', topics: ['missing'], services: [] })
+    expect(rejected.status).toBe(400)
+    expect(payloadMocks.create).not.toHaveBeenCalled()
+    expect(payloadMocks.sendEmail).not.toHaveBeenCalled()
+    const response = await request({
+      email: 'admissions',
+      topics: ['library', 'admissions'],
+      services: ['library'],
+    })
+    expect(response.status).toBe(200)
+    const stored = payloadMocks.create.mock.calls[0][0].data
+    expect(stored.data).toEqual({
+      email: 'admissions',
+      topics: ['admissions', 'library'],
+      services: ['library'],
+    })
+    expect(stored.submitterEmail).toBeUndefined()
+    expect(stored.answers).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'topics',
+          displayValue: 'Admissions; Library',
+          value: { raw: ['admissions', 'library'] },
+        }),
+      ]),
+    )
+    expect(payloadMocks.sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ text: expect.stringContaining('Interests: Admissions; Library') }),
+    )
+    expect(eventMocks.emitFormSubmissionEvent).toHaveBeenCalledWith(
+      expect.objectContaining({ values: stored.data }),
+    )
+  })
+
   it('accepts the refreshed revision and stores that same snapshot identity', async () => {
     const published = {
       id: 'revision-form',

@@ -136,3 +136,7 @@ Forms support a Phone field with international-friendly formatting, 7–15 digit
 ## Payload 3.90.2 auth/storage baseline
 
 Generated user types include `resetPasswordRequestedAt`; password changes/reset revoke other sessions under upstream hardened authentication. Existing MongoDB/provider/access configuration is retained. Raster/PDF-only upload policy and server validation remain authoritative; no restricted-file or unsafe-fetch opt-in. Operators must recreate pending scheduled publish/unpublish events after upgrading if present. See `docs/operations/dependency-audit-remediation-2026-10-07.md`.
+
+## Choice form contract
+
+Forms now supports Radio (one string) and Checkbox group/Multi-select (unique option-value arrays). Native initial-selection rows and whole-number min/max selection settings map through the same public/intake projection; dormant settings stay inactive. New options are bounded at 100 and labels/values at 500 characters. Required/minimum/maximum checks do not fill missing defaults. Same-ID/type recovery filters removed choices and retains a still-valid remainder, with partial/full clearing explained before deliberate resubmission. Snapshot JSON envelopes retain raw arrays and original labels; escaped notifications and the submission event use the same answers. Contact alias inference excludes new generic controls, and fixed Review rejects unsupported choices. See the [contract and registration guide](../../../../docs/planning/form-choice-controls.md).
