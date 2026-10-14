@@ -19,7 +19,7 @@ Find a clear route through all 242 feature groups and 10 dynamic-form proof step
 
 ## Decisions so far
 
-No child ticket has been resolved. Confirmed inputs to charting are in the brief; detailed policies remain open.
+- [Establish the forms and access baseline](issues/01-forms-access-baseline.md) — Reuse the current generic six-control path and feature-grant safeguards; remaining gaps and fresh-versus-recorded evidence are documented in its linked assessment.
 
 ## Not yet specified
 

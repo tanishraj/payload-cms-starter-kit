@@ -4,8 +4,8 @@ Parent: [Plan the complete website-builder feature catalogue](../map.md)
 Type: task
 Label: wayfinder:task
 Mode: AFK
-Status: open
-Assignee: unassigned
+Status: resolved
+Assignee: Codex
 Blocked by: none
 
 Dependencies: None.
@@ -24,3 +24,7 @@ Consult the [confirmed planning brief](../brief.md). Grilling sessions use the W
 ## Comments
 
 Charted on 2026-10-14. No decision resolution or implementation acceptance is recorded.
+
+### Answer — 2026-10-14
+
+Completed the [forms and access baseline](../../../docs/planning/forms-access-baseline.md): all 30 FORM/SUBMIT/ACCESS groups and ten DF proofs have reuse/gap/evidence routing. The six-control generic path and feature-grant system are reusable; revision negotiation, durable idempotency, private files, broader controls/conditions and page-section resource enforcement remain. Fresh 172 focused tests pass; prior browser/CI evidence is explicitly separate. Reproduced string-ID owner activity defect belongs to the existing inbox ticket. No feature acceptance was marked complete.

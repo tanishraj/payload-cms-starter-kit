@@ -24,3 +24,7 @@ Consult the [confirmed planning brief](../brief.md). Grilling sessions use the W
 ## Comments
 
 Charted on 2026-10-14. No decision resolution or implementation acceptance is recorded.
+
+### Baseline defect — 2026-10-14
+
+The [forms/access baseline](../../../docs/planning/forms-access-baseline.md#reproduced-inbox-defect) reproduces missing activity timestamps on string-ID owner changes. Include regression coverage and correction in the inbox increment; not fixed by the baseline task.

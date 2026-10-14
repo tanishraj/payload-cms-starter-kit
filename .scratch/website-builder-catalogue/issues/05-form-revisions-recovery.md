@@ -24,3 +24,7 @@ Consult the [confirmed planning brief](../brief.md). Grilling sessions use the W
 ## Comments
 
 Charted on 2026-10-14. No decision resolution or implementation acceptance is recorded.
+
+### Confirmed recovery direction — 2026-10-14
+
+The user authorized implementing stale-form recovery: preserve answers only for unchanged field IDs/control types when still valid; keep selected options only while their values exist; explain cleared incompatible answers; require review and a new deliberate submission. This settles the recovery increment, not the complete revision/option lifecycle ticket. Implementation may proceed on a fresh feature branch without treating all remaining identity/export policy as resolved.
