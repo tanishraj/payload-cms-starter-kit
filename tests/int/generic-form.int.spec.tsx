@@ -272,3 +272,61 @@ describe('configured questions presentation', () => {
     },
   )
 })
+
+describe('URL and decimal number presentation', () => {
+  it.each(['stacked', 'contact6'] as const)(
+    'validates URL and numeric answers with recovery-friendly inputs in %s',
+    async (layout) => {
+      const onSubmit = vi.fn(async () => success)
+      render(
+        <GenericForm
+          layout={layout}
+          fields={[
+            {
+              name: 'reference',
+              label: 'Reference',
+              type: 'url',
+              required: true,
+              helpText: 'Use a complete address.',
+            },
+            {
+              name: 'quantity',
+              label: 'Quantity',
+              type: 'number',
+              required: true,
+              minValue: 0.5,
+              maxValue: 5,
+              step: 0.5,
+            },
+          ]}
+          onSubmit={onSubmit}
+        />,
+      )
+      const url = screen.getByLabelText(/Reference/) as HTMLInputElement
+      const numeric = screen.getByLabelText(/Quantity/) as HTMLInputElement
+      expect(url.type).toBe('url')
+      expect(url.maxLength).toBe(2048)
+      expect(numeric.type).toBe('text')
+      expect(numeric.inputMode).toBe('decimal')
+      expect(numeric.maxLength).toBe(64)
+      fireEvent.change(url, { target: { value: 'example.com' } })
+      fireEvent.change(numeric, { target: { value: 'not a number' } })
+      submit()
+      await waitFor(() =>
+        expect(screen.getByText('Quantity must be a number, such as 2 or 1.5.')).toBeTruthy(),
+      )
+      expect(numeric.value).toBe('not a number')
+      expect(document.activeElement).toBe(url)
+      expect(onSubmit).not.toHaveBeenCalled()
+      fireEvent.change(url, { target: { value: 'https://example.com' } })
+      fireEvent.change(numeric, { target: { value: '1.50' } })
+      submit()
+      await waitFor(() => expect(screen.getByRole('status').textContent).toBe('Received.'))
+      expect(onSubmit).toHaveBeenCalledWith({
+        reference: 'https://example.com',
+        quantity: '1.50',
+        website: '',
+      })
+    },
+  )
+})

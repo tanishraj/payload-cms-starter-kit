@@ -202,3 +202,7 @@ selected upstream layout. Contact6 is the next sourced layout, with dynamic ques
 ### Configured question increment — 14 October 2026
 
 Generic Form and Contact6 retain sourced Field/FieldDescription composition. Optional per-question help sits below the control (below the horizontal checkbox row); aria-describedby includes both help and any error. Initial answers and Text/Textarea limits configure behavior without adding visual variants or a new palette. Desktop, 390px mobile and existing Neutral dark previews retain wrapping and primary-action hierarchy. Configured Validation’s browser play reaches confirmation after rejecting a short answer. Finish review disposition: ship this bounded configuration presentation; no restyling required. This does not close wider forms/editor accessibility acceptance or change the earlier workshop contrast qualification.
+
+### URL and Number increment — 14 October 2026
+
+The existing sourced Input/Field composition now supports complete URL questions and decimal-number questions. Number uses text Input with decimal input mode to retain invalid or precise decimal entries for correction; its range/increment settings use shared validation and existing inline errors. Desktop, 390px and Neutral dark retain the current hierarchy and wrapping. URL And Number Validation reaches confirmation after rejected URL/step answers and first-error focus. Finish disposition: ship the bounded behavior extension without changing primitives, structure or theme; broader accessibility and the earlier contrast qualification remain open.

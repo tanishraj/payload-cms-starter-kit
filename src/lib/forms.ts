@@ -1,3 +1,5 @@
+import { getFormNumberError, validateFormNumberConstraints } from '@/lib/formNumber'
+
 export const formFieldTypeOptions = [
   {
     label: 'Text',
@@ -11,6 +13,8 @@ export const formFieldTypeOptions = [
     label: 'Phone',
     value: 'phone',
   },
+  { label: 'URL', value: 'url' },
+  { label: 'Number', value: 'number' },
   {
     label: 'Textarea',
     value: 'textarea',
@@ -60,6 +64,9 @@ export type SimpleFormField = {
   /** Character limits apply to Text and Textarea only; dormant settings survive type changes. */
   minLength?: number | null
   maxLength?: number | null
+  minValue?: number | null
+  maxValue?: number | null
+  step?: number | null
   id?: string | null
   name: string
   label: string
@@ -79,6 +86,8 @@ export type FormSubmissionMetadata = {
 
 export const FORM_HONEYPOT_FIELD_NAME = 'website'
 export const FORM_MAX_EMAIL_LENGTH = 320
+export const FORM_MAX_URL_LENGTH = 2_048
+export const FORM_MAX_NUMBER_LENGTH = 64
 export const FORM_MAX_FIELDS = 100
 export const FORM_MAX_METADATA_URL_LENGTH = 2_048
 export const FORM_MAX_SINGLE_LINE_LENGTH = 500
@@ -129,7 +138,14 @@ export const isValidPhoneNumber = (value: string): boolean => {
 }
 
 export const isTextLikeFormFieldType = (type: FormFieldType): boolean => {
-  return type === 'text' || type === 'email' || type === 'phone' || type === 'textarea'
+  return (
+    type === 'text' ||
+    type === 'email' ||
+    type === 'phone' ||
+    type === 'textarea' ||
+    type === 'url' ||
+    type === 'number'
+  )
 }
 
 export const isSelectFormFieldType = (type: FormFieldType): boolean => {
@@ -244,6 +260,10 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
       }
     }
 
+    if (field.type === 'number' && !validateFormNumberConstraints(field)) {
+      return `Numeric limits for "${name}" must be finite numbers, with minimum no greater than maximum and a positive step. Whole-number settings must be within the safe integer range.`
+    }
+
     if (field.contactRole) {
       const roleTypes = { name: 'text', email: 'email', phone: 'phone' } as const
       if (!Object.hasOwn(roleTypes, field.contactRole)) {
@@ -333,6 +353,9 @@ export const validateFormFieldDefinitionsForIntent = ({
     return fieldValidation
   }
 
+  if (fields.some((field) => field.type === 'url' || field.type === 'number')) {
+    return 'URL and Number questions require a General/Lead Form with Generic Form or Contact Cards & Form. Change the intent or choose a supported fixed Review control.'
+  }
   if (fields.some((field) => Object.keys(getFormFieldConfiguration(field)).length)) {
     return 'Help text, initial answers and character limits require Generic Form or Contact Cards & Form. The fixed Review Submission presentation does not render them.'
   }
@@ -363,6 +386,8 @@ const normalizeTextValue = (value: unknown): string => {
 }
 
 const getFieldValueMaxLength = (type: FormFieldType): number | null => {
+  if (type === 'url') return FORM_MAX_URL_LENGTH
+  if (type === 'number') return FORM_MAX_NUMBER_LENGTH
   if (type === 'email') {
     return FORM_MAX_EMAIL_LENGTH
   }
@@ -395,9 +420,27 @@ export const getFormFieldMaxLength = (field: SimpleFormField): number | undefine
     : cap
 }
 
+export const isValidFormURL = (value: string): boolean => {
+  if (!/^https?:\/\//i.test(value) || /[\s\\\u0000-\u001f\u007f]/.test(value)) return false
+  try {
+    const url = new URL(value)
+    return (
+      Boolean(url.hostname) &&
+      !url.username &&
+      !url.password &&
+      (url.protocol === 'http:' || url.protocol === 'https:')
+    )
+  } catch {
+    return false
+  }
+}
+
 /** Include only active, meaningful configuration; legacy revisions stay unchanged. */
 export const getFormFieldConfiguration = (field: SimpleFormField) => ({
   ...(field.helpText ? { helpText: field.helpText } : {}),
+  ...(field.type === 'number' && field.minValue != null ? { minValue: field.minValue } : {}),
+  ...(field.type === 'number' && field.maxValue != null ? { maxValue: field.maxValue } : {}),
+  ...(field.type === 'number' && field.step != null ? { step: field.step } : {}),
   ...(field.type !== 'checkbox' &&
   typeof field.defaultValue === 'string' &&
   field.defaultValue.trim()
@@ -536,6 +579,19 @@ export const validateFormSubmission = ({
       continue
     }
 
+    if (field.type === 'url' && normalizedValue && !isValidFormURL(normalizedValue)) {
+      errors[field.name] =
+        `${field.label} must be a full http:// or https:// address without spaces or login details.`
+      continue
+    }
+    if (field.type === 'number' && normalizedValue) {
+      const error = getFormNumberError(normalizedValue, field, field.label)
+      if (error) {
+        errors[field.name] = error
+        continue
+      }
+    }
+
     if (field.type === 'phone' && normalizedValue && !isValidPhoneNumber(normalizedValue)) {
       errors[field.name] = `${field.label} must be a valid phone number.`
       continue
@@ -587,7 +643,18 @@ export const getSubmissionContactMetadata = (
 } => {
   const getContactValue = (role: FormContactRole, legacyKeys: string[]) => {
     const mappedField = fields.find((field) => field.contactRole === role)
-    return getFirstNormalizedStringValue(values, mappedField ? [mappedField.name] : legacyKeys)
+    // New generic controls may legitimately use a legacy contact key for another
+    // question. Keep legacy presentation aliases, but never reinterpret URL/Number answers.
+    const compatibleLegacyKeys = legacyKeys.filter(
+      (key) =>
+        !fields.some(
+          (field) => field.name === key && (field.type === 'url' || field.type === 'number'),
+        ),
+    )
+    return getFirstNormalizedStringValue(
+      values,
+      mappedField ? [mappedField.name] : compatibleLegacyKeys,
+    )
   }
   const email = getContactValue('email', ['submitterEmail', 'reviewerEmail', 'email'])
   const name = getContactValue('name', ['submitterName', 'reviewerName', 'fullName', 'name'])
