@@ -2266,7 +2266,8 @@
       "test:int",
       "test:project-context",
       "verify:docker-image",
-      "verify:docker-local"
+      "verify:docker-local",
+      "verify:form-attachment-artifact"
     ],
     "version": "1.0.0"
   },
@@ -3229,6 +3230,7 @@
       "tests/int/payload-storage-admin-compatibility.int.spec.ts",
       "tests/int/pg-fee-structure.int.spec.tsx",
       "tests/int/preview-access.int.spec.ts",
+      "tests/int/private-attachment-artifact.int.spec.ts",
       "tests/int/prod-db-backup.int.spec.ts",
       "tests/int/profile-carousel.int.spec.ts",
       "tests/int/program-matrix.int.spec.tsx",
@@ -3305,7 +3307,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "8de3e8b73a60360568fad166fd3f7ab3c734d022e6811cdf9a45be583cc03f2e"
+    "sha256": "6cbed7c4c8a96a53d78e84387de71b563d8bfa7b343df41752c111af8802d4f1"
   },
   "surfaces": {
     "access": [
@@ -3659,6 +3661,7 @@
       "tests/int/payload-storage-admin-compatibility.int.spec.ts",
       "tests/int/pg-fee-structure.int.spec.tsx",
       "tests/int/preview-access.int.spec.ts",
+      "tests/int/private-attachment-artifact.int.spec.ts",
       "tests/int/prod-db-backup.int.spec.ts",
       "tests/int/profile-carousel.int.spec.ts",
       "tests/int/program-matrix.int.spec.tsx",

@@ -135,6 +135,38 @@ describe('private form upload presentation', () => {
     await waitFor(() => expect(onSubmit).toHaveBeenCalled())
     expect(onSubmit.mock.calls[0][0].documents).toEqual([])
   })
+  it('starts a genuinely new upload attempt, clearing failed files while preserving other answers', async () => {
+    const onUpload = vi
+      .fn()
+      .mockRejectedValueOnce(
+        new FormUploadError({
+          success: false,
+          requestKeyConflict: true,
+          message: 'Upload limit reached. Start a new response.',
+        }),
+      )
+      .mockImplementation(async (...args) =>
+        uploadSuccess(args[0], args[1], args[2], args[3], args[4]),
+      )
+    render(
+      <GenericForm
+        fields={[{ id: 'name', name: 'name', label: 'Name', type: 'text' }, field]}
+        revision={'a'.repeat(64)}
+        onSubmit={async () => success}
+        onFileUpload={onUpload}
+      />,
+    )
+    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Alex' } })
+    select()
+    fireEvent.click(await screen.findByRole('button', { name: 'Start a new response' }))
+    await waitFor(() => expect(screen.queryByText('résumé.pdf')).toBeNull())
+    expect((screen.getByLabelText('Name') as HTMLInputElement).value).toBe('Alex')
+    expect(screen.getByText(/Files were cleared for this new response/)).toBeTruthy()
+    select()
+    await waitFor(() => expect(screen.getByText('Uploaded — ready to send')).toBeTruthy())
+    expect(onUpload.mock.calls[0][3]).not.toBe(onUpload.mock.calls[1][3])
+    expect(onUpload.mock.calls[0][4]).not.toBe(onUpload.mock.calls[1][4])
+  })
   it('refreshes a changed definition during upload rather than trapping a required question', async () => {
     const onUpload = vi.fn().mockRejectedValueOnce(
       new FormUploadError({

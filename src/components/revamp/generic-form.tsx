@@ -152,6 +152,7 @@ function FormPresentation({
   const uploadedFiles = useRef(new Map<string, UploadedFormFile>())
   const blockedUploads = useRef(new Map<string, boolean>())
   const [uploadsBlocked, setUploadsBlocked] = useState(false)
+  const [fileAttempt, setFileAttempt] = useState(0)
   const protectsAttempt = protectRetries || fields.some((field) => field.type === 'file')
   const [result, setResult] = useState<GenericFormResult | null>(null)
   const resolver: Resolver<Answers> = (input): ResolverResult<Answers> => {
@@ -332,9 +333,12 @@ function FormPresentation({
                     website: '',
                   })
                   uploadedFiles.current.clear()
+                  setFileAttempt((value) => value + 1)
                   setResult(null)
                   setRecoveryMessage(
-                    'Your answers are still here. Review them before sending a new response.',
+                    fields.some((field) => field.type === 'file')
+                      ? 'Your other answers are still here. Files were cleared for this new response; select and upload them again, then review and send.'
+                      : 'Your answers are still here. Review them before sending a new response.',
                   )
                 }}
               >
@@ -476,7 +480,7 @@ function FormPresentation({
                         <FieldLabel htmlFor={id}>{label}</FieldLabel>
                         {definition.type === 'file' ? (
                           <FormFileControl
-                            key={`${definition.id ?? definition.name}:${revision}`}
+                            key={`${definition.id ?? definition.name}:${revision}:${fileAttempt}`}
                             {...a11y}
                             controlRef={field.ref}
                             onBlur={field.onBlur}
