@@ -160,7 +160,7 @@ explicit `formQuestionFields.ts` schema. Global validation caps all questions at
 `formLayout.ts` flattens only questions and derives a minimal public `entries`
 projection. GenericForm and Contact6 production/disabled preview share sourced
 fieldset/legend/description/divider presentation. Fixed Contact33/Review reject
-layout entries. Existing question-only revision hashes stay unchanged; layouts
+layout entries. Previously selected Contact33 Forms gaining layout become unavailable; revisionless layout submissions fail before storage/email. Existing question-only revision hashes stay unchanged; layouts
 contribute optional ordered `formSnapshot.entries` to revision/history. Refresh
 updates layout while retaining valid stable-ID answers; display rows never become
 answers/notification rows. Grouped files retain private-provider publication and

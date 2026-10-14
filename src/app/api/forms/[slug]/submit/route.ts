@@ -214,6 +214,15 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   if (validateFormEntries(form.fields, form.submissionIntent) !== true)
     return NextResponse.json({ message: 'This form is unavailable.' }, { status: 404 })
 
+  if (projectFormLayout(form.fields) && payloadBody?.formRevision === undefined)
+    return NextResponse.json(
+      {
+        message:
+          'This form has changed. Reload the page and review the current form before submitting.',
+      },
+      { status: 400 },
+    )
+
   const submissionIntent = normalizeFormSubmissionIntent(form.submissionIntent)
   const isReviewSubmission = isReviewFormSubmissionIntent(submissionIntent)
   const formFields = projectFormFields(form)

@@ -151,6 +151,27 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
       { kind: 'group', label: 'Details', description: 'For our reply.', questions: ['question'] },
     ])
     expect(projectPublishedGenericForm(form)?.fields).toHaveLength(1)
+    const { POST } = await import('@/app/api/forms/[slug]/submit/route')
+    const unseen = await POST(
+      new Request(`http://localhost/api/forms/${form.slug}/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ values: { question: 'An old fixed form answer' } }),
+      }),
+      { params: Promise.resolve({ slug: form.slug }) },
+    )
+    expect(unseen.status).toBe(400)
+    expect((await unseen.json()).message).toContain('Reload the page and review')
+    expect(
+      (
+        await payload.find({
+          collection: 'form-submissions',
+          where: { form: { equals: form.id } },
+          limit: 1,
+        })
+      ).totalDocs,
+    ).toBe(0)
+
     for (const fields of [
       [{ entryType: 'group', displayText: 'Empty', questions: [] }],
       [

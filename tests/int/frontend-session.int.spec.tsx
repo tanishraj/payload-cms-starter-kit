@@ -75,7 +75,10 @@ describe('deferred admin session bar', () => {
     const view = render(<DeferredAdminSessionBar />)
 
     await screen.findByText('Open Admin')
-    expect(document.documentElement.style.getPropertyValue('--cms-toolbar-offset')).toBe('3rem')
+    // The visible child can commit before the parent's passive offset effect.
+    await waitFor(() =>
+      expect(document.documentElement.style.getPropertyValue('--cms-toolbar-offset')).toBe('3rem'),
+    )
 
     view.unmount()
     expect(document.documentElement.style.getPropertyValue('--cms-toolbar-offset')).toBe('')

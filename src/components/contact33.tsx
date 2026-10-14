@@ -202,7 +202,11 @@ export function Contact33({
   })
   const [message, setMessage] = useState<string | null>(null)
   const [messageTone, setMessageTone] = useState<'default' | 'destructive'>('default')
-  const formSlug = form?.slug?.trim()
+  const formSlug = form?.fields?.some(
+    (field) => field.entryType != null && field.entryType !== 'question',
+  )
+    ? undefined
+    : form?.slug?.trim()
   const isFormAvailable = Boolean(formSlug)
   const submitLabel = form?.submitButtonLabel?.trim() || 'Send message'
 

@@ -62,5 +62,5 @@ native ordered headings/descriptions/separators/groups are implemented with one
 shared question schema and unchanged legacy paths/identities. Display rows stay
 outside answers; optional published layout participates in revision/history.
 See [contract](form-layout-entries.md). Focused contracts and actual MongoDB
-publication/draft/grouped-upload checks pass. Both expanded native journeys pass without retries. Complete local regression: 2,663 integration tests/one Docker-dependent skip, production/Storybook builds and context/type/lint/audit gates pass; CI/merge evidence is pending. FORM-04/DF-07 remain open
+publication/draft/grouped-upload checks pass. Both expanded native journeys pass without retries. Complete local regression: 2,664 integration tests/one Docker-dependent skip, production/Storybook builds and context/type/lint/audit gates pass; CI/merge evidence is pending. FORM-04/DF-07 remain open
 for supported appearance and complete acceptance. Conditions follow separately.

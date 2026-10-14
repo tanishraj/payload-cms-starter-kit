@@ -30,7 +30,7 @@ ignored until it becomes a Question again.
 Select the published Form from Generic Form or Contact Cards & Form. Preview uses
 the same ordered presentation with disabled submission/upload controls. Fixed
 Contact 33 and Review Submission cannot render these entries; relationship/schema
-validation rejects that configuration rather than hiding required questions.
+validation rejects that configuration rather than hiding required questions. A previously selected Contact33 Form that later gains layout entries becomes unavailable, and revisionless layout intake is rejected before storage/email.
 
 ## Contract and compatibility
 
@@ -73,6 +73,13 @@ checks validation feedback, answering and confirmation. First-error focus is
 verified separately by component tests and actual browser click; the Storybook
 synthetic click's inactive document does not provide reliable focus evidence.
 
-Local verification: 2,663 integration tests pass with one Docker-dependent skip; both expanded native Generic Form/Contact6 journeys pass without retries. Production build/private-artifact inspection, Storybook build/play, types, lint, context and unchanged approved-exception audit pass. CI/merge evidence is recorded in the checklist work log when available. Broader
+Local verification: 2,664 integration tests pass with one Docker-dependent skip; both expanded native Generic Form/Contact6 journeys pass without retries. Production build/private-artifact inspection, Storybook build/play, types, lint, context and unchanged approved-exception audit pass. CI/merge evidence is recorded in the checklist work log when available. Broader
 accessibility/theme, section scopes, appearance and conditional-rule acceptance
 remain open.
+
+
+Local verification also exposed a disposable-checkout sync mismatch and an
+existing frontend toolbar test checking an effect before it completed. The
+checkout was synchronized with tracked source/Git state. The toolbar test retains
+its exact offset/cleanup assertions and waits for the post-render effect; no
+application behavior or assertion was removed.
