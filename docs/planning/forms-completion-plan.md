@@ -12,7 +12,7 @@ Reusable Payload Forms selected by native page blocks; six shared controls with 
 
 | Order | Milestone | Existing acceptance IDs | Exit evidence |
 | --- | --- | --- | --- |
-| 1 | Complete the current owner-activity correction | SUBMIT-10, DF-05, ADMINUX-15 | Owner-only assignment/reassignment/removal stamps activity; unchanged owner does not; real authorized storage and denied mutation verified. |
+| 1 — Merged | Owner-activity correction | SUBMIT-10, DF-05, ADMINUX-15 | Owner-only assignment/reassignment/removal stamps activity; unchanged owner does not; real authorized storage and denied mutation verified. |
 | 2 | Field identity, configuration and authoring clarity | FORM-01/05/06, DF-02/06 | Stable field/choice identity, help/default/constraints, safe names, relabel/reorder/rename/remove compatibility and understandable editing warnings verified. |
 | 3 | Complete initial control catalogue and extensibility | FORM-03/08, DF-07 | URL, number, multi-select, radio, checkbox group, switch, date and time added through explicit typed contracts, with shared validation, formatting, Storybook and native Payload evidence. Existing six controls retain compatibility. File transport follows milestone 4. |
 | 4 | Private file controls and their permissions/lifecycle | SUBMIT-05, applicable FORM-03/05 | Private storage, type/size limits, authorized reads, scope/lifecycle cleanup and failed-submission behavior verified; public Media is not used as the private attachment boundary. |
@@ -27,3 +27,9 @@ Each milestone can contain several small PRs. A small fix is not completion of t
 ## Existing later scope
 
 FORM-09 remains explicitly later: rating, range/date-range, repeaters and multi-step flows. Password/payment capture requires separate domain integrations. This follows the existing catalogue's deferral, not a new deletion of requirements. Delivery/attachment/provider choices need concrete design and acceptance before implementation; no generic claim of completion replaces them.
+
+## Current checkpoint
+
+Owner activity merged in [PR #23](https://github.com/tanishraj/payload-cms-starter-kit/pull/23) as `8495a4a7` after [Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38535686556) passed. All 55 local focused tests and 2,386 CI integration tests pass (one Docker-dependent skip), both native form journeys and production build pass. The Admin grant/revoke governance journey passed on retry after the existing conditional-field readiness timeout; broader usability/repeatability remains open.
+
+Next: milestone 2 on `feat/form-field-configuration`, created from the merged develop commit before implementation. Forms remain first. The full inbox/section-scope/export capability is not declared complete by the owner fix.
