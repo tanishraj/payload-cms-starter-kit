@@ -5096,11 +5096,11 @@ export interface Form {
     message?: string | null;
   };
   /**
-   * Generic Form renders all these fields with your labels and machine names. Review Submission uses its fixed review fields; it cannot render additional required fields.
+   * Generic Form and Contact Cards & Form render these questions. Edit existing rows to preserve question identity when relabelling, renaming or reordering; deleting and recreating a row creates a new question. Visitors review published changes before resubmitting. Review Submission has fixed questions and does not support these presentation settings.
    */
   fields: {
     /**
-     * Unique key stored with answers, such as preferred_department. Start with a letter; use letters, numbers and underscores. The names constructor, prototype and website are reserved.
+     * Unique key stored with answers, such as preferred_department. Renaming changes future answer keys and may require updates to external mappings; original submissions retain their keys. Start with a letter; use letters, numbers and underscores. The names constructor, prototype and website are reserved.
      */
     name: string;
     label: string;
@@ -5111,6 +5111,29 @@ export interface Form {
      */
     contactRole?: ('name' | 'email' | 'phone') | null;
     placeholder?: string | null;
+    /**
+     * Optional instructions below this question. Keep the label meaningful; help text is not a placeholder.
+     */
+    helpText?: string | null;
+    /**
+     * Optional starting answer for new responses. For Select, enter an option value, not its label. Must satisfy this question’s validation. Visitors can change or clear it; the server never supplies omitted answers.
+     */
+    defaultValue?: string | null;
+    /**
+     * Optional checkboxes only. Required acceptance questions must start unchecked so visitors make their own choice.
+     */
+    defaultChecked?: boolean | null;
+    /**
+     * Text and Textarea only. Blank optional answers remain valid. Spaces at the start/end are trimmed before counting.
+     */
+    minLength?: number | null;
+    /**
+     * Leave blank for the built-in cap: Text 500, Textarea 10000. Settings are retained but inactive if you change to another control type.
+     */
+    maxLength?: number | null;
+    /**
+     * Edit or reorder existing options to keep their row identity. Changing a value clears that selected answer during refresh; changing only the label keeps a still-valid value. Historical submissions retain the original label and value.
+     */
     options?:
       | {
           label: string;
@@ -14730,6 +14753,11 @@ export interface FormsSelect<T extends boolean = true> {
         required?: T;
         contactRole?: T;
         placeholder?: T;
+        helpText?: T;
+        defaultValue?: T;
+        defaultChecked?: T;
+        minLength?: T;
+        maxLength?: T;
         options?:
           | T
           | {

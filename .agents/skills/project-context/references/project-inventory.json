@@ -3108,6 +3108,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/form-answer-recovery.int.spec.ts",
+      "tests/int/form-field-configuration.int.spec.ts",
       "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/form-submission-activity.int.spec.ts",
@@ -3267,7 +3268,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "b6ffec30ef3730d8ccbea5cd6816affbac80f5b5a581e6fe12ef278f253c3691"
+    "sha256": "6ab6406ec0fe78967c1bec6a2deb465e310dbcabb0b36f049af998761f1ce787"
   },
   "surfaces": {
     "access": [
@@ -3520,6 +3521,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/form-answer-recovery.int.spec.ts",
+      "tests/int/form-field-configuration.int.spec.ts",
       "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/form-submission-activity.int.spec.ts",

@@ -1,6 +1,10 @@
 import { createHash } from 'node:crypto'
 
-import { normalizeFormSubmissionIntent, type SimpleFormField } from '@/lib/forms'
+import {
+  getFormFieldConfiguration,
+  normalizeFormSubmissionIntent,
+  type SimpleFormField,
+} from '@/lib/forms'
 
 type SnapshotForm = {
   fields: SimpleFormField[]
@@ -35,6 +39,7 @@ export const buildFormSubmissionSnapshot = (
         : [],
     required: field.required ?? false,
     type: field.type,
+    ...getFormFieldConfiguration(field),
   }))
   const formSnapshot = {
     fields,

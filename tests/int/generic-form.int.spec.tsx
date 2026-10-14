@@ -223,3 +223,52 @@ describe('generic form presentation', () => {
     expect(onSubmit.mock.calls[2][2]).not.toBe(onSubmit.mock.calls[0][2])
   })
 })
+
+describe('configured questions presentation', () => {
+  it.each(['stacked', 'contact6'] as const)(
+    'uses accessible help and limits in the %s layout',
+    async (layout) => {
+      const onSubmit = vi.fn(async () => success)
+      render(
+        <GenericForm
+          layout={layout}
+          fields={[
+            {
+              id: 'question',
+              name: 'custom_question',
+              label: 'Your question',
+              type: 'text',
+              required: true,
+              defaultValue: 'Initial answer',
+              minLength: 5,
+              maxLength: 20,
+              helpText: 'Use 5–20 characters.',
+            },
+          ]}
+          onSubmit={onSubmit}
+        />,
+      )
+      const input = screen.getByLabelText(/Your question/) as HTMLInputElement
+      expect(input.value).toBe('Initial answer')
+      expect(input.maxLength).toBe(20)
+      expect(input.minLength).toBe(5)
+      expect(document.getElementById(input.getAttribute('aria-describedby')!)?.textContent).toBe(
+        'Use 5–20 characters.',
+      )
+      fireEvent.change(input, { target: { value: 'Hi' } })
+      submit()
+      await waitFor(() =>
+        expect(screen.getByText('Your question must be at least 5 characters.')).toBeTruthy(),
+      )
+      expect(
+        input
+          .getAttribute('aria-describedby')!
+          .split(' ')
+          .map((id) => document.getElementById(id)?.textContent),
+      ).toEqual(['Use 5–20 characters.', 'Your question must be at least 5 characters.'])
+      expect(document.activeElement).toBe(input)
+      expect(input.value).toBe('Hi')
+      expect(onSubmit).not.toHaveBeenCalled()
+    },
+  )
+})

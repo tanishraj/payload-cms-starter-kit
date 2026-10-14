@@ -37,10 +37,9 @@ import { recoverFormAnswers } from '@/lib/recoverFormAnswers'
 import { Textarea } from '@/components/revamp/ui/textarea'
 import {
   FORM_HONEYPOT_FIELD_NAME,
-  FORM_MAX_EMAIL_LENGTH,
-  FORM_MAX_SINGLE_LINE_LENGTH,
-  FORM_MAX_TEXTAREA_LENGTH,
-  FORM_PHONE_MAX_INPUT_LENGTH,
+  getFormFieldMaxLength,
+  getFormInitialAnswers,
+  supportsFormTextLimits,
   sanitizePhoneNumberInput,
   validateFormFieldDefinitions,
   validateFormSubmission,
@@ -75,13 +74,6 @@ export type GenericFormProps = {
 }
 
 type Answers = { answers: Record<string, boolean | string>; website: string }
-
-const maxLengths = {
-  text: FORM_MAX_SINGLE_LINE_LENGTH,
-  email: FORM_MAX_EMAIL_LENGTH,
-  phone: FORM_PHONE_MAX_INPUT_LENGTH,
-  textarea: FORM_MAX_TEXTAREA_LENGTH,
-}
 
 const subscribeToHydration = () => () => {}
 
@@ -138,9 +130,7 @@ function FormPresentation({
   const form = useForm<Answers>({
     resolver,
     defaultValues: {
-      answers: Object.fromEntries(
-        fields.map((field) => [field.name, field.type === 'checkbox' ? false : '']),
-      ),
+      answers: getFormInitialAnswers(fields),
       website: '',
     },
     shouldFocusError: true,
@@ -296,11 +286,15 @@ function FormPresentation({
                   render={({ field, fieldState }) => {
                     const id = `${prefix}-${definition.name}`
                     const errorId = `${id}-error`
+                    const helpId = `${id}-help`
                     const a11y = {
                       id,
                       'aria-invalid': fieldState.invalid,
                       'aria-required': Boolean(definition.required),
-                      'aria-describedby': fieldState.invalid ? errorId : undefined,
+                      'aria-describedby':
+                        [definition.helpText ? helpId : null, fieldState.invalid ? errorId : null]
+                          .filter(Boolean)
+                          .join(' ') || undefined,
                     }
                     const label = (
                       <>
@@ -329,6 +323,9 @@ function FormPresentation({
                             />
                             <FieldLabel htmlFor={id}>{label}</FieldLabel>
                           </Field>
+                          {definition.helpText && (
+                            <FieldDescription id={helpId}>{definition.helpText}</FieldDescription>
+                          )}
                           {fieldState.invalid && (
                             <FieldError id={errorId} errors={[fieldState.error]} />
                           )}
@@ -362,7 +359,7 @@ function FormPresentation({
                             <SelectContent container={selectContainer}>
                               <SelectGroup>
                                 {definition.options?.map((option) => (
-                                  <SelectItem key={option.value} value={option.value}>
+                                  <SelectItem key={option.id ?? option.value} value={option.value}>
                                     {option.label}
                                   </SelectItem>
                                 ))}
@@ -377,7 +374,8 @@ function FormPresentation({
                             value={value}
                             disabled={inactive}
                             required={Boolean(definition.required)}
-                            maxLength={maxLengths.textarea}
+                            maxLength={getFormFieldMaxLength(definition)}
+                            minLength={definition.minLength ?? undefined}
                             rows={5}
                             placeholder={definition.placeholder ?? undefined}
                             className={cn('resize-none', layout === 'stacked' && 'bg-background')}
@@ -390,7 +388,12 @@ function FormPresentation({
                             value={value}
                             disabled={inactive}
                             required={Boolean(definition.required)}
-                            maxLength={maxLengths[definition.type]}
+                            maxLength={getFormFieldMaxLength(definition)}
+                            minLength={
+                              supportsFormTextLimits(definition.type)
+                                ? (definition.minLength ?? undefined)
+                                : undefined
+                            }
                             type={definition.type === 'phone' ? 'tel' : definition.type}
                             onChange={(event) =>
                               field.onChange(
@@ -411,6 +414,9 @@ function FormPresentation({
                             placeholder={definition.placeholder ?? undefined}
                             className={cn(layout === 'stacked' && 'bg-background')}
                           />
+                        )}
+                        {definition.helpText && (
+                          <FieldDescription id={helpId}>{definition.helpText}</FieldDescription>
                         )}
                         {fieldState.invalid && (
                           <FieldError id={errorId} errors={[fieldState.error]} />

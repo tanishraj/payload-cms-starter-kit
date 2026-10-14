@@ -660,9 +660,9 @@ exclusions and complete source traceability are in the local scope reference.
   label/name/order; help text, placeholder, default, required state and type-specific
   length/range/file constraints. Choice options have stable IDs/values and labels.
 
-  Work: Assess · Priority: First enhancement · Baseline: Partial.
-  Initial finding: Current SimpleFormField uses name/label/options; verify and design stable identity independently of name and order.
-  Evidence: [src/lib/forms.ts](../../src/lib/forms.ts).
+  Work: In progress · Priority: First enhancement · Baseline: Partial.
+  Current evidence: Native stable field/choice row identities, public help/defaults, current Text/Textarea constraints and original answer capture are implemented and locally verified. Remaining control-specific range/file constraints and the full change/export lifecycle stay open.
+  Evidence: [configuration contract](form-field-configuration.md), [src/lib/forms.ts](../../src/lib/forms.ts), [configuration tests](../../tests/int/form-field-configuration.int.spec.ts).
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **FORM-06 — Safe keys.** Unique documented field-name rules, reserved-name checks,
@@ -1974,3 +1974,5 @@ Documentation updated:
 The project-context skill inventory remains the technical source map. This tracker
 owns progress against the carried-forward requirements; operator documentation
 owns the instructions for shipped behavior.
+
+| 2026-10-14 | FORM-01/05/06; DF-02/06 | Implemented bounded configuration increment; release verification in progress | Codex | Native help/initial answer/Text-Textarea length settings, required-checkbox choice protection, stable row collision checks, shared sanitized projection, active-setting snapshots/fingerprints and editing guidance. Preserve legacy hashes and fixed-client boundaries. | `feat/form-field-configuration`; PR pending | Final local regression: 2,410 integration tests pass, one Docker-dependent skip; both native form journeys pass without retry on disposable MongoDB. Storybook build, Configured Validation browser play and desktop/390px light/dark review pass. TypeScript, full lint (one existing warning), Payload generators, final deterministic inventory checks/tests and production build pass. Production audit passes under the unchanged approved Braces exception expiring October 21. GitHub current-head Quality and merge pending; broad acceptance boxes remain open. See [configuration contract](form-field-configuration.md). |

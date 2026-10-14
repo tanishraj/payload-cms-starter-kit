@@ -11,6 +11,9 @@ import { projectSlugField } from '@/fields/projectSlugField'
 import { revalidateDeletedFormCache, revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 import {
   FORM_MAX_FIELDS,
+  FORM_MAX_SINGLE_LINE_LENGTH,
+  FORM_MAX_TEXTAREA_LENGTH,
+  supportsFormTextLimits,
   formFieldTypeOptions,
   formSubmissionIntentOptions,
   isTextLikeFormFieldType,
@@ -178,7 +181,7 @@ export const Forms: CollectionConfig = {
       },
       admin: {
         description:
-          'Generic Form renders all these fields with your labels and machine names. Review Submission uses its fixed review fields; it cannot render additional required fields.',
+          'Generic Form and Contact Cards & Form render these questions. Edit existing rows to preserve question identity when relabelling, renaming or reordering; deleting and recreating a row creates a new question. Visitors review published changes before resubmitting. Review Submission has fixed questions and does not support these presentation settings.',
         initCollapsed: false,
       },
       fields: [
@@ -191,7 +194,7 @@ export const Forms: CollectionConfig = {
               required: true,
               admin: {
                 description:
-                  'Unique key stored with answers, such as preferred_department. Start with a letter; use letters, numbers and underscores. The names constructor, prototype and website are reserved.',
+                  'Unique key stored with answers, such as preferred_department. Renaming changes future answer keys and may require updates to external mappings; original submissions retain their keys. Start with a letter; use letters, numbers and underscores. The names constructor, prototype and website are reserved.',
                 width: '50%',
               },
               validate: (value: unknown) => {
@@ -260,6 +263,71 @@ export const Forms: CollectionConfig = {
           },
         },
         {
+          name: 'helpText',
+          label: 'Help text',
+          type: 'textarea',
+          maxLength: 1_000,
+          admin: {
+            condition: (data) => data?.submissionIntent !== 'review',
+            description:
+              'Optional instructions below this question. Keep the label meaningful; help text is not a placeholder.',
+          },
+        },
+        {
+          name: 'defaultValue',
+          label: 'Initial answer',
+          type: 'textarea',
+          admin: {
+            condition: (data, siblingData) =>
+              data?.submissionIntent !== 'review' && siblingData?.type !== 'checkbox',
+            description:
+              'Optional starting answer for new responses. For Select, enter an option value, not its label. Must satisfy this question’s validation. Visitors can change or clear it; the server never supplies omitted answers.',
+          },
+        },
+        {
+          name: 'defaultChecked',
+          label: 'Initially checked',
+          type: 'checkbox',
+          admin: {
+            condition: (data, siblingData) =>
+              data?.submissionIntent !== 'review' && siblingData?.type === 'checkbox',
+            description:
+              'Optional checkboxes only. Required acceptance questions must start unchecked so visitors make their own choice.',
+          },
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'minLength',
+              label: 'Minimum characters',
+              type: 'number',
+              min: 0,
+              admin: {
+                width: '50%',
+                step: 1,
+                condition: (data, siblingData) =>
+                  data?.submissionIntent !== 'review' && supportsFormTextLimits(siblingData?.type),
+                description:
+                  'Text and Textarea only. Blank optional answers remain valid. Spaces at the start/end are trimmed before counting.',
+              },
+            },
+            {
+              name: 'maxLength',
+              label: 'Maximum characters',
+              type: 'number',
+              min: 1,
+              admin: {
+                width: '50%',
+                step: 1,
+                condition: (data, siblingData) =>
+                  data?.submissionIntent !== 'review' && supportsFormTextLimits(siblingData?.type),
+                description: `Leave blank for the built-in cap: Text ${FORM_MAX_SINGLE_LINE_LENGTH}, Textarea ${FORM_MAX_TEXTAREA_LENGTH}. Settings are retained but inactive if you change to another control type.`,
+              },
+            },
+          ],
+        },
+        {
           name: 'options',
           type: 'array',
           labels: {
@@ -269,6 +337,8 @@ export const Forms: CollectionConfig = {
           admin: {
             initCollapsed: false,
             condition: (_, siblingData) => siblingData?.type === 'select',
+            description:
+              'Edit or reorder existing options to keep their row identity. Changing a value clears that selected answer during refresh; changing only the label keeps a still-valid value. Historical submissions retain the original label and value.',
           },
           fields: [
             {

@@ -216,6 +216,73 @@ describe('form submission model', () => {
     expect(eventMocks.emitFormSubmissionEvent).not.toHaveBeenCalled()
   })
 
+  it('enforces configured limits on keyless intake and refreshes stale configured forms before writes', async () => {
+    const published = {
+      id: 'configured-form',
+      slug: 'configured',
+      title: 'Configured',
+      _status: 'published',
+      submissionIntent: 'general',
+      submitButtonLabel: 'Send',
+      successMessage: 'Received',
+      notificationRecipients: [],
+      fields: [
+        {
+          id: 'question',
+          name: 'question',
+          label: 'Question',
+          type: 'text',
+          required: true,
+          minLength: 5,
+          maxLength: 20,
+          defaultValue: 'Campus visit',
+          helpText: 'Be specific.',
+        },
+      ],
+    } as unknown as Form
+    const revision = projectPublishedGenericForm(published)!.revision
+    payloadMocks.find.mockResolvedValue({ docs: [published] })
+    payloadMocks.create.mockResolvedValue({ id: 'saved', createdAt: '2026-10-14T00:00:00.000Z' })
+    const { POST } = await loadRouteModule()
+    const submit = (body: unknown) =>
+      POST(
+        new Request('http://localhost/api/forms/configured/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        }),
+        { params: Promise.resolve({ slug: 'configured' }) },
+      )
+    for (const values of [{ question: 'Hi' }, { question: 'x'.repeat(21) }, {}]) {
+      expect((await submit({ values })).status).toBe(400)
+      expect(payloadMocks.create).not.toHaveBeenCalled()
+    }
+    const changed = { ...published, fields: [{ ...published.fields[0], maxLength: 15 }] }
+    payloadMocks.find.mockResolvedValue({ docs: [changed] })
+    const stale = await submit({ formRevision: revision, values: { question: 'My question' } })
+    expect(stale.status).toBe(409)
+    const refreshed = await stale.json()
+    expect(refreshed.form.fields[0]).toMatchObject({
+      minLength: 5,
+      maxLength: 15,
+      defaultValue: 'Campus visit',
+      helpText: 'Be specific.',
+    })
+    expect(JSON.stringify(refreshed)).not.toContain('notificationRecipients')
+    expect(payloadMocks.create).not.toHaveBeenCalled()
+    expect(
+      (await submit({ formRevision: refreshed.form.revision, values: { question: 'My question' } }))
+        .status,
+    ).toBe(200)
+    const stored = payloadMocks.create.mock.calls[0][0].data
+    expect(stored.data).toEqual({ question: 'My question' })
+    expect(stored.formSnapshot.fields[0]).toMatchObject({
+      maxLength: 15,
+      defaultValue: 'Campus visit',
+    })
+    expect(stored.formRevision).toBe(refreshed.form.revision)
+  })
+
   it('accepts the refreshed revision and stores that same snapshot identity', async () => {
     const published = {
       id: 'revision-form',
