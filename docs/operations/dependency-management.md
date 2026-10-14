@@ -23,8 +23,9 @@ Moderate and low findings remain visible but do not fail the gate and must not b
 ## Exception workflow
 
 The default policy is no exceptions. On 6 October 2026, the user explicitly approved
-one exact Braces exception expiring 13 October; the checked-in exception document
-records it, and the audit evaluator is unchanged. A reviewed Payload-scoped security patch is
+one exact Braces exception expiring 13 October. On 14 October the user explicitly
+approved its exact seven-day renewal through 21 October; the checked-in exception
+document records the renewed entry, and the audit evaluator is unchanged. A reviewed Payload-scoped security patch is
 configured in `pnpm-workspace.yaml`; it is dependency remediation, not an audit exception.
 
 An exception requires explicit security approval before merge. The approver must identify one high or critical advisory and provide all nine fields required by `security/dependency-audit-exceptions.schema.json`: `advisoryId`, `packageName`, `vulnerableRange`, `installedVersions`, `reachability`, `mitigation`, `owner`, `createdAt`, and `expiresAt`.
@@ -83,3 +84,7 @@ the document's existence alone never supplies approval.
 ## October 7 Payload and Sharp refresh
 
 [Upgrade review](dependency-audit-remediation-2026-10-07.md) records newly published blocking advisories, the aligned Payload 3.90.2/Sharp 0.35.5 patch and the existing Undici patch retargeted to Payload 3.90.2. Braces approval and its expiration are unchanged. Operators must recreate pending scheduled publish/unpublish events after upgrade where applicable.
+
+## October 14 approved renewal
+
+The user explicitly approved the exact Braces renewal in [the October 14 review](dependency-audit-remediation-2026-10-14.md), expiring October 21, 2026. The active exception contains that one entry; the evaluator is unchanged. General merge authorization does not approve future renewals.
