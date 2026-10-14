@@ -645,8 +645,8 @@ exclusions and complete source traceability are in the local scope reference.
   number, single select, multi-select, radio group, checkbox, checkbox group,
   switch, date, time, file upload and submit button.
 
-  Work: Assess · Priority: First enhancement · Baseline: Partial.
-  Initial finding: Current options: text, email, phone, textarea, select, checkbox. Complete the requested initial catalogue through one extensible contract.
+  Work: In progress · Priority: First enhancement · Baseline: Partial.
+  Current evidence: Eight controls now share authoring/presentation/intake: text, email, phone, URL, number, textarea, select and checkbox. Multi-select, radio, checkbox group, switch, date/time and private uploads remain open. See [control contract](form-url-number-controls.md).
   Evidence: [src/lib/forms.ts](../../src/lib/forms.ts).
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
@@ -1980,3 +1980,5 @@ owns the instructions for shipped behavior.
 | 2026-10-14 | FORM-01/05/06; ADMINUX-14 | Editor recovery correction verified | Codex | Keep already-configured settings visible for clearing after switching to fixed Review intent; do not hide the cause of publication validation. New unused settings remain hidden for Review. | PR #24 follow-up | Conditional authoring regression, both native form journeys without retry, final full local regression (2,411 pass/one Docker-dependent skip), production build, TypeScript, lint and deterministic inventory checks pass. No presentation/source/theme additions. |
 
 | 2026-10-14 | FORM-03/08; DF-07 | Next forms increment ready | Codex | Add URL and Number as the first bounded initial-catalogue increment through explicit typed definitions, sourced production Input, shared validation/formatting and canonical Storybook/native evidence. Remaining controls and files retain their sequence. | `feat/form-url-number-controls`, based on `1b347b89` | Previous configuration increment merged and its branch removed after verified current-head Quality. Fresh branch created before new feature implementation; no new controls claimed yet. |
+
+| 2026-10-14 | FORM-03/05/08; DF-07; DF-02/06 | URL/Number increment implemented; release verification in progress | Codex | Add URL and precise decimal Number through explicit definitions and existing sourced Input. Shared URL validation, numeric min/max/increment rules, decimal-string history and changed-rule recovery. Fixed Review compatibility and six-control legacy behavior preserved. | `feat/form-url-number-controls`; PR pending | 145 focused tests, TypeScript, Storybook build/play and desktop/390px/dark review pass. Full isolated regression: 2,475 pass/one Docker-dependent skip; production build passes. Both native journeys pass without retry, including rejected publication for unknown controls, invalid step and invalid defaults. Full lint passes with one existing warning; Payload generators, production audit and final deterministic inventory checks/tests pass. GitHub current-head Quality and merge pending. See [control contract](form-url-number-controls.md); broad catalogue/forms acceptance remains open. |

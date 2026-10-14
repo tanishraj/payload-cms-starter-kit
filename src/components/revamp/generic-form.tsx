@@ -394,7 +394,20 @@ function FormPresentation({
                                 ? (definition.minLength ?? undefined)
                                 : undefined
                             }
-                            type={definition.type === 'phone' ? 'tel' : definition.type}
+                            type={
+                              definition.type === 'phone'
+                                ? 'tel'
+                                : definition.type === 'number'
+                                  ? 'text'
+                                  : definition.type
+                            }
+                            inputMode={
+                              definition.type === 'number'
+                                ? 'decimal'
+                                : definition.type === 'url'
+                                  ? 'url'
+                                  : undefined
+                            }
                             onChange={(event) =>
                               field.onChange(
                                 definition.type === 'phone'

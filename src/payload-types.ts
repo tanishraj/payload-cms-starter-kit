@@ -5104,7 +5104,7 @@ export interface Form {
      */
     name: string;
     label: string;
-    type: 'text' | 'email' | 'phone' | 'textarea' | 'select' | 'checkbox';
+    type: 'text' | 'email' | 'phone' | 'url' | 'number' | 'textarea' | 'select' | 'checkbox';
     required?: boolean | null;
     /**
      * Optional: use this answer for inbox contact details and confirmation emails. Each role can be assigned once; choose Text for name, Email for email, or Phone for phone. Leave empty for ordinary questions.
@@ -5131,6 +5131,18 @@ export interface Form {
      * Leave blank for the built-in cap: Text 500, Textarea 10000. Settings are retained but inactive if you change to another control type.
      */
     maxLength?: number | null;
+    /**
+     * Number only. Optional inclusive lower limit; negative and decimal values are allowed.
+     */
+    minValue?: number | null;
+    /**
+     * Number only. Optional inclusive upper limit, no smaller than the minimum. Whole-number settings must be within ±9,007,199,254,740,991.
+     */
+    maxValue?: number | null;
+    /**
+     * Optional positive increment: 1 for unit steps, 0.5 for half-unit steps. Starts at the minimum, or zero if no minimum is set. Leave blank to allow any decimal value. Numeric settings are retained but inactive on other types.
+     */
+    step?: number | null;
     /**
      * Edit or reorder existing options to keep their row identity. Changing a value clears that selected answer during refresh; changing only the label keeps a still-valid value. Historical submissions retain the original label and value.
      */
@@ -14758,6 +14770,9 @@ export interface FormsSelect<T extends boolean = true> {
         defaultChecked?: T;
         minLength?: T;
         maxLength?: T;
+        minValue?: T;
+        maxValue?: T;
+        step?: T;
         options?:
           | T
           | {

@@ -63,10 +63,17 @@ Nine globals are registered:
   rejects non-plain answer records, undeclared names and malformed scalar values; checkbox inputs keep
   finite legacy HTML encodings. The fixed review engine explicitly opts into its seven separately
   validated extra keys. Authoring reserves constructor/prototype/website, validates supported types,
-  and caps schemas at 100 fields. The Generic Form block renders the six current controls through the same validator,
+  and caps schemas at 100 fields. The Generic Form block renders the eight current controls through the same validator,
   selects a reusable published General/Lead schema and disables submissions in
   authenticated Live Preview. Native field and option rows open for editing. Private
   operational configuration is excluded from the public client projection.
+  URL and Number extend that explicit contract. URL accepts complete HTTP(S) references without embedded
+  credentials or internal whitespace; answers are never fetched/automatically linked. Number uses a
+  decimal-mode text input and stores validated decimal strings, with optional finite min/max/positive
+  increment settings and exact scaled-integer comparisons in `formNumber.ts`. Numeric whole-number
+  settings must be safe integers. Active numeric settings enter snapshots/fingerprints and stale
+  recovery revalidates them. Fixed Review rejects these controls. Existing six-control schemas retain
+  their hashes; no backfill. See [control contract](../../../../docs/planning/form-url-number-controls.md).
   General/Lead questions now support public help text and validated presentation-only initial answers,
   optional initially checked checkboxes, and bounded whole-number Text/Textarea length limits. Required
   checkboxes start unchecked. Active settings enter captured published fingerprints/snapshots; absent

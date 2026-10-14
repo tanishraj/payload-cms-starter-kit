@@ -333,6 +333,54 @@ export const Forms: CollectionConfig = {
           ],
         },
         {
+          type: 'row',
+          fields: [
+            {
+              name: 'minValue',
+              label: 'Minimum value',
+              type: 'number',
+              admin: {
+                width: '33%',
+                step: 0.1,
+                condition: (data, siblingData) =>
+                  siblingData?.type === 'number' &&
+                  (data?.submissionIntent !== 'review' || siblingData?.minValue != null),
+                description:
+                  'Number only. Optional inclusive lower limit; negative and decimal values are allowed.',
+              },
+            },
+            {
+              name: 'maxValue',
+              label: 'Maximum value',
+              type: 'number',
+              admin: {
+                width: '33%',
+                step: 0.1,
+                condition: (data, siblingData) =>
+                  siblingData?.type === 'number' &&
+                  (data?.submissionIntent !== 'review' || siblingData?.maxValue != null),
+                description:
+                  'Number only. Optional inclusive upper limit, no smaller than the minimum. Whole-number settings must be within ±9,007,199,254,740,991.',
+              },
+            },
+            {
+              name: 'step',
+              label: 'Allowed increment',
+              type: 'number',
+              min: 0,
+              admin: {
+                width: '33%',
+                step: 0.1,
+                condition: (data, siblingData) =>
+                  siblingData?.type === 'number' &&
+                  (data?.submissionIntent !== 'review' || siblingData?.step != null),
+                description:
+                  'Optional positive increment: 1 for unit steps, 0.5 for half-unit steps. Starts at the minimum, or zero if no minimum is set. Leave blank to allow any decimal value. Numeric settings are retained but inactive on other types.',
+              },
+            },
+          ],
+        },
+        {
           name: 'options',
           type: 'array',
           labels: {

@@ -2851,6 +2851,7 @@
       "src/lib/eventGallery.ts",
       "src/lib/eventGalleryShared.ts",
       "src/lib/formNotifications.ts",
+      "src/lib/formNumber.ts",
       "src/lib/formSpamProtection.ts",
       "src/lib/formSubmissionEvents.ts",
       "src/lib/formSubmissionIdempotency.server.ts",
@@ -3112,6 +3113,7 @@
       "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/form-submission-activity.int.spec.ts",
+      "tests/int/form-url-number.int.spec.ts",
       "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",
       "tests/int/forms-strict-values.int.spec.ts",
@@ -3268,7 +3270,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "ab1c11366bc03bfc45d7ee84ca9cf146692173511dc3f37e3e00207353c6b82f"
+    "sha256": "1db85baa3333a7cf1533ce231ae71df64367f6c2b44b66c5a2de3dda9bcd964c"
   },
   "surfaces": {
     "access": [
@@ -3330,6 +3332,7 @@
       "src/lib/eventGallery.ts",
       "src/lib/eventGalleryShared.ts",
       "src/lib/formNotifications.ts",
+      "src/lib/formNumber.ts",
       "src/lib/formSpamProtection.ts",
       "src/lib/formSubmissionEvents.ts",
       "src/lib/formSubmissionIdempotency.server.ts",
@@ -3525,6 +3528,7 @@
       "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/form-submission-activity.int.spec.ts",
+      "tests/int/form-url-number.int.spec.ts",
       "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",
       "tests/int/forms-strict-values.int.spec.ts",

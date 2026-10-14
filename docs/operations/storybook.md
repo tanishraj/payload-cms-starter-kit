@@ -23,8 +23,8 @@ upstream `bg-background` input treatment is intentionally retained.
 
 Each installed form primitive also has its own Docs and Default playground under Components / Forms, with labelled supported props and meaningful alternate states. Checkbox and Select update their controls during interaction.
 
-The Questions control accepts the six currently supported Payload types: Text,
-Email, Phone, Textarea, Select and Checkbox. Edit machine names, labels, options,
+The Questions control accepts the eight currently supported Payload types: Text,
+Email, Phone, URL, Number, Textarea, Select and Checkbox. Edit machine names, labels, options,
 placeholders, help text, initial answers, text character limits, required state and contact roles. Other controls configure heading,
 description, submit/pending labels and disabled state. The theme and viewport
 toolbars cover supported appearance and responsive shape. Changing the schema
@@ -136,3 +136,5 @@ Browser review: custom-name submission and confirmation, validation focus, disab
 Lost Confirmation and Different Response demonstrate durable retry UX in the same Generic Form entry using synthetic callbacks. See [submission retry protection](../planning/form-submission-retries.md) for production behavior and the database index prerequisite.
 
 Configured Questions provides the help/default/character-limit playground; Configured Validation checks initial answers, associated helper/error text, invalid-answer blocking and corrected confirmation. These settings use the shared intake validator in both Generic Form and Contact6. See [question configuration](../planning/form-field-configuration.md) for native authoring, legacy and revision behavior.
+
+URL And Number is the playground for complete HTTP(S) references and decimal quantities. URL And Number Validation checks rejected URL/step values, preserved input, first-error focus and corrected confirmation. Number reuses Input with decimal input mode; optional min/max/increment rules run through the shared validator. The same controls work in Contact6. See [URL/Number contract](../planning/form-url-number-controls.md) for native configuration, decimal-string intake and history/recovery.

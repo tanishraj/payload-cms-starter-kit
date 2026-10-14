@@ -7,7 +7,7 @@ async function editNativeForm(
   page: Page,
   change: () => Promise<unknown>,
   fieldPath: string,
-  value?: string | boolean,
+  value?: string | boolean | number,
 ) {
   const route = new URL(page.url()).pathname
   const response = page.waitForResponse(async (response) => {
@@ -33,18 +33,17 @@ async function addNativeRow(page: Page, button: Locator, fieldPath: string) {
   await editNativeForm(page, () => button.click(), fieldPath)
 }
 
-async function fillNativeField(page: Page, fieldPath: string, value: string) {
+async function fillNativeField(page: Page, fieldPath: string, value: string, numeric = false) {
   const field = page.locator(`#field-${fieldPath.replaceAll('.', '__')}`)
-  await editNativeForm(
-    page,
-    () => field.fill(value),
-    fieldPath,
-    fieldPath.endsWith('Length') ? undefined : value,
-  )
+  await editNativeForm(page, () => field.fill(value), fieldPath, numeric ? Number(value) : value)
   await expect(field).toHaveValue(value)
 }
 
-async function chooseNativeType(page: Page, index: number, label: 'Select' | 'Checkbox') {
+async function chooseNativeType(
+  page: Page,
+  index: number,
+  label: 'Select' | 'Checkbox' | 'URL' | 'Number',
+) {
   const fieldPath = `fields.${index}.type`
   const field = page.locator(`#field-fields__${index}__type`)
   await field.getByRole('combobox').click()
@@ -78,8 +77,8 @@ for (const block of [
       await fillNativeField(page, 'fields.0.label', 'Your name')
       await fillNativeField(page, 'fields.0.helpText', 'Use 3–40 characters.')
       await fillNativeField(page, 'fields.0.defaultValue', 'Campus visitor')
-      await fillNativeField(page, 'fields.0.minLength', '3')
-      await fillNativeField(page, 'fields.0.maxLength', '40')
+      await fillNativeField(page, 'fields.0.minLength', '3', true)
+      await fillNativeField(page, 'fields.0.maxLength', '40', true)
       await addNativeRow(page, addField, 'fields.1.name')
       await chooseNativeType(page, 1, 'Select')
       await fillNativeField(page, 'fields.1.name', 'preferred_department')
@@ -101,6 +100,19 @@ for (const block of [
       await chooseNativeType(page, 2, 'Checkbox')
       await fillNativeField(page, 'fields.2.name', 'contact_permission')
       await fillNativeField(page, 'fields.2.label', 'You may contact me')
+      await addNativeRow(page, addField, 'fields.3.name')
+      await chooseNativeType(page, 3, 'URL')
+      await fillNativeField(page, 'fields.3.name', 'reference_link')
+      await fillNativeField(page, 'fields.3.label', 'Reference link')
+      await fillNativeField(page, 'fields.3.helpText', 'Include https:// or http://.')
+      await addNativeRow(page, addField, 'fields.4.name')
+      await chooseNativeType(page, 4, 'Number')
+      await fillNativeField(page, 'fields.4.name', 'visit_hours')
+      await fillNativeField(page, 'fields.4.label', 'Visit duration')
+      await fillNativeField(page, 'fields.4.defaultValue', '1.5')
+      await fillNativeField(page, 'fields.4.minValue', '0.5', true)
+      await fillNativeField(page, 'fields.4.maxValue', '4', true)
+      await fillNativeField(page, 'fields.4.step', '0.5', true)
 
       const formResponsePromise = page.waitForResponse(
         (r) => new URL(r.url()).pathname === '/api/forms' && r.request().method() === 'POST',
@@ -113,6 +125,23 @@ for (const block of [
       ).toBe(true)
       const { doc: form } = await formResponse.json()
       const authHeaders = { Origin: new URL(page.url()).origin, Referer: page.url() }
+      for (const invalid of [
+        { step: 0 },
+        { defaultValue: '1.25' },
+        { type: 'unsupported-control' },
+      ]) {
+        const rejected = await page.request.patch(`/api/forms/${form.id}`, {
+          headers: authHeaders,
+          data: {
+            _status: 'published',
+            fields: form.fields.map((field: { name: string }) =>
+              field.name === 'visit_hours' ? { ...field, ...invalid } : field,
+            ),
+          },
+        })
+        expect(rejected.status(), 'Invalid controls/rules/defaults must not publish').toBe(400)
+      }
+
       const pageResponse = await page.request.post('/api/pages', {
         headers: authHeaders,
         data: {
@@ -171,12 +200,28 @@ for (const block of [
             visitor.getByText('Which department can help? is required.', { exact: true }),
           ).toBeVisible()
           await visitor.getByLabel('Your name', { exact: true }).fill('Visitor')
+          await expect(visitor.getByLabel('Visit duration', { exact: true })).toHaveValue('1.5')
+          await expect(visitor.getByLabel('Visit duration', { exact: true })).toHaveAttribute(
+            'inputmode',
+            'decimal',
+          )
+          await visitor.getByLabel('Reference link', { exact: true }).fill('example.com')
+          await visitor.getByLabel('Visit duration', { exact: true }).fill('1.25')
           await visitor.getByRole('combobox').click()
           const menu = visitor.getByRole('listbox')
           await expect(menu).toBeVisible()
           expect(await menu.evaluate((element) => !!element.closest('section'))).toBe(true)
           await visitor.getByRole('option', { name: 'Admissions', exact: true }).click()
           await visitor.getByRole('checkbox', { name: 'You may contact me', exact: true }).check()
+          await visitor.getByRole('button', { name: 'Submit', exact: true }).click()
+          await expect(visitor.getByText(/Reference link must be a full/)).toBeVisible()
+          await expect(
+            visitor.getByText('Visit duration must use increments of 0.5 starting from 0.5.'),
+          ).toBeVisible()
+          await visitor
+            .getByLabel('Reference link', { exact: true })
+            .fill('https://example.com/visit')
+          await visitor.getByLabel('Visit duration', { exact: true }).fill('1.50')
           // Publish after the visitor has loaded and answered the old revision.
           const changed = await page.request.patch(`/api/forms/${form.id}`, {
             headers: authHeaders,
@@ -194,7 +239,9 @@ for (const block of [
                     }
                   : field.name === 'contact_permission'
                     ? { ...field, type: 'text', label: 'Contact preference' }
-                    : field,
+                    : field.name === 'visit_hours'
+                      ? { ...field, step: 2, defaultValue: '2.5' }
+                      : field,
               ),
             },
           })
@@ -219,11 +266,16 @@ for (const block of [
             visitor.getByLabel('Full name', { exact: true }),
           ).toHaveAccessibleDescription('Use 3–6 characters.')
           await visitor.getByLabel('Full name', { exact: true }).fill('Taylor')
+          await expect(visitor.getByLabel('Reference link', { exact: true })).toHaveValue(
+            'https://example.com/visit',
+          )
+          await expect(visitor.getByLabel('Visit duration', { exact: true })).toHaveValue('')
+          await visitor.getByLabel('Visit duration', { exact: true }).fill('2.50')
           await expect(visitor.getByRole('combobox')).toHaveText('Admissions')
           await expect(visitor.getByLabel('Contact preference', { exact: true })).toHaveValue('')
           await expect(
             visitor.getByText(
-              /These answers were cleared because their questions changed: Your name, You may contact me/,
+              /These answers were cleared because their questions changed: Your name, You may contact me, Visit duration/,
             ),
           ).toBeVisible()
           expect(
@@ -292,6 +344,17 @@ for (const block of [
                 displayValue: 'Admissions',
               }),
               expect.objectContaining({ name: 'visitor_full_name', value: { raw: 'Taylor' } }),
+              expect.objectContaining({
+                name: 'reference_link',
+                type: 'url',
+                displayValue: 'https://example.com/visit',
+              }),
+              expect.objectContaining({
+                name: 'visit_hours',
+                type: 'number',
+                value: { raw: '2.50' },
+                displayValue: '2.50',
+              }),
               expect.objectContaining({
                 name: 'contact_permission',
                 value: { raw: 'Email is best' },

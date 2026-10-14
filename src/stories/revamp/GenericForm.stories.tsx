@@ -62,7 +62,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Six current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
+          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Eight current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
       },
     },
   },
@@ -91,7 +91,7 @@ const meta = {
       name: 'Questions and controls',
       control: 'object',
       description:
-        'Supported text, email, phone, textarea, select and checkbox definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state and contact roles are editable.',
+        'Supported text, email, phone, URL, number, textarea, select and checkbox definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state and contact roles are editable.',
     },
     heading: { name: 'Heading', control: 'text' },
     description: { name: 'Description', control: 'text' },
@@ -470,5 +470,79 @@ export const ConfiguredValidation: Story = {
     await userEvent.type(subject, 'Campus tour')
     await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
     await expect(await canvas.findByRole('status')).toHaveTextContent('Demo received.')
+  },
+}
+
+export const URLAndNumber: Story = {
+  name: 'URL and number questions',
+  args: {
+    description: 'Share a reference and tell us your group size.',
+    fields: [
+      {
+        id: 'reference',
+        name: 'reference_link',
+        label: 'Reference link',
+        type: 'url',
+        required: true,
+        placeholder: 'https://example.com',
+        helpText: 'Include http:// or https://. Do not include login details.',
+      },
+      {
+        id: 'group',
+        name: 'group_size',
+        label: 'Group size',
+        type: 'number',
+        required: true,
+        defaultValue: '2',
+        minValue: 1,
+        maxValue: 20,
+        step: 1,
+        helpText: 'Enter a whole number from 1 to 20.',
+      },
+      {
+        id: 'duration',
+        name: 'visit_hours',
+        label: 'Visit duration in hours',
+        type: 'number',
+        minValue: 0.5,
+        maxValue: 4,
+        step: 0.5,
+        helpText: 'Optional. Use half-hour increments, such as 1.5.',
+      },
+    ],
+  },
+}
+export const URLAndNumberValidation: Story = {
+  args: URLAndNumber.args,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    const url = canvas.getByLabelText(/Reference link/)
+    const group = canvas.getByLabelText(/Group size/)
+    await expect(group).toHaveValue('2')
+    await expect(group).toHaveAttribute('inputmode', 'decimal')
+    await userEvent.type(url, 'example.com')
+    await userEvent.clear(group)
+    await userEvent.type(group, '2.5')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(await canvas.findByText(/Reference link must be a full/)).toBeVisible()
+    await expect(
+      canvas.getByText('Group size must use increments of 1 starting from 1.'),
+    ).toBeVisible()
+    await expect(url).toHaveFocus()
+    await expect(args.onSubmit).not.toHaveBeenCalled()
+    await userEvent.clear(url)
+    await userEvent.type(url, 'https://example.com/visit')
+    await userEvent.clear(group)
+    await userEvent.type(group, '3')
+    await userEvent.type(canvas.getByLabelText(/Visit duration/), '1.5')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(await canvas.findByRole('status')).toHaveTextContent('Demo received.')
+    await expect(args.onSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        reference_link: 'https://example.com/visit',
+        group_size: '3',
+        visit_hours: '1.5',
+      }),
+    )
   },
 }

@@ -283,6 +283,75 @@ describe('form submission model', () => {
     expect(stored.formRevision).toBe(refreshed.form.revision)
   })
 
+  it('validates URL/number intake, retains decimal text, and refreshes changed numeric rules', async () => {
+    const form = {
+      id: 'new-controls',
+      title: 'Visit',
+      slug: 'visit',
+      _status: 'published',
+      submissionIntent: 'general',
+      submitButtonLabel: 'Send',
+      successMessage: 'Received',
+      fields: [
+        { id: 'reference', name: 'reference', label: 'Reference', type: 'url', required: true },
+        {
+          id: 'duration',
+          name: 'duration',
+          label: 'Duration',
+          type: 'number',
+          minValue: 0.5,
+          maxValue: 4,
+          step: 0.5,
+        },
+      ],
+    } as Form
+    payloadMocks.find.mockResolvedValue({ docs: [form] })
+    payloadMocks.create.mockResolvedValue({ id: 'saved', createdAt: '2026-10-14T00:00:00.000Z' })
+    const { POST } = await loadRouteModule()
+    const submit = (values: unknown, formRevision?: string) =>
+      POST(
+        new Request('http://localhost/api/forms/visit/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ values, formRevision }),
+        }),
+        { params: Promise.resolve({ slug: 'visit' }) },
+      )
+    for (const values of [
+      { reference: 'example.com', duration: '1.5' },
+      { reference: 'https://example.com', duration: '1.25' },
+      { reference: 'https://example.com', duration: '5' },
+      { reference: 'https://example.com', duration: 1.5 },
+    ]) {
+      expect((await submit(values)).status).toBe(400)
+      expect(payloadMocks.create).not.toHaveBeenCalled()
+    }
+    const oldRevision = projectPublishedGenericForm(form)!.revision
+    const changed = { ...form, fields: [form.fields[0], { ...form.fields[1], step: 2 }] }
+    payloadMocks.find.mockResolvedValue({ docs: [changed] })
+    const stale = await submit({ reference: 'https://example.com', duration: '1.50' }, oldRevision)
+    expect(stale.status).toBe(409)
+    const refreshed = await stale.json()
+    expect(refreshed.form.fields[1].step).toBe(2)
+    expect(payloadMocks.create).not.toHaveBeenCalled()
+    expect(
+      (
+        await submit(
+          { reference: 'https://example.com', duration: '2.50' },
+          refreshed.form.revision,
+        )
+      ).status,
+    ).toBe(200)
+    const stored = payloadMocks.create.mock.calls[0][0].data
+    expect(stored.data).toEqual({ reference: 'https://example.com', duration: '2.50' })
+    expect(stored.answers[1]).toMatchObject({
+      type: 'number',
+      value: { raw: '2.50' },
+      displayValue: '2.50',
+    })
+    expect(stored.formSnapshot.fields[1]).toMatchObject({ minValue: 0.5, maxValue: 4, step: 2 })
+  })
+
   it('accepts the refreshed revision and stores that same snapshot identity', async () => {
     const published = {
       id: 'revision-form',
