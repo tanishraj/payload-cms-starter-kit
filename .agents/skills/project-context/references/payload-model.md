@@ -67,6 +67,13 @@ Nine globals are registered:
   selects a reusable published General/Lead schema and disables submissions in
   authenticated Live Preview. Native field and option rows open for editing. Private
   operational configuration is excluded from the public client projection.
+  General/Lead questions now support public help text and validated presentation-only initial answers,
+  optional initially checked checkboxes, and bounded whole-number Text/Textarea length limits. Required
+  checkboxes start unchecked. Active settings enter captured published fingerprints/snapshots; absent
+  new configuration preserves legacy hashes. Shared explicit field projection serves browser, preview
+  and intake; dormant type-specific settings are excluded. Fixed Review Submission rejects unsupported
+  configuration. Duplicate present field/choice row identities fail authoring, legacy missing IDs remain
+  supported, and choice IDs do not alter the legacy fingerprint. See [question configuration](../../../../docs/planning/form-field-configuration.md).
 - WorkQueue stores deduplicated actionable conditions. OperationalAuditEvents stores selected immutable operational history. Both record their source feature for Site Manager row filtering. Users own authentication, Admin/Site Manager roles, and feature grants.
 
 ## Feature and Publication Governance

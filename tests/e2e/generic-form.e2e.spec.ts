@@ -35,7 +35,12 @@ async function addNativeRow(page: Page, button: Locator, fieldPath: string) {
 
 async function fillNativeField(page: Page, fieldPath: string, value: string) {
   const field = page.locator(`#field-${fieldPath.replaceAll('.', '__')}`)
-  await editNativeForm(page, () => field.fill(value), fieldPath, value)
+  await editNativeForm(
+    page,
+    () => field.fill(value),
+    fieldPath,
+    fieldPath.endsWith('Length') ? undefined : value,
+  )
   await expect(field).toHaveValue(value)
 }
 
@@ -71,6 +76,10 @@ for (const block of [
       await addNativeRow(page, addField, 'fields.0.name')
       await fillNativeField(page, 'fields.0.name', 'visitor_name')
       await fillNativeField(page, 'fields.0.label', 'Your name')
+      await fillNativeField(page, 'fields.0.helpText', 'Use 3–40 characters.')
+      await fillNativeField(page, 'fields.0.defaultValue', 'Campus visitor')
+      await fillNativeField(page, 'fields.0.minLength', '3')
+      await fillNativeField(page, 'fields.0.maxLength', '40')
       await addNativeRow(page, addField, 'fields.1.name')
       await chooseNativeType(page, 1, 'Select')
       await fillNativeField(page, 'fields.1.name', 'preferred_department')
@@ -147,6 +156,16 @@ for (const block of [
             waitUntil: 'domcontentloaded',
           })
           await expect(visitor.getByRole('heading', { name: 'Ask our team' })).toBeVisible()
+          await expect(visitor.getByLabel('Your name', { exact: true })).toHaveValue(
+            'Campus visitor',
+          )
+          await expect(
+            visitor.getByLabel('Your name', { exact: true }),
+          ).toHaveAccessibleDescription('Use 3–40 characters.')
+          await expect(visitor.getByLabel('Your name', { exact: true })).toHaveAttribute(
+            'maxlength',
+            '40',
+          )
           await visitor.getByRole('button', { name: 'Submit', exact: true }).click()
           await expect(
             visitor.getByText('Which department can help? is required.', { exact: true }),
@@ -165,7 +184,14 @@ for (const block of [
               _status: 'published',
               fields: form.fields.map((field: { name: string }) =>
                 field.name === 'visitor_name'
-                  ? { ...field, name: 'visitor_full_name', label: 'Full name' }
+                  ? {
+                      ...field,
+                      name: 'visitor_full_name',
+                      label: 'Full name',
+                      maxLength: 6,
+                      defaultValue: 'Guest',
+                      helpText: 'Use 3–6 characters.',
+                    }
                   : field.name === 'contact_permission'
                     ? { ...field, type: 'text', label: 'Contact preference' }
                     : field,
@@ -188,12 +214,16 @@ for (const block of [
           await expect(
             visitor.getByRole('status').filter({ hasText: 'The questions have changed.' }),
           ).toBeFocused()
-          await expect(visitor.getByLabel('Full name', { exact: true })).toHaveValue('Visitor')
+          await expect(visitor.getByLabel('Full name', { exact: true })).toHaveValue('')
+          await expect(
+            visitor.getByLabel('Full name', { exact: true }),
+          ).toHaveAccessibleDescription('Use 3–6 characters.')
+          await visitor.getByLabel('Full name', { exact: true }).fill('Taylor')
           await expect(visitor.getByRole('combobox')).toHaveText('Admissions')
           await expect(visitor.getByLabel('Contact preference', { exact: true })).toHaveValue('')
           await expect(
             visitor.getByText(
-              /These answers were cleared because their questions changed: You may contact me/,
+              /These answers were cleared because their questions changed: Your name, You may contact me/,
             ),
           ).toBeVisible()
           expect(
@@ -249,6 +279,11 @@ for (const block of [
           const { docs } = await submissions.json()
           expect(docs).toHaveLength(1)
           expect(docs[0].formRevision).toBe(stale.form.revision)
+          expect(docs[0].formSnapshot.fields[0]).toMatchObject({
+            maxLength: 6,
+            defaultValue: 'Guest',
+            helpText: 'Use 3–6 characters.',
+          })
           expect(docs[0].answers).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -256,7 +291,7 @@ for (const block of [
                 label: 'Which department can help?',
                 displayValue: 'Admissions',
               }),
-              expect.objectContaining({ name: 'visitor_full_name', value: { raw: 'Visitor' } }),
+              expect.objectContaining({ name: 'visitor_full_name', value: { raw: 'Taylor' } }),
               expect.objectContaining({
                 name: 'contact_permission',
                 value: { raw: 'Email is best' },

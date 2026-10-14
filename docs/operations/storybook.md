@@ -25,7 +25,7 @@ Each installed form primitive also has its own Docs and Default playground under
 
 The Questions control accepts the six currently supported Payload types: Text,
 Email, Phone, Textarea, Select and Checkbox. Edit machine names, labels, options,
-placeholders, required state and contact roles. Other controls configure heading,
+placeholders, help text, initial answers, text character limits, required state and contact roles. Other controls configure heading,
 description, submit/pending labels and disabled state. The theme and viewport
 toolbars cover supported appearance and responsive shape. Changing the schema
 resets the demonstration so removed answers cannot carry into another form.
@@ -42,7 +42,7 @@ to controls; validation and server field rejection focus the first invalid contr
 Pending disables controls and blocks repeated submission events. A successful
 confirmation replaces the controls and receives focus. An unconfirmed network
 result preserves answers and allows deliberate retry; it does not claim the
-server failed to store the request. Durable server deduplication is still future work.
+server failed to store the request. Generic clients now use durable accepted-attempt retry protection; the demonstration callbacks remain synthetic.
 
 Changed Questions demonstrates published-revision recovery in this same catalogue
 entry. It preserves a renamed field by stable ID, clears a changed-type answer,
@@ -134,3 +134,5 @@ presentation. Select portals remain within the form’s inherited theme context.
 Browser review: custom-name submission and confirmation, validation focus, disabled preview, 390px wrapping, dark mode and website-theme preview. WCAG A/AA axe scans report no violations for website preview or Neutral dark. Upstream Neutral light muted text on muted surfaces/Select reports a contrast violation; the shared official palette is preserved, so that workshop state is not certified as WCAG AA. Production must be checked with the chosen website theme.
 
 Lost Confirmation and Different Response demonstrate durable retry UX in the same Generic Form entry using synthetic callbacks. See [submission retry protection](../planning/form-submission-retries.md) for production behavior and the database index prerequisite.
+
+Configured Questions provides the help/default/character-limit playground; Configured Validation checks initial answers, associated helper/error text, invalid-answer blocking and corrected confirmation. These settings use the shared intake validator in both Generic Form and Contact6. See [question configuration](../planning/form-field-configuration.md) for native authoring, legacy and revision behavior.

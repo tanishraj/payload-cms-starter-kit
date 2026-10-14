@@ -1,4 +1,8 @@
-import { validateFormFieldDefinitions, type SimpleFormField } from '@/lib/forms'
+import {
+  getFormFieldConfiguration,
+  validateFormFieldDefinitions,
+  type SimpleFormField,
+} from '@/lib/forms'
 import type { Form } from '@/payload-types'
 
 export type GenericFormDefinition = {
@@ -6,6 +10,21 @@ export type GenericFormDefinition = {
   slug: string
   fields: SimpleFormField[]
   submitButtonLabel: string
+}
+
+/** Shared explicit projection for intake and public/preview consumers. */
+export function projectFormFields(form: Partial<Form>): SimpleFormField[] {
+  return (form.fields ?? []).map((field) => ({
+    id: field.id,
+    name: field.name,
+    label: field.label,
+    type: field.type,
+    required: field.required,
+    placeholder: field.placeholder,
+    contactRole: field.contactRole,
+    options: field.options?.map(({ id, label, value }) => ({ id, label, value })),
+    ...getFormFieldConfiguration(field),
+  }))
 }
 
 /** Explicit browser projection: never pass notifications, replies or editor notes. */
@@ -21,18 +40,7 @@ export function projectGenericForm(
     !form.fields?.length
   )
     return null
-  const fields = form.fields.map(
-    ({ id, name, label, type, required, placeholder, contactRole, options }) => ({
-      id,
-      name,
-      label,
-      type,
-      required,
-      placeholder,
-      contactRole,
-      options: options?.map(({ label, value }) => ({ label, value })),
-    }),
-  )
+  const fields = projectFormFields(form)
   if (validateFormFieldDefinitions(fields) !== true) return null
   return { slug: form.slug, fields, submitButtonLabel: form.submitButtonLabel || 'Submit' }
 }

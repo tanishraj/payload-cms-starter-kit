@@ -91,7 +91,7 @@ const meta = {
       name: 'Questions and controls',
       control: 'object',
       description:
-        'Supported text, email, phone, textarea, select and checkbox definitions. Names, labels, options, placeholders, required state and contact roles are editable.',
+        'Supported text, email, phone, textarea, select and checkbox definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state and contact roles are editable.',
     },
     heading: { name: 'Heading', control: 'text' },
     description: { name: 'Description', control: 'text' },
@@ -408,5 +408,67 @@ export const DifferentResponse: Story = {
     )
     const calls = (args.onSubmit as ReturnType<typeof fn>).mock.calls
     await expect(calls[0][2]).not.toEqual(calls[1][2])
+  },
+}
+
+export const ConfiguredQuestions: Story = {
+  name: 'Help text, initial answers and character limits',
+  args: {
+    fields: [
+      {
+        id: 'subject',
+        name: 'subject',
+        label: 'Enquiry subject',
+        type: 'text',
+        required: true,
+        defaultValue: 'Campus visit',
+        helpText: 'Use 5–40 characters so we can route your enquiry.',
+        minLength: 5,
+        maxLength: 40,
+      },
+      {
+        id: 'details',
+        name: 'details',
+        label: 'Visit details',
+        type: 'textarea',
+        helpText: 'Include dates or accessibility needs. Leave blank if you are unsure.',
+        minLength: 10,
+        maxLength: 300,
+      },
+      {
+        id: 'updates',
+        name: 'updates',
+        label: 'Include campus updates',
+        type: 'checkbox',
+        defaultChecked: true,
+        helpText: 'Optional. Uncheck this if you only want a reply to this enquiry.',
+      },
+    ],
+  },
+}
+
+export const ConfiguredValidation: Story = {
+  args: ConfiguredQuestions.args,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    const subject = canvas.getByLabelText(/Enquiry subject/)
+    await expect(subject).toHaveValue('Campus visit')
+    await expect(subject).toHaveAccessibleDescription(
+      'Use 5–40 characters so we can route your enquiry.',
+    )
+    await expect(subject).toHaveAttribute('maxlength', '40')
+    await expect(canvas.getByRole('checkbox', { name: 'Include campus updates' })).toBeChecked()
+    await userEvent.clear(subject)
+    await userEvent.type(subject, 'Hi')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(
+      await canvas.findByText('Enquiry subject must be at least 5 characters.'),
+    ).toBeVisible()
+    await expect(subject).toHaveAccessibleDescription(/Use 5–40 characters.*must be at least 5/)
+    await expect(args.onSubmit).not.toHaveBeenCalled()
+    await userEvent.clear(subject)
+    await userEvent.type(subject, 'Campus tour')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(await canvas.findByRole('status')).toHaveTextContent('Demo received.')
   },
 }

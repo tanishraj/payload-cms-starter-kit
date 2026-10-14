@@ -25,6 +25,7 @@ import {
   submissionIdentity,
 } from '@/lib/formSubmissionIdempotency.server'
 import { buildFormSubmissionSnapshot } from '@/lib/formSubmissionSnapshot'
+import { projectFormFields } from '@/lib/genericFormShared'
 import { projectPublishedGenericForm } from '@/lib/genericFormRevision.server'
 import {
   getSubmissionContactMetadata,
@@ -35,29 +36,10 @@ import {
   validateFormSubmissionMetadata,
   validateFormSubmission,
   type FormSubmissionValues,
-  type SimpleFormField,
 } from '@/lib/forms'
 import { upsertReviewFromSubmission } from '@/lib/reviewPromotion'
 import { validateReviewSubmission } from '@/lib/reviews'
 import { normalizeSiteTimeZone, type SiteTimeZone } from '@/lib/siteTimeZone'
-import type { Form } from '@/payload-types'
-
-const toSimpleFields = (form: Form): SimpleFormField[] => {
-  return (form.fields ?? []).map((field) => ({
-    contactRole: field.contactRole ?? null,
-    id: field.id ?? null,
-    label: field.label,
-    name: field.name,
-    options:
-      field.options?.map((option) => ({
-        label: option.label,
-        value: option.value,
-      })) ?? null,
-    placeholder: field.placeholder ?? null,
-    required: field.required ?? false,
-    type: field.type,
-  }))
-}
 
 export async function POST(request: Request, context: { params: Promise<{ slug: string }> }) {
   const { slug } = await context.params
@@ -223,7 +205,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
 
   const submissionIntent = normalizeFormSubmissionIntent(form.submissionIntent)
   const isReviewSubmission = isReviewFormSubmissionIntent(submissionIntent)
-  const formFields = toSimpleFields(form)
+  const formFields = projectFormFields(form)
   const validationFields = isReviewSubmission
     ? formFields.map((field) =>
         field.name === 'isGenuineExperience' ||

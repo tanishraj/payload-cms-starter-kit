@@ -45,6 +45,7 @@ export const formSubmissionIntentOptions = [
 export type FormSubmissionIntent = (typeof formSubmissionIntentOptions)[number]['value']
 
 export type SimpleFormFieldOption = {
+  id?: string | null
   label: string
   value: string
 }
@@ -53,6 +54,12 @@ export type FormContactRole = 'name' | 'email' | 'phone'
 
 export type SimpleFormField = {
   contactRole?: FormContactRole | null
+  helpText?: string | null
+  defaultValue?: string | null
+  defaultChecked?: boolean | null
+  /** Character limits apply to Text and Textarea only; dormant settings survive type changes. */
+  minLength?: number | null
+  maxLength?: number | null
   id?: string | null
   name: string
   label: string
@@ -175,6 +182,7 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
 
   const seen = new Set<string>()
   const contactRoles = new Set<string>()
+  const fieldIDs = new Set<string>()
 
   for (const field of value) {
     if (!field || typeof field !== 'object') {
@@ -200,6 +208,41 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
     }
 
     seen.add(name)
+    if (field.id != null) {
+      if (typeof field.id !== 'string' || !field.id.trim() || fieldIDs.has(field.id)) {
+        return `Field "${name}" must have a unique, non-empty row identity.`
+      }
+      fieldIDs.add(field.id)
+    }
+    if (
+      field.helpText != null &&
+      (typeof field.helpText !== 'string' || field.helpText.length > 1_000)
+    ) {
+      return `Help text for "${name}" must contain no more than 1,000 characters.`
+    }
+    if (supportsFormTextLimits(field.type)) {
+      const cap = getFieldValueMaxLength(field.type)!
+      const minimum = field.minLength ?? 0
+      const maximum = field.maxLength ?? cap
+      if (
+        !Number.isInteger(minimum) ||
+        !Number.isInteger(maximum) ||
+        minimum < 0 ||
+        maximum < 1 ||
+        maximum > cap ||
+        minimum > maximum
+      ) {
+        return `Character limits for "${name}" must be whole numbers: minimum 0 or greater, maximum 1–${cap}, and minimum no greater than maximum.`
+      }
+    }
+    if (field.type === 'checkbox') {
+      if (field.defaultChecked != null && typeof field.defaultChecked !== 'boolean') {
+        return `The initial checkbox value for "${name}" must be true or false.`
+      }
+      if (field.required && field.defaultChecked === true) {
+        return `Required checkbox "${name}" must start unchecked so visitors make their own choice.`
+      }
+    }
 
     if (field.contactRole) {
       const roleTypes = { name: 'text', email: 'email', phone: 'phone' } as const
@@ -225,6 +268,7 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
       }
 
       const optionValues = new Set<string>()
+      const optionIDs = new Set<string>()
 
       for (const option of options) {
         const optionValue = typeof option?.value === 'string' ? option.value.trim() : ''
@@ -238,7 +282,23 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
         }
 
         optionValues.add(optionValue)
+        if (option.id != null) {
+          if (typeof option.id !== 'string' || !option.id.trim() || optionIDs.has(option.id)) {
+            return `Options in "${name}" must have unique, non-empty row identities.`
+          }
+          optionIDs.add(option.id)
+        }
       }
+    }
+    // Validate defaults only after choice definitions are known to be well formed.
+    if (field.type !== 'checkbox' && field.defaultValue != null) {
+      if (typeof field.defaultValue !== 'string')
+        return `The initial answer for "${name}" must contain text.`
+      const { errors } = validateFormSubmission({
+        fields: [{ ...field, required: false }],
+        values: { [name]: field.defaultValue },
+      })
+      if (errors[name]) return `Initial answer: ${errors[name]}`
     }
   }
 
@@ -271,6 +331,10 @@ export const validateFormFieldDefinitionsForIntent = ({
     !isReviewFormSubmissionIntent(submissionIntent)
   ) {
     return fieldValidation
+  }
+
+  if (fields.some((field) => Object.keys(getFormFieldConfiguration(field)).length)) {
+    return 'Help text, initial answers and character limits require Generic Form or Contact Cards & Form. The fixed Review Submission presentation does not render them.'
   }
 
   const unsupportedRequiredField = fields.find((field): field is { name: string; required: true } =>
@@ -317,6 +381,49 @@ const getFieldValueMaxLength = (type: FormFieldType): number | null => {
 
   return null
 }
+
+export const supportsFormTextLimits = (type: FormFieldType): boolean =>
+  type === 'text' || type === 'textarea'
+
+export const getFormFieldMaxLength = (field: SimpleFormField): number | undefined => {
+  const cap = getFieldValueMaxLength(field.type)
+  if (cap === null) return undefined
+  return supportsFormTextLimits(field.type) &&
+    Number.isInteger(field.maxLength) &&
+    field.maxLength! > 0
+    ? Math.min(field.maxLength!, cap)
+    : cap
+}
+
+/** Include only active, meaningful configuration; legacy revisions stay unchanged. */
+export const getFormFieldConfiguration = (field: SimpleFormField) => ({
+  ...(field.helpText ? { helpText: field.helpText } : {}),
+  ...(field.type !== 'checkbox' &&
+  typeof field.defaultValue === 'string' &&
+  field.defaultValue.trim()
+    ? { defaultValue: field.defaultValue.trim() }
+    : {}),
+  ...(field.type === 'checkbox' && field.defaultChecked === true ? { defaultChecked: true } : {}),
+  ...(supportsFormTextLimits(field.type) && field.minLength != null
+    ? { minLength: field.minLength }
+    : {}),
+  ...(supportsFormTextLimits(field.type) && field.maxLength != null
+    ? { maxLength: field.maxLength }
+    : {}),
+})
+
+/** Defaults are presentation-only. Intake must validate the answers actually sent. */
+export const getFormInitialAnswers = (
+  fields: SimpleFormField[],
+): Record<string, boolean | string> =>
+  Object.fromEntries(
+    fields.map((field) => [
+      field.name,
+      field.type === 'checkbox'
+        ? field.defaultChecked === true && !field.required
+        : (field.defaultValue?.trim() ?? ''),
+    ]),
+  )
 
 const formatCharacterLimit = (value: number): string => {
   return value.toLocaleString('en-US')
@@ -400,9 +507,9 @@ export const validateFormSubmission = ({
     const normalizedValue = normalizeTextValue(rawValue)
     normalizedData[field.name] = normalizedValue
 
-    const maxLength = getFieldValueMaxLength(field.type)
+    const maxLength = getFormFieldMaxLength(field)
 
-    if (maxLength !== null && normalizedValue.length > maxLength) {
+    if (maxLength !== undefined && normalizedValue.length > maxLength) {
       errors[field.name] =
         `${field.label} must be ${formatCharacterLimit(maxLength)} characters or fewer.`
       continue
@@ -410,6 +517,17 @@ export const validateFormSubmission = ({
 
     if (field.required && !normalizedValue) {
       errors[field.name] = `${field.label} is required.`
+      continue
+    }
+
+    if (
+      supportsFormTextLimits(field.type) &&
+      normalizedValue &&
+      field.minLength != null &&
+      normalizedValue.length < field.minLength
+    ) {
+      errors[field.name] =
+        `${field.label} must be at least ${formatCharacterLimit(field.minLength)} characters.`
       continue
     }
 
