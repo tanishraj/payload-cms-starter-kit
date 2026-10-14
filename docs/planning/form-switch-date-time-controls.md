@@ -1,6 +1,6 @@
 # Switch, Date and Time form controls
 
-Bounded forms increment on `feat/form-switch-date-time-controls`, created from verified merged develop `d00ca7e7` before implementation. Fourteen controls share native Forms, Generic Form and Contact6. Private file transport remains the next milestone; the complete forms milestone is still open.
+Delivered bounded forms increment from `feat/form-switch-date-time-controls`, created from verified merged develop `d00ca7e7` before implementation. Fourteen controls share native Forms, Generic Form and Contact6. Private file transport remains the next milestone; the complete forms milestone is still open.
 
 ## Answer and authoring contract
 
@@ -36,3 +36,7 @@ Storybook Default/playground, temporal validation and changed-rule recovery use 
 233 affected form tests and all 15 context tests pass; full isolated regression: 2,583 pass/one Docker-dependent skip. Both native journeys pass without retries, including actual authoring, invalid publication, range errors, raw local values/boolean history, changed-rule recovery and identical lost-confirmation retry. Production/Storybook builds, both new plays, TypeScript, lint (one existing AdminUserMenu warning), Payload generators, production audit under the unchanged approved Braces exception and deterministic inventory checks pass before commit/push. The native run logged one React flushSync lifecycle warning; no browser assertion or submission failed in the final run, and no warning/check was suppressed. Broader browser/admin warning review remains open. The first native run used an exact required-label lookup that omitted the asterisk; only the lookup was corrected, retaining user-facing label selection and real browser interactions. Required-label semantics and production validation were not weakened.
 
 The complete release gates and exact-head CI/merge evidence are recorded in the main implementation checklist. Registration guidance remains in [the choice-control contract](form-choice-controls.md#adding-another-control); these types extend that same explicit contract rather than a new schema language.
+
+## Merge checkpoint
+
+[PR #27](https://github.com/tanishraj/payload-cms-starter-kit/pull/27) merged as `5b6d81a9` after [current-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38565943611) passed on `247c468b`. CI: 2,583 integration tests/one Docker-dependent skip; both native form journeys pass on the first attempt; fresh production build passes. Governance has one first-attempt pass and one pass on retry after the previously recorded Content-grants checkbox readiness timeout; broader VERIFY/AdminUX repeatability remains open. The feature branch is deleted locally/remotely. Continue on fresh `feat/form-private-attachments`, created from verified merged develop `5b6d81a9` before implementation. The broad initial catalogue/full forms milestone remains open; private attachments and their permission/lifecycle boundary are next.

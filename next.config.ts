@@ -26,6 +26,8 @@ export const nextConfig: NextConfig = {
     },
   },
   output: 'standalone',
+  // Development uploads must never enter server bundles or deployment artifacts.
+  outputFileTracingExcludes: { '**/*': ['./.private/**/*'] },
   async headers() {
     return [
       {

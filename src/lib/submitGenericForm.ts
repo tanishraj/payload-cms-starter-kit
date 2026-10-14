@@ -20,6 +20,14 @@ export async function submitGenericForm(
     }),
     signal: AbortSignal.timeout(30_000),
   })
+  return parseGenericFormResponse(response, slug)
+}
+
+/** Shared response protocol for question refresh and accepted-attempt conflicts. */
+export async function parseGenericFormResponse(
+  response: Response,
+  slug: string,
+): Promise<GenericFormResult> {
   const body: unknown = await response.json()
   if (
     !body ||
@@ -57,7 +65,11 @@ export async function submitGenericForm(
     }
     throw new Error('Unconfirmed changed-form response')
   }
-  if (response.status === 409 && 'code' in body && body.code === 'SUBMISSION_KEY_REUSED') {
+  if (
+    response.status === 409 &&
+    'code' in body &&
+    ['SUBMISSION_KEY_REUSED', 'UPLOAD_LIMIT_REACHED'].includes(String(body.code))
+  ) {
     return { success: false, message: body.message, requestKeyConflict: true }
   }
   if (response.status === 429) {

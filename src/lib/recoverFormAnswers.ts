@@ -1,3 +1,8 @@
+import {
+  isCompatibleFormFile,
+  getFormFilePolicy,
+  type UploadedFormFile,
+} from '@/lib/formAttachments'
 import type { FormAnswers } from '@/lib/forms'
 import {
   isMultipleChoiceFormFieldType,
@@ -11,15 +16,18 @@ export function recoverFormAnswers(
   previous: SimpleFormField[],
   next: SimpleFormField[],
   answers: FormAnswers,
+  files: ReadonlyMap<string, UploadedFormFile> = new Map(),
 ) {
   const values: FormAnswers = Object.fromEntries(
     next.map((field) => [
       field.name,
-      isBooleanFormFieldType(field.type)
-        ? false
-        : isMultipleChoiceFormFieldType(field.type)
-          ? []
-          : '',
+      field.type === 'file'
+        ? []
+        : isBooleanFormFieldType(field.type)
+          ? false
+          : isMultipleChoiceFormFieldType(field.type)
+            ? []
+            : '',
     ]),
   )
   const partiallyClearedLabels = new Set<string>()
@@ -36,9 +44,22 @@ export function recoverFormAnswers(
         : undefined
     if (field) {
       const compatible =
-        isMultipleChoiceFormFieldType(field.type) && Array.isArray(value)
-          ? value.filter((item) => field.options?.some((option) => option.value === item))
-          : value
+        field.type === 'file' && Array.isArray(value)
+          ? value.filter((token) => {
+              const file = files.get(token)
+              return Boolean(file && isCompatibleFormFile(file, field))
+            })
+          : isMultipleChoiceFormFieldType(field.type) && Array.isArray(value)
+            ? value.filter((item) => field.options?.some((option) => option.value === item))
+            : value
+      if (
+        field.type === 'file' &&
+        Array.isArray(compatible) &&
+        compatible.length > getFormFilePolicy(field).maxFiles
+      ) {
+        clearedLabels.add(old.label)
+        continue
+      }
       if (Array.isArray(value) && Array.isArray(compatible) && compatible.length !== value.length)
         partiallyClearedLabels.add(old.label)
       const { errors, normalizedData } = validateFormSubmission({

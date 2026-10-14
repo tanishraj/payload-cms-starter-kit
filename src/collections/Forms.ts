@@ -1,3 +1,5 @@
+import { requireFormAttachmentStorage } from '@/hooks/requireFormAttachmentStorage'
+import { formFileTypeOptions } from '@/lib/formAttachments'
 import { type CollectionConfig } from 'payload'
 
 import {
@@ -49,6 +51,7 @@ export const Forms: CollectionConfig = {
     drafts: true,
   },
   hooks: {
+    beforeChange: [requireFormAttachmentStorage],
     afterChange: [revalidateGlobalsCache],
     afterDelete: [revalidateDeletedFormCache],
   },
@@ -283,12 +286,57 @@ export const Forms: CollectionConfig = {
           type: 'textarea',
           admin: {
             condition: (data, siblingData) =>
+              siblingData?.type !== 'file' &&
               !isBooleanFormFieldType(siblingData?.type) &&
               !isMultipleChoiceFormFieldType(siblingData?.type) &&
               (data?.submissionIntent !== 'review' || Boolean(siblingData?.defaultValue)),
             description:
               'Optional starting answer for new responses. For Select or Radio, enter an option value, not its label. Must satisfy this question’s validation. Visitors can change or clear it; the server never supplies omitted answers.',
           },
+        },
+        {
+          name: 'allowedFileTypes',
+          label: 'Allowed file formats',
+          type: 'select',
+          hasMany: true,
+          defaultValue: ['pdf', 'docx', 'png', 'jpg'],
+          options: formFileTypeOptions.map(({ label, value }) => ({ label, value })),
+          admin: {
+            condition: (_, siblingData) => siblingData?.type === 'file',
+            description:
+              'Leave unset for PDF, DOCX, PNG and JPEG. Server checks file content as well as extension. Files are private attachments, never public Media.',
+          },
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'maxFileSizeMB',
+              label: 'Maximum size per file (MB)',
+              type: 'number',
+              min: 1,
+              max: 3,
+              admin: {
+                condition: (_, siblingData) => siblingData?.type === 'file',
+                width: '50%',
+                description:
+                  'Whole number 1–3. Default 3 MB. The bound keeps uploads below hosted request limits.',
+              },
+            },
+            {
+              name: 'maxFiles',
+              label: 'Maximum files',
+              type: 'number',
+              min: 1,
+              max: 5,
+              admin: {
+                condition: (_, siblingData) => siblingData?.type === 'file',
+                width: '50%',
+                description:
+                  'Whole number 1–5. Default one file. A response may attach at most ten files across all questions.',
+              },
+            },
+          ],
         },
         {
           name: 'defaultSelections',

@@ -109,3 +109,7 @@ If a review submission did not flow correctly, inspect `promotionError`, open th
 - [Reviews](./reviews.md)
 - [Work Queue](./work-queue.md)
 - [Audit Log](./operational-audit-events.md)
+
+## Download private attachments
+
+Open a Form Submission and use **Download file** under Private attachments. Original filenames and question labels remain available after later Form edits. Downloads recheck your inbox access; notification emails and permission to place a form block do not grant file access. Files download as attachments and are not public Media. Trashing retains them for restoration; permanently deleting the submission queues cleanup. See [operations](../operations/private-form-attachments.md).

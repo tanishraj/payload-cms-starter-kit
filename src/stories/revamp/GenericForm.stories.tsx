@@ -63,7 +63,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Fourteen current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
+          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Fifteen current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
       },
     },
   },
@@ -92,13 +92,17 @@ const meta = {
       name: 'Questions and controls',
       control: 'object',
       description:
-        'Supported text, email, phone, URL, number, textarea, select, checkbox, radio, checkbox group, multi-select, switch, date and time definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state and contact roles are editable.',
+        'Supported text, email, phone, URL, number, textarea, select, checkbox, radio, checkbox group, multi-select, switch, date, time and private file definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state and contact roles are editable.',
     },
     heading: { name: 'Heading', control: 'text' },
     description: { name: 'Description', control: 'text' },
     submitButtonLabel: { name: 'Submit label', control: 'text' },
     pendingLabel: { name: 'Pending label', control: 'text' },
     disabled: { name: 'Disabled', control: 'boolean' },
+    onFileUpload: {
+      control: false,
+      description: 'Caller-owned private upload transport; stories use synthetic callbacks only.',
+    },
     onSubmit: {
       control: false,
       description:
@@ -795,5 +799,48 @@ export const ChangedTemporalRules: Story = {
     await userEvent.click(canvas.getByRole('switch', { name: 'Send me a reminder' }))
     await userEvent.click(canvas.getByRole('button', { name: 'Send reviewed visit' }))
     await expect(await canvas.findByRole('status')).toHaveTextContent('Demo received.')
+  },
+}
+
+export const PrivateFiles: Story = {
+  args: {
+    heading: 'Send an application',
+    description: 'Attach your supporting documents.',
+    revision: 'a'.repeat(64),
+    protectRetries: true,
+    fields: [
+      { id: 'applicant', name: 'applicant', label: 'Your name', type: 'text', required: true },
+      {
+        id: 'documents',
+        name: 'supporting_documents',
+        label: 'Supporting documents',
+        type: 'file',
+        required: true,
+        maxFiles: 2,
+        maxFileSizeMB: 3,
+        allowedFileTypes: ['pdf', 'docx', 'png', 'jpg'],
+      },
+    ],
+    onFileUpload: async (file, _field, _revision, _key, uploadID, signal, onProgress) => {
+      for (let progress = 0; progress <= 100; progress += 25) {
+        await new Promise((resolve) => setTimeout(resolve, 80))
+        signal.throwIfAborted()
+        onProgress(progress)
+      }
+      return { token: uploadID, filename: file.name, size: file.size, fileType: 'pdf' }
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.type(canvas.getByLabelText(/Your name/), 'Alex')
+    await userEvent.upload(
+      canvas.getByLabelText(/Supporting documents/),
+      new File(['%PDF-1.7 demo'], 'application.pdf', { type: 'application/pdf' }),
+    )
+    await waitFor(() => expect(canvas.getByText('Uploaded — ready to send')).toBeVisible())
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(
+      await canvas.findByText('Demo received. No information has been saved or sent.'),
+    ).toBeVisible()
   },
 }

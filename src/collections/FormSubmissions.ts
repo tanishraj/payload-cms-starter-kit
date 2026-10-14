@@ -7,6 +7,7 @@ import {
   hideUnlessFeature,
   requireFeature,
 } from '@/access/featureAccess'
+import { releaseFormAttachments } from '@/hooks/releaseFormAttachments'
 import { syncFormSubmissionToWorkQueue } from '@/hooks/syncFormSubmissionToWorkQueue'
 import { updateFormSubmissionActivity } from '@/hooks/updateFormSubmissionActivity'
 import { formSubmissionIntentOptions } from '@/lib/forms'
@@ -64,6 +65,7 @@ export const FormSubmissions: CollectionConfig = {
   },
   hooks: {
     afterChange: [syncFormSubmissionToWorkQueue],
+    afterDelete: [releaseFormAttachments],
     afterRead: [sanitizeSubmissionDependencyRead],
     beforeChange: [updateFormSubmissionActivity],
   },
@@ -243,6 +245,49 @@ export const FormSubmissions: CollectionConfig = {
       type: 'json',
       access: immutableSubmissionFieldAccess,
       admin: { hidden: true, readOnly: true },
+    },
+    {
+      name: 'attachments',
+      label: 'Private attachments',
+      type: 'array',
+      access: immutableSubmissionFieldAccess,
+      admin: {
+        readOnly: true,
+        description:
+          'Original files. Downloads require this submission’s inbox permissions; files are never attached to notification emails.',
+      },
+      fields: [
+        { name: 'filename', type: 'text', required: true, admin: { readOnly: true } },
+        {
+          name: 'label',
+          label: 'Original question',
+          type: 'text',
+          required: true,
+          admin: { readOnly: true },
+        },
+        {
+          name: 'size',
+          label: 'Size (bytes)',
+          type: 'number',
+          required: true,
+          admin: { readOnly: true },
+        },
+        { name: 'fileType', type: 'text', required: true, admin: { readOnly: true } },
+        { name: 'fieldID', type: 'text', required: true, admin: { hidden: true } },
+        { name: 'fieldName', type: 'text', required: true, admin: { hidden: true } },
+        {
+          name: 'token',
+          label: 'Download file',
+          type: 'text',
+          required: true,
+          admin: {
+            readOnly: true,
+            components: {
+              Field: '@/components/admin/FormAttachmentDownload#FormAttachmentDownload',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'answers',

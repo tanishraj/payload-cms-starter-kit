@@ -10,6 +10,7 @@ import { TwoFactorCredentials } from './collections/TwoFactorCredentials'
 import { Footers } from './collections/Footers'
 import { FormSubmissions } from './collections/FormSubmissions'
 import { Forms } from './collections/Forms'
+import { FormAttachments } from './collections/FormAttachments'
 import { GalleryAlbums } from './collections/GalleryAlbums'
 import { Media } from './collections/Media'
 import { NavigationLinks } from './collections/NavigationLinks'
@@ -102,6 +103,7 @@ export default buildConfig({
     // Forms
     Forms,
     FormSubmissions,
+    FormAttachments,
     // Administration
     WorkQueue,
     OperationalAuditEvents,

@@ -8,9 +8,10 @@
   "type": "module",
   "scripts": {
     "audit:prod": "tsx scripts/audit-production-dependencies.ts",
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build && node scripts/verify-private-attachment-artifact.mjs",
     "ci:mongodb:start": "tsx scripts/ci-mongodb-replica.ts start",
     "ci:mongodb:stop": "tsx scripts/ci-mongodb-replica.ts stop",
+    "cleanup:form-attachments": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server\" tsx scripts/cleanup-form-attachments.ts",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:block-thumbnails": "tsx scripts/generate-block-thumbnails.ts",
@@ -35,7 +36,8 @@
     "test:e2e:two-factor": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.two-factor.config.ts",
     "storybook": "storybook dev -p 6006 --host 127.0.0.1 --no-open",
     "build-storybook": "storybook build",
-    "test:e2e:forms": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.config.ts tests/e2e/generic-form.e2e.spec.ts"
+    "test:e2e:forms": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.config.ts tests/e2e/generic-form.e2e.spec.ts",
+    "verify:form-attachment-artifact": "node scripts/verify-private-attachment-artifact.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.916.0",

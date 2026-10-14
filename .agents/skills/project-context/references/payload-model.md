@@ -8,7 +8,7 @@ Registration order in [payload.config.ts](../../../../src/payload.config.ts) is 
 2. Taxonomy: Categories (Topics), Tags.
 3. Navigation and structure: NavigationLinks, Headers, Footers, OfficeLocations, Redirects, SystemPages.
 4. Media: Media, GalleryAlbums.
-5. Intake: Forms, FormSubmissions.
+5. Intake: Forms, FormSubmissions and hidden, non-upload FormAttachments.
 6. Administration: WorkQueue (Action Queue), OperationalAuditEvents (Audit Log), Users, and hidden TwoFactorCredentials.
 
 Exact symbols and files are generated in [project-inventory.json](project-inventory.json). Collections receive Trash through [withTrash.ts](../../../../src/plugins/withTrash.ts), except NewsEventClassifications: classification deletion remains a guarded hard delete. An in-use delete identifies the first referencing News & Events entry, Page, Reusable Section, Calendar/Annual Calendar/Tabs container, or Detail Page Template so the editor can remove or replace that relationship; classifications that must remain connected are archived instead. Content and structural presets opt into drafts/versions in their own configs; operational records and users are not public content.
@@ -46,7 +46,7 @@ Nine globals are registered:
   recursive selection is excluded; renderers stop nesting after depth 10.
 - NavigationLinks provide reusable destinations and page-synchronized records. Headers and Footers provide versioned shell presets.
 - SystemPages pair one type with its matching block and are referenced from system modes.
-- Media owns server-side public marketing-asset uploads, extension/MIME/signature format validation before Payload file generation or replacement cleanup, alt requirements, usage detection, deletion guards, storage health, queue sync, and audit events. Format validation is not malware scanning; private or arbitrary document intake requires a separate collection and private bucket path with external scanning and quarantine. GalleryAlbums own ordered reusable image sets.
+- Media owns server-side public marketing-asset uploads, extension/MIME/signature format validation before Payload file generation or replacement cleanup, alt requirements, usage detection, deletion guards, storage health, queue sync, and audit events. Format validation is not malware scanning; private form documents now use separate FormAttachments metadata/private storage; format detection is not scanning or quarantine. External scanning remains an explicit integration. GalleryAlbums own ordered reusable image sets.
 - Forms define general, lead, and review-intent inputs and notifications. An optional per-field
   `contactRole` maps one Text/Email/Phone control to submitter name/email/phone with arbitrary machine
   names; uniqueness/type validation applies. Legacy alias lookup remains only for unassigned roles.
@@ -63,7 +63,7 @@ Nine globals are registered:
   rejects non-plain answer records, undeclared names and malformed scalar values; checkbox inputs keep
   finite legacy HTML encodings. The fixed review engine explicitly opts into its seven separately
   validated extra keys. Authoring reserves constructor/prototype/website, validates supported types,
-  and caps schemas at 100 fields. The Generic Form block renders the eight current controls through the same validator,
+  and caps schemas at 100 fields. The Generic Form block renders the fifteen current controls through the same validator,
   selects a reusable published General/Lead schema and disables submissions in
   authenticated Live Preview. Native field and option rows open for editing. Private
   operational configuration is excluded from the public client projection.
@@ -144,3 +144,7 @@ Forms now supports Radio (one string) and Checkbox group/Multi-select (unique op
 ## Switch and temporal form answers
 
 Forms adds strict boolean Switch and timezone-free Date (`YYYY-MM-DD`, real calendar years 0001–9999)/Time (`HH:mm`, local minute precision) controls. Native text bounds avoid CMS datetime conversion and allow one inclusive same-day window. Only active valid bounds/defaults enter the public/intake projection and revision; dormant values stay stored. Required switches start off and require explicit on-state; existing Checkbox encodings remain compatible. Recovery preserves same-ID/type answers only while valid under current rules and never refills defaults. Original local strings and boolean meaning remain in JSON snapshots, notifications and event transport; generic contact-like names do not become contact metadata. Fixed Review rejects unsupported types. See the [contract](../../../../docs/planning/form-switch-date-time-controls.md).
+
+## Private form attachments
+
+File questions complete the fifteen-control transport catalogue through bounded token arrays and native allowed-format/size/count settings. Internal FormAttachments denies all direct collection APIs, including Admin. One byte-bounded upload endpoint validates published revision, stable field/attempt ownership, extension/content/size and durable uniqueness; transactional capture claims files with the submission receipt. Original filenames/labels are immutable history, and notifications link to the Admin submission without bytes or direct file URLs. Authenticated downloads require full inbox permission, an access-enforced exact submission read and immutable/internal-receipt linkage, including after Form deletion; byte integrity is checked. Pending files expire after 24 hours; bounded cleanup retains accepted/trash references and retries permanent deletions. New native download UI is import-map registered. Section-scoped rows, antivirus, deployed bucket acceptance and reliable email outbox remain separate work. See [contract](../../../../docs/planning/form-private-attachments.md) and [operations](../../../../docs/operations/private-form-attachments.md).

@@ -1,7 +1,12 @@
+import {
+  getFormAttachmentStorageConfig,
+  type FormAttachmentStorageConfig,
+} from './formAttachmentStorage'
 import { normalizeMediaPublicURL } from './mediaPublicURL'
 import { parseApplicationOrigin } from './applicationOrigin'
 
 export type RuntimeConfig = {
+  formAttachments?: FormAttachmentStorageConfig
   application: {
     origin: string
   }
@@ -208,6 +213,7 @@ export const getRuntimeConfig = (env: NodeJS.ProcessEnv = process.env): RuntimeC
         }
 
   return {
+    formAttachments: getFormAttachmentStorageConfig(env),
     application: {
       origin: applicationOrigin,
     },

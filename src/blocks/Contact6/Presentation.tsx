@@ -4,6 +4,7 @@ import { Contact6 } from '@/components/revamp/contact6'
 import { regularBlockMobilePaddingClasses } from '@/blocks/shared/blockSpacing'
 import { cn } from '@/lib/utils'
 import type { GenericFormDefinition } from '@/lib/genericFormShared'
+import { uploadFormAttachment } from '@/lib/uploadFormAttachment'
 import { submitGenericForm } from '@/lib/submitGenericForm'
 import type { Contact6Block } from '@/payload-types'
 
@@ -41,6 +42,19 @@ export function Contact6BlockPresentation({
               submitButtonLabel: definition.submitButtonLabel,
               protectRetries: true,
               disabled: preview,
+              onFileUpload: preview
+                ? undefined
+                : (file, field, revision, key, uploadID, signal, progress) =>
+                    uploadFormAttachment(
+                      definition.slug,
+                      file,
+                      field,
+                      revision,
+                      key,
+                      uploadID,
+                      signal,
+                      progress,
+                    ),
               onSubmit: (values, revision, submissionKey) =>
                 preview
                   ? Promise.resolve({

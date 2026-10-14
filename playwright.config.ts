@@ -52,6 +52,13 @@ export default defineConfig({
       EMAIL_PROVIDER: 'none',
       MEDIA_RECONCILE_TOKEN: '',
       MEDIA_PROVIDER: 'localDisk',
+      FORM_ATTACHMENTS_PROVIDER: 'localDisk',
+      FORM_ATTACHMENTS_S3_BUCKET: '',
+      FORM_ATTACHMENTS_S3_ENDPOINT: '',
+      FORM_ATTACHMENTS_S3_REGION: '',
+      FORM_ATTACHMENTS_S3_ACCESS_KEY_ID: '',
+      FORM_ATTACHMENTS_S3_SECRET_ACCESS_KEY: '',
+      FORM_ATTACHMENTS_S3_FORCE_PATH_STYLE: '',
       NEXT_PUBLIC_SERVER_URL: 'http://127.0.0.1:3000',
       NODE_ENV: 'development',
       // Next owns its server/client React contexts; only the fixture worker uses react-server.
