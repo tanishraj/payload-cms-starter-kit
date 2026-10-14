@@ -438,6 +438,84 @@ describe('form submission model', () => {
     )
   })
 
+  it('validates day/time/boolean answers and captures local values without contact inference', async () => {
+    const published = {
+      id: 'temporal',
+      slug: 'visits',
+      title: 'Visits',
+      _status: 'published',
+      submissionIntent: 'general',
+      submitButtonLabel: 'Send',
+      successMessage: 'Received',
+      notificationRecipients: [{ email: 'internal@example.test' }],
+      fields: [
+        {
+          id: 'day',
+          name: 'email',
+          label: 'Visit date',
+          type: 'date',
+          required: true,
+          minDate: '2026-10-20',
+          maxDate: '2026-10-31',
+          defaultValue: '2026-10-22',
+        },
+        {
+          id: 'time',
+          name: 'phone',
+          label: 'Visit time',
+          type: 'time',
+          required: true,
+          minTime: '09:00',
+          maxTime: '17:00',
+        },
+        { id: 'switch', name: 'reminder', label: 'Reminder', type: 'switch', defaultChecked: true },
+      ],
+    } as Form
+    payloadMocks.find.mockResolvedValue({ docs: [published] })
+    payloadMocks.create.mockResolvedValue({ id: 'saved', createdAt: '2026-10-14T00:00:00.000Z' })
+    const { POST } = await loadRouteModule()
+    const request = (values: unknown) =>
+      POST(
+        new Request('http://localhost/api/forms/visits/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ values }),
+        }),
+        { params: Promise.resolve({ slug: 'visits' }) },
+      )
+    for (const values of [
+      { phone: '10:30', reminder: false },
+      { email: '2026-02-30', phone: '10:30', reminder: false },
+      { email: '2026-10-22', phone: '17:01', reminder: false },
+      { email: '2026-10-22', phone: '10:30', reminder: 'on' },
+    ]) {
+      expect((await request(values)).status).toBe(400)
+      expect(payloadMocks.create).not.toHaveBeenCalled()
+      expect(payloadMocks.sendEmail).not.toHaveBeenCalled()
+    }
+    expect((await request({ email: '2026-10-22', phone: '10:30', reminder: false })).status).toBe(
+      200,
+    )
+    const stored = payloadMocks.create.mock.calls[0][0].data
+    expect(stored.data).toEqual({ email: '2026-10-22', phone: '10:30', reminder: false })
+    expect(stored.submitterEmail).toBeUndefined()
+    expect(stored.submitterPhone).toBeUndefined()
+    expect(stored.answers).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: 'reminder', displayValue: 'No', value: { raw: false } }),
+        expect.objectContaining({
+          name: 'email',
+          type: 'date',
+          displayValue: '2026-10-22',
+          value: { raw: '2026-10-22' },
+        }),
+      ]),
+    )
+    expect(payloadMocks.sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ text: expect.stringContaining('Visit time: 10:30') }),
+    )
+  })
+
   it('accepts the refreshed revision and stores that same snapshot identity', async () => {
     const published = {
       id: 'revision-form',

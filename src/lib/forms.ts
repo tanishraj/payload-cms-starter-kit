@@ -1,3 +1,4 @@
+import { getFormTemporalError, validateFormTemporalConstraints } from '@/lib/formTemporal'
 import { getFormNumberError, validateFormNumberConstraints } from '@/lib/formNumber'
 
 export const formFieldTypeOptions = [
@@ -15,6 +16,9 @@ export const formFieldTypeOptions = [
   },
   { label: 'URL', value: 'url' },
   { label: 'Number', value: 'number' },
+  { label: 'Date', value: 'date' },
+  { label: 'Time', value: 'time' },
+  { label: 'Switch', value: 'switch' },
   {
     label: 'Textarea',
     value: 'textarea',
@@ -65,6 +69,10 @@ export type SimpleFormField = {
   defaultValue?: string | null
   defaultChecked?: boolean | null
   defaultSelections?: { value: string; id?: string | null }[] | null
+  minDate?: string | null
+  maxDate?: string | null
+  minTime?: string | null
+  maxTime?: string | null
   minSelections?: number | null
   maxSelections?: number | null
   /** Character limits apply to Text and Textarea only; dormant settings survive type changes. */
@@ -156,6 +164,11 @@ export const isTextLikeFormFieldType = (type: FormFieldType): boolean => {
     type === 'number'
   )
 }
+
+export const isBooleanFormFieldType = (type: FormFieldType): boolean =>
+  type === 'checkbox' || type === 'switch'
+export const isTemporalFormFieldType = (type: FormFieldType): type is 'date' | 'time' =>
+  type === 'date' || type === 'time'
 
 export const isSelectFormFieldType = (type: FormFieldType): boolean => {
   return ['select', 'radio', 'checkboxGroup', 'multiSelect'].includes(type)
@@ -265,14 +278,19 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
         return `Character limits for "${name}" must be whole numbers: minimum 0 or greater, maximum 1–${cap}, and minimum no greater than maximum.`
       }
     }
-    if (field.type === 'checkbox') {
+    if (isBooleanFormFieldType(field.type)) {
       if (field.defaultChecked != null && typeof field.defaultChecked !== 'boolean') {
-        return `The initial checkbox value for "${name}" must be true or false.`
+        return `The initial ${field.type === 'switch' ? 'switch' : 'checkbox'} value for "${name}" must be true or false.`
       }
       if (field.required && field.defaultChecked === true) {
-        return `Required checkbox "${name}" must start unchecked so visitors make their own choice.`
+        return field.type === 'switch'
+          ? `Required switch "${name}" must start off so visitors make their own choice.`
+          : `Required checkbox "${name}" must start unchecked so visitors make their own choice.`
       }
     }
+
+    if (isTemporalFormFieldType(field.type) && !validateFormTemporalConstraints(field.type, field))
+      return `${field.type === 'date' ? 'Date' : 'Time'} limits for "${name}" must use valid ${field.type === 'date' ? 'YYYY-MM-DD dates (year 0001–9999)' : 'HH:mm local times (00:00–23:59)'} with minimum no later than maximum.${field.type === 'time' ? ' Time limits must describe one same-day window.' : ''}`
 
     if (field.type === 'number' && !validateFormNumberConstraints(field)) {
       return `Numeric limits for "${name}" must be finite numbers, with minimum no greater than maximum and a positive step. Whole-number settings must be within the safe integer range.`
@@ -371,7 +389,7 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
     }
     // Validate defaults only after choice definitions are known to be well formed.
     if (
-      field.type !== 'checkbox' &&
+      !isBooleanFormFieldType(field.type) &&
       !isMultipleChoiceFormFieldType(field.type) &&
       field.defaultValue != null
     ) {
@@ -418,10 +436,12 @@ export const validateFormFieldDefinitionsForIntent = ({
 
   if (
     fields.some((field) =>
-      ['url', 'number', 'radio', 'checkboxGroup', 'multiSelect'].includes(field.type),
+      ['url', 'number', 'radio', 'checkboxGroup', 'multiSelect', 'switch', 'date', 'time'].includes(
+        field.type,
+      ),
     )
   ) {
-    return 'URL, Number and choice questions require a General/Lead Form with Generic Form or Contact Cards & Form. Change the intent or choose a supported fixed Review control.'
+    return 'URL, Number, choice, Switch, Date and Time questions require a General/Lead Form with Generic Form or Contact Cards & Form. Change the intent or choose a supported fixed Review control.'
   }
   if (fields.some((field) => Object.keys(getFormFieldConfiguration(field)).length)) {
     return 'Help text, initial answers and character limits require Generic Form or Contact Cards & Form. The fixed Review Submission presentation does not render them.'
@@ -453,6 +473,8 @@ const normalizeTextValue = (value: unknown): string => {
 }
 
 const getFieldValueMaxLength = (type: FormFieldType): number | null => {
+  if (type === 'date') return 10
+  if (type === 'time') return 5
   if (type === 'url') return FORM_MAX_URL_LENGTH
   if (type === 'number') return FORM_MAX_NUMBER_LENGTH
   if (type === 'email') {
@@ -505,6 +527,10 @@ export const isValidFormURL = (value: string): boolean => {
 /** Include only active, meaningful configuration; legacy revisions stay unchanged. */
 export const getFormFieldConfiguration = (field: SimpleFormField) => ({
   ...(field.helpText ? { helpText: field.helpText } : {}),
+  ...(field.type === 'date' && field.minDate ? { minDate: field.minDate } : {}),
+  ...(field.type === 'date' && field.maxDate ? { maxDate: field.maxDate } : {}),
+  ...(field.type === 'time' && field.minTime ? { minTime: field.minTime } : {}),
+  ...(field.type === 'time' && field.maxTime ? { maxTime: field.maxTime } : {}),
   ...(field.type === 'number' && field.minValue != null ? { minValue: field.minValue } : {}),
   ...(field.type === 'number' && field.maxValue != null ? { maxValue: field.maxValue } : {}),
   ...(field.type === 'number' && field.step != null ? { step: field.step } : {}),
@@ -517,13 +543,15 @@ export const getFormFieldConfiguration = (field: SimpleFormField) => ({
   ...(isMultipleChoiceFormFieldType(field.type) && field.maxSelections != null
     ? { maxSelections: field.maxSelections }
     : {}),
-  ...(field.type !== 'checkbox' &&
+  ...(!isBooleanFormFieldType(field.type) &&
   !isMultipleChoiceFormFieldType(field.type) &&
   typeof field.defaultValue === 'string' &&
   field.defaultValue.trim()
     ? { defaultValue: field.defaultValue.trim() }
     : {}),
-  ...(field.type === 'checkbox' && field.defaultChecked === true ? { defaultChecked: true } : {}),
+  ...(isBooleanFormFieldType(field.type) && field.defaultChecked === true
+    ? { defaultChecked: true }
+    : {}),
   ...(supportsFormTextLimits(field.type) && field.minLength != null
     ? { minLength: field.minLength }
     : {}),
@@ -537,7 +565,7 @@ export const getFormInitialAnswers = (fields: SimpleFormField[]): FormAnswers =>
   Object.fromEntries(
     fields.map((field) => [
       field.name,
-      field.type === 'checkbox'
+      isBooleanFormFieldType(field.type)
         ? field.defaultChecked === true && !field.required
         : isMultipleChoiceFormFieldType(field.type)
           ? (field.options ?? [])
@@ -608,7 +636,11 @@ export const validateFormSubmission = ({
   for (const field of fields) {
     const rawValue = Object.hasOwn(values, field.name) ? values[field.name] : undefined
 
-    if (field.type === 'checkbox') {
+    if (isBooleanFormFieldType(field.type)) {
+      if (field.type === 'switch' && rawValue !== undefined && typeof rawValue !== 'boolean') {
+        errors[field.name] = `${field.label} must be true or false.`
+        continue
+      }
       // Keep finite legacy HTML checkbox encodings; reject arbitrary coercion.
       if (rawValue !== undefined && !checkboxValues.has(rawValue)) {
         errors[field.name] = `${field.label} must be a checkbox value.`
@@ -618,7 +650,10 @@ export const validateFormSubmission = ({
       normalizedData[field.name] = normalizedValue
 
       if (field.required && !normalizedValue) {
-        errors[field.name] = `${field.label} must be accepted.`
+        errors[field.name] =
+          field.type === 'switch'
+            ? `${field.label} must be turned on.`
+            : `${field.label} must be accepted.`
       }
 
       continue
@@ -699,8 +734,24 @@ export const validateFormSubmission = ({
         `${field.label} must be a full http:// or https:// address without spaces or login details.`
       continue
     }
+    if (
+      isTemporalFormFieldType(field.type) &&
+      !validateFormTemporalConstraints(field.type, field)
+    ) {
+      errors[field.name] = `${field.label} is unavailable because its date/time limits are invalid.`
+      continue
+    }
+
     if (field.type === 'number' && normalizedValue) {
       const error = getFormNumberError(normalizedValue, field, field.label)
+      if (error) {
+        errors[field.name] = error
+        continue
+      }
+    }
+
+    if (isTemporalFormFieldType(field.type) && normalizedValue) {
+      const error = getFormTemporalError(normalizedValue, field.type, field, field.label)
       if (error) {
         errors[field.name] = error
         continue
@@ -765,7 +816,16 @@ export const getSubmissionContactMetadata = (
         !fields.some(
           (field) =>
             field.name === key &&
-            ['url', 'number', 'radio', 'checkboxGroup', 'multiSelect'].includes(field.type),
+            [
+              'url',
+              'number',
+              'radio',
+              'checkboxGroup',
+              'multiSelect',
+              'switch',
+              'date',
+              'time',
+            ].includes(field.type),
         ),
     )
     return getFirstNormalizedStringValue(

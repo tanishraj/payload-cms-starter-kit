@@ -5110,6 +5110,9 @@ export interface Form {
       | 'phone'
       | 'url'
       | 'number'
+      | 'date'
+      | 'time'
+      | 'switch'
       | 'textarea'
       | 'select'
       | 'radio'
@@ -5148,7 +5151,7 @@ export interface Form {
      */
     maxSelections?: number | null;
     /**
-     * Optional checkboxes only. Required acceptance questions must start unchecked so visitors make their own choice.
+     * Optional checkboxes and switches only. Required acceptance questions must start unchecked/off so visitors make their own choice.
      */
     defaultChecked?: boolean | null;
     /**
@@ -5171,6 +5174,22 @@ export interface Form {
      * Optional positive increment: 1 for unit steps, 0.5 for half-unit steps. Starts at the minimum, or zero if no minimum is set. Leave blank to allow any decimal value. Numeric settings are retained but inactive on other types.
      */
     step?: number | null;
+    /**
+     * Optional inclusive bound in YYYY-MM-DD format. Calendar date only; no timezone conversion. Years 0001–9999. Leave blank for no bound. Stored settings are inactive on other types.
+     */
+    minDate?: string | null;
+    /**
+     * Optional inclusive bound in YYYY-MM-DD format. Calendar date only; no timezone conversion. Years 0001–9999. Leave blank for no bound. Stored settings are inactive on other types.
+     */
+    maxDate?: string | null;
+    /**
+     * Optional inclusive bound in HH:mm format. Local 24-hour time, 00:00–23:59; no timezone conversion. Limits must describe one same-day window. Leave blank for no bound. Stored settings are inactive on other types.
+     */
+    minTime?: string | null;
+    /**
+     * Optional inclusive bound in HH:mm format. Local 24-hour time, 00:00–23:59; no timezone conversion. Limits must describe one same-day window. Leave blank for no bound. Stored settings are inactive on other types.
+     */
+    maxTime?: string | null;
     /**
      * Edit or reorder existing options to keep their row identity. Changing a value clears that selected answer during refresh; changing only the label keeps a still-valid value. Historical submissions retain the original label and value.
      */
@@ -14809,6 +14828,10 @@ export interface FormsSelect<T extends boolean = true> {
         minValue?: T;
         maxValue?: T;
         step?: T;
+        minDate?: T;
+        maxDate?: T;
+        minTime?: T;
+        maxTime?: T;
         options?:
           | T
           | {

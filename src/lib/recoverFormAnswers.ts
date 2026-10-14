@@ -1,6 +1,7 @@
 import type { FormAnswers } from '@/lib/forms'
 import {
   isMultipleChoiceFormFieldType,
+  isBooleanFormFieldType,
   validateFormSubmission,
   type SimpleFormField,
 } from '@/lib/forms'
@@ -14,7 +15,11 @@ export function recoverFormAnswers(
   const values: FormAnswers = Object.fromEntries(
     next.map((field) => [
       field.name,
-      field.type === 'checkbox' ? false : isMultipleChoiceFormFieldType(field.type) ? [] : '',
+      isBooleanFormFieldType(field.type)
+        ? false
+        : isMultipleChoiceFormFieldType(field.type)
+          ? []
+          : '',
     ]),
   )
   const partiallyClearedLabels = new Set<string>()
