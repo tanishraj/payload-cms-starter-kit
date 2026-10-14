@@ -102,5 +102,20 @@ Ordered layout/display entries and one-level question groups are merged, includi
 canonical Payload ownership of submit/upload/private-download APIs. See the
 [layout contract](form-layout-entries.md). The verified feature branch is removed;
 continue on fresh `feat/form-appearance-controls`. Build supported appearance
-settings next, then conditions as a separate bounded increment. Full forms
-acceptance and broad scope/provider/UX reliability work remain tracked.
+settings next, then conditions as a separate bounded increment. The appearance
+increment passed local focused/full integration, native browser, Storybook, type,
+lint and production artifact checks. Exact-head Quality and merge remain pending.
+Full forms acceptance and broad scope/provider/UX reliability work remain tracked.
+
+
+## Appearance increment — 15 October 2026
+
+On `feat/form-appearance-controls`, sourced supported width/spacing/columns and
+submit variant/size/shape/width map to one reusable native Form appearance group.
+Defaults preserve legacy output/hashes. Active settings participate in original
+revision/history and explicit stale recovery without changing answer semantics.
+Storybook-first review/play and local focused/full release checks are complete:
+2,693 integration tests passed with one Docker-dependent skip; both native form
+journeys passed; the build verified 73 traces and no private uploads. Exact-head
+Quality/merge remain the next gates. See [contract](form-appearance-controls.md).
+Conditions follow on a new branch after merge; broader forms acceptance stays open.

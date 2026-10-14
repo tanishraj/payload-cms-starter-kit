@@ -12,7 +12,7 @@ type StoryArgs = Omit<Contact6Props, 'form' | 'contactInfo'> & {
   contactInfo?: Contact6Block['contactInfo']
 } & Pick<
     GenericFormProps,
-    'fields' | 'submitButtonLabel' | 'pendingLabel' | 'disabled' | 'onSubmit'
+    'fields' | 'appearance' | 'submitButtonLabel' | 'pendingLabel' | 'disabled' | 'onSubmit'
   >
 
 function Contact6StoryPresentation(args: StoryArgs) {
@@ -28,6 +28,7 @@ function Contact6StoryPresentation(args: StoryArgs) {
           ? null
           : {
               fields: args.fields,
+              appearance: args.appearance,
               submitButtonLabel: args.submitButtonLabel,
               pendingLabel: args.pendingLabel,
               disabled: args.disabled,
@@ -132,6 +133,12 @@ const meta = {
     preview: false,
   },
   argTypes: {
+    appearance: {
+      name: 'Supported form appearance',
+      control: 'object',
+      description:
+        'Shared Form appearance settings. Defaults retain this upstream card and its first-two-short-question layout. Two columns use a fixed 32rem available form-width breakpoint; the contact card stays within its upstream grid.',
+    },
     heading: { control: 'text' },
     description: { control: 'text' },
     formTitle: { control: 'text' },
@@ -251,5 +258,18 @@ export const NetworkFailure: Story = {
     onSubmit: fn(async () => {
       throw new Error('Demo connection loss')
     }),
+  },
+}
+
+export const Appearance: Story = {
+  args: {
+    appearance: {
+      columns: 'one',
+      spacing: 'compact',
+      buttonVariant: 'secondary',
+      buttonSize: 'lg',
+      buttonShape: 'pill',
+      buttonWidth: 'content',
+    },
   },
 }

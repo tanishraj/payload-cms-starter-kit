@@ -39,6 +39,7 @@ describe('published generic form loader', () => {
           select: {
             slug: true,
             title: true,
+            appearance: true,
             fields: true,
             submitButtonLabel: true,
             submissionIntent: true,

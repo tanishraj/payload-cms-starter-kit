@@ -151,3 +151,21 @@ Production adapters derive this projection from the single ordered native Form
 array. Sources: @shadcnblocks/field-field-advanced-4,
 @shadcnblocks/form-form-multi-field-6 and @shadcnblocks/field-field-advanced-5.
 Website themes are inherited; no separate form stylesheet is added.
+
+
+## Supported dynamic-form appearance
+
+Use **Blocks/Generic Form → Appearance Preview** for the wide/two-column/compact
+playground and **Narrow Appearance** for a dense form. **Appearance** exercises
+validation using the real presentation; Contact Cards & Form → Appearance reviews
+the shared settings inside its original card. The appearance object control lists
+the exact supported values. Defaults retain each source block. Source references,
+fixed 32rem form-width breakpoint, native settings and compatibility live in the
+[appearance contract](../planning/form-appearance-controls.md).
+
+Reviewed before Payload integration: 1280px light and 390px dark, 12px gaps,
+two/one columns without overflow, labelled groups and actual first-error focus;
+the new play finishes. Contact6 retains its outer card composition and wraps on
+mobile. Dark WCAG A/AA axe reports zero violations. Neutral light still reports
+the previously documented muted-surface contrast issue; no AA certification or
+palette override is claimed. Production inherits its existing website theme.

@@ -38,6 +38,7 @@ export function Contact6BlockPresentation({
         definition
           ? {
               fields: definition.fields,
+              appearance: definition.appearance,
               entries: definition.entries,
               revision: definition.revision,
               submitButtonLabel: definition.submitButtonLabel,

@@ -1,4 +1,9 @@
 import {
+  projectFormAppearance,
+  validateFormAppearanceForIntent,
+  type FormAppearance,
+} from '@/lib/formAppearance'
+import {
   getFormQuestions,
   projectFormLayout,
   validateFormEntries,
@@ -12,6 +17,7 @@ import {
 import type { Form } from '@/payload-types'
 
 export type GenericFormDefinition = {
+  appearance?: FormAppearance
   entries?: FormLayoutEntry[]
   revision?: string
   slug: string
@@ -48,10 +54,13 @@ export function projectGenericForm(
   )
     return null
   if (validateFormEntries(form.fields, form.submissionIntent) !== true) return null
+  if (validateFormAppearanceForIntent(form.appearance, form.submissionIntent) !== true) return null
+  const appearance = projectFormAppearance(form.appearance)
   const fields = projectFormFields(form)
   if (validateFormFieldDefinitions(fields) !== true) return null
   const entries = projectFormLayout(form.fields)
   return {
+    ...(appearance ? { appearance } : {}),
     ...(entries ? { entries } : {}),
     slug: form.slug,
     fields,

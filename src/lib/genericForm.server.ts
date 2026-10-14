@@ -27,6 +27,7 @@ export const getPublishedGenericForm = unstable_cache(
       select: {
         slug: true,
         title: true,
+        appearance: true,
         fields: true,
         submitButtonLabel: true,
         submissionIntent: true,

@@ -50,3 +50,22 @@ Docs and Default expose labelled controls. Additional stories cover TextOnly, Di
 ## Review disposition
 
 The finish reviewer reported **ship**, no material fixes and an empty detector result. Captures are available under `/private/tmp/payload-generic-form-review`; the maintained review destination is `docs/planning/generic-form-workshop-review.md`. This document records that supplied disposition and current source behavior, without adding unperformed checks. Payload rendering, CMS configuration, submission persistence, native-admin journeys and production integration remain subsequent work.
+
+
+## Current appearance extension — 15 October 2026
+
+This supersedes the initial workshop-only API limitations above. Generic Form is
+now integrated with native Payload and shares fifteen question controls and optional
+ordered display/groups with Contact6. Typed `appearance` exposes source-supported
+maximum width, spacing, columns and submit variant/size/shape/width; canonical
+Storybook entries have working object controls. Defaults preserve the original.
+The fixed 32rem available form-width breakpoint stacks narrow forms. Production
+inherits its website theme; no new visual world or palette.
+
+Authenticated form-form-layouts-3/-6, button-button-standard-1/-4,
+button-button-outline-1/secondary-1/sizes-1/-2 are recorded in the
+[appearance contract](../../docs/planning/form-appearance-controls.md). Desktop
+light/mobile dark, groups, no overflow and first-error focus were reviewed;
+new interaction play finishes. Dark axe has zero WCAG A/AA violations; known
+Neutral light muted-surface contrast stays open. Verdict: bounded presentation
+ready, with native/release/CI acceptance tracked separately in the checklist.

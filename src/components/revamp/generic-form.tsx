@@ -1,11 +1,18 @@
 'use client'
 
+import {
+  projectFormAppearance,
+  validateFormAppearance,
+  type FormAppearance,
+} from '@/lib/formAppearance'
 import { FormLayout } from '@/components/revamp/form-layout'
 import { validateFormLayout, type FormLayoutEntry } from '@/lib/formLayout'
 import type { FormAnswers } from '@/lib/forms'
 
 /**
  * Source: @shadcnblocks/form-form-patterns-4 (authenticated, 2026-10-06).
+ * Appearance: authenticated @shadcnblocks/form-form-layouts-3/-6,
+ * button-button-standard-4, button-button-outline-1/secondary-1/sizes-1/-2.
  * Checkbox composition: @shadcnblocks/checkbox-checkbox-standard-1.
  * THESIS: Published questions become a usable form without fixed contact names.
  * OWN-WORLD: Inherit official Neutral light/dark, Radix Luma, system sans.
@@ -69,6 +76,7 @@ export type GenericFormResult = {
   requestKeyConflict?: boolean
   errors?: FormSubmissionErrors
   updatedForm?: {
+    appearance?: FormAppearance
     entries?: FormLayoutEntry[]
     fields: SimpleFormField[]
     revision: string
@@ -78,6 +86,7 @@ export type GenericFormResult = {
 export type GenericFormProps = {
   /** Contact6 preserves its first two short controls in a responsive split row. */
   layout?: 'stacked' | 'contact6'
+  appearance?: FormAppearance
   entries?: FormLayoutEntry[]
   fields: SimpleFormField[]
   formLabel?: string
@@ -112,6 +121,7 @@ const subscribeToHydration = () => () => {}
 function FormPresentation({
   fields: initialFields,
   entries: initialEntries,
+  appearance: initialAppearance,
   revision: initialRevision,
   layout = 'stacked',
   heading = 'Get in touch',
@@ -124,6 +134,12 @@ function FormPresentation({
   onSubmit,
   onFileUpload,
 }: GenericFormProps) {
+  const [updatedAppearance, setAppearance] = useState<{ value?: FormAppearance } | null>(null)
+  const appearance = projectFormAppearance(
+    updatedAppearance ? updatedAppearance.value : initialAppearance,
+  )
+  const twoColumns = appearance?.columns === 'two'
+  const compact = appearance?.spacing === 'compact'
   const [entries, setEntries] = useState(initialEntries)
   const [fields, setFields] = useState(initialFields)
   const [revision, setRevision] = useState(initialRevision)
@@ -133,6 +149,7 @@ function FormPresentation({
   const recoveryRef = useRef<HTMLParagraphElement>(null)
   const splitFirstRow =
     !entries &&
+    !appearance?.columns &&
     layout === 'contact6' &&
     fields.length >= 2 &&
     fields
@@ -204,6 +221,7 @@ function FormPresentation({
     answers: FormAnswers,
   ) => {
     const recovered = recoverFormAnswers(fields, updated.fields, answers, uploadedFiles.current)
+    setAppearance({ value: updated.appearance })
     setEntries(updated.entries)
     setFields(updated.fields)
     setRevision(updated.revision)
@@ -270,10 +288,19 @@ function FormPresentation({
   }
 
   return (
-    <div className={cn('w-full', layout === 'stacked' && 'max-w-md')} ref={setSelectContainer}>
+    <div
+      className={cn(
+        'w-full @container/form',
+        !appearance?.width && layout === 'stacked' && 'max-w-md',
+        appearance?.width === 'narrow' && 'max-w-sm',
+        appearance?.width === 'wide' && 'max-w-2xl',
+      )}
+      data-form-appearance={JSON.stringify(appearance ?? {})}
+      ref={setSelectContainer}
+    >
       <form
         method="post"
-        className="flex flex-col gap-4"
+        className={cn('flex flex-col gap-4', compact && 'gap-3')}
         noValidate
         onSubmit={(event) => {
           if (inactive || submittingRef.current || result?.success) {
@@ -365,10 +392,14 @@ function FormPresentation({
             <FieldGroup
               className={cn(
                 layout === 'contact6' && 'gap-6',
+                twoColumns && 'grid gap-4 @lg/form:grid-cols-2',
+                compact && 'gap-3',
                 splitFirstRow && 'grid sm:grid-cols-2',
               )}
             >
               <FormLayout
+                compact={compact}
+                twoColumns={twoColumns}
                 headingLevel={layout === 'contact6' ? 4 : 3}
                 entries={entries}
                 names={fields.map((field) => field.name)}
@@ -379,6 +410,20 @@ function FormPresentation({
                     name={`answers.${definition.name}`}
                     control={form.control}
                     render={({ field, fieldState }) => {
+                      const questionClass = cn(
+                        splitFirstRow && index >= 2 && 'sm:col-span-2',
+                        twoColumns &&
+                          [
+                            'textarea',
+                            'file',
+                            'radio',
+                            'checkboxGroup',
+                            'multiSelect',
+                            'checkbox',
+                            'switch',
+                          ].includes(definition.type) &&
+                          '@lg/form:col-span-2',
+                      )
                       const id = `${prefix}-${definition.name}`
                       const errorId = `${id}-error`
                       const helpId = `${id}-help`
@@ -437,10 +482,7 @@ function FormPresentation({
                         isMultipleChoiceFormFieldType(definition.type)
                       )
                         return (
-                          <FieldSet
-                            className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
-                            disabled={inactive}
-                          >
+                          <FieldSet className={questionClass} disabled={inactive}>
                             <FieldLegend variant="label" id={`${id}-label`}>
                               {label}
                             </FieldLegend>
@@ -467,7 +509,7 @@ function FormPresentation({
                       if (isBooleanFormFieldType(definition.type))
                         return (
                           <Field
-                            className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
+                            className={questionClass}
                             data-invalid={fieldState.invalid}
                             data-disabled={inactive}
                           >
@@ -494,7 +536,7 @@ function FormPresentation({
                         )
                       return (
                         <Field
-                          className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
+                          className={questionClass}
                           data-invalid={fieldState.invalid}
                           data-disabled={inactive}
                         >
@@ -686,7 +728,18 @@ function FormPresentation({
                 autoComplete="off"
               />
             </div>
-            <Button className="w-full" type="submit" disabled={inactive || uploadsBlocked}>
+            <Button
+              className={cn(
+                appearance?.buttonWidth === 'content'
+                  ? 'self-start max-w-full whitespace-normal'
+                  : 'w-full whitespace-normal',
+                appearance?.buttonShape === 'pill' && 'rounded-full',
+              )}
+              variant={appearance?.buttonVariant ?? 'default'}
+              size={appearance?.buttonSize ?? 'default'}
+              type="submit"
+              disabled={inactive || uploadsBlocked}
+            >
               {pending ? pendingLabel : submitButtonLabel}
             </Button>
           </>
@@ -698,6 +751,7 @@ function FormPresentation({
 
 export function GenericForm(props: GenericFormProps) {
   if (
+    validateFormAppearance(props.appearance) !== true ||
     validateFormFieldDefinitions(props.fields) !== true ||
     validateFormLayout(props.entries, props.fields) !== true
   ) {

@@ -572,4 +572,95 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
       await rm(directory, { recursive: true, force: true })
     }
   })
+  it('validates appearance publication, isolates drafts and refreshes original accepted appearance through native REST', async () => {
+    const setupForm = (await setup()).form
+    const form = await payload.update({
+      collection: 'forms',
+      id: setupForm.id,
+      data: {
+        fields: [{ name: 'question', label: 'Your question', type: 'text', required: true }],
+        appearance: { width: 'wide', buttonVariant: 'outline' },
+      },
+    })
+    const initial = projectPublishedGenericForm(form)!
+    await expect(
+      payload.update({
+        collection: 'forms',
+        id: form.id,
+        data: { appearance: { buttonSize: 'icon' } as never },
+      }),
+    ).rejects.toThrow()
+    await expect(
+      payload.update({ collection: 'forms', id: form.id, data: { submissionIntent: 'review' } }),
+    ).rejects.toMatchObject({
+      data: {
+        errors: expect.arrayContaining([
+          expect.objectContaining({
+            path: 'appearance',
+            message: expect.stringContaining('fixed presentation'),
+          }),
+        ]),
+      },
+    })
+    await payload.update({
+      collection: 'forms',
+      id: form.id,
+      draft: true,
+      data: { appearance: { width: 'narrow' } },
+    })
+    const published = await payload.findByID({ collection: 'forms', id: form.id, draft: false })
+    expect(projectPublishedGenericForm(published)?.appearance?.width).toBe('wide')
+    const current = await payload.update({
+      collection: 'forms',
+      id: form.id,
+      data: { _status: 'published', appearance: { width: 'narrow', buttonVariant: 'secondary' } },
+    })
+    const expected = projectPublishedGenericForm(current)!
+    const key = randomUUID()
+    const submit = (revision?: string) =>
+      handleEndpoints({
+        config: payload.config,
+        request: new Request(`http://localhost/api/forms/${form.slug}/submit`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            values: { question: 'Campus visit' },
+            formRevision: revision,
+            submissionKey: key,
+          }),
+        }),
+      })
+    expect((await submit()).status).toBe(400)
+    const stale = await submit(initial.revision)
+    expect(stale.status).toBe(409)
+    expect((await stale.json()).form.appearance).toEqual(expected.appearance)
+    expect(
+      (
+        await payload.count({
+          collection: 'form-submissions',
+          where: { form: { equals: form.id } },
+        })
+      ).totalDocs,
+    ).toBe(0)
+    expect((await submit(expected.revision)).status).toBe(200)
+    const stored = (
+      await payload.find({ collection: 'form-submissions', where: { form: { equals: form.id } } })
+    ).docs[0]
+    expect((stored.formSnapshot as { appearance: unknown }).appearance).toEqual(expected.appearance)
+    expect(stored.data).toEqual({ question: 'Campus visit' })
+    await payload.update({
+      collection: 'forms',
+      id: form.id,
+      data: { appearance: { width: 'full' } },
+    })
+    expect((await submit(expected.revision)).status).toBe(200)
+    expect(
+      (
+        await payload.count({
+          collection: 'form-submissions',
+          where: { form: { equals: form.id } },
+        })
+      ).totalDocs,
+    ).toBe(1)
+  })
 })

@@ -1,3 +1,8 @@
+import {
+  projectFormAppearance,
+  validateFormAppearance,
+  type FormAppearance,
+} from '@/lib/formAppearance'
 import { validateFormLayout, type FormLayoutEntry } from '@/lib/formLayout'
 import type { FormAnswers } from '@/lib/forms'
 import { validateFormFieldDefinitions, type SimpleFormField } from '@/lib/forms'
@@ -55,6 +60,7 @@ export async function parseGenericFormResponse(
         'entries' in updated ? updated.entries : undefined,
         updated.fields as SimpleFormField[],
       ) === true &&
+      validateFormAppearance('appearance' in updated ? updated.appearance : undefined) === true &&
       'submitButtonLabel' in updated &&
       typeof updated.submitButtonLabel === 'string'
     ) {
@@ -62,6 +68,9 @@ export async function parseGenericFormResponse(
         success: false,
         message: body.message,
         updatedForm: {
+          ...('appearance' in updated && projectFormAppearance(updated.appearance as FormAppearance)
+            ? { appearance: projectFormAppearance(updated.appearance as FormAppearance) }
+            : {}),
           ...('entries' in updated && updated.entries
             ? { entries: updated.entries as FormLayoutEntry[] }
             : {}),

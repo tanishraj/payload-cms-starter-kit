@@ -1,3 +1,4 @@
+import { projectFormAppearance, validateFormAppearance } from '@/lib/formAppearance'
 import type { Form } from '@/payload-types'
 
 export type Contact33FieldName = 'email' | 'message' | 'name' | 'phone' | 'subject'
@@ -5,7 +6,7 @@ type Contact33CoreFieldName = Exclude<Contact33FieldName, 'phone'>
 
 export type Contact33FormLike = Pick<
   Form,
-  'fields' | 'slug' | 'submitButtonLabel' | 'successMessage' | 'title'
+  'appearance' | 'fields' | 'slug' | 'submitButtonLabel' | 'successMessage' | 'title'
 >
 
 export type Contact33FieldDefinition = {
@@ -68,8 +69,10 @@ const typeLabels = {
 } as const
 
 export function validateContact33FormDefinition(
-  form: Pick<Contact33FormLike, 'fields'> | null | undefined,
+  form: Pick<Contact33FormLike, 'fields' | 'appearance'> | null | undefined,
 ): true | string {
+  if (validateFormAppearance(form?.appearance) !== true || projectFormAppearance(form?.appearance))
+    return 'Contact 33 has a fixed presentation. Use default appearance or choose Generic Form or Contact Cards & Form.'
   const fields = form?.fields ?? []
   if (fields.some((field) => field.entryType != null && field.entryType !== 'question'))
     return 'Contact 33 has fixed questions and cannot render layout entries. Use Generic Form or Contact Cards & Form.'

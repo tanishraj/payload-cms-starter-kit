@@ -1,3 +1,4 @@
+import { projectFormAppearance, validateFormAppearanceForIntent } from '@/lib/formAppearance'
 import { projectFormLayout, validateFormEntries } from '@/lib/formLayout'
 import configPromise from '@payload-config'
 import { createLocalReq, getPayload, type Payload, type PayloadRequest } from 'payload'
@@ -212,10 +213,16 @@ export async function POST(
     ipAddress,
   })
 
-  if (validateFormEntries(form.fields, form.submissionIntent) !== true)
+  if (
+    validateFormEntries(form.fields, form.submissionIntent) !== true ||
+    validateFormAppearanceForIntent(form.appearance, form.submissionIntent) !== true
+  )
     return Response.json({ message: 'This form is unavailable.' }, { status: 404 })
 
-  if (projectFormLayout(form.fields) && payloadBody?.formRevision === undefined)
+  if (
+    (projectFormLayout(form.fields) || projectFormAppearance(form.appearance)) &&
+    payloadBody?.formRevision === undefined
+  )
     return Response.json(
       {
         message:

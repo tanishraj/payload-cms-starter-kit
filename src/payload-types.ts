@@ -5078,6 +5078,39 @@ export interface Form {
   submitButtonLabel: string;
   successMessage: string;
   /**
+   * Shared by every Generic Form and Contact Cards & Form block using this Form. Defaults preserve the selected block. Controls inherit the website theme. Fixed Review Submission and Contact 33 require default appearance.
+   */
+  appearance?: {
+    /**
+     * Maximum width inside the selected block; never widens its card or section.
+     */
+    width?: ('default' | 'narrow' | 'wide' | 'full') | null;
+    /**
+     * Two columns need at least 32rem of available form width. Smaller forms stay stacked; display entries, groups and long/compound controls span both columns. Default preserves Contact Cards & Form’s first short row.
+     */
+    columns?: ('default' | 'one' | 'two') | null;
+    /**
+     * Compact uses the sourced 12px form/group gap. Labels, help and errors remain visible.
+     */
+    spacing?: ('default' | 'compact') | null;
+    /**
+     * Uses the website’s semantic theme colors; does not change submission behavior.
+     */
+    buttonVariant?: ('default' | 'outline' | 'secondary') | null;
+    /**
+     * Upstream text-button sizes; no icon-only or extra-small submit controls.
+     */
+    buttonSize?: ('default' | 'sm' | 'lg') | null;
+    /**
+     * Theme default inherits the selected button; Pill uses upstream fully rounded corners.
+     */
+    buttonShape?: ('default' | 'pill') | null;
+    /**
+     * Fit label stays at the start of the form and wraps long labels.
+     */
+    buttonWidth?: ('default' | 'content') | null;
+  };
+  /**
    * Optional internal email recipients who should be notified when this form receives a valid submission.
    */
   notificationRecipients?:
@@ -14979,6 +15012,17 @@ export interface FormsSelect<T extends boolean = true> {
   submissionIntent?: T;
   submitButtonLabel?: T;
   successMessage?: T;
+  appearance?:
+    | T
+    | {
+        width?: T;
+        columns?: T;
+        spacing?: T;
+        buttonVariant?: T;
+        buttonSize?: T;
+        buttonShape?: T;
+        buttonWidth?: T;
+      };
   notificationRecipients?:
     | T
     | {

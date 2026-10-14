@@ -184,3 +184,17 @@ body/file parsing, public Media fallback, route prewarming or weaker test assert
 is introduced. CI's previous upload requests reached Payload REST and returned
 route-not-found; native registration makes this URL resolvable by that router.
 The underlying platform routing discrepancy is not claimed to be diagnosed.
+
+
+### Supported Form appearance
+
+Forms has one optional named `appearance` group, explicitly registered by
+`formAppearanceField.ts`: approved maximum widths, compact/default spacing,
+one/two/default question columns and semantic submit-button variant/size/shape/width.
+`formAppearance.ts` validates allowlists and canonically omits default/null values,
+preserving legacy revision hashes. Active settings enter minimal public projection
+and optional original snapshot/revision, never answer rows. Draft isolation and
+explicit changed-form recovery carry appearance; compatible answers remain.
+Fixed Review/Contact33 reject non-default settings, including later Form edits;
+revisionless intake rejects active appearance before persistence/email. See
+[contract](../../../../docs/planning/form-appearance-controls.md).
