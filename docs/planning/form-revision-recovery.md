@@ -1,6 +1,6 @@
 # Published form revision recovery
 
-Implemented increment: 2026-10-14 (Asia/Dubai). User-approved policy; pending merge gates. This increment does not complete the full form identity/lifecycle catalogue.
+Implemented increment: 2026-10-14 (Asia/Dubai), commit `5a5ec86`, [draft PR #21](https://github.com/tanishraj/payload-cms-starter-kit/pull/21). User-approved policy; pending merge gates. This increment does not complete the full form identity/lifecycle catalogue.
 
 ## Visitor and editor behavior
 
