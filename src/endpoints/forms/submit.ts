@@ -1,7 +1,6 @@
 import { projectFormLayout, validateFormEntries } from '@/lib/formLayout'
 import configPromise from '@payload-config'
-import { NextResponse } from 'next/server'
-import { createLocalReq, getPayload, type PayloadRequest } from 'payload'
+import { createLocalReq, getPayload, type Payload, type PayloadRequest } from 'payload'
 
 import {
   PUBLIC_JSON_BODY_MAX_BYTES,
@@ -49,11 +48,13 @@ import { upsertReviewFromSubmission } from '@/lib/reviewPromotion'
 import { validateReviewSubmission } from '@/lib/reviews'
 import { normalizeSiteTimeZone, type SiteTimeZone } from '@/lib/siteTimeZone'
 
-export async function POST(request: Request, context: { params: Promise<{ slug: string }> }) {
+export async function POST(
+  request: Request,
+  context: { params: Promise<{ slug: string }> },
+  suppliedPayload?: Payload,
+) {
   const { slug } = await context.params
-  const payload = await getPayload({
-    config: configPromise,
-  })
+  const payload = suppliedPayload ?? (await getPayload({ config: configPromise }))
 
   let payloadBody: {
     metadata?: unknown
@@ -76,7 +77,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
           }[error.code]
         : 400
 
-    return NextResponse.json(
+    return Response.json(
       {
         message: 'Invalid form submission payload.',
       },
@@ -94,13 +95,13 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
           payloadBody.formRevision,
         )
   if (payloadBody?.submissionKey !== undefined && !identity) {
-    return NextResponse.json({ message: 'Invalid submission request.' }, { status: 400 })
+    return Response.json({ message: 'Invalid submission request.' }, { status: 400 })
   }
   const receiptResponse = (
     receipt: NonNullable<Awaited<ReturnType<typeof findSubmissionReceipt>>>,
   ) => {
     if (receipt.submissionRequestHash !== identity?.submissionRequestHash) {
-      return NextResponse.json(
+      return Response.json(
         {
           code: 'SUBMISSION_KEY_REUSED',
           message:
@@ -109,7 +110,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
         { status: 409, headers: { 'Cache-Control': 'no-store' } },
       )
     }
-    return NextResponse.json(
+    return Response.json(
       { message: receipt.submissionConfirmation ?? 'Your response was received.' },
       { headers: { 'Cache-Control': 'no-store' } },
     )
@@ -118,7 +119,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
     const receipt = await findSubmissionReceipt(payload, identity.submissionKeyHash)
     if (receipt) return receiptResponse(receipt)
     if (!(await hasSubmissionKeyIndex(payload))) {
-      return NextResponse.json(
+      return Response.json(
         { message: 'Submission service is temporarily unavailable.' },
         { status: 503 },
       )
@@ -148,7 +149,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   const form = result.docs[0] ?? null
 
   if (!form) {
-    return NextResponse.json(
+    return Response.json(
       {
         message: 'The requested form is not available.',
       },
@@ -163,11 +164,11 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
       typeof payloadBody.formRevision !== 'string' ||
       !/^[a-f0-9]{64}$/.test(payloadBody.formRevision)
     ) {
-      return NextResponse.json({ message: 'Invalid form revision.' }, { status: 400 })
+      return Response.json({ message: 'Invalid form revision.' }, { status: 400 })
     }
     const published = projectPublishedGenericForm(form)
     if (!published || published.revision !== payloadBody.formRevision) {
-      return NextResponse.json(
+      return Response.json(
         {
           code: 'FORM_CHANGED',
           message: 'The questions have changed. Review the updated form before submitting again.',
@@ -183,7 +184,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
     validateFormSubmissionMetadata(payloadBody?.metadata)
 
   if (isFormSubmissionValues(submissionValues) && isSpamHoneypotTriggered(submissionValues)) {
-    return NextResponse.json({
+    return Response.json({
       message: form.successMessage,
     })
   }
@@ -193,7 +194,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   const rateLimitDecision = isRateLimited({ formSlug: slug, ipAddress })
 
   if (rateLimitDecision.limited) {
-    return NextResponse.json(
+    return Response.json(
       {
         message: 'Too many submissions from this device. Please wait a few minutes and try again.',
       },
@@ -212,10 +213,10 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   })
 
   if (validateFormEntries(form.fields, form.submissionIntent) !== true)
-    return NextResponse.json({ message: 'This form is unavailable.' }, { status: 404 })
+    return Response.json({ message: 'This form is unavailable.' }, { status: 404 })
 
   if (projectFormLayout(form.fields) && payloadBody?.formRevision === undefined)
-    return NextResponse.json(
+    return Response.json(
       {
         message:
           'This form has changed. Reload the page and review the current form before submitting.',
@@ -227,7 +228,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   const isReviewSubmission = isReviewFormSubmissionIntent(submissionIntent)
   const formFields = projectFormFields(form)
   if (formFields.some((field) => field.type === 'file') && !attachmentStorageAvailable())
-    return NextResponse.json({ message: 'This form is temporarily unavailable.' }, { status: 503 })
+    return Response.json({ message: 'This form is temporarily unavailable.' }, { status: 503 })
   const validationFields = isReviewSubmission
     ? formFields.map((field) =>
         field.name === 'isGenuineExperience' ||
@@ -262,7 +263,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
       }
 
   if (Object.keys(combinedErrors).length > 0) {
-    return NextResponse.json(
+    return Response.json(
       {
         errors: combinedErrors,
         message: 'Please correct the highlighted fields and try again.',
@@ -290,7 +291,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   try {
     if (formFields.some((field) => field.type === 'file')) {
       if (!identity || !payloadBody?.formRevision)
-        return NextResponse.json(
+        return Response.json(
           { message: 'File forms require a current revision and submission key.' },
           { status: 400 },
         )
@@ -340,16 +341,13 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   } catch (error) {
     if (transactionID) await payload.db.rollbackTransaction(transactionID)
     if (error instanceof FormAttachmentValidationError)
-      return NextResponse.json({ message: error.message }, { status: 400 })
+      return Response.json({ message: error.message }, { status: 400 })
     // A concurrent request may have committed while this request was creating.
     if (identity) {
       const receipt = await findSubmissionReceipt(payload, identity.submissionKeyHash)
       if (receipt) return receiptResponse(receipt)
       payload.logger.error({ err: error, msg: 'Unable to confirm form submission storage.' })
-      return NextResponse.json(
-        { message: 'Unable to confirm submission storage.' },
-        { status: 503 },
-      )
+      return Response.json({ message: 'Unable to confirm submission storage.' }, { status: 503 })
     }
     throw error
   }
@@ -487,7 +485,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
     }
   }
 
-  return NextResponse.json({
+  return Response.json({
     message: form.successMessage,
   })
 }

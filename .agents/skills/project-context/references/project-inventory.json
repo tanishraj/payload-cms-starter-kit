@@ -2364,9 +2364,6 @@
       "src/app/(payload)/custom.scss",
       "src/app/(payload)/layout.tsx",
       "src/app/api/calendar-events/route.ts",
-      "src/app/api/form-submissions/[id]/attachments/[token]/route.ts",
-      "src/app/api/forms/[slug]/attachments/route.ts",
-      "src/app/api/forms/[slug]/submit/route.ts",
       "src/app/api/frontend-session/route.ts",
       "src/app/api/media-download/[id]/route.ts",
       "src/app/api/news-events-tabs/route.ts",
@@ -2824,6 +2821,10 @@
       "src/domains/reviews/publicReviewAccess.ts",
       "src/domains/reviews/publicReviewQueries.ts",
       "src/endpoints/createPageFromRecipe.ts",
+      "src/endpoints/formEndpoints.ts",
+      "src/endpoints/forms/downloadAttachment.ts",
+      "src/endpoints/forms/submit.ts",
+      "src/endpoints/forms/uploadAttachment.ts",
       "src/endpoints/twoFactor.ts",
       "src/fields/bodyEditorConfig.ts",
       "src/fields/buildSEOFields.ts",
@@ -3311,7 +3312,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "65d5efdb8ed26d20fbb99ab42c6356b8b568af4b57af1041cc1477ee1d7ea7a8"
+    "sha256": "ef20ce19edf0056c7ec45603bad9a2e39e04efb294fb130b39d36338484885eb"
   },
   "surfaces": {
     "access": [
@@ -3471,9 +3472,6 @@
       "src/app/(payload)/api/graphql/route.ts",
       "src/app/(payload)/layout.tsx",
       "src/app/api/calendar-events/route.ts",
-      "src/app/api/form-submissions/[id]/attachments/[token]/route.ts",
-      "src/app/api/forms/[slug]/attachments/route.ts",
-      "src/app/api/forms/[slug]/submit/route.ts",
       "src/app/api/frontend-session/route.ts",
       "src/app/api/media-download/[id]/route.ts",
       "src/app/api/news-events-tabs/route.ts",

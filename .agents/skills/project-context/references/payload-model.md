@@ -166,3 +166,21 @@ updates layout while retaining valid stable-ID answers; display rows never becom
 answers/notification rows. Grouped files retain private-provider publication and
 intake boundaries. No migration/new environment/dependency/style is introduced.
 See [layout contract](../../../../docs/planning/form-layout-entries.md).
+
+
+### Native form API ownership
+
+`formEndpoints.ts` registers reusable Form submit/upload handlers and the private
+submission download on their owning Payload collections. These public URLs remain
+`/api/forms/:slug/submit`, `/api/forms/:slug/attachments` and
+`/api/form-submissions/:id/attachments/:token`; there is one REST dispatch owner
+and one implementation per URL, rather than overlapping Next handlers and
+Payload's API catch-all. Lazy adapters pass the existing `req.payload` instance
+and the original unread Request stream to handlers under `src/endpoints/forms`.
+The 256KiB JSON limit, 3MiB upload stream limit, published-revision checks,
+idempotency/transaction claims, generic history/notifications, and current
+authorized no-store binary download checks remain mandatory. No eager Payload
+body/file parsing, public Media fallback, route prewarming or weaker test assertion
+is introduced. CI's previous upload requests reached Payload REST and returned
+route-not-found; native registration makes this URL resolvable by that router.
+The underlying platform routing discrepancy is not claimed to be diagnosed.

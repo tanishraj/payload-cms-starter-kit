@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { mkdtemp, rm, stat } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { getPayload, type Payload } from 'payload'
+import { getPayload, handleEndpoints, type Payload } from 'payload'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { createTestMongoServer } from '../helpers/mongoMemoryServer'
 import { projectPublishedGenericForm } from '@/lib/genericFormRevision.server'
@@ -151,7 +151,7 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
       { kind: 'group', label: 'Details', description: 'For our reply.', questions: ['question'] },
     ])
     expect(projectPublishedGenericForm(form)?.fields).toHaveLength(1)
-    const { POST } = await import('@/app/api/forms/[slug]/submit/route')
+    const { POST } = await import('@/endpoints/forms/submit')
     const unseen = await POST(
       new Request(`http://localhost/api/forms/${form.slug}/submit`, {
         method: 'POST',
@@ -241,6 +241,36 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
       spy.mockRestore()
     }
   })
+  it('registers bounded form URLs with Payload REST rather than falling through to unknown-route', async () => {
+    const dispatch = (url: string, init?: RequestInit) =>
+      handleEndpoints({ config: payload.config, request: new Request(url, init) })
+    const invalidUpload = await dispatch('http://localhost/api/forms/unknown/attachments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+    })
+    expect(invalidUpload.status).toBe(415)
+    expect((await invalidUpload.json()).message).toBe('Invalid upload format.')
+    const invalidJSON = await dispatch('http://localhost/api/forms/unknown/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{',
+    })
+    expect(invalidJSON.status).toBe(400)
+    expect((await invalidJSON.json()).message).toBe('Invalid form submission payload.')
+    const oversized = await dispatch('http://localhost/api/forms/unknown/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: ' '.repeat(256 * 1024 + 1),
+    })
+    expect(oversized.status).toBe(413)
+    const missingPrivateFile = await dispatch(
+      'http://localhost/api/form-submissions/000000000000000000000000/attachments/00000000-0000-4000-8000-000000000000',
+    )
+    expect(missingPrivateFile.status).toBe(404)
+    expect(missingPrivateFile.headers.get('cache-control')).toBe('no-store')
+    expect((await missingPrivateFile.json()).message).toBe('Attachment unavailable.')
+  })
   it('checks PDF, PNG, JPEG and Word content rather than trusting browser MIME', async () => {
     const { field } = await setup()
     const policy = { ...field, allowedFileTypes: ['pdf', 'png', 'jpg', 'docx'] as const }
@@ -299,9 +329,9 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
     await expect(stage({ bytes: Buffer.from('not a PDF') })).rejects.toThrow('content')
     await expect(stage({ filename: '../résumé.pdf' })).rejects.toThrow('filename')
     await expect(stage({ bytes: Buffer.alloc(0) })).rejects.toThrow('empty')
-    const { POST } = await import('@/app/api/forms/[slug]/attachments/route')
-    const response = await POST(
-      new Request('http://localhost/upload', {
+    const response = await handleEndpoints({
+      config: payload.config,
+      request: new Request(`http://localhost/api/forms/${form.slug}/attachments`, {
         method: 'POST',
         headers: {
           'content-type': 'application/octet-stream',
@@ -313,8 +343,7 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
         },
         body: Buffer.alloc(3 * 1024 * 1024 + 1),
       }),
-      { params: Promise.resolve({ slug: form.slug }) },
-    )
+    })
     expect(response.status).toBe(413)
     expect(
       (
@@ -353,17 +382,16 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
   it('captures files transactionally, replays receipt, protects downloads, and retains trashed files', async () => {
     const { stage, form, key, revision } = await setup()
     const file = await stage()
-    const { POST } = await import('@/app/api/forms/[slug]/submit/route')
     const body = { values: { documents: [file.token] }, submissionKey: key, formRevision: revision }
     const submit = (data = body) =>
-      POST(
-        new Request('http://localhost/submit', {
+      handleEndpoints({
+        config: payload.config,
+        request: new Request(`http://localhost/api/forms/${form.slug}/submit`, {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(data),
         }),
-        { params: Promise.resolve({ slug: form.slug }) },
-      )
+      })
     expect((await submit({ ...body, submissionKey: randomUUID() })).status).toBe(400)
     expect((await submit()).status).toBe(200)
     expect((await submit()).status).toBe(200)
@@ -400,10 +428,12 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
         features: { formSubmissions: true },
       },
     })
-    const { GET } = await import('@/app/api/form-submissions/[id]/attachments/[token]/route')
     const download = () =>
-      GET(new Request('http://localhost/download'), {
-        params: Promise.resolve({ id: submission.id, token: file.token }),
+      handleEndpoints({
+        config: payload.config,
+        request: new Request(
+          `http://localhost/api/form-submissions/${submission.id}/attachments/${file.token}`,
+        ),
       })
     const auth = vi.spyOn(payload, 'auth')
     for (const user of [null, manager]) {
@@ -432,8 +462,11 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
       }),
     ).rejects.toThrow()
     auth.mockResolvedValue({ user: admin } as never)
-    const unrelated = await GET(new Request('http://localhost/download'), {
-      params: Promise.resolve({ id: submission.id, token: randomUUID() }),
+    const unrelated = await handleEndpoints({
+      config: payload.config,
+      request: new Request(
+        `http://localhost/api/form-submissions/${submission.id}/attachments/${randomUUID()}`,
+      ),
     })
     expect(unrelated.status).toBe(404)
     objects.set(file.token, Buffer.from('tampered'))
@@ -462,7 +495,7 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
   it('rolls back claims when capture fails and accepts the same deliberate retry', async () => {
     const { stage, form, key, revision } = await setup()
     const file = await stage()
-    const { POST } = await import('@/app/api/forms/[slug]/submit/route')
+    const { POST } = await import('@/endpoints/forms/submit')
     const submit = () =>
       POST(
         new Request('http://localhost/submit', {

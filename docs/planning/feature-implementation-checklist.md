@@ -2024,3 +2024,23 @@ owns the instructions for shipped behavior.
 
 
 | 2026-10-14 | FORM-04; DF-07; SUBMIT-01/02; VERIFY | Layout increment locally verified; CI pending | Codex | Canonical sourced layout presentation, one ordered native authoring flow, question-only answer boundary, legacy revision compatibility and layout-aware history/recovery. | `feat/form-layout-entries` | Complete isolated regression: 2,664 integration tests pass/one Docker-dependent skip; Generic Form and Contact6 native journeys pass without retries (3.4m). Production build/private-artifact inspection, Storybook build/play, type/lint, Payload generators, deterministic context and audit pass under the unchanged approved Braces exception. No new environment/dependency/migration/stylesheet. CI/merge pending; broad FORM-04 appearance/acceptance and conditions remain open. |
+
+
+Native form API ownership correction is under final verification. The shared
+Payload REST router owns submit/upload/private-download URLs and preserves
+unread bounded streams, publication/revision/retry and access/transaction checks.
+Direct real-MongoDB routing tests exercise rejection, accepted receipt replay,
+private downloads and trash retention. Failed Quality on `f9930e9` remains part
+of the record; the final exact-head gate must pass before merge.
+
+
+2026-10-15: Canonical native REST correction passes final local release gates:
+2,665 integration tests/one Docker-dependent skip, both governance journeys
+(52.3s) followed by both native form journeys (2.9m), all without retries or
+diagnostic preloading. Fixture imports load Payload before its dependent config;
+all assertions remain. Actual REST tests retain JSON/upload bounds, accepted
+receipt replay, authorized/private downloads, unrelated-token rejection, original
+files after Form deletion and trash retention. Fresh production build inspects
+73 traces with no private uploads. Types, lint (one existing warning), Payload
+generators, context checks/tests and unchanged approved-exception audit pass.
+Exact-head Quality/merge evidence remains pending.

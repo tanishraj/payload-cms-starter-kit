@@ -64,3 +64,23 @@ outside answers; optional published layout participates in revision/history.
 See [contract](form-layout-entries.md). Focused contracts and actual MongoDB
 publication/draft/grouped-upload checks pass. Both expanded native journeys pass without retries. Complete local regression: 2,664 integration tests/one Docker-dependent skip, production/Storybook builds and context/type/lint/audit gates pass; CI/merge evidence is pending. FORM-04/DF-07 remain open
 for supported appearance and complete acceptance. Conditions follow separately.
+
+
+Native form API ownership correction is under final verification. The shared
+Payload REST router owns submit/upload/private-download URLs and preserves
+unread bounded streams, publication/revision/retry and access/transaction checks.
+Direct real-MongoDB routing tests exercise rejection, accepted receipt replay,
+private downloads and trash retention. Failed Quality on `f9930e9` remains part
+of the record; the final exact-head gate must pass before merge.
+
+
+2026-10-15: Canonical native REST correction passes final local release gates:
+2,665 integration tests/one Docker-dependent skip, both governance journeys
+(52.3s) followed by both native form journeys (2.9m), all without retries or
+diagnostic preloading. Fixture imports load Payload before its dependent config;
+all assertions remain. Actual REST tests retain JSON/upload bounds, accepted
+receipt replay, authorized/private downloads, unrelated-token rejection, original
+files after Form deletion and trash retention. Fresh production build inspects
+73 traces with no private uploads. Types, lint (one existing warning), Payload
+generators, context checks/tests and unchanged approved-exception audit pass.
+Exact-head Quality/merge evidence remains pending.

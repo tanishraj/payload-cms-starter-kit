@@ -49,7 +49,7 @@ describe('durable form submission retries', () => {
       },
     })
     expect(await hasSubmissionKeyIndex(payload)).toBe(true)
-    const { POST } = await import('@/app/api/forms/[slug]/submit/route')
+    const { POST } = await import('@/endpoints/forms/submit')
     const body = {
       submissionKey: randomUUID(),
       formRevision: projectPublishedGenericForm(form)!.revision,

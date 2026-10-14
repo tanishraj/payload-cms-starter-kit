@@ -83,3 +83,41 @@ existing frontend toolbar test checking an effect before it completed. The
 checkout was synchronized with tracked source/Git state. The toolbar test retains
 its exact offset/cleanup assertions and waits for the post-render effect; no
 application behavior or assertion was removed.
+
+
+## CI route-dispatch correction
+
+Quality on `f9930e9` passed 2,664 integration tests/one Docker skip and both
+governance journeys, then both native form journeys failed at upload with Payload
+REST's Route-not-found response across retries. One Generic retry also timed out.
+A local governance→native restart sequence using a shared dev cache passes all
+four journeys without retry, so a cache cause is unproven. The local Node fixture
+startup required preloading the Payload runtime in the disposable runner; this is
+not a production change or an assertion bypass.
+
+Form submit, upload and private download are now owned Payload collection
+endpoints, backed by the same bounded handler implementations and unchanged
+URLs. The overlapping standalone Next route files are removed. This resolves the
+actual REST-dispatch gap and keeps body/privacy/authorization checks central;
+it does not attribute the platform discrepancy to an unverified cause.
+Final local/router/native/production and exact-head CI gates must pass before merge.
+
+
+Native form API ownership correction is under final verification. The shared
+Payload REST router owns submit/upload/private-download URLs and preserves
+unread bounded streams, publication/revision/retry and access/transaction checks.
+Direct real-MongoDB routing tests exercise rejection, accepted receipt replay,
+private downloads and trash retention. Failed Quality on `f9930e9` remains part
+of the record; the final exact-head gate must pass before merge.
+
+
+2026-10-15: Canonical native REST correction passes final local release gates:
+2,665 integration tests/one Docker-dependent skip, both governance journeys
+(52.3s) followed by both native form journeys (2.9m), all without retries or
+diagnostic preloading. Fixture imports load Payload before its dependent config;
+all assertions remain. Actual REST tests retain JSON/upload bounds, accepted
+receipt replay, authorized/private downloads, unrelated-token rejection, original
+files after Form deletion and trash retention. Fresh production build inspects
+73 traces with no private uploads. Types, lint (one existing warning), Payload
+generators, context checks/tests and unchanged approved-exception audit pass.
+Exact-head Quality/merge evidence remains pending.

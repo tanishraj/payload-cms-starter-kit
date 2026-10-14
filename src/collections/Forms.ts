@@ -1,3 +1,4 @@
+import { formEndpoints } from '@/endpoints/formEndpoints'
 import { requireFormAttachmentStorage } from '@/hooks/requireFormAttachmentStorage'
 import { type CollectionConfig } from 'payload'
 
@@ -43,6 +44,7 @@ const topLevelQuestionFields: Field[] = formQuestionFields.map(function decorate
 
 export const Forms: CollectionConfig = {
   slug: 'forms',
+  endpoints: formEndpoints,
   labels: {
     singular: 'Form',
     plural: 'Forms',

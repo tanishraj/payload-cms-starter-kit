@@ -53,7 +53,7 @@ vi.mock('@/lib/formSpamProtection', () => ({
 
 const loadRouteModule = async () => {
   vi.resetModules()
-  return import('@/app/api/forms/[slug]/submit/route')
+  return import('@/endpoints/forms/submit')
 }
 
 describe('review submission promotion', () => {
