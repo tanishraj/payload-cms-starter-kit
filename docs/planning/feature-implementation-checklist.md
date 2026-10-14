@@ -30,6 +30,12 @@ directions do not complete feature acceptance; this file remains the implementat
 
 ## How to maintain the checklist
 
+- Delivery workflow confirmed by the user on 2026-10-14: complete one feature
+  increment, pass its acceptance and required repository checks, then merge into
+  `develop` before starting the next feature on a fresh branch. Keep commits clean
+  and pushed; delete only confirmed-merged feature branches and preserve `develop`.
+  Failed merge gates must be resolved; an expired security approval is not renewed
+  by general authorization to merge.
 - A box means **the entire feature's applicable acceptance is verified**. An empty
   box may mean existing behavior needs verification, a partial enhancement remains,
   or the feature has not been assessed. It never means “rebuild this feature.”
