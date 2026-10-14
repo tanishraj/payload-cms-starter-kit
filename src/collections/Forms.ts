@@ -17,6 +17,8 @@ import {
   formFieldTypeOptions,
   formSubmissionIntentOptions,
   isTextLikeFormFieldType,
+  isMultipleChoiceFormFieldType,
+  isSelectFormFieldType,
   isValidFormFieldName,
   validateFormFieldDefinitionsForIntent,
 } from '@/lib/forms'
@@ -281,10 +283,55 @@ export const Forms: CollectionConfig = {
           admin: {
             condition: (data, siblingData) =>
               siblingData?.type !== 'checkbox' &&
+              !isMultipleChoiceFormFieldType(siblingData?.type) &&
               (data?.submissionIntent !== 'review' || Boolean(siblingData?.defaultValue)),
             description:
-              'Optional starting answer for new responses. For Select, enter an option value, not its label. Must satisfy this question’s validation. Visitors can change or clear it; the server never supplies omitted answers.',
+              'Optional starting answer for new responses. For Select or Radio, enter an option value, not its label. Must satisfy this question’s validation. Visitors can change or clear it; the server never supplies omitted answers.',
           },
+        },
+        {
+          name: 'defaultSelections',
+          label: 'Initial selections',
+          type: 'array',
+          maxRows: 100,
+          labels: { singular: 'Selection', plural: 'Selections' },
+          admin: {
+            condition: (_, siblingData) => isMultipleChoiceFormFieldType(siblingData?.type),
+            description:
+              'Optional starting choices for new responses. Enter option values, not labels; each value must be unique and still exist. Leave empty to let visitors choose. These values never refill answers after question-change recovery.',
+          },
+          fields: [{ name: 'value', type: 'text', required: true }],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'minSelections',
+              label: 'Minimum selections',
+              type: 'number',
+              min: 0,
+              admin: {
+                width: '50%',
+                step: 1,
+                condition: (_, siblingData) => isMultipleChoiceFormFieldType(siblingData?.type),
+                description:
+                  'Optional minimum number of choices. Required questions need at least one even when this is zero. A new form may start empty; visitors must satisfy this rule before submitting.',
+              },
+            },
+            {
+              name: 'maxSelections',
+              label: 'Maximum selections',
+              type: 'number',
+              min: 1,
+              admin: {
+                width: '50%',
+                step: 1,
+                condition: (_, siblingData) => isMultipleChoiceFormFieldType(siblingData?.type),
+                description:
+                  'Optional maximum number of choices, no greater than the available options. Leave blank to allow all options. Limits must be whole numbers; minimum cannot exceed maximum.',
+              },
+            },
+          ],
         },
         {
           name: 'defaultChecked',
@@ -389,7 +436,7 @@ export const Forms: CollectionConfig = {
           },
           admin: {
             initCollapsed: false,
-            condition: (_, siblingData) => siblingData?.type === 'select',
+            condition: (_, siblingData) => isSelectFormFieldType(siblingData?.type),
             description:
               'Edit or reorder existing options to keep their row identity. Changing a value clears that selected answer during refresh; changing only the label keeps a still-valid value. Historical submissions retain the original label and value.',
           },

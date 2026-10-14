@@ -1,10 +1,11 @@
+import type { FormAnswers } from '@/lib/forms'
 import { validateFormFieldDefinitions, type SimpleFormField } from '@/lib/forms'
 import type { GenericFormResult } from '@/components/revamp/generic-form'
 
 /** No automatic retry: a lost response may follow a successfully stored submission. */
 export async function submitGenericForm(
   slug: string,
-  values: Record<string, boolean | string>,
+  values: FormAnswers,
   revision?: string,
   submissionKey?: string,
 ): Promise<GenericFormResult> {

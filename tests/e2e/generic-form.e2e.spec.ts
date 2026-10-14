@@ -42,7 +42,7 @@ async function fillNativeField(page: Page, fieldPath: string, value: string, num
 async function chooseNativeType(
   page: Page,
   index: number,
-  label: 'Select' | 'Checkbox' | 'URL' | 'Number',
+  label: 'Select' | 'Checkbox' | 'URL' | 'Number' | 'Radio' | 'Checkbox group' | 'Multi-select',
 ) {
   const fieldPath = `fields.${index}.type`
   const field = page.locator(`#field-fields__${index}__type`)
@@ -51,7 +51,9 @@ async function chooseNativeType(
     page,
     () => page.getByRole('option', { name: label, exact: true }).click(),
     fieldPath,
-    label.toLowerCase(),
+    (
+      { 'Checkbox group': 'checkboxGroup', 'Multi-select': 'multiSelect' } as Record<string, string>
+    )[label] ?? label.toLowerCase(),
   )
   await expect(field.getByText(label, { exact: true })).toBeVisible()
 }
@@ -63,7 +65,7 @@ for (const block of [
   test(
     block.slug + ': native custom form authoring, publication, public submission and safe preview',
     async ({ page, browser }, testInfo) => {
-      testInfo.setTimeout(240_000)
+      testInfo.setTimeout(420_000)
       page.setDefaultTimeout(20_000)
       const formTitle = `Generic enquiry acceptance ${block.slug} ${testInfo.retry}`
       await seedTestUser()
@@ -113,6 +115,48 @@ for (const block of [
       await fillNativeField(page, 'fields.4.minValue', '0.5', true)
       await fillNativeField(page, 'fields.4.maxValue', '4', true)
       await fillNativeField(page, 'fields.4.step', '0.5', true)
+
+      for (const [index, type, name, label] of [
+        [5, 'Radio', 'submitterEmail', 'Enquiry route'],
+        [6, 'Checkbox group', 'topics', 'Areas of interest'],
+        [7, 'Multi-select', 'services', 'Services'],
+      ] as const) {
+        await addNativeRow(page, addField, `fields.${index}.name`)
+        await chooseNativeType(page, index, type)
+        await fillNativeField(page, `fields.${index}.name`, name)
+        await fillNativeField(page, `fields.${index}.label`, label)
+        for (const [option, title, value] of [
+          [0, 'Admissions', 'admissions'],
+          [1, 'Library', 'library'],
+        ] as const) {
+          await addNativeRow(
+            page,
+            page.getByRole('button', { name: 'Add Option', exact: true }).last(),
+            `fields.${index}.options.${option}.label`,
+          )
+          await fillNativeField(page, `fields.${index}.options.${option}.label`, title)
+          await fillNativeField(page, `fields.${index}.options.${option}.value`, value)
+        }
+        if (index === 5)
+          await editNativeForm(
+            page,
+            () => page.locator(`input[name="fields.${index}.required"]`).check(),
+            `fields.${index}.required`,
+            true,
+          )
+        else {
+          await fillNativeField(page, `fields.${index}.minSelections`, '1', true)
+          await fillNativeField(page, `fields.${index}.maxSelections`, '2', true)
+        }
+        if (index === 7) {
+          await addNativeRow(
+            page,
+            page.getByRole('button', { name: 'Add Selection', exact: true }).last(),
+            'fields.7.defaultSelections.0.value',
+          )
+          await fillNativeField(page, 'fields.7.defaultSelections.0.value', 'admissions')
+        }
+      }
 
       const formResponsePromise = page.waitForResponse(
         (r) => new URL(r.url()).pathname === '/api/forms' && r.request().method() === 'POST',
@@ -180,6 +224,7 @@ for (const block of [
         expect((await publishPromise).ok()).toBe(true)
 
         const visitor = await browser.newPage()
+        visitor.setDefaultTimeout(20_000)
         try {
           await visitor.goto('/' + document.slug, {
             waitUntil: 'domcontentloaded',
@@ -207,7 +252,9 @@ for (const block of [
           )
           await visitor.getByLabel('Reference link', { exact: true }).fill('example.com')
           await visitor.getByLabel('Visit duration', { exact: true }).fill('1.25')
-          await visitor.getByRole('combobox').click()
+          await visitor
+            .getByRole('combobox', { name: 'Which department can help?', exact: true })
+            .click()
           const menu = visitor.getByRole('listbox')
           await expect(menu).toBeVisible()
           expect(await menu.evaluate((element) => !!element.closest('section'))).toBe(true)
@@ -222,12 +269,36 @@ for (const block of [
             .getByLabel('Reference link', { exact: true })
             .fill('https://example.com/visit')
           await visitor.getByLabel('Visit duration', { exact: true }).fill('1.50')
+          await visitor
+            .getByRole('radiogroup', { name: 'Enquiry route', exact: true })
+            .getByRole('radio', { name: 'Admissions', exact: true })
+            .check()
+          const topics = visitor.getByRole('group', { name: 'Areas of interest', exact: true })
+          await topics.getByRole('checkbox', { name: 'Admissions', exact: true }).check()
+          await topics.getByRole('checkbox', { name: 'Library', exact: true }).check()
+          const services = visitor.getByRole('combobox', { name: 'Services', exact: true })
+          await expect(services).toHaveText('1 option selected')
+          await services.click()
+          await expect(visitor.getByRole('dialog', { name: 'Services' })).toBeVisible()
+          expect(
+            await visitor
+              .getByRole('dialog', { name: 'Services' })
+              .evaluate((element) => !!element.closest('section')),
+          ).toBe(true)
+          await visitor.getByRole('option', { name: 'Library, not selected', exact: true }).click()
+          await visitor.keyboard.press('Escape')
+          await expect(services).toHaveText('2 options selected')
+          const consent = visitor.getByRole('dialog', { name: 'Cookie consent', exact: true })
+          if (await consent.isVisible()) {
+            await consent.getByRole('button', { name: /Reject/ }).click()
+            await expect(consent).toBeHidden()
+          }
           // Publish after the visitor has loaded and answered the old revision.
           const changed = await page.request.patch(`/api/forms/${form.id}`, {
             headers: authHeaders,
             data: {
               _status: 'published',
-              fields: form.fields.map((field: { name: string }) =>
+              fields: form.fields.map((field: { name: string; options?: { value: string }[] }) =>
                 field.name === 'visitor_name'
                   ? {
                       ...field,
@@ -241,7 +312,13 @@ for (const block of [
                     ? { ...field, type: 'text', label: 'Contact preference' }
                     : field.name === 'email'
                       ? { ...field, step: 2, defaultValue: '2.5' }
-                      : field,
+                      : ['topics', 'services'].includes(field.name)
+                        ? {
+                            ...field,
+                            maxSelections: 1,
+                            options: field.options?.filter((option) => option.value !== 'library'),
+                          }
+                        : field,
               ),
             },
           })
@@ -271,7 +348,19 @@ for (const block of [
           )
           await expect(visitor.getByLabel('Visit duration', { exact: true })).toHaveValue('')
           await visitor.getByLabel('Visit duration', { exact: true }).fill('2.50')
-          await expect(visitor.getByRole('combobox')).toHaveText('Admissions')
+          await expect(
+            visitor.getByRole('combobox', { name: 'Which department can help?', exact: true }),
+          ).toHaveText('Admissions')
+          await expect(visitor.getByRole('status')).toContainText(
+            'Removed choices were cleared in: Areas of interest, Services',
+          )
+          await expect(
+            topics.getByRole('checkbox', { name: 'Admissions', exact: true }),
+          ).toBeChecked()
+          await expect(topics.getByRole('checkbox', { name: 'Library', exact: true })).toHaveCount(
+            0,
+          )
+          await expect(services).toHaveText('1 option selected')
           await expect(visitor.getByLabel('Contact preference', { exact: true })).toHaveValue('')
           await expect(
             visitor.getByText(
@@ -342,6 +431,24 @@ for (const block of [
               expect.objectContaining({
                 name: 'preferred_department',
                 label: 'Which department can help?',
+                displayValue: 'Admissions',
+              }),
+              expect.objectContaining({
+                name: 'submitterEmail',
+                type: 'radio',
+                value: { raw: 'admissions' },
+                displayValue: 'Admissions',
+              }),
+              expect.objectContaining({
+                name: 'topics',
+                type: 'checkboxGroup',
+                value: { raw: ['admissions'] },
+                displayValue: 'Admissions',
+              }),
+              expect.objectContaining({
+                name: 'services',
+                type: 'multiSelect',
+                value: { raw: ['admissions'] },
                 displayValue: 'Admissions',
               }),
               expect.objectContaining({ name: 'visitor_full_name', value: { raw: 'Taylor' } }),

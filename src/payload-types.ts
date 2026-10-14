@@ -5104,7 +5104,18 @@ export interface Form {
      */
     name: string;
     label: string;
-    type: 'text' | 'email' | 'phone' | 'url' | 'number' | 'textarea' | 'select' | 'checkbox';
+    type:
+      | 'text'
+      | 'email'
+      | 'phone'
+      | 'url'
+      | 'number'
+      | 'textarea'
+      | 'select'
+      | 'radio'
+      | 'checkboxGroup'
+      | 'multiSelect'
+      | 'checkbox';
     required?: boolean | null;
     /**
      * Optional: use this answer for inbox contact details and confirmation emails. Each role can be assigned once; choose Text for name, Email for email, or Phone for phone. Leave empty for ordinary questions.
@@ -5116,9 +5127,26 @@ export interface Form {
      */
     helpText?: string | null;
     /**
-     * Optional starting answer for new responses. For Select, enter an option value, not its label. Must satisfy this question’s validation. Visitors can change or clear it; the server never supplies omitted answers.
+     * Optional starting answer for new responses. For Select or Radio, enter an option value, not its label. Must satisfy this question’s validation. Visitors can change or clear it; the server never supplies omitted answers.
      */
     defaultValue?: string | null;
+    /**
+     * Optional starting choices for new responses. Enter option values, not labels; each value must be unique and still exist. Leave empty to let visitors choose. These values never refill answers after question-change recovery.
+     */
+    defaultSelections?:
+      | {
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Optional minimum number of choices. Required questions need at least one even when this is zero. A new form may start empty; visitors must satisfy this rule before submitting.
+     */
+    minSelections?: number | null;
+    /**
+     * Optional maximum number of choices, no greater than the available options. Leave blank to allow all options. Limits must be whole numbers; minimum cannot exceed maximum.
+     */
+    maxSelections?: number | null;
     /**
      * Optional checkboxes only. Required acceptance questions must start unchecked so visitors make their own choice.
      */
@@ -14767,6 +14795,14 @@ export interface FormsSelect<T extends boolean = true> {
         placeholder?: T;
         helpText?: T;
         defaultValue?: T;
+        defaultSelections?:
+          | T
+          | {
+              value?: T;
+              id?: T;
+            };
+        minSelections?: T;
+        maxSelections?: T;
         defaultChecked?: T;
         minLength?: T;
         maxLength?: T;

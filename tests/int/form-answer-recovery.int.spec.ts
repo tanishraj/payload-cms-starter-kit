@@ -24,6 +24,7 @@ describe('compatible form answer recovery', () => {
     ).toEqual({
       values: { new_name: 'Alex', department: 'library' },
       clearedLabels: ['Notes'],
+      partiallyClearedLabels: [],
     })
   })
   it('clears removed options and changed control types, without moving an answer by matching name', () => {
@@ -62,9 +63,14 @@ describe('compatible form answer recovery', () => {
     expect(recoverFormAnswers([field], [field], { permission: false })).toEqual({
       values: { permission: false },
       clearedLabels: [],
+      partiallyClearedLabels: [],
     })
     expect(
       recoverFormAnswers([field], [{ ...field, required: true }], { permission: false }),
-    ).toEqual({ values: { permission: false }, clearedLabels: ['Permission'] })
+    ).toEqual({
+      values: { permission: false },
+      clearedLabels: ['Permission'],
+      partiallyClearedLabels: [],
+    })
   })
 })

@@ -330,3 +330,58 @@ describe('URL and decimal number presentation', () => {
     },
   )
 })
+
+it('lets a visitor clear an optional initial radio choice before submitting', async () => {
+  const onSubmit = vi.fn(async () => success)
+  render(
+    <GenericForm
+      fields={[
+        {
+          id: 'route',
+          name: 'route',
+          label: 'Route',
+          type: 'radio',
+          defaultValue: 'alpha',
+          options: [
+            { label: 'Alpha', value: 'alpha' },
+            { label: 'Beta', value: 'beta' },
+          ],
+        },
+      ]}
+      onSubmit={onSubmit}
+    />,
+  )
+  expect(
+    (screen.getByRole('radio', { name: 'Alpha' }) as HTMLElement).getAttribute('aria-checked'),
+  ).toBe('true')
+  fireEvent.click(screen.getByRole('button', { name: 'Clear Route' }))
+  expect(
+    (screen.getByRole('radio', { name: 'Alpha' }) as HTMLElement).getAttribute('aria-checked'),
+  ).toBe('false')
+  submit()
+  await waitFor(() => expect(onSubmit).toHaveBeenCalledWith({ route: '', website: '' }))
+})
+
+it('explains count constraints before submission and marks a minimum selection as required', () => {
+  render(
+    <GenericForm
+      fields={[
+        {
+          name: 'topics',
+          label: 'Topics',
+          type: 'multiSelect',
+          minSelections: 1,
+          maxSelections: 1,
+          options: [{ label: 'Alpha', value: 'alpha' }],
+        },
+      ]}
+      onSubmit={async () => success}
+    />,
+  )
+  const control = screen.getByRole('combobox', { name: 'Topics' })
+  expect(control.getAttribute('aria-required')).toBe('true')
+  expect(document.getElementById(control.getAttribute('aria-describedby')!)?.textContent).toBe(
+    'Choose exactly 1 option.',
+  )
+  expect(screen.getByText('Fields marked * are required.')).toBeTruthy()
+})

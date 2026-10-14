@@ -53,6 +53,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cmdk": "1.1.1",
     "cn": "^0.2.6",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",

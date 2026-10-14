@@ -23,6 +23,9 @@ export const formFieldTypeOptions = [
     label: 'Select',
     value: 'select',
   },
+  { label: 'Radio', value: 'radio' },
+  { label: 'Checkbox group', value: 'checkboxGroup' },
+  { label: 'Multi-select', value: 'multiSelect' },
   {
     label: 'Checkbox',
     value: 'checkbox',
@@ -61,6 +64,9 @@ export type SimpleFormField = {
   helpText?: string | null
   defaultValue?: string | null
   defaultChecked?: boolean | null
+  defaultSelections?: { value: string; id?: string | null }[] | null
+  minSelections?: number | null
+  maxSelections?: number | null
   /** Character limits apply to Text and Textarea only; dormant settings survive type changes. */
   minLength?: number | null
   maxLength?: number | null
@@ -75,6 +81,9 @@ export type SimpleFormField = {
   required?: boolean | null
   type: FormFieldType
 }
+
+export type FormAnswer = boolean | string | string[]
+export type FormAnswers = Record<string, FormAnswer>
 
 export type FormSubmissionValues = Record<string, unknown>
 export type FormSubmissionErrors = Record<string, string>
@@ -149,8 +158,13 @@ export const isTextLikeFormFieldType = (type: FormFieldType): boolean => {
 }
 
 export const isSelectFormFieldType = (type: FormFieldType): boolean => {
-  return type === 'select'
+  return ['select', 'radio', 'checkboxGroup', 'multiSelect'].includes(type)
 }
+
+export const isMultipleChoiceFormFieldType = (type: FormFieldType): boolean =>
+  type === 'checkboxGroup' || type === 'multiSelect'
+
+export const FORM_MAX_CHOICES = 100
 
 export const normalizeFormSubmissionIntent = (value: unknown): FormSubmissionIntent => {
   if (value === 'lead' || value === 'review') {
@@ -280,25 +294,36 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
       contactRoles.add(field.contactRole)
     }
 
-    if (field.type === 'select') {
+    if (isSelectFormFieldType(field.type)) {
       const options = Array.isArray(field.options) ? field.options : []
 
       if (!options.length) {
-        return `Select field "${name}" must include at least one option.`
+        return `${field.type === 'select' ? 'Select' : 'Choice'} field "${name}" must include at least one option.`
       }
 
+      if (field.type !== 'select' && options.length > FORM_MAX_CHOICES)
+        return `Choice field "${name}" must include no more than ${FORM_MAX_CHOICES} options.`
       const optionValues = new Set<string>()
       const optionIDs = new Set<string>()
 
       for (const option of options) {
         const optionValue = typeof option?.value === 'string' ? option.value.trim() : ''
 
+        if (
+          field.type !== 'select' &&
+          (optionValue !== option?.value ||
+            optionValue.length > 500 ||
+            typeof option?.label !== 'string' ||
+            !option.label.trim() ||
+            option.label.length > 500)
+        )
+          return `Choices in "${name}" need labels and values of 1–500 characters, with no surrounding spaces in values.`
         if (!optionValue) {
-          return `Each option in select field "${name}" must include a value.`
+          return `Each option in ${field.type === 'select' ? 'select' : 'choice'} field "${name}" must include a value.`
         }
 
         if (optionValues.has(optionValue)) {
-          return `Select field "${name}" has duplicate option value "${optionValue}".`
+          return `${field.type === 'select' ? 'Select' : 'Choice'} field "${name}" has duplicate option value "${optionValue}".`
         }
 
         optionValues.add(optionValue)
@@ -310,8 +335,46 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
         }
       }
     }
+    if (isMultipleChoiceFormFieldType(field.type)) {
+      const count = field.options.length
+      const minimum = field.minSelections ?? 0
+      const maximum = field.maxSelections ?? count
+      if (
+        !Number.isInteger(minimum) ||
+        !Number.isInteger(maximum) ||
+        minimum < 0 ||
+        maximum < 1 ||
+        maximum > count ||
+        minimum > maximum
+      )
+        return `Selection limits for "${name}" must be whole numbers: minimum 0 or greater, maximum 1–${count}, and minimum no greater than maximum.`
+      if (field.defaultSelections != null) {
+        if (
+          !Array.isArray(field.defaultSelections) ||
+          field.defaultSelections.some(
+            (choice: unknown) =>
+              !choice ||
+              typeof choice !== 'object' ||
+              !('value' in choice) ||
+              typeof choice.value !== 'string',
+          )
+        )
+          return `Initial selections for "${name}" must contain option values.`
+        const defaults = field.defaultSelections.map((choice: { value: string }) => choice.value)
+        // An empty starting state is always allowed; visitors satisfy required/minimum rules.
+        const { errors } = validateFormSubmission({
+          fields: [{ ...field, required: false, minSelections: defaults.length ? minimum : 0 }],
+          values: { [name]: defaults },
+        })
+        if (errors[name]) return `Initial selections: ${errors[name]}`
+      }
+    }
     // Validate defaults only after choice definitions are known to be well formed.
-    if (field.type !== 'checkbox' && field.defaultValue != null) {
+    if (
+      field.type !== 'checkbox' &&
+      !isMultipleChoiceFormFieldType(field.type) &&
+      field.defaultValue != null
+    ) {
       if (typeof field.defaultValue !== 'string')
         return `The initial answer for "${name}" must contain text.`
       const { errors } = validateFormSubmission({
@@ -353,8 +416,12 @@ export const validateFormFieldDefinitionsForIntent = ({
     return fieldValidation
   }
 
-  if (fields.some((field) => field.type === 'url' || field.type === 'number')) {
-    return 'URL and Number questions require a General/Lead Form with Generic Form or Contact Cards & Form. Change the intent or choose a supported fixed Review control.'
+  if (
+    fields.some((field) =>
+      ['url', 'number', 'radio', 'checkboxGroup', 'multiSelect'].includes(field.type),
+    )
+  ) {
+    return 'URL, Number and choice questions require a General/Lead Form with Generic Form or Contact Cards & Form. Change the intent or choose a supported fixed Review control.'
   }
   if (fields.some((field) => Object.keys(getFormFieldConfiguration(field)).length)) {
     return 'Help text, initial answers and character limits require Generic Form or Contact Cards & Form. The fixed Review Submission presentation does not render them.'
@@ -441,7 +508,17 @@ export const getFormFieldConfiguration = (field: SimpleFormField) => ({
   ...(field.type === 'number' && field.minValue != null ? { minValue: field.minValue } : {}),
   ...(field.type === 'number' && field.maxValue != null ? { maxValue: field.maxValue } : {}),
   ...(field.type === 'number' && field.step != null ? { step: field.step } : {}),
+  ...(isMultipleChoiceFormFieldType(field.type) && field.defaultSelections?.length
+    ? { defaultSelections: field.defaultSelections.map(({ value }) => ({ value })) }
+    : {}),
+  ...(isMultipleChoiceFormFieldType(field.type) && field.minSelections != null
+    ? { minSelections: field.minSelections }
+    : {}),
+  ...(isMultipleChoiceFormFieldType(field.type) && field.maxSelections != null
+    ? { maxSelections: field.maxSelections }
+    : {}),
   ...(field.type !== 'checkbox' &&
+  !isMultipleChoiceFormFieldType(field.type) &&
   typeof field.defaultValue === 'string' &&
   field.defaultValue.trim()
     ? { defaultValue: field.defaultValue.trim() }
@@ -456,15 +533,19 @@ export const getFormFieldConfiguration = (field: SimpleFormField) => ({
 })
 
 /** Defaults are presentation-only. Intake must validate the answers actually sent. */
-export const getFormInitialAnswers = (
-  fields: SimpleFormField[],
-): Record<string, boolean | string> =>
+export const getFormInitialAnswers = (fields: SimpleFormField[]): FormAnswers =>
   Object.fromEntries(
     fields.map((field) => [
       field.name,
       field.type === 'checkbox'
         ? field.defaultChecked === true && !field.required
-        : (field.defaultValue?.trim() ?? ''),
+        : isMultipleChoiceFormFieldType(field.type)
+          ? (field.options ?? [])
+              .filter((option) =>
+                field.defaultSelections?.some((choice) => choice.value === option.value),
+              )
+              .map((option) => option.value)
+          : (field.defaultValue?.trim() ?? ''),
     ]),
   )
 
@@ -489,10 +570,10 @@ export const validateFormSubmission = ({
   values: unknown
 }): {
   errors: FormSubmissionErrors
-  normalizedData: Record<string, boolean | string>
+  normalizedData: FormAnswers
 } => {
   const errors: FormSubmissionErrors = {}
-  const normalizedData: Record<string, boolean | string> = {}
+  const normalizedData: FormAnswers = {}
 
   if (!isFormSubmissionValues(values)) {
     return {
@@ -540,6 +621,40 @@ export const validateFormSubmission = ({
         errors[field.name] = `${field.label} must be accepted.`
       }
 
+      continue
+    }
+
+    if (isMultipleChoiceFormFieldType(field.type)) {
+      const selected = rawValue === undefined ? [] : rawValue
+      if (
+        !Array.isArray(selected) ||
+        selected.length > FORM_MAX_CHOICES ||
+        selected.some((value) => typeof value !== 'string')
+      ) {
+        errors[field.name] =
+          `${field.label} must contain a list of option values (up to ${FORM_MAX_CHOICES}).`
+        continue
+      }
+      const allowed = new Set((field.options ?? []).map((option) => option.value))
+      if (
+        new Set(selected).size !== selected.length ||
+        selected.some((value) => !allowed.has(value))
+      ) {
+        errors[field.name] = `${field.label} contains an invalid or duplicate option.`
+        continue
+      }
+      // Selections are sets; authored option order makes storage and browser retries stable.
+      normalizedData[field.name] = (field.options ?? [])
+        .filter((option) => selected.includes(option.value))
+        .map((option) => option.value)
+      const minimum = Math.max(field.required ? 1 : 0, field.minSelections ?? 0)
+      const maximum = field.maxSelections ?? field.options?.length ?? FORM_MAX_CHOICES
+      if (selected.length < minimum)
+        errors[field.name] =
+          `${field.label}: choose at least ${minimum} option${minimum === 1 ? '' : 's'}.`
+      else if (selected.length > maximum)
+        errors[field.name] =
+          `${field.label}: choose no more than ${maximum} option${maximum === 1 ? '' : 's'}.`
       continue
     }
 
@@ -597,7 +712,7 @@ export const validateFormSubmission = ({
       continue
     }
 
-    if (field.type === 'select' && normalizedValue) {
+    if (isSelectFormFieldType(field.type) && normalizedValue) {
       const allowedValues = new Set((field.options ?? []).map((option) => option.value))
 
       if (!allowedValues.has(normalizedValue)) {
@@ -613,7 +728,7 @@ export const validateFormSubmission = ({
 }
 
 const getFirstNormalizedStringValue = (
-  values: Record<string, boolean | string>,
+  values: FormAnswers,
   candidateKeys: string[],
 ): string | undefined => {
   for (const key of candidateKeys) {
@@ -634,7 +749,7 @@ const getFirstNormalizedStringValue = (
 }
 
 export const getSubmissionContactMetadata = (
-  values: Record<string, boolean | string>,
+  values: FormAnswers,
   fields: SimpleFormField[] = [],
 ): {
   email?: string
@@ -644,11 +759,13 @@ export const getSubmissionContactMetadata = (
   const getContactValue = (role: FormContactRole, legacyKeys: string[]) => {
     const mappedField = fields.find((field) => field.contactRole === role)
     // New generic controls may legitimately use a legacy contact key for another
-    // question. Keep legacy presentation aliases, but never reinterpret URL/Number answers.
+    // question. Keep legacy presentation aliases, but never reinterpret new generic control answers.
     const compatibleLegacyKeys = legacyKeys.filter(
       (key) =>
         !fields.some(
-          (field) => field.name === key && (field.type === 'url' || field.type === 'number'),
+          (field) =>
+            field.name === key &&
+            ['url', 'number', 'radio', 'checkboxGroup', 'multiSelect'].includes(field.type),
         ),
     )
     return getFirstNormalizedStringValue(

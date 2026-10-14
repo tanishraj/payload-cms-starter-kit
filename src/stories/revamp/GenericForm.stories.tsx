@@ -1,3 +1,4 @@
+import type { FormAnswers } from '@/lib/forms'
 import type { ComponentProps } from 'react'
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test'
@@ -62,7 +63,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Eight current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
+          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Eleven current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
       },
     },
   },
@@ -91,7 +92,7 @@ const meta = {
       name: 'Questions and controls',
       control: 'object',
       description:
-        'Supported text, email, phone, URL, number, textarea, select and checkbox definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state and contact roles are editable.',
+        'Supported text, email, phone, URL, number, textarea, select, checkbox, radio, checkbox group and multi-select definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state and contact roles are editable.',
     },
     heading: { name: 'Heading', control: 'text' },
     description: { name: 'Description', control: 'text' },
@@ -271,37 +272,33 @@ export const ChangedQuestions: Story = {
       { id: 'name-field', name: 'visitor', label: 'Your name', type: 'text', required: true },
       { id: 'details-field', name: 'details', label: 'Your question', type: 'textarea' },
     ],
-    onSubmit: fn(
-      async (
-        _values: Record<string, boolean | string>,
-        revision?: string,
-      ): Promise<GenericFormResult> =>
-        revision === '2'.repeat(64)
-          ? { success: true, message: 'Demo received. No information has been saved or sent.' }
-          : {
-              success: false,
-              message: 'The form has changed.',
-              updatedForm: {
-                revision: '2'.repeat(64),
-                submitButtonLabel: 'Send updated enquiry',
-                fields: [
-                  {
-                    id: 'name-field',
-                    name: 'full_name',
-                    label: 'Full name',
-                    type: 'text',
-                    required: true,
-                  },
-                  {
-                    id: 'details-field',
-                    name: 'details',
-                    label: 'Email address',
-                    type: 'email',
-                    required: true,
-                  },
-                ],
-              },
+    onSubmit: fn(async (_values: FormAnswers, revision?: string): Promise<GenericFormResult> =>
+      revision === '2'.repeat(64)
+        ? { success: true, message: 'Demo received. No information has been saved or sent.' }
+        : {
+            success: false,
+            message: 'The form has changed.',
+            updatedForm: {
+              revision: '2'.repeat(64),
+              submitButtonLabel: 'Send updated enquiry',
+              fields: [
+                {
+                  id: 'name-field',
+                  name: 'full_name',
+                  label: 'Full name',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  id: 'details-field',
+                  name: 'details',
+                  label: 'Email address',
+                  type: 'email',
+                  required: true,
+                },
+              ],
             },
+          },
     ),
   },
   play: async ({ canvasElement }) => {
@@ -324,7 +321,7 @@ export const ChangedQuestions: Story = {
 const createLostConfirmationDemo = () => {
   const received = new Set<string>()
   return async (
-    _values: Record<string, boolean | string>,
+    _values: FormAnswers,
     _revision?: string,
     key?: string,
   ): Promise<GenericFormResult> => {
@@ -342,7 +339,7 @@ const createLostConfirmationDemo = () => {
 const createDifferentResponseDemo = () => {
   let acceptedKey: string | undefined
   return async (
-    _values: Record<string, boolean | string>,
+    _values: FormAnswers,
     _revision?: string,
     key?: string,
   ): Promise<GenericFormResult> => {
@@ -544,5 +541,129 @@ export const URLAndNumberValidation: Story = {
         visit_hours: '1.5',
       }),
     )
+  },
+}
+
+const choiceOptions = [
+  { id: 'admissions', label: 'Admissions', value: 'admissions' },
+  { id: 'library', label: 'Library', value: 'library' },
+  { id: 'research', label: 'Research', value: 'research' },
+]
+const choiceFields: SimpleFormField[] = [
+  {
+    id: 'route',
+    name: 'email',
+    label: 'Enquiry route',
+    type: 'radio',
+    required: true,
+    helpText: 'Choose one team.',
+    options: choiceOptions,
+  },
+  {
+    id: 'interests',
+    name: 'interests',
+    label: 'Areas of interest',
+    type: 'checkboxGroup',
+    required: true,
+    minSelections: 1,
+    maxSelections: 2,
+    helpText: 'Choose one or two areas.',
+    options: choiceOptions,
+  },
+  {
+    id: 'services',
+    name: 'services',
+    label: 'Services',
+    type: 'multiSelect',
+    helpText: 'Search by name; select an option again to remove it.',
+    options: choiceOptions,
+  },
+]
+
+export const ChoiceControls: Story = {
+  name: 'Radio, checkbox group and searchable multi-select',
+  args: {
+    heading: 'Plan your visit',
+    description: 'Choose your route and interests.',
+    fields: choiceFields,
+  },
+}
+
+export const ChoiceValidation: Story = {
+  name: 'Choices — validation, selection and removal',
+  args: ChoiceControls.args,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await waitFor(() => expect(canvas.getAllByRole('radio')[0]).toHaveFocus())
+    await userEvent.click(canvas.getAllByRole('radio')[0])
+    for (const item of canvas.getAllByRole('checkbox')) await userEvent.click(item)
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(await canvas.findByText(/choose no more than 2/)).toBeVisible()
+    await userEvent.click(canvas.getAllByRole('checkbox')[2])
+    await userEvent.click(canvas.getByRole('combobox', { name: 'Services' }))
+    await userEvent.type(
+      await canvas.findByRole('combobox', { name: 'Search Services' }),
+      'Library',
+    )
+    await userEvent.click(await canvas.findByRole('option', { name: 'Library, not selected' }))
+    await userEvent.click(await canvas.findByRole('option', { name: 'Library, selected' }))
+    await userEvent.clear(await canvas.findByRole('combobox', { name: 'Search Services' }))
+    await userEvent.click(canvas.getByRole('option', { name: 'Research, not selected' }))
+    await userEvent.keyboard('{Escape}')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await waitFor(() =>
+      expect(args.onSubmit).toHaveBeenCalledWith({
+        email: 'admissions',
+        interests: ['admissions', 'library'],
+        services: ['research'],
+        website: '',
+      }),
+    )
+    await expect(await canvas.findByRole('status')).toHaveTextContent('Demo received.')
+  },
+}
+
+export const ChangedChoices: Story = {
+  name: 'Changed choices — retain remaining selections',
+  args: {
+    ...ChoiceControls.args,
+    revision: 'old-choice-revision',
+    fields: choiceFields.map((field) => ({
+      ...field,
+      defaultValue: field.type === 'radio' ? 'admissions' : undefined,
+      defaultSelections:
+        field.type !== 'radio' ? [{ value: 'admissions' }, { value: 'library' }] : undefined,
+    })),
+    onSubmit: fn(async (_answers: FormAnswers, revision?: string): Promise<GenericFormResult> =>
+      revision === 'new-choice-revision'
+        ? { success: true, message: 'Demo received. No information has been saved or sent.' }
+        : {
+            success: false,
+            message: 'Questions changed',
+            updatedForm: {
+              revision: 'new-choice-revision',
+              submitButtonLabel: 'Send reviewed choices',
+              fields: choiceFields.map((field) => ({
+                ...field,
+                options: choiceOptions.filter((option) => option.value !== 'library'),
+              })),
+            },
+          },
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await waitFor(() => expect(canvas.getByRole('status')).toHaveFocus())
+    await expect(canvas.getByRole('status')).toHaveTextContent('Removed choices were cleared')
+    await expect(canvas.getAllByRole('radio')[0]).toBeChecked()
+    await expect(canvas.getAllByRole('checkbox')[0]).toBeChecked()
+    await expect(canvas.queryByRole('checkbox', { name: 'Library' })).not.toBeInTheDocument()
+    await expect(canvas.getByRole('combobox', { name: 'Services' })).toHaveTextContent(
+      '1 option selected',
+    )
+    await userEvent.click(canvas.getByRole('button', { name: 'Send reviewed choices' }))
+    await expect(await canvas.findByRole('status')).toHaveTextContent('Demo received.')
   },
 }

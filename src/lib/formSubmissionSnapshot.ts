@@ -1,7 +1,9 @@
+import type { FormAnswer, FormAnswers } from '@/lib/forms'
 import { createHash } from 'node:crypto'
 
 import {
   getFormFieldConfiguration,
+  isSelectFormFieldType,
   normalizeFormSubmissionIntent,
   type SimpleFormField,
 } from '@/lib/forms'
@@ -14,9 +16,15 @@ type SnapshotForm = {
   title: string
 }
 
-export const formatFormAnswer = (field: SimpleFormField, value: boolean | string): string => {
+export const formatFormAnswer = (field: SimpleFormField, value: FormAnswer): string => {
   if (typeof value === 'boolean') return value ? 'Yes' : 'No'
-  if (field.type === 'select' && value) {
+  if (Array.isArray(value))
+    return (
+      value
+        .map((item) => field.options?.find((option) => option.value === item)?.label || item)
+        .join('; ') || '—'
+    )
+  if (isSelectFormFieldType(field.type) && value) {
     return field.options?.find((option) => option.value === value)?.label || value
   }
   return value || '—'
@@ -24,19 +32,15 @@ export const formatFormAnswer = (field: SimpleFormField, value: boolean | string
 
 // Capture the published definition used for intake, never the latest editable draft.
 // Payload array row IDs are the stable identity; legacy rows may have no ID.
-export const buildFormSubmissionSnapshot = (
-  form: SnapshotForm,
-  values: Record<string, boolean | string>,
-) => {
+export const buildFormSubmissionSnapshot = (form: SnapshotForm, values: FormAnswers) => {
   const fields = form.fields.map((field) => ({
     contactRole: field.contactRole ?? null,
     id: field.id ?? null,
     label: field.label,
     name: field.name,
-    options:
-      field.type === 'select'
-        ? (field.options ?? []).map(({ label, value }) => ({ label, value }))
-        : [],
+    options: isSelectFormFieldType(field.type)
+      ? (field.options ?? []).map(({ label, value }) => ({ label, value }))
+      : [],
     required: field.required ?? false,
     type: field.type,
     ...getFormFieldConfiguration(field),
@@ -59,7 +63,7 @@ export const buildFormSubmissionSnapshot = (
       label: field.label,
       name: field.name,
       type: field.type,
-      value: { raw: value },
+      value: { raw: Array.isArray(value) ? [...value] : value },
     }
   })
 
@@ -69,12 +73,19 @@ export const buildFormSubmissionSnapshot = (
   for (const [name, value] of Object.entries(values)) {
     if (declaredNames.has(name)) continue
     answers.push({
-      displayValue: typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value || '—',
+      displayValue:
+        typeof value === 'boolean'
+          ? value
+            ? 'Yes'
+            : 'No'
+          : Array.isArray(value)
+            ? value.join('; ') || '—'
+            : value || '—',
       fieldID: null,
       label: name,
       name,
       type: typeof value === 'boolean' ? 'checkbox' : 'text',
-      value: { raw: value },
+      value: { raw: Array.isArray(value) ? [...value] : value },
     })
   }
 

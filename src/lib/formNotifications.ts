@@ -1,3 +1,4 @@
+import type { FormAnswer, FormAnswers } from '@/lib/forms'
 import { formatFormAnswer } from '@/lib/formSubmissionSnapshot'
 import { DEFAULT_SITE_TIME_ZONE, type SiteTimeZone } from '@/lib/siteTimeZone'
 import type { Form } from '@/payload-types'
@@ -12,7 +13,7 @@ const escapeHTML = (value: string): string =>
 
 type FormDefinitionField = Form['fields'][number]
 
-const formatHTMLSubmissionValue = (field: FormDefinitionField, value: boolean | string): string => {
+const formatHTMLSubmissionValue = (field: FormDefinitionField, value: FormAnswer): string => {
   const displayValue = formatFormAnswer(field, value)
   if (displayValue === '—') return displayValue
   if (field.type === 'email' && typeof value === 'string') {
@@ -76,7 +77,7 @@ export const buildFormNotificationEmail = ({
   siteName?: string
   submittedAt: Date
   timeZone?: SiteTimeZone
-  values: Record<string, boolean | string>
+  values: FormAnswers
 }) => {
   const subject = `New submission: ${form.title}`
   const fields = (form.fields ?? []).map((field) => {
