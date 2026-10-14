@@ -73,7 +73,9 @@ Nine globals are registered:
   increment settings and exact scaled-integer comparisons in `formNumber.ts`. Numeric whole-number
   settings must be safe integers. Active numeric settings enter snapshots/fingerprints and stale
   recovery revalidates them. Fixed Review rejects these controls. Existing six-control schemas retain
-  their hashes; no backfill. See [control contract](../../../../docs/planning/form-url-number-controls.md).
+  their hashes; no backfill. URL/Number questions named after legacy contact aliases are excluded from
+  contact-metadata inference, so arbitrary compatible names do not become invalid submitter emails
+  or mislabeled contacts. Existing six-control aliases and explicit contact-role mappings remain intact. See [control contract](../../../../docs/planning/form-url-number-controls.md).
   General/Lead questions now support public help text and validated presentation-only initial answers,
   optional initially checked checkboxes, and bounded whole-number Text/Textarea length limits. Required
   checkboxes start unchecked. Active settings enter captured published fingerprints/snapshots; absent

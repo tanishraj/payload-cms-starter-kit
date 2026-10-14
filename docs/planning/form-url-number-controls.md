@@ -12,6 +12,8 @@ Number accepts decimal text up to 64 characters, including negative values, lead
 
 Number exposes optional inclusive Minimum value and Maximum value, and an optional positive Allowed increment. Minimum cannot exceed maximum. An increment of 1 restricts answers to whole numbers when its base is an integer; 0.5 permits halves. The increment starts at the minimum, or zero if no minimum is set. Leave it blank for any decimal. Configuration values must be finite; whole-number settings must stay within ±9,007,199,254,740,991. Native configuration uses Payload’s number fields; submitted answers remain text. Numeric settings stay stored but inactive when changing to another control type.
 
+New URL/Number questions can use legacy contact names such as email or phone without becoming submitter contact metadata. Existing six-control/legacy alias behavior and explicit contact-role mappings remain unchanged.
+
 Initial answers must satisfy the selected control’s validation. They initialize new responses only; omitted answers are never supplied by server intake or changed-form recovery. Editors retain the existing question-identity/name guidance and native relationship-drawer workflow.
 
 ## Shared presentation, validation and history

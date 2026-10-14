@@ -643,7 +643,18 @@ export const getSubmissionContactMetadata = (
 } => {
   const getContactValue = (role: FormContactRole, legacyKeys: string[]) => {
     const mappedField = fields.find((field) => field.contactRole === role)
-    return getFirstNormalizedStringValue(values, mappedField ? [mappedField.name] : legacyKeys)
+    // New generic controls may legitimately use a legacy contact key for another
+    // question. Keep legacy presentation aliases, but never reinterpret URL/Number answers.
+    const compatibleLegacyKeys = legacyKeys.filter(
+      (key) =>
+        !fields.some(
+          (field) => field.name === key && (field.type === 'url' || field.type === 'number'),
+        ),
+    )
+    return getFirstNormalizedStringValue(
+      values,
+      mappedField ? [mappedField.name] : compatibleLegacyKeys,
+    )
   }
   const email = getContactValue('email', ['submitterEmail', 'reviewerEmail', 'email'])
   const name = getContactValue('name', ['submitterName', 'reviewerName', 'fullName', 'name'])

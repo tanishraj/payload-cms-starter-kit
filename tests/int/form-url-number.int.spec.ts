@@ -228,3 +228,25 @@ describe('native URL/number integration contract', () => {
     }
   })
 })
+
+it('keeps new-control answers using legacy contact names out of contact metadata', async () => {
+  const { getSubmissionContactMetadata } = await import('@/lib/forms')
+  const fields = [
+    { ...number, name: 'email' },
+    { ...url, name: 'phone' },
+    { ...number, name: 'fullName' },
+  ]
+  expect(
+    getSubmissionContactMetadata(
+      { email: '2.50', phone: 'https://example.com', fullName: '3' },
+      fields,
+    ),
+  ).toEqual({ email: undefined, name: undefined, phone: undefined })
+  expect(
+    getSubmissionContactMetadata({
+      email: 'legacy@example.com',
+      fullName: 'Legacy name',
+      phone: '+1 202 555 0123',
+    }),
+  ).toEqual({ email: 'legacy@example.com', name: 'Legacy name', phone: '+1 202 555 0123' })
+})

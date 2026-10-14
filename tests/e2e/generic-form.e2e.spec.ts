@@ -107,7 +107,7 @@ for (const block of [
       await fillNativeField(page, 'fields.3.helpText', 'Include https:// or http://.')
       await addNativeRow(page, addField, 'fields.4.name')
       await chooseNativeType(page, 4, 'Number')
-      await fillNativeField(page, 'fields.4.name', 'visit_hours')
+      await fillNativeField(page, 'fields.4.name', 'email')
       await fillNativeField(page, 'fields.4.label', 'Visit duration')
       await fillNativeField(page, 'fields.4.defaultValue', '1.5')
       await fillNativeField(page, 'fields.4.minValue', '0.5', true)
@@ -135,7 +135,7 @@ for (const block of [
           data: {
             _status: 'published',
             fields: form.fields.map((field: { name: string }) =>
-              field.name === 'visit_hours' ? { ...field, ...invalid } : field,
+              field.name === 'email' ? { ...field, ...invalid } : field,
             ),
           },
         })
@@ -239,7 +239,7 @@ for (const block of [
                     }
                   : field.name === 'contact_permission'
                     ? { ...field, type: 'text', label: 'Contact preference' }
-                    : field.name === 'visit_hours'
+                    : field.name === 'email'
                       ? { ...field, step: 2, defaultValue: '2.5' }
                       : field,
               ),
@@ -331,6 +331,7 @@ for (const block of [
           const { docs } = await submissions.json()
           expect(docs).toHaveLength(1)
           expect(docs[0].formRevision).toBe(stale.form.revision)
+          expect(docs[0].submitterEmail).toBeFalsy() // Number named email is an ordinary answer.
           expect(docs[0].formSnapshot.fields[0]).toMatchObject({
             maxLength: 6,
             defaultValue: 'Guest',
@@ -350,7 +351,7 @@ for (const block of [
                 displayValue: 'https://example.com/visit',
               }),
               expect.objectContaining({
-                name: 'visit_hours',
+                name: 'email',
                 type: 'number',
                 value: { raw: '2.50' },
                 displayValue: '2.50',
