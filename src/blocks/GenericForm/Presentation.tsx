@@ -8,6 +8,7 @@ import {
 } from '@/blocks/shared/blockSpacing'
 import { cn } from '@/lib/utils'
 import type { GenericFormDefinition } from '@/lib/genericFormShared'
+import { uploadFormAttachment } from '@/lib/uploadFormAttachment'
 import { submitGenericForm } from '@/lib/submitGenericForm'
 
 export type GenericFormPresentationProps = {
@@ -50,6 +51,21 @@ export function GenericFormBlockPresentation({
             submitButtonLabel={definition.submitButtonLabel}
             protectRetries
             disabled={preview}
+            onFileUpload={
+              preview
+                ? undefined
+                : (file, field, revision, key, uploadID, signal, progress) =>
+                    uploadFormAttachment(
+                      definition.slug,
+                      file,
+                      field,
+                      revision,
+                      key,
+                      uploadID,
+                      signal,
+                      progress,
+                    )
+            }
             onSubmit={(values, revision, submissionKey) =>
               preview
                 ? Promise.resolve({

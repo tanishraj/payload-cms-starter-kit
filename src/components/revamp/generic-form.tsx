@@ -30,6 +30,9 @@ import {
   FieldSet,
   FieldLegend,
 } from '@/components/revamp/ui/field'
+import { FormFileControl } from '@/components/revamp/form-file-control'
+import { getFormFileHelp, type UploadedFormFile } from '@/lib/formAttachments'
+import { FormUploadError } from '@/lib/uploadFormAttachment'
 import { FormChoiceControl } from '@/components/revamp/form-choice-control'
 import { Input } from '@/components/revamp/ui/input'
 import {
@@ -77,6 +80,15 @@ export type GenericFormProps = {
   disabled?: boolean
   revision?: string
   protectRetries?: boolean
+  onFileUpload?: (
+    file: File,
+    field: SimpleFormField,
+    revision: string,
+    submissionKey: string,
+    uploadID: string,
+    signal: AbortSignal,
+    onProgress: (progress: number) => void,
+  ) => Promise<UploadedFormFile>
   onSubmit: (
     values: FormAnswers,
     revision?: string,
@@ -101,6 +113,7 @@ function FormPresentation({
   disabled = false,
   protectRetries = false,
   onSubmit,
+  onFileUpload,
 }: GenericFormProps) {
   const [fields, setFields] = useState(initialFields)
   const [revision, setRevision] = useState(initialRevision)
@@ -115,9 +128,15 @@ function FormPresentation({
       .slice(0, 2)
       .every(
         (field) =>
-          !['textarea', 'checkbox', 'switch', 'radio', 'checkboxGroup', 'multiSelect'].includes(
-            field.type,
-          ),
+          ![
+            'file',
+            'textarea',
+            'checkbox',
+            'switch',
+            'radio',
+            'checkboxGroup',
+            'multiSelect',
+          ].includes(field.type),
       )
   // The server-rendered form must not submit to the page before React is ready.
   const hydrated = useSyncExternalStore(
@@ -130,6 +149,10 @@ function FormPresentation({
   const messageRef = useRef<HTMLParagraphElement>(null)
   const submittingRef = useRef(false)
   const submissionKeyRef = useRef<string | null>(null)
+  const uploadedFiles = useRef(new Map<string, UploadedFormFile>())
+  const blockedUploads = useRef(new Map<string, boolean>())
+  const [uploadsBlocked, setUploadsBlocked] = useState(false)
+  const protectsAttempt = protectRetries || fields.some((field) => field.type === 'file')
   const [result, setResult] = useState<GenericFormResult | null>(null)
   const resolver: Resolver<Answers> = (input): ResolverResult<Answers> => {
     const { errors, normalizedData } = validateFormSubmission({ fields, values: input.answers })
@@ -164,34 +187,48 @@ function FormPresentation({
   const pending = form.formState.isSubmitting
   const inactive = !hydrated || disabled || pending || Boolean(result?.requestKeyConflict)
   const hasErrors = Boolean(form.formState.errors.answers)
+  const applyUpdatedForm = (
+    updated: NonNullable<GenericFormResult['updatedForm']>,
+    answers: FormAnswers,
+  ) => {
+    const recovered = recoverFormAnswers(fields, updated.fields, answers, uploadedFiles.current)
+    setFields(updated.fields)
+    setRevision(updated.revision)
+    setSubmitButtonLabel(updated.submitButtonLabel)
+    form.reset({ answers: recovered.values, website: '' })
+    const partialFiles = recovered.partiallyClearedLabels.filter((label) =>
+      fields.some((field) => field.type === 'file' && field.label === label),
+    )
+    const partialChoices = recovered.partiallyClearedLabels.filter(
+      (label) => !partialFiles.includes(label),
+    )
+    setRecoveryMessage(
+      `The questions have changed. Your compatible answers are still here. ${recovered.clearedLabels.length ? `These answers were cleared because their questions changed: ${recovered.clearedLabels.join(', ')}. ` : ''}${partialChoices.length ? `Removed choices were cleared in: ${partialChoices.join(', ')}. Remaining selections are still here. ` : ''}${partialFiles.length ? `Incompatible files were cleared in: ${partialFiles.join(', ')}. Remaining files are still here. ` : ''}Review the updated questions before submitting again.`,
+    )
+    setResult(null)
+  }
   const submitAnswers = async ({ answers, website }: Answers) => {
-    if (disabled || submittingRef.current || result?.success || result?.requestKeyConflict) return
+    if (
+      disabled ||
+      [...blockedUploads.current.values()].some(Boolean) ||
+      submittingRef.current ||
+      result?.success ||
+      result?.requestKeyConflict
+    )
+      return
     submittingRef.current = true
     setResult(null)
     form.clearErrors('root')
     try {
       const submittedValues = { ...answers, [FORM_HONEYPOT_FIELD_NAME]: website }
-      if (protectRetries) submissionKeyRef.current ??= crypto.randomUUID()
-      const response = protectRetries
+      if (protectsAttempt) submissionKeyRef.current ??= crypto.randomUUID()
+      const response = protectsAttempt
         ? await onSubmit(submittedValues, revision, submissionKeyRef.current ?? undefined)
         : revision
           ? await onSubmit(submittedValues, revision)
           : await onSubmit(submittedValues)
       if (!response.success && response.updatedForm) {
-        const updated = response.updatedForm
-        const recovered = recoverFormAnswers(fields, updated.fields, answers)
-        setFields(updated.fields)
-        setRevision(updated.revision)
-        setSubmitButtonLabel(updated.submitButtonLabel)
-        form.reset({ answers: recovered.values, website: '' })
-        setRecoveryMessage(
-          `The questions have changed. Your compatible answers are still here. ${
-            recovered.clearedLabels.length
-              ? `These answers were cleared because their questions changed: ${recovered.clearedLabels.join(', ')}. `
-              : ''
-          }${recovered.partiallyClearedLabels.length ? `Removed choices were cleared in: ${recovered.partiallyClearedLabels.join(', ')}. Remaining selections are still here. ` : ''}Review the updated questions before submitting again.`,
-        )
-        setResult(null)
+        applyUpdatedForm(response.updatedForm, answers)
         return
       }
       setResult(response)
@@ -283,6 +320,18 @@ function FormPresentation({
                 disabled={!hydrated || disabled || pending}
                 onClick={() => {
                   submissionKeyRef.current = null
+                  form.reset({
+                    answers: {
+                      ...form.getValues().answers,
+                      ...Object.fromEntries(
+                        fields
+                          .filter((field) => field.type === 'file')
+                          .map((field) => [field.name, []]),
+                      ),
+                    },
+                    website: '',
+                  })
+                  uploadedFiles.current.clear()
                   setResult(null)
                   setRecoveryMessage(
                     'Your answers are still here. Review them before sending a new response.',
@@ -291,6 +340,11 @@ function FormPresentation({
               >
                 Start a new response
               </Button>
+            )}
+            {uploadsBlocked && (
+              <FieldDescription role="status">
+                Wait for uploads to finish, or retry/remove failed files before sending.
+              </FieldDescription>
             )}
             <FieldGroup
               className={cn(
@@ -333,7 +387,12 @@ function FormPresentation({
                       temporal && (bounds?.minimum || bounds?.maximum)
                         ? `${definition.type === 'date' ? 'Date' : 'Local time'}${bounds?.minimum && bounds?.maximum ? `: ${bounds.minimum}–${bounds.maximum}, inclusive.` : bounds?.minimum ? `: ${bounds.minimum} or later.` : bounds?.maximum ? `: ${bounds.maximum} or earlier.` : ''}`
                         : ''
-                    const helpText = [definition.helpText, selectionHelp, temporalHelp]
+                    const helpText = [
+                      definition.helpText,
+                      selectionHelp,
+                      temporalHelp,
+                      definition.type === 'file' ? getFormFileHelp(definition) : '',
+                    ]
                       .filter(Boolean)
                       .join(' ')
                     const a11y = {
@@ -415,7 +474,62 @@ function FormPresentation({
                         data-disabled={inactive}
                       >
                         <FieldLabel htmlFor={id}>{label}</FieldLabel>
-                        {definition.type === 'select' ? (
+                        {definition.type === 'file' ? (
+                          <FormFileControl
+                            key={`${definition.id ?? definition.name}:${revision}`}
+                            {...a11y}
+                            controlRef={field.ref}
+                            onBlur={field.onBlur}
+                            name={definition.name}
+                            policy={definition}
+                            disabled={inactive || !onFileUpload}
+                            value={
+                              Array.isArray(field.value)
+                                ? field.value.flatMap((token) => {
+                                    const file = uploadedFiles.current.get(token)
+                                    return file ? [file] : []
+                                  })
+                                : []
+                            }
+                            onChange={(files) => {
+                              for (const file of files) uploadedFiles.current.set(file.token, file)
+                              field.onChange(files.map((file) => file.token))
+                            }}
+                            onBlockedChange={(blocked) => {
+                              blockedUploads.current.set(definition.id ?? definition.name, blocked)
+                              setUploadsBlocked([...blockedUploads.current.values()].some(Boolean))
+                            }}
+                            onUpload={async (file, uploadID, signal, progress) => {
+                              if (!onFileUpload || !revision)
+                                throw new Error('Uploads are unavailable in this preview.')
+                              submissionKeyRef.current ??= crypto.randomUUID()
+                              try {
+                                return await onFileUpload(
+                                  file,
+                                  definition,
+                                  revision,
+                                  submissionKeyRef.current,
+                                  uploadID,
+                                  signal,
+                                  progress,
+                                )
+                              } catch (error) {
+                                if (error instanceof FormUploadError) {
+                                  if (error.result.updatedForm)
+                                    applyUpdatedForm(
+                                      error.result.updatedForm,
+                                      form.getValues().answers,
+                                    )
+                                  if (error.result.requestKeyConflict) {
+                                    setResult(error.result)
+                                    setRecoveryMessage(error.result.message)
+                                  }
+                                }
+                                throw error
+                              }
+                            }}
+                          />
+                        ) : definition.type === 'select' ? (
                           <Select
                             name={definition.name}
                             value={value}
@@ -537,7 +651,7 @@ function FormPresentation({
                 autoComplete="off"
               />
             </div>
-            <Button className="w-full" type="submit" disabled={inactive}>
+            <Button className="w-full" type="submit" disabled={inactive || uploadsBlocked}>
               {pending ? pendingLabel : submitButtonLabel}
             </Button>
           </>

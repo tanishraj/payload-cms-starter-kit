@@ -120,7 +120,11 @@ describe('project context parser', () => {
     const inventory = await buildProjectInventory(process.cwd())
 
     expect(inventory.schemaVersion).toBe(1)
-    expect(inventory.payload.collections).toHaveLength(22)
+    expect(inventory.payload.collections).toHaveLength(23)
+    expect(inventory.payload.collections).toContainEqual({
+      symbol: 'FormAttachments',
+      source: 'src/collections/FormAttachments.ts',
+    })
     expect(inventory.payload.globals).toHaveLength(9)
     expect(inventory.blocks.page).toHaveLength(61)
     expect(inventory.blocks.page).toContain('pgFeeStructure')

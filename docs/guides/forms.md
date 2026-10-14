@@ -177,3 +177,9 @@ after persistence can still make a deliberate retry create another submission.
 The same engine powers the sourced Shadcnblocks `contact6` layout:
 the layout can differ while editors choose a reusable schema rather than inheriting
 hard-coded example questions. Contact6 is available as **Contact Cards & Form** in Advanced Library, Pages, Reusable Sections and detail templates. Select a published General/Lead Form; use the native relationship drawer to create or edit it. Configure contact cards, message-card introduction and office hours on the block. The first two short questions share a row on wider screens; a textarea/checkbox in that pair keeps both stacked. Remaining questions fill the form width. Question order, names, labels and required state belong to the reusable Form. Publishing that Form updates all blocks selecting it; draft-only edits stay out of public pages. Public controls become active after JavaScript is ready; an early click cannot send answers through the URL. Live Preview disables all controls. An unavailable Form still leaves the alternative contact cards visible.
+
+## Private file questions
+
+Choose **File** in a reusable Form and set its label/name, required state, allowed formats, per-file size and count. PDF, DOCX, PNG and JPEG are supported; defaults are all four, 3 MB and one file. Limits are 1–3 MB and 1–5 files per question, with ten files maximum per response. Files have no initial answer. Both dynamic form blocks reuse this definition and Preview disables uploads.
+
+Visitors see progress, can remove files or retry failed uploads, then send the complete form. Files are stored privately and emails link to the submission. Setup and cleanup requirements are in [private attachment operations](../operations/private-form-attachments.md). Production file Forms cannot publish until private storage is enabled. File extensions/signatures are checked; this is not an antivirus service.

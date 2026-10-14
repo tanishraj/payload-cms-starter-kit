@@ -52,7 +52,8 @@ async function chooseNativeType(
     | 'Multi-select'
     | 'Switch'
     | 'Date'
-    | 'Time',
+    | 'Time'
+    | 'File',
 ) {
   const fieldPath = `fields.${index}.type`
   const field = page.locator(`#field-fields__${index}__type`)
@@ -202,6 +203,19 @@ for (const block of [
           )
       }
 
+      await addNativeRow(page, addField, 'fields.11.name')
+      await chooseNativeType(page, 11, 'File')
+      await fillNativeField(page, 'fields.11.name', 'supporting_documents')
+      await fillNativeField(page, 'fields.11.label', 'Supporting documents')
+      await fillNativeField(page, 'fields.11.maxFiles', '2', true)
+      await fillNativeField(page, 'fields.11.maxFileSizeMB', '1', true)
+      await editNativeForm(
+        page,
+        () => page.locator('input[name="fields.11.required"]').check(),
+        'fields.11.required',
+        true,
+      )
+
       const formResponsePromise = page.waitForResponse(
         (r) => new URL(r.url()).pathname === '/api/forms' && r.request().method() === 'POST',
       )
@@ -235,6 +249,8 @@ for (const block of [
         ['visit_day', { defaultValue: '2026-10-19' }],
         ['phone', { minTime: '22:00', maxTime: '02:00' }],
         ['reminder', { required: true, defaultChecked: true }],
+        ['supporting_documents', { maxFileSizeMB: 4 }],
+        ['supporting_documents', { maxFiles: 6 }],
       ] as const) {
         const rejected = await page.request.patch(`/api/forms/${form.id}`, {
           headers: authHeaders,
@@ -355,6 +371,24 @@ for (const block of [
             await consent.getByRole('button', { name: /Reject/ }).click()
             await expect(consent).toBeHidden()
           }
+          const uploadPromise = visitor.waitForResponse(
+            (response) =>
+              new URL(response.url()).pathname === `/api/forms/${form.slug}/attachments` &&
+              response.request().method() === 'POST',
+          )
+          const fileBytes = Buffer.from('%PDF-1.7\n1 0 obj\n<<>>\nendobj\n%%EOF')
+          await visitor
+            .getByLabel(/Supporting documents/)
+            .setInputFiles({ name: 'résumé.pdf', mimeType: 'application/pdf', buffer: fileBytes })
+          const uploaded = await uploadPromise
+          expect(uploaded.ok(), `Upload ${uploaded.status()}: ${await uploaded.text()}`).toBe(true)
+          const { file: uploadedFile } = await uploaded.json()
+          await expect(visitor.getByText('Uploaded — ready to send')).toBeVisible()
+          expect(
+            await visitor.request
+              .get(`/api/form-attachments?where[token][equals]=${uploadedFile.token}`)
+              .then((response) => response.status()),
+          ).toBe(403)
           const visitDate = visitor.getByLabel(/Visit date/)
           const visitTime = visitor.getByLabel(/Visit time/)
           const reminder = visitor.getByRole('switch', { name: 'Send me a reminder', exact: true })
@@ -438,9 +472,9 @@ for (const block of [
           await expect(
             visitor.getByRole('combobox', { name: 'Which department can help?', exact: true }),
           ).toHaveText('Admissions')
-          await expect(visitor.getByRole('status')).toContainText(
-            'Removed choices were cleared in: Areas of interest, Services',
-          )
+          await expect(
+            visitor.getByRole('status').filter({ hasText: 'The questions have changed.' }),
+          ).toContainText('Removed choices were cleared in: Areas of interest, Services')
           await expect(
             topics.getByRole('checkbox', { name: 'Admissions', exact: true }),
           ).toBeChecked()
@@ -581,6 +615,38 @@ for (const block of [
             ]),
           )
 
+          expect(docs[0].attachments).toEqual([
+            expect.objectContaining({
+              filename: 'résumé.pdf',
+              token: uploadedFile.token,
+              fieldName: 'supporting_documents',
+            }),
+          ])
+          expect(docs[0].answers).toContainEqual(
+            expect.objectContaining({
+              name: 'supporting_documents',
+              type: 'file',
+              displayValue: 'résumé.pdf',
+              value: { raw: [uploadedFile.token] },
+            }),
+          )
+          const downloadURL = `/api/form-submissions/${docs[0].id}/attachments/${uploadedFile.token}`
+          expect((await visitor.request.get(downloadURL)).status()).toBe(404)
+          const downloaded = await page.request.get(downloadURL, { headers: authHeaders })
+          expect(downloaded.status()).toBe(200)
+          expect(await downloaded.body()).toEqual(fileBytes)
+          expect(downloaded.headers()['content-disposition']).toContain('attachment;')
+          await page.goto(`/admin/collections/form-submissions/${docs[0].id}`, {
+            waitUntil: 'domcontentloaded',
+          })
+          await expect(
+            page.getByRole('link', { name: 'Download file', exact: true }),
+          ).toHaveAttribute('href', downloadURL)
+
+          await page
+            .getByRole('link', { name: 'Download file', exact: true })
+            .scrollIntoViewIfNeeded()
+          await page.screenshot({ path: testInfo.outputPath('private-attachment-admin.png') })
           const draftEdit = await page.request.patch(`/api/forms/${form.id}?draft=true`, {
             headers: authHeaders,
             data: {
@@ -604,6 +670,7 @@ for (const block of [
           })
           await expect(page.getByText(/Preview only — submissions are disabled/)).toBeVisible()
           await expect(page.getByRole('button', { name: 'Submit', exact: true })).toBeDisabled()
+          await expect(page.getByLabel(/Supporting documents/)).toBeDisabled()
           expect(
             await page.request
               .get(`/api/form-submissions?where[form][equals]=${form.id}&depth=0`, {

@@ -1,3 +1,9 @@
+import {
+  getFormFilePolicy,
+  validateFormFilePolicy,
+  isUploadToken,
+  type FormFilePolicy,
+} from '@/lib/formAttachments'
 import { getFormTemporalError, validateFormTemporalConstraints } from '@/lib/formTemporal'
 import { getFormNumberError, validateFormNumberConstraints } from '@/lib/formNumber'
 
@@ -19,6 +25,7 @@ export const formFieldTypeOptions = [
   { label: 'Date', value: 'date' },
   { label: 'Time', value: 'time' },
   { label: 'Switch', value: 'switch' },
+  { label: 'File', value: 'file' },
   {
     label: 'Textarea',
     value: 'textarea',
@@ -63,7 +70,7 @@ export type SimpleFormFieldOption = {
 
 export type FormContactRole = 'name' | 'email' | 'phone'
 
-export type SimpleFormField = {
+export type SimpleFormField = FormFilePolicy & {
   contactRole?: FormContactRole | null
   helpText?: string | null
   defaultValue?: string | null
@@ -289,6 +296,9 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
       }
     }
 
+    if (field.type === 'file' && !validateFormFilePolicy(field))
+      return `File limits for "${name}" require supported types, 1–3 MB per file and 1–5 files.`
+
     if (isTemporalFormFieldType(field.type) && !validateFormTemporalConstraints(field.type, field))
       return `${field.type === 'date' ? 'Date' : 'Time'} limits for "${name}" must use valid ${field.type === 'date' ? 'YYYY-MM-DD dates (year 0001–9999)' : 'HH:mm local times (00:00–23:59)'} with minimum no later than maximum.${field.type === 'time' ? ' Time limits must describe one same-day window.' : ''}`
 
@@ -389,6 +399,7 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
     }
     // Validate defaults only after choice definitions are known to be well formed.
     if (
+      field.type !== 'file' &&
       !isBooleanFormFieldType(field.type) &&
       !isMultipleChoiceFormFieldType(field.type) &&
       field.defaultValue != null
@@ -436,9 +447,17 @@ export const validateFormFieldDefinitionsForIntent = ({
 
   if (
     fields.some((field) =>
-      ['url', 'number', 'radio', 'checkboxGroup', 'multiSelect', 'switch', 'date', 'time'].includes(
-        field.type,
-      ),
+      [
+        'url',
+        'number',
+        'radio',
+        'checkboxGroup',
+        'multiSelect',
+        'switch',
+        'date',
+        'time',
+        'file',
+      ].includes(field.type),
     )
   ) {
     return 'URL, Number, choice, Switch, Date and Time questions require a General/Lead Form with Generic Form or Contact Cards & Form. Change the intent or choose a supported fixed Review control.'
@@ -527,6 +546,7 @@ export const isValidFormURL = (value: string): boolean => {
 /** Include only active, meaningful configuration; legacy revisions stay unchanged. */
 export const getFormFieldConfiguration = (field: SimpleFormField) => ({
   ...(field.helpText ? { helpText: field.helpText } : {}),
+  ...(field.type === 'file' ? getFormFilePolicy(field) : {}),
   ...(field.type === 'date' && field.minDate ? { minDate: field.minDate } : {}),
   ...(field.type === 'date' && field.maxDate ? { maxDate: field.maxDate } : {}),
   ...(field.type === 'time' && field.minTime ? { minTime: field.minTime } : {}),
@@ -543,7 +563,8 @@ export const getFormFieldConfiguration = (field: SimpleFormField) => ({
   ...(isMultipleChoiceFormFieldType(field.type) && field.maxSelections != null
     ? { maxSelections: field.maxSelections }
     : {}),
-  ...(!isBooleanFormFieldType(field.type) &&
+  ...(field.type !== 'file' &&
+  !isBooleanFormFieldType(field.type) &&
   !isMultipleChoiceFormFieldType(field.type) &&
   typeof field.defaultValue === 'string' &&
   field.defaultValue.trim()
@@ -565,15 +586,17 @@ export const getFormInitialAnswers = (fields: SimpleFormField[]): FormAnswers =>
   Object.fromEntries(
     fields.map((field) => [
       field.name,
-      isBooleanFormFieldType(field.type)
-        ? field.defaultChecked === true && !field.required
-        : isMultipleChoiceFormFieldType(field.type)
-          ? (field.options ?? [])
-              .filter((option) =>
-                field.defaultSelections?.some((choice) => choice.value === option.value),
-              )
-              .map((option) => option.value)
-          : (field.defaultValue?.trim() ?? ''),
+      field.type === 'file'
+        ? []
+        : isBooleanFormFieldType(field.type)
+          ? field.defaultChecked === true && !field.required
+          : isMultipleChoiceFormFieldType(field.type)
+            ? (field.options ?? [])
+                .filter((option) =>
+                  field.defaultSelections?.some((choice) => choice.value === option.value),
+                )
+                .map((option) => option.value)
+            : (field.defaultValue?.trim() ?? ''),
     ]),
   )
 
@@ -635,6 +658,24 @@ export const validateFormSubmission = ({
 
   for (const field of fields) {
     const rawValue = Object.hasOwn(values, field.name) ? values[field.name] : undefined
+
+    if (field.type === 'file') {
+      const tokens = rawValue === undefined ? [] : rawValue
+      if (
+        !validateFormFilePolicy(field) ||
+        !Array.isArray(tokens) ||
+        tokens.length > getFormFilePolicy(field).maxFiles ||
+        tokens.some((token) => !isUploadToken(token)) ||
+        new Set(tokens).size !== tokens.length
+      ) {
+        errors[field.name] = `${field.label}: choose valid files within the listed limits.`
+        continue
+      }
+      normalizedData[field.name] = [...tokens]
+      if (field.required && !tokens.length)
+        errors[field.name] = `${field.label}: upload at least one file.`
+      continue
+    }
 
     if (isBooleanFormFieldType(field.type)) {
       if (field.type === 'switch' && rawValue !== undefined && typeof rawValue !== 'boolean') {
@@ -823,6 +864,7 @@ export const getSubmissionContactMetadata = (
               'checkboxGroup',
               'multiSelect',
               'switch',
+              'file',
               'date',
               'time',
             ].includes(field.type),

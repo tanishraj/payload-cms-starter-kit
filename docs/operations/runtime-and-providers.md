@@ -298,3 +298,7 @@ pnpm verify:docker-image
 ```
 
 Then sign in, upload an image, publish a Page, submit a Form, and inspect the public route in the target environment.
+
+## Private form attachment provider
+
+The independent `FORM_ATTACHMENTS_PROVIDER` defaults to development local disk or production disabled. Production file uploads require a separate private S3 bucket/credentials; no Media URL, bucket or ACL is inherited. Configuration, limits, retention, hourly cleanup, backup and deployed-policy acceptance are documented in [private-form-attachments.md](private-form-attachments.md) and `.env.example`. Local disk is never supported for production attachments.

@@ -1,6 +1,6 @@
 import configPromise from '@payload-config'
 import { NextResponse } from 'next/server'
-import { getPayload } from 'payload'
+import { createLocalReq, getPayload, type PayloadRequest } from 'payload'
 
 import {
   PUBLIC_JSON_BODY_MAX_BYTES,
@@ -24,6 +24,13 @@ import {
   hasSubmissionKeyIndex,
   submissionIdentity,
 } from '@/lib/formSubmissionIdempotency.server'
+import {
+  claimFormAttachments,
+  FormAttachmentValidationError,
+  type CapturedFormAttachment,
+} from '@/lib/formAttachments.server'
+import { attachmentStorageAvailable } from '@/lib/formAttachmentStorage.server'
+import { runtimeConfig } from '@/config/runtime.server'
 import { buildFormSubmissionSnapshot } from '@/lib/formSubmissionSnapshot'
 import { projectFormFields } from '@/lib/genericFormShared'
 import { projectPublishedGenericForm } from '@/lib/genericFormRevision.server'
@@ -206,6 +213,8 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   const submissionIntent = normalizeFormSubmissionIntent(form.submissionIntent)
   const isReviewSubmission = isReviewFormSubmissionIntent(submissionIntent)
   const formFields = projectFormFields(form)
+  if (formFields.some((field) => field.type === 'file') && !attachmentStorageAvailable())
+    return NextResponse.json({ message: 'This form is temporarily unavailable.' }, { status: 503 })
   const validationFields = isReviewSubmission
     ? formFields.map((field) =>
         field.name === 'isGenuineExperience' ||
@@ -262,12 +271,39 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   } = getSubmissionContactMetadata(submissionData, formFields)
   const submittedAt = new Date()
   let submission
+  let attachments: CapturedFormAttachment[] = []
+  let transactionID: string | number | null | undefined
+  let submissionReq: PayloadRequest | undefined
   try {
+    if (formFields.some((field) => field.type === 'file')) {
+      if (!identity || !payloadBody?.formRevision)
+        return NextResponse.json(
+          { message: 'File forms require a current revision and submission key.' },
+          { status: 400 },
+        )
+      transactionID = await payload.db.beginTransaction()
+      if (!transactionID)
+        throw new Error('Private attachment submissions require database transactions.')
+      submissionReq = await createLocalReq({ req: { transactionID } }, payload)
+      attachments = await claimFormAttachments({
+        payload,
+        fields: formFields,
+        values: submissionData,
+        keyHash: identity.submissionKeyHash,
+        formID: String(form.id),
+        req: submissionReq,
+      })
+    }
     submission = await payload.create({
       collection: 'form-submissions',
       data: {
         ...(identity ? { ...identity, submissionConfirmation: form.successMessage } : {}),
-        ...buildFormSubmissionSnapshot({ ...form, fields: formFields }, submissionData),
+        ...buildFormSubmissionSnapshot(
+          { ...form, fields: formFields },
+          submissionData,
+          attachments,
+        ),
+        ...(attachments.length ? { attachments } : {}),
         data: submissionData,
         campaign: submissionMetadata.campaign,
         email: submitterEmail,
@@ -282,8 +318,16 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
         submitterPhone,
       },
       overrideAccess: true,
+      req: submissionReq,
     })
+    if (transactionID) {
+      await payload.db.commitTransaction(transactionID)
+      transactionID = undefined
+    }
   } catch (error) {
+    if (transactionID) await payload.db.rollbackTransaction(transactionID)
+    if (error instanceof FormAttachmentValidationError)
+      return NextResponse.json({ message: error.message }, { status: 400 })
     // A concurrent request may have committed while this request was creating.
     if (identity) {
       const receipt = await findSubmissionReceipt(payload, identity.submissionKeyHash)
@@ -387,6 +431,11 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
       submittedAt,
       timeZone: emailTimeZone,
       values: submissionData,
+      attachments,
+      submissionURL: new URL(
+        `/admin/collections/form-submissions/${submission.id}`,
+        runtimeConfig.application.origin,
+      ).toString(),
     })
 
     try {

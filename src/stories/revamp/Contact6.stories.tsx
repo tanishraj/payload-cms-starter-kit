@@ -49,7 +49,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Authenticated @shadcnblocks/contact6 (2026-10-07), https://www.shadcnblocks.com/block/contact6. Original contact cards, message card, centered introduction and information footer. Questions come from a reusable Form; no fixed contact inputs. The first two short controls share a row on wider screens; textarea/checkbox pairs stay stacked. All fourteen current controls, custom names/labels and the same generic validation/submission engine. Source-supported layout and official Neutral light/dark; production inherits the existing website theme. Synthetic data and local callbacks only. CMS preview never submits. Edit Form to change questions, options, required state, labels and pending text.',
+          'Authenticated @shadcnblocks/contact6 (2026-10-07), https://www.shadcnblocks.com/block/contact6. Original contact cards, message card, centered introduction and information footer. Questions come from a reusable Form; no fixed contact inputs. The first two short controls share a row on wider screens; textarea/checkbox pairs stay stacked. All fifteen current controls, custom names/labels and the same generic validation/submission engine. Source-supported layout and official Neutral light/dark; production inherits the existing website theme. Synthetic data and local callbacks only. CMS preview never submits. Edit Form to change questions, options, required state, labels and pending text.',
       },
     },
   },

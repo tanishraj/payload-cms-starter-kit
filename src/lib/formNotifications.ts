@@ -72,7 +72,11 @@ export const buildFormNotificationEmail = ({
   submittedAt,
   timeZone = DEFAULT_SITE_TIME_ZONE,
   values,
+  attachments = [],
+  submissionURL,
 }: {
+  attachments?: { filename: string; fieldName: string }[]
+  submissionURL?: string
   form: Form
   siteName?: string
   submittedAt: Date
@@ -82,10 +86,17 @@ export const buildFormNotificationEmail = ({
   const subject = `New submission: ${form.title}`
   const fields = (form.fields ?? []).map((field) => {
     const value = values[field.name] ?? ''
+    const filenames = attachments
+      .filter((file) => file.fieldName === field.name)
+      .map((file) => file.filename)
+      .join('; ')
     return {
-      htmlValue: formatHTMLSubmissionValue(field, value),
+      htmlValue:
+        field.type === 'file'
+          ? escapeHTML(filenames || '—')
+          : formatHTMLSubmissionValue(field, value),
       label: field.label,
-      value: formatFormAnswer(field, value),
+      value: field.type === 'file' ? filenames || '—' : formatFormAnswer(field, value),
     }
   })
   const submittedAtLabel = formatFormSubmissionDate(submittedAt, timeZone)
@@ -95,9 +106,12 @@ export const buildFormNotificationEmail = ({
     `Submitted: ${submittedAtLabel}`,
     '',
     ...fields.map((field) => `${field.label}: ${field.value}`),
+    ...(attachments.length && submissionURL
+      ? ['', `View submission and download private files (sign-in required): ${submissionURL}`]
+      : []),
   ].join('\n')
   const html = buildEmailShell({
-    body: `<p style="margin: 0; font-size: 16px; line-height: 1.65; color: #394653;">A new website submission was received for <strong style="color: #18212b;">${escapeHTML(form.title)}</strong>.</p><div style="margin: 20px 0 26px; padding: 14px 16px; border: 1px solid #d8e1ec; border-radius: 8px; background: #f1f5fa;"><div style="font-size: 11px; font-weight: 700; letter-spacing: 1px; line-height: 1.4; text-transform: uppercase; color: #536b86;">Submitted</div><div style="margin-top: 4px; font-size: 15px; font-weight: 600; line-height: 1.5; color: #26394e;">${escapeHTML(submittedAtLabel)}</div></div><div style="margin-bottom: 10px; font-size: 13px; font-weight: 700; line-height: 1.4; color: #18212b;">Submission details</div><table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid #dce1e7; border-radius: 10px; overflow: hidden;"><tbody>${fields.map((field, index) => `<tr><td style="padding: 14px 16px;${index > 0 ? ' border-top: 1px solid #e5e9ee;' : ''}"><div style="margin-bottom: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; line-height: 1.4; text-transform: uppercase; color: #68737f;">${escapeHTML(field.label)}</div><div style="font-size: 15px; line-height: 1.55; color: #18212b; overflow-wrap: anywhere;">${field.htmlValue}</div></td></tr>`).join('')}</tbody></table>`,
+    body: `<p style="margin: 0; font-size: 16px; line-height: 1.65; color: #394653;">A new website submission was received for <strong style="color: #18212b;">${escapeHTML(form.title)}</strong>.</p><div style="margin: 20px 0 26px; padding: 14px 16px; border: 1px solid #d8e1ec; border-radius: 8px; background: #f1f5fa;"><div style="font-size: 11px; font-weight: 700; letter-spacing: 1px; line-height: 1.4; text-transform: uppercase; color: #536b86;">Submitted</div><div style="margin-top: 4px; font-size: 15px; font-weight: 600; line-height: 1.5; color: #26394e;">${escapeHTML(submittedAtLabel)}</div></div><div style="margin-bottom: 10px; font-size: 13px; font-weight: 700; line-height: 1.4; color: #18212b;">Submission details</div><table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid #dce1e7; border-radius: 10px; overflow: hidden;"><tbody>${fields.map((field, index) => `<tr><td style="padding: 14px 16px;${index > 0 ? ' border-top: 1px solid #e5e9ee;' : ''}"><div style="margin-bottom: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; line-height: 1.4; text-transform: uppercase; color: #68737f;">${escapeHTML(field.label)}</div><div style="font-size: 15px; line-height: 1.55; color: #18212b; overflow-wrap: anywhere;">${field.htmlValue}</div></td></tr>`).join('')}</tbody></table>${attachments.length && submissionURL ? `<p><a href="${escapeHTML(submissionURL)}">View submission and download private files</a> (sign-in required).</p>` : ''}`,
     preheader: `New submission received for ${form.title}`,
     siteName: siteName.trim() || 'Website',
     title: form.title,
