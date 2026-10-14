@@ -138,3 +138,16 @@ Lost Confirmation and Different Response demonstrate durable retry UX in the sam
 Configured Questions provides the help/default/character-limit playground; Configured Validation checks initial answers, associated helper/error text, invalid-answer blocking and corrected confirmation. These settings use the shared intake validator in both Generic Form and Contact6. See [question configuration](../planning/form-field-configuration.md) for native authoring, legacy and revision behavior.
 
 URL And Number is the playground for complete HTTP(S) references and decimal quantities. URL And Number Validation checks rejected URL/step values, preserved input, first-error focus and corrected confirmation. Number reuses Input with decimal input mode; optional min/max/increment rules run through the shared validator. The same controls work in Contact6. See [URL/Number contract](../planning/form-url-number-controls.md) for native configuration, decimal-string intake and history/recovery.
+
+
+## Dynamic form layout entries
+
+Blocks/Generic Form → **Layout Preview** shows the sourced groups and dividers;
+**Layout Entries** exercises validation, answering and confirmation. The Ordered
+layout entries control configures headings, descriptions, separators and labelled
+groups with question names in exactly their declared order. Questions remain in
+the Questions and controls contract; display entries never collect answers.
+Production adapters derive this projection from the single ordered native Form
+array. Sources: @shadcnblocks/field-field-advanced-4,
+@shadcnblocks/form-form-multi-field-6 and @shadcnblocks/field-field-advanced-5.
+Website themes are inherited; no separate form stylesheet is added.

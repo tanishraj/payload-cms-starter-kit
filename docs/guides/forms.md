@@ -84,11 +84,12 @@ option label; a checkbox reads Yes/No. Form labels, names, order and options can
 later change without rewriting those captured answers. Payload field-row IDs
 identify fields where present; names are not treated as immutable identity.
 
-This is a submission-history foundation, not a generic public form presentation.
-The existing Contact Form and Review Submission field restrictions above still
-apply. Assign contact roles only to fields the selected presentation actually
-collects. A visitor currently submits against the latest published definition;
-client revision negotiation and stale-form recovery are not implemented yet.
+Generic Form and Contact Cards & Form support the shared dynamic definition.
+They send a published revision, refresh changed questions/layout and preserve
+compatible stable-ID/type answers for explicit review and resubmission. Existing
+Contact Form and Review Submission retain fixed questions and their legacy
+revisionless protocol; their field restrictions above still apply. Assign contact
+roles only to questions the selected presentation actually collects.
 Older submissions keep their original raw data and are not retroactively labelled
 using today's schema. No database migration/backfill is required for these optional
 history fields. See [Form Submissions](./form-submissions.md).
@@ -183,3 +184,31 @@ hard-coded example questions. Contact6 is available as **Contact Cards & Form** 
 Choose **File** in a reusable Form and set its label/name, required state, allowed formats, per-file size and count. PDF, DOCX, PNG and JPEG are supported; defaults are all four, 3 MB and one file. Limits are 1–3 MB and 1–5 files per question, with ten files maximum per response. Files have no initial answer. Both dynamic form blocks reuse this definition and Preview disables uploads.
 
 Visitors see progress, can remove files or retry failed uploads, then send the complete form. Files are stored privately and emails link to the submission. Setup and cleanup requirements are in [private attachment operations](../operations/private-form-attachments.md). Production file Forms cannot publish until private storage is enabled. File extensions/signatures are checked; this is not an antivirus service.
+
+
+## Ordered questions and display entries
+
+For **Generic Form** or **Contact Cards & Form**, open **Fields → Add Entry**.
+Choose **Question**, **Heading**, **Description**, **Separator** or **Question group**.
+Reorder these native rows in the order visitors should read them. A group contains
+related questions with a shared label and optional description; use **Add Question**
+inside that group. All fifteen controls and their validation settings work there.
+
+Headings/group labels allow 200 characters; descriptions allow 2,000. These are
+plain text, never answer fields. Groups need at least one question and cannot
+contain another group. The complete Form allows 100 questions across all groups
+and up to 200 top-level entries. Names and contact-role assignments must be unique
+across the complete Form. Keep existing question rows when relabelling/reordering
+to preserve IDs; recreating a row changes identity. Native reordering stays within
+each array; transfer between groups is not a new drag-and-drop operation.
+
+Publish the Form, select it on the page block and check disabled Live Preview
+before publishing the Page. Draft layout changes do not alter the public Form.
+Visitors with an older revision must review refreshed layout/questions and submit
+again; valid stable-ID/type answers remain. Submission history captures that
+published layout, while emails/history answer lists contain questions only.
+Fixed **Contact Form (Contact 33)** and **Review Submission** do not support layout
+entries. Use a dynamic block with General/Lead intent for this workflow.
+
+See [layout contract](../planning/form-layout-entries.md) for developer boundaries
+and remaining appearance/conditional-rule work. No new environment settings.

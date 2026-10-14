@@ -2746,6 +2746,7 @@
       "src/components/revamp/contact6.tsx",
       "src/components/revamp/form-choice-control.tsx",
       "src/components/revamp/form-file-control.tsx",
+      "src/components/revamp/form-layout.tsx",
       "src/components/revamp/form-temporal-control.tsx",
       "src/components/revamp/generic-form.tsx",
       "src/components/revamp/ui/button.tsx",
@@ -2827,6 +2828,7 @@
       "src/fields/bodyEditorConfig.ts",
       "src/fields/buildSEOFields.ts",
       "src/fields/cmsLinkFields.ts",
+      "src/fields/formQuestionFields.ts",
       "src/fields/projectSlugField.ts",
       "src/fields/publicationMetadataFields.ts",
       "src/globals/AnalyticsSettings.ts",
@@ -2877,6 +2879,7 @@
       "src/lib/formAttachmentStorage.server.ts",
       "src/lib/formAttachments.server.ts",
       "src/lib/formAttachments.ts",
+      "src/lib/formLayout.ts",
       "src/lib/formNotifications.ts",
       "src/lib/formNumber.ts",
       "src/lib/formSpamProtection.ts",
@@ -3146,6 +3149,7 @@
       "tests/int/form-files-storage.int.spec.ts",
       "tests/int/form-files.int.spec.ts",
       "tests/int/form-idempotency-database.int.spec.ts",
+      "tests/int/form-layout.int.spec.tsx",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/form-submission-activity.int.spec.ts",
       "tests/int/form-switch-date-time.int.spec.ts",
@@ -3307,7 +3311,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "6cbed7c4c8a96a53d78e84387de71b563d8bfa7b343df41752c111af8802d4f1"
+    "sha256": "42538d1e7360ab132cc0e37926a055f82b2bbdbd0f3cff734f96595e6d1f84e2"
   },
   "surfaces": {
     "access": [
@@ -3329,6 +3333,7 @@
       "src/fields/bodyEditorConfig.ts",
       "src/fields/buildSEOFields.ts",
       "src/fields/cmsLinkFields.ts",
+      "src/fields/formQuestionFields.ts",
       "src/fields/projectSlugField.ts",
       "src/fields/publicationMetadataFields.ts"
     ],
@@ -3374,6 +3379,7 @@
       "src/lib/formAttachmentStorage.server.ts",
       "src/lib/formAttachments.server.ts",
       "src/lib/formAttachments.ts",
+      "src/lib/formLayout.ts",
       "src/lib/formNotifications.ts",
       "src/lib/formNumber.ts",
       "src/lib/formSpamProtection.ts",
@@ -3578,6 +3584,7 @@
       "tests/int/form-files-storage.int.spec.ts",
       "tests/int/form-files.int.spec.ts",
       "tests/int/form-idempotency-database.int.spec.ts",
+      "tests/int/form-layout.int.spec.tsx",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/form-submission-activity.int.spec.ts",
       "tests/int/form-switch-date-time.int.spec.ts",

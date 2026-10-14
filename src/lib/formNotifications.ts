@@ -1,4 +1,5 @@
-import type { FormAnswer, FormAnswers } from '@/lib/forms'
+import { projectFormFields } from '@/lib/genericFormShared'
+import type { SimpleFormField, FormAnswer, FormAnswers } from '@/lib/forms'
 import { formatFormAnswer } from '@/lib/formSubmissionSnapshot'
 import { DEFAULT_SITE_TIME_ZONE, type SiteTimeZone } from '@/lib/siteTimeZone'
 import type { Form } from '@/payload-types'
@@ -11,7 +12,7 @@ const escapeHTML = (value: string): string =>
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;')
 
-type FormDefinitionField = Form['fields'][number]
+type FormDefinitionField = SimpleFormField
 
 const formatHTMLSubmissionValue = (field: FormDefinitionField, value: FormAnswer): string => {
   const displayValue = formatFormAnswer(field, value)
@@ -84,7 +85,7 @@ export const buildFormNotificationEmail = ({
   values: FormAnswers
 }) => {
   const subject = `New submission: ${form.title}`
-  const fields = (form.fields ?? []).map((field) => {
+  const fields = projectFormFields(form).map((field) => {
     const value = values[field.name] ?? ''
     const filenames = attachments
       .filter((file) => file.fieldName === field.name)

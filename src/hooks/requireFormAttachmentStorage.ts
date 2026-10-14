@@ -1,3 +1,4 @@
+import { getFormQuestions } from '@/lib/formLayout'
 import { APIError, type CollectionBeforeChangeHook } from 'payload'
 import { attachmentStorageAvailable } from '@/lib/formAttachmentStorage.server'
 /** Draft authoring remains available; publication must not advertise unusable uploads. */
@@ -6,7 +7,7 @@ export const requireFormAttachmentStorage: CollectionBeforeChangeHook = ({ data,
   const fields = data?.fields ?? originalDoc?.fields ?? []
   if (
     status === 'published' &&
-    fields.some((field: { type?: string }) => field.type === 'file') &&
+    getFormQuestions(fields).some((field) => field.type === 'file') &&
     !attachmentStorageAvailable()
   )
     throw new APIError(

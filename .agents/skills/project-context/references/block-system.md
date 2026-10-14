@@ -599,3 +599,21 @@ Generic Form and Contact6 share fourteen controls. Authenticated shadcnblocks la
 ## Private file presentation
 
 Generic Form and Contact6 share fifteen controls, including File. The sourced native picker/file rows and Progress dependency use callback-owned uploads, real progress, labelled retry/removal, pending/error submit blocking and abort-safe removal. Public adapters supply the private transport; Live Preview disables it. Same-ID/type recovery preserves only currently compatible file metadata and clears incompatible files with explanation. Canonical Blocks/Generic Form adds Private Files; Components/Form File Control documents the production control without duplicating a block. Production inherits existing theme; no new palette/stylesheet. Original attachment names enter snapshots/emails; only authorized submission downloads retrieve bytes.
+
+
+### Ordered dynamic-form entries
+
+Reusable Form `fields` now has an optional `entryType` discriminator. Missing/null
+means Question, preserving existing paths and IDs. Headings, descriptions,
+separators and one-level groups share the ordered native array; groups reuse the
+explicit `formQuestionFields.ts` schema. Global validation caps all questions at
+100 and top-level entries at 200, with unique names, contact roles and identities.
+`formLayout.ts` flattens only questions and derives a minimal public `entries`
+projection. GenericForm and Contact6 production/disabled preview share sourced
+fieldset/legend/description/divider presentation. Fixed Contact33/Review reject
+layout entries. Existing question-only revision hashes stay unchanged; layouts
+contribute optional ordered `formSnapshot.entries` to revision/history. Refresh
+updates layout while retaining valid stable-ID answers; display rows never become
+answers/notification rows. Grouped files retain private-provider publication and
+intake boundaries. No migration/new environment/dependency/style is introduced.
+See [layout contract](../../../../docs/planning/form-layout-entries.md).

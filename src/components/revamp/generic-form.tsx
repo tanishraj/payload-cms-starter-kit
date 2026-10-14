@@ -1,5 +1,7 @@
 'use client'
 
+import { FormLayout } from '@/components/revamp/form-layout'
+import { validateFormLayout, type FormLayoutEntry } from '@/lib/formLayout'
 import type { FormAnswers } from '@/lib/forms'
 
 /**
@@ -66,11 +68,17 @@ export type GenericFormResult = {
   message: string
   requestKeyConflict?: boolean
   errors?: FormSubmissionErrors
-  updatedForm?: { fields: SimpleFormField[]; revision: string; submitButtonLabel: string }
+  updatedForm?: {
+    entries?: FormLayoutEntry[]
+    fields: SimpleFormField[]
+    revision: string
+    submitButtonLabel: string
+  }
 }
 export type GenericFormProps = {
   /** Contact6 preserves its first two short controls in a responsive split row. */
   layout?: 'stacked' | 'contact6'
+  entries?: FormLayoutEntry[]
   fields: SimpleFormField[]
   formLabel?: string
   heading?: string
@@ -103,6 +111,7 @@ const subscribeToHydration = () => () => {}
 /** Presentation only. The caller owns fetching, form identity and persistence. */
 function FormPresentation({
   fields: initialFields,
+  entries: initialEntries,
   revision: initialRevision,
   layout = 'stacked',
   heading = 'Get in touch',
@@ -115,6 +124,7 @@ function FormPresentation({
   onSubmit,
   onFileUpload,
 }: GenericFormProps) {
+  const [entries, setEntries] = useState(initialEntries)
   const [fields, setFields] = useState(initialFields)
   const [revision, setRevision] = useState(initialRevision)
   const [updatedSubmitLabel, setSubmitButtonLabel] = useState<string | null>(null)
@@ -122,6 +132,7 @@ function FormPresentation({
   const [recoveryMessage, setRecoveryMessage] = useState<string | null>(null)
   const recoveryRef = useRef<HTMLParagraphElement>(null)
   const splitFirstRow =
+    !entries &&
     layout === 'contact6' &&
     fields.length >= 2 &&
     fields
@@ -193,6 +204,7 @@ function FormPresentation({
     answers: FormAnswers,
   ) => {
     const recovered = recoverFormAnswers(fields, updated.fields, answers, uploadedFiles.current)
+    setEntries(updated.entries)
     setFields(updated.fields)
     setRevision(updated.revision)
     setSubmitButtonLabel(updated.submitButtonLabel)
@@ -356,294 +368,313 @@ function FormPresentation({
                 splitFirstRow && 'grid sm:grid-cols-2',
               )}
             >
-              {fields.map((definition, index) => (
-                <Controller
-                  key={definition.id ?? definition.name}
-                  name={`answers.${definition.name}`}
-                  control={form.control}
-                  render={({ field, fieldState }) => {
-                    const id = `${prefix}-${definition.name}`
-                    const errorId = `${id}-error`
-                    const helpId = `${id}-help`
-                    const multiple = isMultipleChoiceFormFieldType(definition.type)
-                    const minimum = Math.max(
-                      definition.required ? 1 : 0,
-                      definition.minSelections ?? 0,
-                    )
-                    const maximum = definition.maxSelections
-                    const isRequired = Boolean(definition.required) || (multiple && minimum > 0)
-                    const selectionHelp = multiple
-                      ? maximum != null && minimum === maximum
-                        ? `Choose exactly ${minimum} option${minimum === 1 ? '' : 's'}.`
-                        : maximum != null
-                          ? minimum > 0
-                            ? `Choose ${minimum}–${maximum} options.`
-                            : `Choose up to ${maximum} option${maximum === 1 ? '' : 's'}.`
-                          : minimum > 0
-                            ? `Choose at least ${minimum} option${minimum === 1 ? '' : 's'}.`
-                            : ''
-                      : ''
-                    const temporal = isTemporalFormFieldType(definition.type)
-                    const bounds = isTemporalFormFieldType(definition.type)
-                      ? getFormTemporalBounds(definition.type, definition)
-                      : undefined
-                    const temporalHelp =
-                      temporal && (bounds?.minimum || bounds?.maximum)
-                        ? `${definition.type === 'date' ? 'Date' : 'Local time'}${bounds?.minimum && bounds?.maximum ? `: ${bounds.minimum}–${bounds.maximum}, inclusive.` : bounds?.minimum ? `: ${bounds.minimum} or later.` : bounds?.maximum ? `: ${bounds.maximum} or earlier.` : ''}`
-                        : ''
-                    const helpText = [
-                      definition.helpText,
-                      selectionHelp,
-                      temporalHelp,
-                      definition.type === 'file' ? getFormFileHelp(definition) : '',
-                    ]
-                      .filter(Boolean)
-                      .join(' ')
-                    const a11y = {
-                      id,
-                      'aria-invalid': fieldState.invalid,
-                      'aria-required': isRequired,
-                      'aria-describedby':
-                        [helpText ? helpId : null, fieldState.invalid ? errorId : null]
-                          .filter(Boolean)
-                          .join(' ') || undefined,
-                    }
-                    const label = (
-                      <>
-                        {definition.label}
-                        {isRequired && <span aria-hidden="true"> *</span>}
-                      </>
-                    )
-                    const value = typeof field.value === 'string' ? field.value : ''
-                    if (
-                      definition.type === 'radio' ||
-                      isMultipleChoiceFormFieldType(definition.type)
-                    )
-                      return (
-                        <FieldSet
-                          className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
-                          disabled={inactive}
-                        >
-                          <FieldLegend variant="label" id={`${id}-label`}>
-                            {label}
-                          </FieldLegend>
-                          <FormChoiceControl
-                            {...a11y}
-                            aria-labelledby={`${id}-label`}
-                            definition={definition}
-                            value={field.value}
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}
-                            controlRef={field.ref}
-                            disabled={inactive}
-                            container={selectContainer}
-                          />
-                          {helpText && <FieldDescription id={helpId}>{helpText}</FieldDescription>}
-                          {fieldState.invalid && (
-                            <FieldError id={errorId} errors={[fieldState.error]} />
-                          )}
-                        </FieldSet>
+              <FormLayout
+                headingLevel={layout === 'contact6' ? 4 : 3}
+                entries={entries}
+                names={fields.map((field) => field.name)}
+              >
+                {fields.map((definition, index) => (
+                  <Controller
+                    key={definition.id ?? definition.name}
+                    name={`answers.${definition.name}`}
+                    control={form.control}
+                    render={({ field, fieldState }) => {
+                      const id = `${prefix}-${definition.name}`
+                      const errorId = `${id}-error`
+                      const helpId = `${id}-help`
+                      const multiple = isMultipleChoiceFormFieldType(definition.type)
+                      const minimum = Math.max(
+                        definition.required ? 1 : 0,
+                        definition.minSelections ?? 0,
                       )
-                    const BooleanControl = definition.type === 'switch' ? Switch : Checkbox
-                    if (isBooleanFormFieldType(definition.type))
+                      const maximum = definition.maxSelections
+                      const isRequired = Boolean(definition.required) || (multiple && minimum > 0)
+                      const selectionHelp = multiple
+                        ? maximum != null && minimum === maximum
+                          ? `Choose exactly ${minimum} option${minimum === 1 ? '' : 's'}.`
+                          : maximum != null
+                            ? minimum > 0
+                              ? `Choose ${minimum}–${maximum} options.`
+                              : `Choose up to ${maximum} option${maximum === 1 ? '' : 's'}.`
+                            : minimum > 0
+                              ? `Choose at least ${minimum} option${minimum === 1 ? '' : 's'}.`
+                              : ''
+                        : ''
+                      const temporal = isTemporalFormFieldType(definition.type)
+                      const bounds = isTemporalFormFieldType(definition.type)
+                        ? getFormTemporalBounds(definition.type, definition)
+                        : undefined
+                      const temporalHelp =
+                        temporal && (bounds?.minimum || bounds?.maximum)
+                          ? `${definition.type === 'date' ? 'Date' : 'Local time'}${bounds?.minimum && bounds?.maximum ? `: ${bounds.minimum}–${bounds.maximum}, inclusive.` : bounds?.minimum ? `: ${bounds.minimum} or later.` : bounds?.maximum ? `: ${bounds.maximum} or earlier.` : ''}`
+                          : ''
+                      const helpText = [
+                        definition.helpText,
+                        selectionHelp,
+                        temporalHelp,
+                        definition.type === 'file' ? getFormFileHelp(definition) : '',
+                      ]
+                        .filter(Boolean)
+                        .join(' ')
+                      const a11y = {
+                        id,
+                        'aria-invalid': fieldState.invalid,
+                        'aria-required': isRequired,
+                        'aria-describedby':
+                          [helpText ? helpId : null, fieldState.invalid ? errorId : null]
+                            .filter(Boolean)
+                            .join(' ') || undefined,
+                      }
+                      const label = (
+                        <>
+                          {definition.label}
+                          {isRequired && <span aria-hidden="true"> *</span>}
+                        </>
+                      )
+                      const value = typeof field.value === 'string' ? field.value : ''
+                      if (
+                        definition.type === 'radio' ||
+                        isMultipleChoiceFormFieldType(definition.type)
+                      )
+                        return (
+                          <FieldSet
+                            className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
+                            disabled={inactive}
+                          >
+                            <FieldLegend variant="label" id={`${id}-label`}>
+                              {label}
+                            </FieldLegend>
+                            <FormChoiceControl
+                              {...a11y}
+                              aria-labelledby={`${id}-label`}
+                              definition={definition}
+                              value={field.value}
+                              onChange={field.onChange}
+                              onBlur={field.onBlur}
+                              controlRef={field.ref}
+                              disabled={inactive}
+                              container={selectContainer}
+                            />
+                            {helpText && (
+                              <FieldDescription id={helpId}>{helpText}</FieldDescription>
+                            )}
+                            {fieldState.invalid && (
+                              <FieldError id={errorId} errors={[fieldState.error]} />
+                            )}
+                          </FieldSet>
+                        )
+                      const BooleanControl = definition.type === 'switch' ? Switch : Checkbox
+                      if (isBooleanFormFieldType(definition.type))
+                        return (
+                          <Field
+                            className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
+                            data-invalid={fieldState.invalid}
+                            data-disabled={inactive}
+                          >
+                            <Field orientation="horizontal" className="gap-2">
+                              <BooleanControl
+                                {...a11y}
+                                ref={field.ref}
+                                name={definition.name}
+                                checked={field.value === true}
+                                onCheckedChange={(checked) => field.onChange(checked === true)}
+                                onBlur={field.onBlur}
+                                required={Boolean(definition.required)}
+                                disabled={inactive}
+                              />
+                              <FieldLabel htmlFor={id}>{label}</FieldLabel>
+                            </Field>
+                            {helpText && (
+                              <FieldDescription id={helpId}>{helpText}</FieldDescription>
+                            )}
+                            {fieldState.invalid && (
+                              <FieldError id={errorId} errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )
                       return (
                         <Field
                           className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
                           data-invalid={fieldState.invalid}
                           data-disabled={inactive}
                         >
-                          <Field orientation="horizontal" className="gap-2">
-                            <BooleanControl
+                          <FieldLabel htmlFor={id}>{label}</FieldLabel>
+                          {definition.type === 'file' ? (
+                            <FormFileControl
+                              key={`${definition.id ?? definition.name}:${revision}:${fileAttempt}`}
                               {...a11y}
-                              ref={field.ref}
-                              name={definition.name}
-                              checked={field.value === true}
-                              onCheckedChange={(checked) => field.onChange(checked === true)}
+                              controlRef={field.ref}
                               onBlur={field.onBlur}
+                              name={definition.name}
+                              policy={definition}
+                              disabled={inactive || !onFileUpload}
+                              value={
+                                Array.isArray(field.value)
+                                  ? field.value.flatMap((token) => {
+                                      const file = uploadedFiles.current.get(token)
+                                      return file ? [file] : []
+                                    })
+                                  : []
+                              }
+                              onChange={(files) => {
+                                for (const file of files)
+                                  uploadedFiles.current.set(file.token, file)
+                                field.onChange(files.map((file) => file.token))
+                              }}
+                              onBlockedChange={(blocked) => {
+                                blockedUploads.current.set(
+                                  definition.id ?? definition.name,
+                                  blocked,
+                                )
+                                setUploadsBlocked(
+                                  [...blockedUploads.current.values()].some(Boolean),
+                                )
+                              }}
+                              onUpload={async (file, uploadID, signal, progress) => {
+                                if (!onFileUpload || !revision)
+                                  throw new Error('Uploads are unavailable in this preview.')
+                                submissionKeyRef.current ??= crypto.randomUUID()
+                                try {
+                                  return await onFileUpload(
+                                    file,
+                                    definition,
+                                    revision,
+                                    submissionKeyRef.current,
+                                    uploadID,
+                                    signal,
+                                    progress,
+                                  )
+                                } catch (error) {
+                                  if (error instanceof FormUploadError) {
+                                    if (error.result.updatedForm)
+                                      applyUpdatedForm(
+                                        error.result.updatedForm,
+                                        form.getValues().answers,
+                                      )
+                                    if (error.result.requestKeyConflict) {
+                                      setResult(error.result)
+                                      setRecoveryMessage(error.result.message)
+                                    }
+                                  }
+                                  throw error
+                                }
+                              }}
+                            />
+                          ) : definition.type === 'select' ? (
+                            <Select
+                              name={definition.name}
+                              value={value}
+                              onValueChange={field.onChange}
+                              disabled={inactive}
+                              required={Boolean(definition.required)}
+                            >
+                              <SelectTrigger
+                                {...a11y}
+                                ref={field.ref}
+                                onBlur={field.onBlur}
+                                className={cn(layout === 'stacked' && 'bg-background')}
+                              >
+                                <SelectValue
+                                  placeholder={definition.placeholder || 'Choose an option'}
+                                />
+                              </SelectTrigger>
+                              <SelectContent container={selectContainer}>
+                                <SelectGroup>
+                                  {definition.options?.map((option) => (
+                                    <SelectItem
+                                      key={option.id ?? option.value}
+                                      value={option.value}
+                                    >
+                                      {option.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          ) : isTemporalFormFieldType(definition.type) ? (
+                            <FormTemporalControl
+                              {...field}
+                              {...a11y}
+                              name={definition.name}
+                              value={value}
+                              type={definition.type}
                               required={Boolean(definition.required)}
                               disabled={inactive}
+                              min={bounds?.minimum}
+                              max={bounds?.maximum}
                             />
-                            <FieldLabel htmlFor={id}>{label}</FieldLabel>
-                          </Field>
+                          ) : definition.type === 'textarea' ? (
+                            <Textarea
+                              {...field}
+                              {...a11y}
+                              name={definition.name}
+                              value={value}
+                              disabled={inactive}
+                              required={Boolean(definition.required)}
+                              maxLength={getFormFieldMaxLength(definition)}
+                              minLength={definition.minLength ?? undefined}
+                              rows={5}
+                              placeholder={definition.placeholder ?? undefined}
+                              className={cn('resize-none', layout === 'stacked' && 'bg-background')}
+                            />
+                          ) : (
+                            <Input
+                              {...field}
+                              {...a11y}
+                              name={definition.name}
+                              value={value}
+                              disabled={inactive}
+                              required={Boolean(definition.required)}
+                              maxLength={getFormFieldMaxLength(definition)}
+                              minLength={
+                                supportsFormTextLimits(definition.type)
+                                  ? (definition.minLength ?? undefined)
+                                  : undefined
+                              }
+                              type={
+                                definition.type === 'phone'
+                                  ? 'tel'
+                                  : definition.type === 'number'
+                                    ? 'text'
+                                    : definition.type
+                              }
+                              inputMode={
+                                definition.type === 'number'
+                                  ? 'decimal'
+                                  : definition.type === 'url'
+                                    ? 'url'
+                                    : undefined
+                              }
+                              onChange={(event) =>
+                                field.onChange(
+                                  definition.type === 'phone'
+                                    ? sanitizePhoneNumberInput(event.target.value)
+                                    : event.target.value,
+                                )
+                              }
+                              autoComplete={
+                                definition.contactRole === 'name'
+                                  ? 'name'
+                                  : definition.type === 'email'
+                                    ? 'email'
+                                    : definition.type === 'phone'
+                                      ? 'tel'
+                                      : undefined
+                              }
+                              placeholder={definition.placeholder ?? undefined}
+                              className={cn(layout === 'stacked' && 'bg-background')}
+                            />
+                          )}
                           {helpText && <FieldDescription id={helpId}>{helpText}</FieldDescription>}
                           {fieldState.invalid && (
                             <FieldError id={errorId} errors={[fieldState.error]} />
                           )}
                         </Field>
                       )
-                    return (
-                      <Field
-                        className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
-                        data-invalid={fieldState.invalid}
-                        data-disabled={inactive}
-                      >
-                        <FieldLabel htmlFor={id}>{label}</FieldLabel>
-                        {definition.type === 'file' ? (
-                          <FormFileControl
-                            key={`${definition.id ?? definition.name}:${revision}:${fileAttempt}`}
-                            {...a11y}
-                            controlRef={field.ref}
-                            onBlur={field.onBlur}
-                            name={definition.name}
-                            policy={definition}
-                            disabled={inactive || !onFileUpload}
-                            value={
-                              Array.isArray(field.value)
-                                ? field.value.flatMap((token) => {
-                                    const file = uploadedFiles.current.get(token)
-                                    return file ? [file] : []
-                                  })
-                                : []
-                            }
-                            onChange={(files) => {
-                              for (const file of files) uploadedFiles.current.set(file.token, file)
-                              field.onChange(files.map((file) => file.token))
-                            }}
-                            onBlockedChange={(blocked) => {
-                              blockedUploads.current.set(definition.id ?? definition.name, blocked)
-                              setUploadsBlocked([...blockedUploads.current.values()].some(Boolean))
-                            }}
-                            onUpload={async (file, uploadID, signal, progress) => {
-                              if (!onFileUpload || !revision)
-                                throw new Error('Uploads are unavailable in this preview.')
-                              submissionKeyRef.current ??= crypto.randomUUID()
-                              try {
-                                return await onFileUpload(
-                                  file,
-                                  definition,
-                                  revision,
-                                  submissionKeyRef.current,
-                                  uploadID,
-                                  signal,
-                                  progress,
-                                )
-                              } catch (error) {
-                                if (error instanceof FormUploadError) {
-                                  if (error.result.updatedForm)
-                                    applyUpdatedForm(
-                                      error.result.updatedForm,
-                                      form.getValues().answers,
-                                    )
-                                  if (error.result.requestKeyConflict) {
-                                    setResult(error.result)
-                                    setRecoveryMessage(error.result.message)
-                                  }
-                                }
-                                throw error
-                              }
-                            }}
-                          />
-                        ) : definition.type === 'select' ? (
-                          <Select
-                            name={definition.name}
-                            value={value}
-                            onValueChange={field.onChange}
-                            disabled={inactive}
-                            required={Boolean(definition.required)}
-                          >
-                            <SelectTrigger
-                              {...a11y}
-                              ref={field.ref}
-                              onBlur={field.onBlur}
-                              className={cn(layout === 'stacked' && 'bg-background')}
-                            >
-                              <SelectValue
-                                placeholder={definition.placeholder || 'Choose an option'}
-                              />
-                            </SelectTrigger>
-                            <SelectContent container={selectContainer}>
-                              <SelectGroup>
-                                {definition.options?.map((option) => (
-                                  <SelectItem key={option.id ?? option.value} value={option.value}>
-                                    {option.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        ) : isTemporalFormFieldType(definition.type) ? (
-                          <FormTemporalControl
-                            {...field}
-                            {...a11y}
-                            name={definition.name}
-                            value={value}
-                            type={definition.type}
-                            required={Boolean(definition.required)}
-                            disabled={inactive}
-                            min={bounds?.minimum}
-                            max={bounds?.maximum}
-                          />
-                        ) : definition.type === 'textarea' ? (
-                          <Textarea
-                            {...field}
-                            {...a11y}
-                            name={definition.name}
-                            value={value}
-                            disabled={inactive}
-                            required={Boolean(definition.required)}
-                            maxLength={getFormFieldMaxLength(definition)}
-                            minLength={definition.minLength ?? undefined}
-                            rows={5}
-                            placeholder={definition.placeholder ?? undefined}
-                            className={cn('resize-none', layout === 'stacked' && 'bg-background')}
-                          />
-                        ) : (
-                          <Input
-                            {...field}
-                            {...a11y}
-                            name={definition.name}
-                            value={value}
-                            disabled={inactive}
-                            required={Boolean(definition.required)}
-                            maxLength={getFormFieldMaxLength(definition)}
-                            minLength={
-                              supportsFormTextLimits(definition.type)
-                                ? (definition.minLength ?? undefined)
-                                : undefined
-                            }
-                            type={
-                              definition.type === 'phone'
-                                ? 'tel'
-                                : definition.type === 'number'
-                                  ? 'text'
-                                  : definition.type
-                            }
-                            inputMode={
-                              definition.type === 'number'
-                                ? 'decimal'
-                                : definition.type === 'url'
-                                  ? 'url'
-                                  : undefined
-                            }
-                            onChange={(event) =>
-                              field.onChange(
-                                definition.type === 'phone'
-                                  ? sanitizePhoneNumberInput(event.target.value)
-                                  : event.target.value,
-                              )
-                            }
-                            autoComplete={
-                              definition.contactRole === 'name'
-                                ? 'name'
-                                : definition.type === 'email'
-                                  ? 'email'
-                                  : definition.type === 'phone'
-                                    ? 'tel'
-                                    : undefined
-                            }
-                            placeholder={definition.placeholder ?? undefined}
-                            className={cn(layout === 'stacked' && 'bg-background')}
-                          />
-                        )}
-                        {helpText && <FieldDescription id={helpId}>{helpText}</FieldDescription>}
-                        {fieldState.invalid && (
-                          <FieldError id={errorId} errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )
-                  }}
-                />
-              ))}
+                    }}
+                  />
+                ))}
+              </FormLayout>
             </FieldGroup>
             <div hidden aria-hidden="true">
               <label htmlFor={`${prefix}-website`}>Website</label>
@@ -666,9 +697,17 @@ function FormPresentation({
 }
 
 export function GenericForm(props: GenericFormProps) {
-  if (validateFormFieldDefinitions(props.fields) !== true) {
+  if (
+    validateFormFieldDefinitions(props.fields) !== true ||
+    validateFormLayout(props.entries, props.fields) !== true
+  ) {
     return <FieldError>This form is unavailable. Please try another way to contact us.</FieldError>
   }
   // Replacing the schema must drop removed answers and reset validation/status.
-  return <FormPresentation key={JSON.stringify([props.revision, props.fields])} {...props} />
+  return (
+    <FormPresentation
+      key={JSON.stringify([props.revision, props.fields, props.entries])}
+      {...props}
+    />
+  )
 }

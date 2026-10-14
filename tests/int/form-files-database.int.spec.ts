@@ -118,6 +118,108 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
       'jpg',
     ])
   })
+  it('publishes layout rows without fake question values and validates grouped questions globally', async () => {
+    const base = {
+      title: 'Layout',
+      slug: 'layout-native-contract',
+      _status: 'published' as const,
+      submissionIntent: 'general' as const,
+      submitButtonLabel: 'Send',
+      successMessage: 'Received',
+    }
+    const form = await payload.create({
+      collection: 'forms',
+      data: {
+        ...base,
+        fields: [
+          { entryType: 'heading', displayText: 'Your enquiry' },
+          { entryType: 'description', displayText: 'Tell us how we can help.' },
+          { entryType: 'separator' },
+          {
+            entryType: 'group',
+            displayText: 'Details',
+            groupDescription: 'For our reply.',
+            questions: [{ name: 'question', label: 'Question', type: 'text', required: true }],
+          },
+        ],
+      },
+    })
+    expect(projectPublishedGenericForm(form)?.entries).toEqual([
+      { kind: 'heading', text: 'Your enquiry' },
+      { kind: 'description', text: 'Tell us how we can help.' },
+      { kind: 'separator' },
+      { kind: 'group', label: 'Details', description: 'For our reply.', questions: ['question'] },
+    ])
+    expect(projectPublishedGenericForm(form)?.fields).toHaveLength(1)
+    for (const fields of [
+      [{ entryType: 'group', displayText: 'Empty', questions: [] }],
+      [
+        { entryType: 'heading', displayText: '' },
+        { name: 'question', label: 'Question', type: 'text' },
+      ],
+      [
+        {
+          entryType: 'group',
+          displayText: 'Duplicate',
+          questions: [{ name: 'question', label: 'Q', type: 'text' }],
+        },
+        { name: 'question', label: 'Q', type: 'text' },
+      ],
+    ])
+      await expect(
+        payload.update({
+          collection: 'forms',
+          id: form.id,
+          data: { fields: fields as typeof form.fields },
+        }),
+      ).rejects.toThrow()
+    await payload.update({
+      collection: 'forms',
+      id: form.id,
+      draft: true,
+      data: {
+        fields: form.fields.map((entry) =>
+          entry.entryType === 'heading' ? { ...entry, displayText: 'Draft heading' } : entry,
+        ),
+      },
+    })
+    const published = await payload.findByID({ collection: 'forms', id: form.id, draft: false })
+    expect(projectPublishedGenericForm(published)?.entries?.[0]).toEqual({
+      kind: 'heading',
+      text: 'Your enquiry',
+    })
+  })
+  it('fails closed when a grouped file question is published without private storage', async () => {
+    const original = process.env.FORM_ATTACHMENTS_PROVIDER
+    process.env.FORM_ATTACHMENTS_PROVIDER = 'disabled'
+    // Availability is parsed dynamically by the storage service; no public Media fallback.
+    const spy = vi.spyOn(storageModule, 'attachmentStorageAvailable').mockReturnValue(false)
+    try {
+      await expect(
+        payload.create({
+          collection: 'forms',
+          data: {
+            title: 'Grouped upload',
+            slug: 'grouped-upload-unavailable',
+            _status: 'published',
+            submissionIntent: 'general',
+            submitButtonLabel: 'Send',
+            successMessage: 'Received',
+            fields: [
+              {
+                entryType: 'group',
+                displayText: 'Documents',
+                questions: [{ name: 'file', label: 'File', type: 'file' }],
+              },
+            ],
+          },
+        }),
+      ).rejects.toThrow('Private file uploads are not configured')
+    } finally {
+      process.env.FORM_ATTACHMENTS_PROVIDER = original
+      spy.mockRestore()
+    }
+  })
   it('checks PDF, PNG, JPEG and Word content rather than trusting browser MIME', async () => {
     const { field } = await setup()
     const policy = { ...field, allowedFileTypes: ['pdf', 'png', 'jpg', 'docx'] as const }

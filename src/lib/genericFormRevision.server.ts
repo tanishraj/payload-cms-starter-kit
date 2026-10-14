@@ -10,7 +10,7 @@ export function projectPublishedGenericForm(
   const definition = projectGenericForm(form)
   if (!form || !definition) return null
   const revision = buildFormSubmissionSnapshot(
-    { ...form, fields: definition.fields },
+    { ...form, fields: definition.fields, entries: definition.entries },
     {},
   ).formRevision
   return { ...definition, revision }

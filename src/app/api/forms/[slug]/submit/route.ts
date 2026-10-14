@@ -1,3 +1,4 @@
+import { projectFormLayout, validateFormEntries } from '@/lib/formLayout'
 import configPromise from '@payload-config'
 import { NextResponse } from 'next/server'
 import { createLocalReq, getPayload, type PayloadRequest } from 'payload'
@@ -210,6 +211,9 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
     ipAddress,
   })
 
+  if (validateFormEntries(form.fields, form.submissionIntent) !== true)
+    return NextResponse.json({ message: 'This form is unavailable.' }, { status: 404 })
+
   const submissionIntent = normalizeFormSubmissionIntent(form.submissionIntent)
   const isReviewSubmission = isReviewFormSubmissionIntent(submissionIntent)
   const formFields = projectFormFields(form)
@@ -299,7 +303,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
       data: {
         ...(identity ? { ...identity, submissionConfirmation: form.successMessage } : {}),
         ...buildFormSubmissionSnapshot(
-          { ...form, fields: formFields },
+          { ...form, fields: formFields, entries: projectFormLayout(form.fields) },
           submissionData,
           attachments,
         ),

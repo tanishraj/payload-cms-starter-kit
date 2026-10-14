@@ -2,6 +2,7 @@ import 'server-only'
 import config from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
+import { getFormQuestions } from '@/lib/formLayout'
 import { CMS_CACHE_TAGS } from '@/hooks/revalidateCmsContent'
 import { attachmentStorageAvailable } from '@/lib/formAttachmentStorage.server'
 import { projectPublishedGenericForm } from '@/lib/genericFormRevision.server'
@@ -33,7 +34,11 @@ export const getPublishedGenericForm = unstable_cache(
       },
     })
     const form = result.docs[0] ?? null
-    if (form?.fields?.some((field) => field.type === 'file') && !attachmentStorageAvailable())
+    if (
+      form &&
+      getFormQuestions(form.fields).some((field) => field.type === 'file') &&
+      !attachmentStorageAvailable()
+    )
       return null
     return projectPublishedGenericForm(form)
   },

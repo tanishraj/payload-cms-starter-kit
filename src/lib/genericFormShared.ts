@@ -1,4 +1,10 @@
 import {
+  getFormQuestions,
+  projectFormLayout,
+  validateFormEntries,
+  type FormLayoutEntry,
+} from '@/lib/formLayout'
+import {
   getFormFieldConfiguration,
   validateFormFieldDefinitions,
   type SimpleFormField,
@@ -6,6 +12,7 @@ import {
 import type { Form } from '@/payload-types'
 
 export type GenericFormDefinition = {
+  entries?: FormLayoutEntry[]
   revision?: string
   slug: string
   fields: SimpleFormField[]
@@ -14,7 +21,7 @@ export type GenericFormDefinition = {
 
 /** Shared explicit projection for intake and public/preview consumers. */
 export function projectFormFields(form: Partial<Form>): SimpleFormField[] {
-  return (form.fields ?? []).map((field) => ({
+  return getFormQuestions(form.fields ?? []).map((field) => ({
     id: field.id,
     name: field.name,
     label: field.label,
@@ -40,7 +47,14 @@ export function projectGenericForm(
     !form.fields?.length
   )
     return null
+  if (validateFormEntries(form.fields, form.submissionIntent) !== true) return null
   const fields = projectFormFields(form)
   if (validateFormFieldDefinitions(fields) !== true) return null
-  return { slug: form.slug, fields, submitButtonLabel: form.submitButtonLabel || 'Submit' }
+  const entries = projectFormLayout(form.fields)
+  return {
+    ...(entries ? { entries } : {}),
+    slug: form.slug,
+    fields,
+    submitButtonLabel: form.submitButtonLabel || 'Submit',
+  }
 }

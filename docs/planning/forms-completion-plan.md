@@ -53,3 +53,14 @@ The private-file increment passes local release checks before commit/push: 2,630
 Final private-upload release adds mandatory production artifact exclusion/inspection after a synthetic file reproduced Next.js standalone inclusion. The fixed fresh build reports no private uploads across 79 traces. Final local source: 2,637 integration tests/one Docker-dependent skip, both native journeys without retries, production/Storybook builds and required gates. New-response recovery explicitly clears old file rows while retaining other answers. An occupied disposable Mongo test port required a clean repeat; no fixtures/checks were skipped. PR #28 must pass Quality on its final updated head before merge.
 
 [PR #28](https://github.com/tanishraj/payload-cms-starter-kit/pull/28) merged as `083082d6` after [final-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38587383727) passed on `1b4ba8a8`. CI: 2,637 integration tests/one Docker-dependent skip, both native form journeys and gated production build/private-artifact inspection pass. Governance passed first attempt. Contact6 passed first attempt; Generic Form passed on retry after the initial public-page navigation exceeded 20 seconds before upload interaction. Broader VERIFY/AdminUX repeatability remains open; no assertion or warning was suppressed. FORM-03's initial fifteen-control catalogue plus submit is verified; broad SUBMIT-05 section/provider acceptance and the remaining forms milestones stay open. The verified feature branch is deleted. Continue on fresh `feat/form-layout-entries`, created from merged develop before new implementation; layout/display entries and then conditions are next.
+
+
+## Ordered layout increment
+
+On `feat/form-layout-entries`: sourced Storybook presentation is reviewed, and
+native ordered headings/descriptions/separators/groups are implemented with one
+shared question schema and unchanged legacy paths/identities. Display rows stay
+outside answers; optional published layout participates in revision/history.
+See [contract](form-layout-entries.md). Focused contracts and actual MongoDB
+publication/draft/grouped-upload checks pass. Both expanded native journeys pass without retries. Complete local regression: 2,663 integration tests/one Docker-dependent skip, production/Storybook builds and context/type/lint/audit gates pass; CI/merge evidence is pending. FORM-04/DF-07 remain open
+for supported appearance and complete acceptance. Conditions follow separately.
