@@ -6,6 +6,7 @@ export async function submitGenericForm(
   slug: string,
   values: Record<string, boolean | string>,
   revision?: string,
+  submissionKey?: string,
 ): Promise<GenericFormResult> {
   const response = await fetch(`/api/forms/${encodeURIComponent(slug)}/submit`, {
     method: 'POST',
@@ -13,6 +14,7 @@ export async function submitGenericForm(
     body: JSON.stringify({
       values,
       formRevision: revision,
+      submissionKey,
       metadata: { landingPage: window.location.href },
     }),
     signal: AbortSignal.timeout(30_000),
@@ -53,6 +55,9 @@ export async function submitGenericForm(
       }
     }
     throw new Error('Unconfirmed changed-form response')
+  }
+  if (response.status === 409 && 'code' in body && body.code === 'SUBMISSION_KEY_REUSED') {
+    return { success: false, message: body.message, requestKeyConflict: true }
   }
   if (response.status === 429) {
     const seconds = Number(response.headers.get('Retry-After'))

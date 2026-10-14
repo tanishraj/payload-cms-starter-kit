@@ -2,7 +2,7 @@
 
 ## Runtime and Layers
 
-This is one editorial marketing application: Payload CMS 3.90.2 and Next.js 16 share a Node.js 22.17.0 App Router process within the supported `>=22.13.0 <23` range, using pnpm 11.17.0, React 19, Tailwind CSS 4, MongoDB, and TypeScript. The main entry points are [Payload configuration](../../../../src/payload.config.ts) and the [App Router](../../../../src/app).
+This is one editorial marketing application: Payload CMS 3.90.2 and Next.js 16.3.8 share a Node.js 22.17.0 App Router process within the supported `>=22.13.0 <23` range, using pnpm 11.17.0, React 19, Tailwind CSS 4, MongoDB, and TypeScript. The main entry points are [Payload configuration](../../../../src/payload.config.ts) and the [App Router](../../../../src/app).
 
 The repository has eight practical layers:
 
@@ -222,3 +222,7 @@ globally on Next breaks its public frontend compilation/SSR.
 ## October 7 security patch baseline
 
 The aligned Payload family is 3.90.2 and Sharp is 0.35.5. The existing scoped Undici override targets Payload 3.90.2 only (7.29.1); other consumers retain their own graph. See the October 7 dependency remediation for upstream compatibility review, scheduled-job operator action and verification. Braces exception policy/expiry remains unchanged.
+
+## Generic submission retries
+
+Generic Form and Contact6 share durable receipt lookup and optional unique sparse Mongo key hashes via `formSubmissionIdempotency.server.ts`. Public intake verifies the installed constraint, persists before notification, returns stored confirmations on matching retries and refuses key reuse with changed answers. Client keys survive unconfirmed responses in memory; explicit new responses mint new keys. See [retry contract](../../../../docs/planning/form-submission-retries.md); notification delivery recovery remains separate work.

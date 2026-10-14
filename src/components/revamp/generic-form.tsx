@@ -51,6 +51,7 @@ import {
 export type GenericFormResult = {
   success: boolean
   message: string
+  requestKeyConflict?: boolean
   errors?: FormSubmissionErrors
   updatedForm?: { fields: SimpleFormField[]; revision: string; submitButtonLabel: string }
 }
@@ -65,9 +66,11 @@ export type GenericFormProps = {
   pendingLabel?: string
   disabled?: boolean
   revision?: string
+  protectRetries?: boolean
   onSubmit: (
     values: Record<string, boolean | string>,
     revision?: string,
+    submissionKey?: string,
   ) => Promise<GenericFormResult>
 }
 
@@ -93,6 +96,7 @@ function FormPresentation({
   submitButtonLabel: initialSubmitLabel = 'Send Message',
   pendingLabel = 'Sending…',
   disabled = false,
+  protectRetries = false,
   onSubmit,
 }: GenericFormProps) {
   const [fields, setFields] = useState(initialFields)
@@ -115,6 +119,7 @@ function FormPresentation({
   const [selectContainer, setSelectContainer] = useState<HTMLDivElement | null>(null)
   const messageRef = useRef<HTMLParagraphElement>(null)
   const submittingRef = useRef(false)
+  const submissionKeyRef = useRef<string | null>(null)
   const [result, setResult] = useState<GenericFormResult | null>(null)
   const resolver: Resolver<Answers> = (input): ResolverResult<Answers> => {
     const { errors, normalizedData } = validateFormSubmission({ fields, values: input.answers })
@@ -149,18 +154,21 @@ function FormPresentation({
   }, [recoveryMessage, revision])
 
   const pending = form.formState.isSubmitting
-  const inactive = !hydrated || disabled || pending
+  const inactive = !hydrated || disabled || pending || Boolean(result?.requestKeyConflict)
   const hasErrors = Boolean(form.formState.errors.answers)
   const submitAnswers = async ({ answers, website }: Answers) => {
-    if (disabled || submittingRef.current || result?.success) return
+    if (disabled || submittingRef.current || result?.success || result?.requestKeyConflict) return
     submittingRef.current = true
     setResult(null)
     form.clearErrors('root')
     try {
       const submittedValues = { ...answers, [FORM_HONEYPOT_FIELD_NAME]: website }
-      const response = revision
-        ? await onSubmit(submittedValues, revision)
-        : await onSubmit(submittedValues)
+      if (protectRetries) submissionKeyRef.current ??= crypto.randomUUID()
+      const response = protectRetries
+        ? await onSubmit(submittedValues, revision, submissionKeyRef.current ?? undefined)
+        : revision
+          ? await onSubmit(submittedValues, revision)
+          : await onSubmit(submittedValues)
       if (!response.success && response.updatedForm) {
         const updated = response.updatedForm
         const recovered = recoverFormAnswers(fields, updated.fields, answers)
@@ -179,6 +187,7 @@ function FormPresentation({
         return
       }
       setResult(response)
+      if (response.requestKeyConflict) setRecoveryMessage(response.message)
       if (response.success) setRecoveryMessage(null)
       if (!response.success) {
         let firstInvalid: string | undefined
@@ -250,12 +259,28 @@ function FormPresentation({
             {fields.some((field) => field.required) && (
               <FieldDescription>Fields marked * are required.</FieldDescription>
             )}
-            {(hasErrors || result?.success === false) && (
+            {!result?.requestKeyConflict && (hasErrors || result?.success === false) && (
               <FieldError>
                 {result?.success === false
                   ? result.message
                   : 'Please correct the highlighted fields and try again.'}
               </FieldError>
+            )}
+            {result?.requestKeyConflict && (
+              <Button
+                type="button"
+                variant="outline"
+                disabled={!hydrated || disabled || pending}
+                onClick={() => {
+                  submissionKeyRef.current = null
+                  setResult(null)
+                  setRecoveryMessage(
+                    'Your answers are still here. Review them before sending a new response.',
+                  )
+                }}
+              >
+                Start a new response
+              </Button>
             )}
             <FieldGroup
               className={cn(

@@ -205,6 +205,26 @@ for (const block of [
               .then((body) => body.totalDocs),
           ).toBe(0)
           await visitor.getByLabel('Contact preference', { exact: true }).fill('Email is best')
+          // The server commits, but the visitor loses the first confirmation.
+          const endpoint = `**/api/forms/${form.slug}/submit`
+          let acceptedBody: unknown
+          await visitor.route(endpoint, async (route) => {
+            acceptedBody = route.request().postDataJSON()
+            const stored = await route.fetch()
+            expect(stored.ok()).toBe(true)
+            await route.abort('failed')
+            await visitor.unroute(endpoint)
+          })
+          await visitor.getByRole('button', { name: 'Submit', exact: true }).click()
+          await expect(visitor.getByText(/We couldn’t confirm your submission/)).toBeVisible()
+          expect(
+            await page.request
+              .get(`/api/form-submissions?where[form][equals]=${form.id}&depth=0`, {
+                headers: authHeaders,
+              })
+              .then((r) => r.json())
+              .then((body) => body.totalDocs),
+          ).toBe(1)
           const intakePromise = visitor.waitForResponse(
             (response) =>
               new URL(response.url()).pathname === `/api/forms/${form.slug}/submit` &&
@@ -215,6 +235,7 @@ for (const block of [
           const intake = await intakePromise
           expect(intake.ok(), `Intake ${intake.status()}: ${await intake.text()}`).toBe(true)
           expect(await intake.json()).toMatchObject({ message: form.successMessage })
+          expect(intake.request().postDataJSON()).toEqual(acceptedBody)
           await expect(
             visitor
               .getByRole('status')

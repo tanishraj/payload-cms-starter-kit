@@ -8647,6 +8647,9 @@ export interface Review {
  */
 export interface FormSubmission {
   id: string;
+  submissionKeyHash?: string | null;
+  submissionRequestHash?: string | null;
+  submissionConfirmation?: string | null;
   form: string | Form;
   status?: ('new' | 'in_review' | 'qualified' | 'won' | 'rejected' | 'archived') | null;
   owner?: (string | null) | User;
@@ -14746,6 +14749,9 @@ export interface FormsSelect<T extends boolean = true> {
  * via the `definition` "form-submissions_select".
  */
 export interface FormSubmissionsSelect<T extends boolean = true> {
+  submissionKeyHash?: T;
+  submissionRequestHash?: T;
+  submissionConfirmation?: T;
   form?: T;
   status?: T;
   owner?: T;

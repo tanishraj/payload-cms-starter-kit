@@ -2224,7 +2224,7 @@
   },
   "project": {
     "frameworks": {
-      "next": "16.3.6",
+      "next": "16.3.8",
       "payload": "3.90.2",
       "react": "19.2.7",
       "tailwindcss": "^4.3.2",
@@ -2308,6 +2308,7 @@
       "docs/operations/database-backups.md",
       "docs/operations/dependency-audit-remediation-2026-10-06.md",
       "docs/operations/dependency-audit-remediation-2026-10-07.md",
+      "docs/operations/dependency-audit-remediation-2026-10-14.md",
       "docs/operations/dependency-management.md",
       "docs/operations/developer-workflows.md",
       "docs/operations/editorial-governance.md",
@@ -2852,6 +2853,7 @@
       "src/lib/formNotifications.ts",
       "src/lib/formSpamProtection.ts",
       "src/lib/formSubmissionEvents.ts",
+      "src/lib/formSubmissionIdempotency.server.ts",
       "src/lib/formSubmissionSnapshot.ts",
       "src/lib/forms.ts",
       "src/lib/frontendSession.ts",
@@ -3106,6 +3108,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/form-answer-recovery.int.spec.ts",
+      "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",
@@ -3263,7 +3266,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "9446fe74aa68bb98b50ba2d4a2e4454e933039aba0f59ced6a07cbb27dbda99f"
+    "sha256": "e59ad2dbe9b893a94573c0924efe27869b5290c9e982368804dae7a8b3fd0337"
   },
   "surfaces": {
     "access": [
@@ -3327,6 +3330,7 @@
       "src/lib/formNotifications.ts",
       "src/lib/formSpamProtection.ts",
       "src/lib/formSubmissionEvents.ts",
+      "src/lib/formSubmissionIdempotency.server.ts",
       "src/lib/formSubmissionSnapshot.ts",
       "src/lib/forms.ts",
       "src/lib/frontendSession.ts",
@@ -3515,6 +3519,7 @@
       "tests/int/footer-spacing.int.spec.ts",
       "tests/int/footer56-presentation.int.spec.tsx",
       "tests/int/form-answer-recovery.int.spec.ts",
+      "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
       "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",

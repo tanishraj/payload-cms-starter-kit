@@ -120,6 +120,7 @@ describe('generic form CMS integration', () => {
     expect(fetch.mock.calls[0]?.[0]).toBe('/api/forms/custom-enquiry/submit')
     const init = fetch.mock.calls[0]?.[1] as RequestInit
     expect(JSON.parse(init.body as string)).toEqual({
+      submissionKey: expect.stringMatching(/^[a-f0-9-]{36}$/),
       values: { preferred_department: 'Admissions', contact_permission: false, website: '' },
       metadata: { landingPage: window.location.href },
     })

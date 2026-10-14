@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Field } from 'payload'
 
+import { submissionIdentity } from '@/lib/formSubmissionIdempotency.server'
 import { FormSubmissions } from '@/collections/FormSubmissions'
 import { projectPublishedGenericForm } from '@/lib/genericFormRevision.server'
 import type { Form } from '@/payload-types'
@@ -9,6 +10,7 @@ import { updateFormSubmissionActivity } from '@/hooks/updateFormSubmissionActivi
 
 const payloadMocks = vi.hoisted(() => {
   return {
+    indexes: vi.fn(),
     create: vi.fn(),
     find: vi.fn(),
     loggerError: vi.fn(),
@@ -34,6 +36,7 @@ const spamProtectionMocks = vi.hoisted(() => {
 
 vi.mock('payload', () => ({
   getPayload: vi.fn(async () => ({
+    db: { collections: { 'form-submissions': { collection: { indexes: payloadMocks.indexes } } } },
     create: payloadMocks.create,
     find: payloadMocks.find,
     logger: {
@@ -93,12 +96,83 @@ const loadRouteModule = async () => {
 describe('form submission model', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    payloadMocks.indexes.mockResolvedValue([
+      { key: { submissionKeyHash: 1 }, unique: true, sparse: true },
+    ])
 
     spamProtectionMocks.getClientIPAddress.mockReturnValue('127.0.0.1')
     spamProtectionMocks.isRateLimited.mockReturnValue(false)
     spamProtectionMocks.isSpamHoneypotTriggered.mockReturnValue(false)
     eventMocks.emitFormSubmissionEvent.mockResolvedValue(undefined)
     payloadMocks.sendEmail.mockResolvedValue(undefined)
+  })
+
+  it('returns the original confirmation before changed-form checks, rate limits or side effects', async () => {
+    const key = 'a41b3fb9-9c37-458d-9909-c7ae38102ef3'
+    const values = { question: 'Hello' }
+    const formRevision = '1'.repeat(64)
+    const identity = submissionIdentity('revised', key, values, formRevision)!
+    payloadMocks.find.mockResolvedValue({
+      docs: [{ ...identity, submissionConfirmation: 'Original receipt' }],
+    })
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/revised/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ submissionKey: key, values, formRevision }),
+      }),
+      { params: Promise.resolve({ slug: 'revised' }) },
+    )
+    expect(response.status).toBe(200)
+    expect(await response.json()).toEqual({ message: 'Original receipt' })
+    expect(payloadMocks.find).toHaveBeenCalledTimes(1)
+    expect(payloadMocks.create).not.toHaveBeenCalled()
+    expect(payloadMocks.sendEmail).not.toHaveBeenCalled()
+    expect(eventMocks.emitFormSubmissionEvent).not.toHaveBeenCalled()
+    expect(spamProtectionMocks.isRateLimited).not.toHaveBeenCalled()
+  })
+
+  it('rejects changed answers for an accepted key without disclosing the original answers', async () => {
+    const key = 'a41b3fb9-9c37-458d-9909-c7ae38102ef3'
+    payloadMocks.find.mockResolvedValue({
+      docs: [
+        {
+          ...submissionIdentity('revised', key, { question: 'Private original' }, undefined),
+          submissionConfirmation: 'Private receipt',
+        },
+      ],
+    })
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/revised/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ submissionKey: key, values: { question: 'Changed' } }),
+      }),
+      { params: Promise.resolve({ slug: 'revised' }) },
+    )
+    expect(response.status).toBe(409)
+    const body = await response.json()
+    expect(body.code).toBe('SUBMISSION_KEY_REUSED')
+    expect(JSON.stringify(body)).not.toContain('Private')
+    expect(payloadMocks.create).not.toHaveBeenCalled()
+  })
+
+  it('fails closed for new keyed intake when its durable constraint is absent', async () => {
+    payloadMocks.find.mockResolvedValue({ docs: [] })
+    payloadMocks.indexes.mockResolvedValue([{ key: { submissionKeyHash: 1 } }])
+    const { POST } = await loadRouteModule()
+    const response = await POST(
+      new Request('http://localhost/api/forms/revised/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ submissionKey: 'a41b3fb9-9c37-458d-9909-c7ae38102ef3', values: {} }),
+      }),
+      { params: Promise.resolve({ slug: 'revised' }) },
+    )
+    expect(response.status).toBe(503)
+    expect(payloadMocks.create).not.toHaveBeenCalled()
   })
 
   it('rejects stale answers before writes or notifications and returns only the current public definition', async () => {

@@ -1,5 +1,5 @@
 import { renderToString } from 'react-dom/server'
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { GenericForm, type GenericFormResult } from '@/components/revamp/generic-form'
 import type { SimpleFormField } from '@/lib/forms'
@@ -163,5 +163,63 @@ describe('generic form presentation', () => {
     rerender(<GenericForm fields={fields} disabled onSubmit={onSubmit} />)
     submit()
     expect(onSubmit).not.toHaveBeenCalled()
+  })
+  it('keeps separate form instances independent even when their answers match', async () => {
+    const onSubmit = vi.fn(async (): Promise<GenericFormResult> => success)
+    render(
+      <>
+        <GenericForm heading="First response" fields={fields} protectRetries onSubmit={onSubmit} />
+        <GenericForm heading="Second response" fields={fields} protectRetries onSubmit={onSubmit} />
+      </>,
+    )
+    for (const heading of ['First response', 'Second response']) {
+      const form = within(screen.getByRole('form', { name: heading }))
+      fireEvent.change(form.getByLabelText(/Your question/), { target: { value: 'Same answer' } })
+      fireEvent.click(form.getByRole('button', { name: 'Send Message' }))
+      await waitFor(() => expect(form.getByRole('status').textContent).toBe('Received.'))
+    }
+    expect(onSubmit).toHaveBeenCalledTimes(2)
+    const calls = onSubmit.mock.calls as unknown as Array<[unknown, unknown, string]>
+    expect(calls[0][0]).toEqual(calls[1][0])
+    expect(calls[0][2]).not.toBe(calls[1][2])
+  })
+
+  it('reuses the same key after a lost response and requires an explicit new attempt on conflicting answers', async () => {
+    const onSubmit = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('Unconfirmed'))
+      .mockResolvedValueOnce({
+        success: false,
+        requestKeyConflict: true,
+        message: 'Already received. Start a new response.',
+      })
+      .mockResolvedValue({ success: true, message: 'New response received.' })
+    render(
+      <GenericForm
+        fields={[{ name: 'question', label: 'Question', type: 'text' }]}
+        protectRetries
+        onSubmit={onSubmit}
+      />,
+    )
+    fireEvent.change(screen.getByLabelText('Question'), { target: { value: 'First answer' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Send Message' }))
+    await waitFor(() => expect(screen.getByText(/We couldn’t confirm/)).toBeTruthy())
+    fireEvent.change(screen.getByLabelText('Question'), { target: { value: 'Updated answer' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Send Message' }))
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'Start a new response' })).toBeTruthy(),
+    )
+    expect(onSubmit.mock.calls[0][2]).toBe(onSubmit.mock.calls[1][2])
+    expect(screen.getByRole('status')).toBe(document.activeElement)
+    expect(
+      (screen.getByRole('button', { name: 'Send Message' }) as HTMLButtonElement).disabled,
+    ).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: 'Start a new response' }))
+    expect((screen.getByLabelText('Question') as HTMLInputElement).value).toBe('Updated answer')
+    fireEvent.click(screen.getByRole('button', { name: 'Send Message' }))
+    await waitFor(() =>
+      expect(screen.getByRole('status').textContent).toBe('New response received.'),
+    )
+    expect(onSubmit.mock.calls[2][2]).not.toBe(onSubmit.mock.calls[0][2])
   })
 })

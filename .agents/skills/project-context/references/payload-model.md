@@ -59,7 +59,7 @@ Nine globals are registered:
   stale intake returns a sanitized 409 changed-form definition before persistence
   or notifications. The shared client preserves valid answers by unchanged unique
   row ID/control type, explains cleared answers and requires deliberate resubmission.
-  Full identity lifecycle, durable idempotency and flattened exports remain separate work. Shared form validation
+  Generic clients now carry an attempt key; hidden immutable receipt hashes and a unique sparse Mongo index protect accepted retries for the submission lifetime. Replays return the original confirmation before current-revision checks or side effects; conflicting answers require a deliberate new attempt. Keyless legacy clients retain the existing protocol. Full identity lifecycle, notification recovery and flattened exports remain separate work. See [retry contract](../../../../docs/planning/form-submission-retries.md). Shared form validation
   rejects non-plain answer records, undeclared names and malformed scalar values; checkbox inputs keep
   finite legacy HTML encodings. The fixed review engine explicitly opts into its seven separately
   validated extra keys. Authoring reserves constructor/prototype/website, validates supported types,
