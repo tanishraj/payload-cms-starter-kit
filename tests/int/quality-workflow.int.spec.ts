@@ -27,6 +27,7 @@ const expectedRunSteps = [
   ['Run integration tests', 'pnpm test:int'],
   ['Run critical governance journeys', 'pnpm test:e2e:governance'],
   ['Run native dynamic-form journey', 'pnpm test:e2e:forms'],
+  ['Clean generated Next output', 'rm -rf .next'],
   ['Build the Vercel production application', 'pnpm build'],
   ['Stop isolated MongoDB replica', 'pnpm ci:mongodb:stop'],
 ] as const
