@@ -17,7 +17,7 @@ const compatibilityGroups = [
   {
     name: 'Next.js',
     packages: ['next', '@next/third-parties', 'eslint-config-next'],
-    version: '16.3.6',
+    version: '16.3.8',
   },
   {
     name: 'Payload',
