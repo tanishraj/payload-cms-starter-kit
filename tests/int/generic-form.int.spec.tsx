@@ -385,3 +385,46 @@ it('explains count constraints before submission and marks a minimum selection a
   )
   expect(screen.getByText('Fields marked * are required.')).toBeTruthy()
 })
+
+it('keeps native temporal inputs and switches inactive during SSR and in preview', () => {
+  const controls: SimpleFormField[] = [
+    { name: 'day', label: 'Day', type: 'date' },
+    { name: 'time', label: 'Time', type: 'time' },
+    { name: 'on', label: 'Enabled', type: 'switch' },
+  ]
+  const html = renderToString(<GenericForm fields={controls} onSubmit={async () => success} />)
+  const container = document.createElement('div')
+  container.innerHTML = html
+  for (const input of container.querySelectorAll(
+    'input[type=date],input[type=time],button[role=switch]',
+  ))
+    expect(input.hasAttribute('disabled')).toBe(true)
+  render(<GenericForm fields={controls} disabled onSubmit={async () => success} />)
+  expect((screen.getByRole('switch', { name: 'Enabled' }) as HTMLButtonElement).disabled).toBe(true)
+  expect((screen.getByLabelText('Day') as HTMLInputElement).disabled).toBe(true)
+})
+
+it('focuses native date errors and requires an off switch to be explicitly turned on', async () => {
+  const onSubmit = vi.fn(async () => success)
+  render(
+    <GenericForm
+      fields={[
+        { name: 'day', label: 'Day', type: 'date', required: true, minDate: '2026-10-20' },
+        { name: 'confirmed', label: 'Confirmed', type: 'switch', required: true },
+      ]}
+      onSubmit={onSubmit}
+    />,
+  )
+  fireEvent.change(screen.getByLabelText(/Day/), { target: { value: '2026-10-19' } })
+  submit()
+  await waitFor(() => expect(screen.getByText('Day must be 2026-10-20 or later.')).toBeTruthy())
+  expect(document.activeElement).toBe(screen.getByLabelText(/Day/))
+  expect(screen.getByText('Confirmed must be turned on.')).toBeTruthy()
+  expect(onSubmit).not.toHaveBeenCalled()
+  fireEvent.change(screen.getByLabelText(/Day/), { target: { value: '2026-10-20' } })
+  fireEvent.click(screen.getByRole('switch', { name: 'Confirmed' }))
+  submit()
+  await waitFor(() =>
+    expect(onSubmit).toHaveBeenCalledWith({ day: '2026-10-20', confirmed: true, website: '' }),
+  )
+})

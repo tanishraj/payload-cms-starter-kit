@@ -1,6 +1,6 @@
 # Radio and multiple-choice form controls
 
-Bounded forms increment on `feat/form-choice-controls`, based on merged develop `0414bb15`. Payload-native editing and Live Preview remain the editing model. Eleven controls now share the explicit form contract; switch, date/time and private file controls remain in the completion plan.
+Delivered bounded forms increment from `feat/form-choice-controls`, based on merged develop `0414bb15`. [PR #26](https://github.com/tanishraj/payload-cms-starter-kit/pull/26) merged as `d00ca7e7` after [current-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38558813736) passed on `460017ea`. CI: 2,509 integration tests/one Docker-dependent skip; both governance and both native form journeys pass on the first attempt; fresh production build passes. Payload-native editing and Live Preview remain the editing model. Eleven controls now share the explicit form contract; switch, date/time and private file controls remain in the completion plan.
 
 ## Authoring and answers
 
@@ -44,3 +44,5 @@ Keep explicit typed registrations rather than a schema language. A new control m
 ## Verification checkpoint
 
 159 focused form tests and all 15 project-context tests pass. Storybook builds and the new validation/recovery browser plays pass; desktop/mobile/dark source review completed. Both native journeys pass without retries, including consent-visible picker interaction, native defaults/count settings, partial recovery, raw array history and identical lost-confirmation retry. The final isolated full regression has 2,509 passing tests and one Docker-dependent skip; the production build passes. TypeScript, lint (one existing AdminUserMenu warning), production audit under the unchanged approved Braces exception, Payload types/import-map and final deterministic inventory checks pass before commit/push. Initial temporary verification issues are retained in the work log; no gate was weakened. Merge status is recorded in the main implementation checklist; this document does not declare broad forms acceptance complete.
+
+The merged choice branch is deleted locally/remotely. Continue the control catalogue on fresh `feat/form-switch-date-time-controls`, created from merged develop `d00ca7e7` before implementation. FORM-08’s registered-control extensibility acceptance is verified; FORM-03/DF-07 and the complete forms milestone remain open.

@@ -17,6 +17,9 @@ import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
 import { Controller, useForm, type Resolver, type ResolverResult } from 'react-hook-form'
 
 import { Button } from '@/components/revamp/ui/button'
+import { Switch } from '@/components/revamp/ui/switch'
+import { FormTemporalControl } from '@/components/revamp/form-temporal-control'
+import { getFormTemporalBounds } from '@/lib/formTemporal'
 import { Checkbox } from '@/components/revamp/ui/checkbox'
 import {
   Field,
@@ -45,6 +48,8 @@ import {
   getFormFieldMaxLength,
   getFormInitialAnswers,
   isMultipleChoiceFormFieldType,
+  isBooleanFormFieldType,
+  isTemporalFormFieldType,
   supportsFormTextLimits,
   sanitizePhoneNumberInput,
   validateFormFieldDefinitions,
@@ -110,7 +115,9 @@ function FormPresentation({
       .slice(0, 2)
       .every(
         (field) =>
-          !['textarea', 'checkbox', 'radio', 'checkboxGroup', 'multiSelect'].includes(field.type),
+          !['textarea', 'checkbox', 'switch', 'radio', 'checkboxGroup', 'multiSelect'].includes(
+            field.type,
+          ),
       )
   // The server-rendered form must not submit to the page before React is ready.
   const hydrated = useSyncExternalStore(
@@ -318,7 +325,17 @@ function FormPresentation({
                             ? `Choose at least ${minimum} option${minimum === 1 ? '' : 's'}.`
                             : ''
                       : ''
-                    const helpText = [definition.helpText, selectionHelp].filter(Boolean).join(' ')
+                    const temporal = isTemporalFormFieldType(definition.type)
+                    const bounds = isTemporalFormFieldType(definition.type)
+                      ? getFormTemporalBounds(definition.type, definition)
+                      : undefined
+                    const temporalHelp =
+                      temporal && (bounds?.minimum || bounds?.maximum)
+                        ? `${definition.type === 'date' ? 'Date' : 'Local time'}${bounds?.minimum && bounds?.maximum ? `: ${bounds.minimum}–${bounds.maximum}, inclusive.` : bounds?.minimum ? `: ${bounds.minimum} or later.` : bounds?.maximum ? `: ${bounds.maximum} or earlier.` : ''}`
+                        : ''
+                    const helpText = [definition.helpText, selectionHelp, temporalHelp]
+                      .filter(Boolean)
+                      .join(' ')
                     const a11y = {
                       id,
                       'aria-invalid': fieldState.invalid,
@@ -364,7 +381,8 @@ function FormPresentation({
                           )}
                         </FieldSet>
                       )
-                    if (definition.type === 'checkbox')
+                    const BooleanControl = definition.type === 'switch' ? Switch : Checkbox
+                    if (isBooleanFormFieldType(definition.type))
                       return (
                         <Field
                           className={cn(splitFirstRow && index >= 2 && 'sm:col-span-2')}
@@ -372,7 +390,7 @@ function FormPresentation({
                           data-disabled={inactive}
                         >
                           <Field orientation="horizontal" className="gap-2">
-                            <Checkbox
+                            <BooleanControl
                               {...a11y}
                               ref={field.ref}
                               name={definition.name}
@@ -425,6 +443,18 @@ function FormPresentation({
                               </SelectGroup>
                             </SelectContent>
                           </Select>
+                        ) : isTemporalFormFieldType(definition.type) ? (
+                          <FormTemporalControl
+                            {...field}
+                            {...a11y}
+                            name={definition.name}
+                            value={value}
+                            type={definition.type}
+                            required={Boolean(definition.required)}
+                            disabled={inactive}
+                            min={bounds?.minimum}
+                            max={bounds?.maximum}
+                          />
                         ) : definition.type === 'textarea' ? (
                           <Textarea
                             {...field}

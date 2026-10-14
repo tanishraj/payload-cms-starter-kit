@@ -42,7 +42,17 @@ async function fillNativeField(page: Page, fieldPath: string, value: string, num
 async function chooseNativeType(
   page: Page,
   index: number,
-  label: 'Select' | 'Checkbox' | 'URL' | 'Number' | 'Radio' | 'Checkbox group' | 'Multi-select',
+  label:
+    | 'Select'
+    | 'Checkbox'
+    | 'URL'
+    | 'Number'
+    | 'Radio'
+    | 'Checkbox group'
+    | 'Multi-select'
+    | 'Switch'
+    | 'Date'
+    | 'Time',
 ) {
   const fieldPath = `fields.${index}.type`
   const field = page.locator(`#field-fields__${index}__type`)
@@ -158,6 +168,40 @@ for (const block of [
         }
       }
 
+      for (const [index, type, name, label] of [
+        [8, 'Date', 'visit_day', 'Visit date'],
+        [9, 'Time', 'phone', 'Visit time'],
+        [10, 'Switch', 'reminder', 'Send me a reminder'],
+      ] as const) {
+        await addNativeRow(page, addField, `fields.${index}.name`)
+        await chooseNativeType(page, index, type)
+        await fillNativeField(page, `fields.${index}.name`, name)
+        await fillNativeField(page, `fields.${index}.label`, label)
+        if (index === 8) {
+          await fillNativeField(page, 'fields.8.minDate', '2026-10-20')
+          await fillNativeField(page, 'fields.8.maxDate', '2026-10-31')
+          await fillNativeField(page, 'fields.8.defaultValue', '2026-10-22')
+        } else if (index === 9) {
+          await fillNativeField(page, 'fields.9.minTime', '09:00')
+          await fillNativeField(page, 'fields.9.maxTime', '17:00')
+          await fillNativeField(page, 'fields.9.defaultValue', '10:30')
+        } else {
+          await editNativeForm(
+            page,
+            () => page.locator('input[name="fields.10.defaultChecked"]').check(),
+            'fields.10.defaultChecked',
+            true,
+          )
+        }
+        if (index !== 10)
+          await editNativeForm(
+            page,
+            () => page.locator(`input[name="fields.${index}.required"]`).check(),
+            `fields.${index}.required`,
+            true,
+          )
+      }
+
       const formResponsePromise = page.waitForResponse(
         (r) => new URL(r.url()).pathname === '/api/forms' && r.request().method() === 'POST',
       )
@@ -184,6 +228,24 @@ for (const block of [
           },
         })
         expect(rejected.status(), 'Invalid controls/rules/defaults must not publish').toBe(400)
+      }
+
+      for (const [name, invalid] of [
+        ['visit_day', { minDate: '2026-02-30' }],
+        ['visit_day', { defaultValue: '2026-10-19' }],
+        ['phone', { minTime: '22:00', maxTime: '02:00' }],
+        ['reminder', { required: true, defaultChecked: true }],
+      ] as const) {
+        const rejected = await page.request.patch(`/api/forms/${form.id}`, {
+          headers: authHeaders,
+          data: {
+            _status: 'published',
+            fields: form.fields.map((field: { name: string }) =>
+              field.name === name ? { ...field, ...invalid } : field,
+            ),
+          },
+        })
+        expect(rejected.status(), 'Invalid temporal/switch rules must not publish').toBe(400)
       }
 
       const pageResponse = await page.request.post('/api/pages', {
@@ -293,6 +355,27 @@ for (const block of [
             await consent.getByRole('button', { name: /Reject/ }).click()
             await expect(consent).toBeHidden()
           }
+          const visitDate = visitor.getByLabel(/Visit date/)
+          const visitTime = visitor.getByLabel(/Visit time/)
+          const reminder = visitor.getByRole('switch', { name: 'Send me a reminder', exact: true })
+          await expect(visitDate).toHaveValue('2026-10-22')
+          await expect(visitDate).toHaveAttribute('min', '2026-10-20')
+          await expect(visitTime).toHaveValue('10:30')
+          await expect(visitTime).toHaveAttribute('max', '17:00')
+          await expect(reminder).toBeChecked()
+          await visitDate.fill('2026-10-19')
+          await visitTime.fill('18:00')
+          await reminder.uncheck()
+          await visitor.getByRole('button', { name: 'Submit', exact: true }).click()
+          await expect(
+            visitor.getByText('Visit date must be 2026-10-20 or later.', { exact: true }),
+          ).toBeVisible()
+          await expect(
+            visitor.getByText('Visit time must be 17:00 or earlier.', { exact: true }),
+          ).toBeVisible()
+          await expect(visitDate).toBeFocused()
+          await visitDate.fill('2026-10-22')
+          await visitTime.fill('10:30')
           // Publish after the visitor has loaded and answered the old revision.
           const changed = await page.request.patch(`/api/forms/${form.id}`, {
             headers: authHeaders,
@@ -318,7 +401,11 @@ for (const block of [
                             maxSelections: 1,
                             options: field.options?.filter((option) => option.value !== 'library'),
                           }
-                        : field,
+                        : field.name === 'phone'
+                          ? { ...field, minTime: '11:00', defaultValue: '12:00' }
+                          : field.name === 'reminder'
+                            ? { ...field, required: true, defaultChecked: false }
+                            : field,
               ),
             },
           })
@@ -361,10 +448,15 @@ for (const block of [
             0,
           )
           await expect(services).toHaveText('1 option selected')
+          await expect(visitDate).toHaveValue('2026-10-22')
+          await expect(visitTime).toHaveValue('')
+          await expect(reminder).not.toBeChecked()
+          await visitTime.fill('11:00')
+          await reminder.check()
           await expect(visitor.getByLabel('Contact preference', { exact: true })).toHaveValue('')
           await expect(
             visitor.getByText(
-              /These answers were cleared because their questions changed: Your name, You may contact me, Visit duration/,
+              /These answers were cleared because their questions changed: Your name, You may contact me, Visit duration, Visit time, Send me a reminder/,
             ),
           ).toBeVisible()
           expect(
@@ -420,6 +512,7 @@ for (const block of [
           const { docs } = await submissions.json()
           expect(docs).toHaveLength(1)
           expect(docs[0].formRevision).toBe(stale.form.revision)
+          expect(docs[0].submitterPhone).toBeFalsy() // Time named phone is an ordinary answer.
           expect(docs[0].submitterEmail).toBeFalsy() // Number named email is an ordinary answer.
           expect(docs[0].formSnapshot.fields[0]).toMatchObject({
             maxLength: 6,
@@ -450,6 +543,24 @@ for (const block of [
                 type: 'multiSelect',
                 value: { raw: ['admissions'] },
                 displayValue: 'Admissions',
+              }),
+              expect.objectContaining({
+                name: 'visit_day',
+                type: 'date',
+                value: { raw: '2026-10-22' },
+                displayValue: '2026-10-22',
+              }),
+              expect.objectContaining({
+                name: 'phone',
+                type: 'time',
+                value: { raw: '11:00' },
+                displayValue: '11:00',
+              }),
+              expect.objectContaining({
+                name: 'reminder',
+                type: 'switch',
+                value: { raw: true },
+                displayValue: 'Yes',
               }),
               expect.objectContaining({ name: 'visitor_full_name', value: { raw: 'Taylor' } }),
               expect.objectContaining({

@@ -18,6 +18,7 @@ import {
   formSubmissionIntentOptions,
   isTextLikeFormFieldType,
   isMultipleChoiceFormFieldType,
+  isBooleanFormFieldType,
   isSelectFormFieldType,
   isValidFormFieldName,
   validateFormFieldDefinitionsForIntent,
@@ -282,7 +283,7 @@ export const Forms: CollectionConfig = {
           type: 'textarea',
           admin: {
             condition: (data, siblingData) =>
-              siblingData?.type !== 'checkbox' &&
+              !isBooleanFormFieldType(siblingData?.type) &&
               !isMultipleChoiceFormFieldType(siblingData?.type) &&
               (data?.submissionIntent !== 'review' || Boolean(siblingData?.defaultValue)),
             description:
@@ -339,10 +340,10 @@ export const Forms: CollectionConfig = {
           type: 'checkbox',
           admin: {
             condition: (data, siblingData) =>
-              siblingData?.type === 'checkbox' &&
+              isBooleanFormFieldType(siblingData?.type) &&
               (data?.submissionIntent !== 'review' || siblingData?.defaultChecked === true),
             description:
-              'Optional checkboxes only. Required acceptance questions must start unchecked so visitors make their own choice.',
+              'Optional checkboxes and switches only. Required acceptance questions must start unchecked/off so visitors make their own choice.',
           },
         },
         {
@@ -423,6 +424,64 @@ export const Forms: CollectionConfig = {
                   (data?.submissionIntent !== 'review' || siblingData?.step != null),
                 description:
                   'Optional positive increment: 1 for unit steps, 0.5 for half-unit steps. Starts at the minimum, or zero if no minimum is set. Leave blank to allow any decimal value. Numeric settings are retained but inactive on other types.',
+              },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'minDate',
+              label: 'Earliest date',
+              type: 'text',
+              maxLength: 10,
+              admin: {
+                width: '50%',
+                condition: (_, siblingData) => siblingData?.type === 'date',
+                description:
+                  'Optional inclusive bound in YYYY-MM-DD format. Calendar date only; no timezone conversion. Years 0001–9999. Leave blank for no bound. Stored settings are inactive on other types.',
+              },
+            },
+            {
+              name: 'maxDate',
+              label: 'Latest date',
+              type: 'text',
+              maxLength: 10,
+              admin: {
+                width: '50%',
+                condition: (_, siblingData) => siblingData?.type === 'date',
+                description:
+                  'Optional inclusive bound in YYYY-MM-DD format. Calendar date only; no timezone conversion. Years 0001–9999. Leave blank for no bound. Stored settings are inactive on other types.',
+              },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'minTime',
+              label: 'Earliest time',
+              type: 'text',
+              maxLength: 5,
+              admin: {
+                width: '50%',
+                condition: (_, siblingData) => siblingData?.type === 'time',
+                description:
+                  'Optional inclusive bound in HH:mm format. Local 24-hour time, 00:00–23:59; no timezone conversion. Limits must describe one same-day window. Leave blank for no bound. Stored settings are inactive on other types.',
+              },
+            },
+            {
+              name: 'maxTime',
+              label: 'Latest time',
+              type: 'text',
+              maxLength: 5,
+              admin: {
+                width: '50%',
+                condition: (_, siblingData) => siblingData?.type === 'time',
+                description:
+                  'Optional inclusive bound in HH:mm format. Local 24-hour time, 00:00–23:59; no timezone conversion. Limits must describe one same-day window. Leave blank for no bound. Stored settings are inactive on other types.',
               },
             },
           ],

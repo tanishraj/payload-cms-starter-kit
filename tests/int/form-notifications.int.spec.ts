@@ -81,3 +81,25 @@ it('formats multiple original choice labels and escapes their HTML', () => {
   expect(email.html).toContain('&lt;script&gt;Alpha&lt;/script&gt;; Beta &amp; Gamma')
   expect(email.html).not.toContain('<script>')
 })
+
+it('keeps Date/Time local values and Switch meaning in notifications without contact links', () => {
+  const email = buildFormNotificationEmail({
+    form: {
+      title: 'Visits',
+      slug: 'visits',
+      fields: [
+        { name: 'email', label: 'Day', type: 'date' },
+        { name: 'phone', label: 'Time', type: 'time' },
+        { name: 'reminder', label: 'Reminder', type: 'switch' },
+      ],
+    } as never,
+    siteName: 'Example',
+    submittedAt: new Date('2026-10-14T00:00:00.000Z'),
+    values: { email: '2026-10-22', phone: '10:30', reminder: false },
+  })
+  expect(email.text).toContain('Day: 2026-10-22')
+  expect(email.text).toContain('Time: 10:30')
+  expect(email.text).toContain('Reminder: No')
+  expect(email.html).not.toContain('mailto:')
+  expect(email.html).not.toContain('tel:')
+})

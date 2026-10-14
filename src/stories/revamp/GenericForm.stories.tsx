@@ -63,7 +63,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Eleven current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
+          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Fourteen current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
       },
     },
   },
@@ -92,7 +92,7 @@ const meta = {
       name: 'Questions and controls',
       control: 'object',
       description:
-        'Supported text, email, phone, URL, number, textarea, select, checkbox, radio, checkbox group and multi-select definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state and contact roles are editable.',
+        'Supported text, email, phone, URL, number, textarea, select, checkbox, radio, checkbox group, multi-select, switch, date and time definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state and contact roles are editable.',
     },
     heading: { name: 'Heading', control: 'text' },
     description: { name: 'Description', control: 'text' },
@@ -664,6 +664,136 @@ export const ChangedChoices: Story = {
       '1 option selected',
     )
     await userEvent.click(canvas.getByRole('button', { name: 'Send reviewed choices' }))
+    await expect(await canvas.findByRole('status')).toHaveTextContent('Demo received.')
+  },
+}
+
+const temporalFields: SimpleFormField[] = [
+  {
+    id: 'visit-date',
+    name: 'email',
+    label: 'Visit date',
+    type: 'date',
+    required: true,
+    minDate: '2026-10-20',
+    maxDate: '2026-10-31',
+    defaultValue: '2026-10-22',
+  },
+  {
+    id: 'visit-time',
+    name: 'visit_time',
+    label: 'Visit time',
+    type: 'time',
+    required: true,
+    minTime: '09:00',
+    maxTime: '17:00',
+    defaultValue: '10:30',
+  },
+  {
+    id: 'reminder',
+    name: 'reminder',
+    label: 'Send me a reminder',
+    type: 'switch',
+    defaultChecked: true,
+    helpText: 'You can turn this off.',
+  },
+  {
+    id: 'confirmation',
+    name: 'confirmed',
+    label: 'I confirm my visit details',
+    type: 'switch',
+    required: true,
+  },
+]
+
+export const SwitchDateAndTime: Story = {
+  name: 'Switch, Date and Time',
+  args: {
+    heading: 'Arrange a visit',
+    description: 'Pick a calendar date and local time.',
+    fields: temporalFields,
+  },
+}
+
+export const TemporalValidation: Story = {
+  name: 'Date/Time limits and explicit switch confirmation',
+  args: SwitchDateAndTime.args,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await waitFor(() => expect(canvas.getByRole('switch', { name: /I confirm/ })).toHaveFocus())
+    await expect(canvas.getByText('I confirm my visit details must be turned on.')).toBeVisible()
+    const date = canvas.getByLabelText(/Visit date/) as HTMLInputElement
+    const time = canvas.getByLabelText(/Visit time/) as HTMLInputElement
+    // Native temporal input editing is browser-owned; fill its canonical value.
+    const setValue = (input: HTMLInputElement, value: string) => {
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(input, value)
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+    }
+    setValue(date, '2026-10-19')
+    setValue(time, '18:00')
+    await userEvent.click(canvas.getByRole('switch', { name: /I confirm/ }))
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(await canvas.findByText('Visit date must be 2026-10-20 or later.')).toBeVisible()
+    await expect(await canvas.findByText('Visit time must be 17:00 or earlier.')).toBeVisible()
+    await expect(date).toHaveFocus()
+    setValue(date, '2026-10-20')
+    setValue(time, '09:00')
+    await userEvent.click(canvas.getByRole('switch', { name: 'Send me a reminder' }))
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await waitFor(() =>
+      expect(args.onSubmit).toHaveBeenCalledWith({
+        email: '2026-10-20',
+        visit_time: '09:00',
+        reminder: false,
+        confirmed: true,
+        website: '',
+      }),
+    )
+    await expect(await canvas.findByRole('status')).toHaveTextContent('Demo received.')
+  },
+}
+
+export const ChangedTemporalRules: Story = {
+  name: 'Changed date/time rules — review preserved and cleared answers',
+  args: {
+    ...SwitchDateAndTime.args,
+    revision: 'old-temporal',
+    onSubmit: fn(async (_values: FormAnswers, revision?: string): Promise<GenericFormResult> =>
+      revision === 'new-temporal'
+        ? { success: true, message: 'Demo received. No information has been saved or sent.' }
+        : {
+            success: false,
+            message: 'Questions changed',
+            updatedForm: {
+              revision: 'new-temporal',
+              submitButtonLabel: 'Send reviewed visit',
+              fields: temporalFields.map((field) =>
+                field.type === 'time'
+                  ? { ...field, minTime: '11:00', defaultValue: '12:00' }
+                  : field.type === 'switch' && field.name === 'reminder'
+                    ? { ...field, required: true, defaultChecked: false }
+                    : field,
+              ),
+            },
+          },
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('switch', { name: 'Send me a reminder' }))
+    await userEvent.click(canvas.getByRole('switch', { name: /I confirm/ }))
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await waitFor(() => expect(canvas.getByRole('status')).toHaveFocus())
+    await expect(canvas.getByLabelText(/Visit date/)).toHaveValue('2026-10-22')
+    await expect(canvas.getByLabelText(/Visit time/)).toHaveValue('')
+    await expect(canvas.getByRole('switch', { name: 'Send me a reminder' })).not.toBeChecked()
+    await expect(canvas.getByRole('status')).toHaveTextContent('Visit time, Send me a reminder')
+    const time = canvas.getByLabelText(/Visit time/) as HTMLInputElement
+    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(time, '11:00')
+    time.dispatchEvent(new Event('input', { bubbles: true }))
+    await userEvent.click(canvas.getByRole('switch', { name: 'Send me a reminder' }))
+    await userEvent.click(canvas.getByRole('button', { name: 'Send reviewed visit' }))
     await expect(await canvas.findByRole('status')).toHaveTextContent('Demo received.')
   },
 }
