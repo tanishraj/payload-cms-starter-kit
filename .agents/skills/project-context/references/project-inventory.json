@@ -3110,6 +3110,7 @@
       "tests/int/form-answer-recovery.int.spec.ts",
       "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
+      "tests/int/form-submission-activity.int.spec.ts",
       "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",
       "tests/int/forms-strict-values.int.spec.ts",
@@ -3266,7 +3267,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "9639380cfff02cb94ea7e2703af7291d56aee357387d3c11c6fa4513784a1644"
+    "sha256": "b6ffec30ef3730d8ccbea5cd6816affbac80f5b5a581e6fe12ef278f253c3691"
   },
   "surfaces": {
     "access": [
@@ -3521,6 +3522,7 @@
       "tests/int/form-answer-recovery.int.spec.ts",
       "tests/int/form-idempotency-database.int.spec.ts",
       "tests/int/form-notifications.int.spec.ts",
+      "tests/int/form-submission-activity.int.spec.ts",
       "tests/int/forms-dynamic-history.int.spec.ts",
       "tests/int/forms-phone.int.spec.ts",
       "tests/int/forms-strict-values.int.spec.ts",

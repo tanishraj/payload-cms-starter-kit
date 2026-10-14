@@ -52,7 +52,7 @@ Nine globals are registered:
   names; uniqueness/type validation applies. Legacy alias lookup remains only for unassigned roles.
   FormSubmissions own immutable raw data, captured published intake snapshots/content fingerprints
   and native read-only original question/answer rows, plus operational state, activity, assignment
-  and optional Review promotion. Snapshots preserve Payload array-row IDs where present and original
+  and optional Review promotion. Owner activity compares raw/populated MongoDB string IDs and supported finite numeric IDs; owner-only changes stamp Last Action At, while unchanged or omitted owners do not. Existing timestamp field access remains immutable to ordinary updates. Snapshots preserve Payload array-row IDs where present and original
   select labels; legacy submissions remain raw-data-only without backfill. The fingerprint is not a
   Payload version ID. Existing Contact33/Review public presentations remain fixed and revisionless for
   compatibility. Generic Form and Contact6 now carry the published fingerprint;
