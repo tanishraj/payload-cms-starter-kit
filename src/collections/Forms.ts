@@ -268,7 +268,8 @@ export const Forms: CollectionConfig = {
           type: 'textarea',
           maxLength: 1_000,
           admin: {
-            condition: (data) => data?.submissionIntent !== 'review',
+            condition: (data, siblingData) =>
+              data?.submissionIntent !== 'review' || Boolean(siblingData?.helpText),
             description:
               'Optional instructions below this question. Keep the label meaningful; help text is not a placeholder.',
           },
@@ -279,7 +280,8 @@ export const Forms: CollectionConfig = {
           type: 'textarea',
           admin: {
             condition: (data, siblingData) =>
-              data?.submissionIntent !== 'review' && siblingData?.type !== 'checkbox',
+              siblingData?.type !== 'checkbox' &&
+              (data?.submissionIntent !== 'review' || Boolean(siblingData?.defaultValue)),
             description:
               'Optional starting answer for new responses. For Select, enter an option value, not its label. Must satisfy this question’s validation. Visitors can change or clear it; the server never supplies omitted answers.',
           },
@@ -290,7 +292,8 @@ export const Forms: CollectionConfig = {
           type: 'checkbox',
           admin: {
             condition: (data, siblingData) =>
-              data?.submissionIntent !== 'review' && siblingData?.type === 'checkbox',
+              siblingData?.type === 'checkbox' &&
+              (data?.submissionIntent !== 'review' || siblingData?.defaultChecked === true),
             description:
               'Optional checkboxes only. Required acceptance questions must start unchecked so visitors make their own choice.',
           },
@@ -307,7 +310,8 @@ export const Forms: CollectionConfig = {
                 width: '50%',
                 step: 1,
                 condition: (data, siblingData) =>
-                  data?.submissionIntent !== 'review' && supportsFormTextLimits(siblingData?.type),
+                  supportsFormTextLimits(siblingData?.type) &&
+                  (data?.submissionIntent !== 'review' || siblingData?.minLength != null),
                 description:
                   'Text and Textarea only. Blank optional answers remain valid. Spaces at the start/end are trimmed before counting.',
               },
@@ -321,7 +325,8 @@ export const Forms: CollectionConfig = {
                 width: '50%',
                 step: 1,
                 condition: (data, siblingData) =>
-                  data?.submissionIntent !== 'review' && supportsFormTextLimits(siblingData?.type),
+                  supportsFormTextLimits(siblingData?.type) &&
+                  (data?.submissionIntent !== 'review' || siblingData?.maxLength != null),
                 description: `Leave blank for the built-in cap: Text ${FORM_MAX_SINGLE_LINE_LENGTH}, Textarea ${FORM_MAX_TEXTAREA_LENGTH}. Settings are retained but inactive if you change to another control type.`,
               },
             },

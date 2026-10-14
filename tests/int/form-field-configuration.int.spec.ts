@@ -253,3 +253,25 @@ describe('configured revision compatibility', () => {
     ).toBe(true)
   })
 })
+
+it('keeps configured settings visible for clearing after changing to fixed Review intent', async () => {
+  const { Forms } = await import('@/collections/Forms')
+  const fields = Forms.fields.find((field) => 'name' in field && field.name === 'fields')!
+  if (fields.type !== 'array') throw new Error('Missing native fields')
+  const children = fields.fields.flatMap((field) => (field.type === 'row' ? field.fields : [field]))
+  for (const [name, value, type] of [
+    ['helpText', 'Help', 'text'],
+    ['defaultValue', 'Default', 'text'],
+    ['defaultChecked', true, 'checkbox'],
+    ['minLength', 0, 'text'],
+    ['maxLength', 20, 'text'],
+  ] as const) {
+    const field = children.find((field) => 'name' in field && field.name === name)!
+    const condition = field.admin!.condition!
+    expect(condition({ submissionIntent: 'review' }, { type, [name]: value }, {} as never)).toBe(
+      true,
+    )
+    expect(condition({ submissionIntent: 'review' }, { type }, {} as never)).toBe(false)
+    expect(condition({ submissionIntent: 'general' }, { type }, {} as never)).toBe(true)
+  }
+})
