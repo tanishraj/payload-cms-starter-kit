@@ -382,10 +382,9 @@ async function requireSingleActiveQueueItem(
 export async function seedGovernanceBase(): Promise<GovernanceFixture> {
   const testDatabaseURI = getRequiredTestDatabaseURI()
   process.env.MONGODB_URI = testDatabaseURI
-  const [{ getPayload }, { default: config }] = await Promise.all([
-    import('payload'),
-    import('../../src/payload.config.js'),
-  ])
+  // Config imports the Payload runtime; load that dependency first for the Node/tsx worker.
+  const { getPayload } = await import('payload')
+  const { default: config } = await import('../../src/payload.config.js')
   const payload = await getPayload({ config })
   // Build collection/version indexes before fixture writes start transactions.
   await Promise.all([
@@ -512,10 +511,9 @@ export async function cleanupGovernanceFixtures(
 ): Promise<void> {
   const testDatabaseURI = getRequiredTestDatabaseURI()
   process.env.MONGODB_URI = testDatabaseURI
-  const [{ getPayload }, { default: config }] = await Promise.all([
-    import('payload'),
-    import('../../src/payload.config.js'),
-  ])
+  // Config imports the Payload runtime; load that dependency first for the Node/tsx worker.
+  const { getPayload } = await import('payload')
+  const { default: config } = await import('../../src/payload.config.js')
   const payload = await getPayload({ config })
 
   await cleanupGovernanceFixturesWithPayload(payload, fixture)
@@ -526,10 +524,9 @@ export async function deleteGovernanceQueueItems(
 ): Promise<void> {
   const testDatabaseURI = getRequiredTestDatabaseURI()
   process.env.MONGODB_URI = testDatabaseURI
-  const [{ getPayload }, { default: config }] = await Promise.all([
-    import('payload'),
-    import('../../src/payload.config.js'),
-  ])
+  // Config imports the Payload runtime; load that dependency first for the Node/tsx worker.
+  const { getPayload } = await import('payload')
+  const { default: config } = await import('../../src/payload.config.js')
   const payload = await getPayload({ config })
 
   await deleteGovernanceQueueItemsWithPayload(payload, queueSources)

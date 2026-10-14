@@ -1,3 +1,4 @@
+import { formSubmissionEndpoints } from '@/endpoints/formEndpoints'
 import type { CollectionAfterReadHook, CollectionConfig } from 'payload'
 
 import {
@@ -28,6 +29,7 @@ const sanitizeSubmissionDependencyRead: CollectionAfterReadHook = ({ doc, req })
 
 export const FormSubmissions: CollectionConfig = {
   slug: 'form-submissions',
+  endpoints: formSubmissionEndpoints,
   labels: {
     singular: 'Form Submission',
     plural: 'Form Submissions',

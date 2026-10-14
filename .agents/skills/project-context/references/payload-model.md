@@ -148,3 +148,39 @@ Forms adds strict boolean Switch and timezone-free Date (`YYYY-MM-DD`, real cale
 ## Private form attachments
 
 File questions complete the fifteen-control transport catalogue through bounded token arrays and native allowed-format/size/count settings. Internal FormAttachments denies all direct collection APIs, including Admin. One byte-bounded upload endpoint validates published revision, stable field/attempt ownership, extension/content/size and durable uniqueness; transactional capture claims files with the submission receipt. Original filenames/labels are immutable history, and notifications link to the Admin submission without bytes or direct file URLs. Authenticated downloads require full inbox permission, an access-enforced exact submission read and immutable/internal-receipt linkage, including after Form deletion; byte integrity is checked. Pending files expire after 24 hours; bounded cleanup retains accepted/trash references and retries permanent deletions. New native download UI is import-map registered. Section-scoped rows, antivirus, deployed bucket acceptance and reliable email outbox remain separate work. See [contract](../../../../docs/planning/form-private-attachments.md) and [operations](../../../../docs/operations/private-form-attachments.md).
+
+
+### Ordered dynamic-form entries
+
+Reusable Form `fields` now has an optional `entryType` discriminator. Missing/null
+means Question, preserving existing paths and IDs. Headings, descriptions,
+separators and one-level groups share the ordered native array; groups reuse the
+explicit `formQuestionFields.ts` schema. Global validation caps all questions at
+100 and top-level entries at 200, with unique names, contact roles and identities.
+`formLayout.ts` flattens only questions and derives a minimal public `entries`
+projection. GenericForm and Contact6 production/disabled preview share sourced
+fieldset/legend/description/divider presentation. Fixed Contact33/Review reject
+layout entries. Previously selected Contact33 Forms gaining layout become unavailable; revisionless layout submissions fail before storage/email. Existing question-only revision hashes stay unchanged; layouts
+contribute optional ordered `formSnapshot.entries` to revision/history. Refresh
+updates layout while retaining valid stable-ID answers; display rows never become
+answers/notification rows. Grouped files retain private-provider publication and
+intake boundaries. No migration/new environment/dependency/style is introduced.
+See [layout contract](../../../../docs/planning/form-layout-entries.md).
+
+
+### Native form API ownership
+
+`formEndpoints.ts` registers reusable Form submit/upload handlers and the private
+submission download on their owning Payload collections. These public URLs remain
+`/api/forms/:slug/submit`, `/api/forms/:slug/attachments` and
+`/api/form-submissions/:id/attachments/:token`; there is one REST dispatch owner
+and one implementation per URL, rather than overlapping Next handlers and
+Payload's API catch-all. Lazy adapters pass the existing `req.payload` instance
+and the original unread Request stream to handlers under `src/endpoints/forms`.
+The 256KiB JSON limit, 3MiB upload stream limit, published-revision checks,
+idempotency/transaction claims, generic history/notifications, and current
+authorized no-store binary download checks remain mandatory. No eager Payload
+body/file parsing, public Media fallback, route prewarming or weaker test assertion
+is introduced. CI's previous upload requests reached Payload REST and returned
+route-not-found; native registration makes this URL resolvable by that router.
+The underlying platform routing discrepancy is not claimed to be diagnosed.

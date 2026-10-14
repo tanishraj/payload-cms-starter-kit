@@ -1,5 +1,5 @@
 import configPromise from '@payload-config'
-import { getPayload } from 'payload'
+import { getPayload, type Payload } from 'payload'
 import { hasFeature } from '@/access/featureAccess'
 import { createHash } from 'node:crypto'
 import { findSubmissionReceipt } from '@/lib/formSubmissionIdempotency.server'
@@ -14,10 +14,11 @@ const denied = () =>
 export async function GET(
   request: Request,
   context: { params: Promise<{ id: string; token: string }> },
+  suppliedPayload?: Payload,
 ) {
   const { id, token } = await context.params
   if (!isUploadToken(token) || !/^[a-f0-9]{24}$/.test(id)) return denied()
-  const payload = await getPayload({ config: configPromise })
+  const payload = suppliedPayload ?? (await getPayload({ config: configPromise }))
   const { user } = await payload.auth({ headers: request.headers })
   // Dependency/placement access is explicitly insufficient for private submissions.
   if (!hasFeature(user, 'formSubmissions')) return denied()

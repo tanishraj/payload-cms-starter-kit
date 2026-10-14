@@ -5098,30 +5098,37 @@ export interface Form {
     message?: string | null;
   };
   /**
-   * Generic Form and Contact Cards & Form render these questions. Edit existing rows to preserve question identity when relabelling, renaming or reordering; deleting and recreating a row creates a new question. Visitors review published changes before resubmitting. Review Submission has fixed questions and does not support these presentation settings.
+   * Generic Form and Contact Cards & Form render this ordered list of questions and display entries. Add a Question group for related questions; headings, descriptions and separators do not collect answers. Edit existing rows to preserve question identity when relabelling, renaming or reordering; deleting and recreating a row creates a new question. Visitors review published changes before resubmitting. Review Submission has fixed questions and does not support these presentation settings.
    */
   fields: {
     /**
+     * Choose a question or a display entry. Groups contain questions, with one shared label and optional description.
+     */
+    entryType?: ('question' | 'heading' | 'description' | 'separator' | 'group') | null;
+    /**
      * Unique key stored with answers, such as preferred_department. Renaming changes future answer keys and may require updates to external mappings; original submissions retain their keys. Start with a letter; use letters, numbers and underscores. The names constructor, prototype and website are reserved.
      */
-    name: string;
-    label: string;
-    type:
-      | 'text'
-      | 'email'
-      | 'phone'
-      | 'url'
-      | 'number'
-      | 'date'
-      | 'time'
-      | 'switch'
-      | 'file'
-      | 'textarea'
-      | 'select'
-      | 'radio'
-      | 'checkboxGroup'
-      | 'multiSelect'
-      | 'checkbox';
+    name?: string | null;
+    label?: string | null;
+    type?:
+      | (
+          | 'text'
+          | 'email'
+          | 'phone'
+          | 'url'
+          | 'number'
+          | 'date'
+          | 'time'
+          | 'switch'
+          | 'file'
+          | 'textarea'
+          | 'select'
+          | 'radio'
+          | 'checkboxGroup'
+          | 'multiSelect'
+          | 'checkbox'
+        )
+      | null;
     required?: boolean | null;
     /**
      * Optional: use this answer for inbox contact details and confirmation emails. Each role can be assigned once; choose Text for name, Email for email, or Phone for phone. Leave empty for ordinary questions.
@@ -5212,6 +5219,133 @@ export interface Form {
       | {
           label: string;
           value: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Plain text. Heading/group label: 200 characters; description: 2,000. Display entries are never stored as answers.
+     */
+    displayText?: string | null;
+    groupDescription?: string | null;
+    /**
+     * Add or reorder questions in this group. Names and IDs must be unique across the whole form. A form supports up to 100 questions in total. Edit existing rows to retain identity; recreating a question gives it a new identity.
+     */
+    questions?:
+      | {
+          /**
+           * Unique key stored with answers, such as preferred_department. Renaming changes future answer keys and may require updates to external mappings; original submissions retain their keys. Start with a letter; use letters, numbers and underscores. The names constructor, prototype and website are reserved.
+           */
+          name: string;
+          label: string;
+          type:
+            | 'text'
+            | 'email'
+            | 'phone'
+            | 'url'
+            | 'number'
+            | 'date'
+            | 'time'
+            | 'switch'
+            | 'file'
+            | 'textarea'
+            | 'select'
+            | 'radio'
+            | 'checkboxGroup'
+            | 'multiSelect'
+            | 'checkbox';
+          required?: boolean | null;
+          /**
+           * Optional: use this answer for inbox contact details and confirmation emails. Each role can be assigned once; choose Text for name, Email for email, or Phone for phone. Leave empty for ordinary questions.
+           */
+          contactRole?: ('name' | 'email' | 'phone') | null;
+          placeholder?: string | null;
+          /**
+           * Optional instructions below this question. Keep the label meaningful; help text is not a placeholder.
+           */
+          helpText?: string | null;
+          /**
+           * Optional starting answer for new responses. For Select or Radio, enter an option value, not its label. Must satisfy this question’s validation. Visitors can change or clear it; the server never supplies omitted answers.
+           */
+          defaultValue?: string | null;
+          /**
+           * Leave unset for PDF, DOCX, PNG and JPEG. Server checks file content as well as extension. Files are private attachments, never public Media.
+           */
+          allowedFileTypes?: ('pdf' | 'docx' | 'png' | 'jpg')[] | null;
+          /**
+           * Whole number 1–3. Default 3 MB. The bound keeps uploads below hosted request limits.
+           */
+          maxFileSizeMB?: number | null;
+          /**
+           * Whole number 1–5. Default one file. A response may attach at most ten files across all questions.
+           */
+          maxFiles?: number | null;
+          /**
+           * Optional starting choices for new responses. Enter option values, not labels; each value must be unique and still exist. Leave empty to let visitors choose. These values never refill answers after question-change recovery.
+           */
+          defaultSelections?:
+            | {
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+          /**
+           * Optional minimum number of choices. Required questions need at least one even when this is zero. A new form may start empty; visitors must satisfy this rule before submitting.
+           */
+          minSelections?: number | null;
+          /**
+           * Optional maximum number of choices, no greater than the available options. Leave blank to allow all options. Limits must be whole numbers; minimum cannot exceed maximum.
+           */
+          maxSelections?: number | null;
+          /**
+           * Optional checkboxes and switches only. Required acceptance questions must start unchecked/off so visitors make their own choice.
+           */
+          defaultChecked?: boolean | null;
+          /**
+           * Text and Textarea only. Blank optional answers remain valid. Spaces at the start/end are trimmed before counting.
+           */
+          minLength?: number | null;
+          /**
+           * Leave blank for the built-in cap: Text 500, Textarea 10000. Settings are retained but inactive if you change to another control type.
+           */
+          maxLength?: number | null;
+          /**
+           * Number only. Optional inclusive lower limit; negative and decimal values are allowed.
+           */
+          minValue?: number | null;
+          /**
+           * Number only. Optional inclusive upper limit, no smaller than the minimum. Whole-number settings must be within ±9,007,199,254,740,991.
+           */
+          maxValue?: number | null;
+          /**
+           * Optional positive increment: 1 for unit steps, 0.5 for half-unit steps. Starts at the minimum, or zero if no minimum is set. Leave blank to allow any decimal value. Numeric settings are retained but inactive on other types.
+           */
+          step?: number | null;
+          /**
+           * Optional inclusive bound in YYYY-MM-DD format. Calendar date only; no timezone conversion. Years 0001–9999. Leave blank for no bound. Stored settings are inactive on other types.
+           */
+          minDate?: string | null;
+          /**
+           * Optional inclusive bound in YYYY-MM-DD format. Calendar date only; no timezone conversion. Years 0001–9999. Leave blank for no bound. Stored settings are inactive on other types.
+           */
+          maxDate?: string | null;
+          /**
+           * Optional inclusive bound in HH:mm format. Local 24-hour time, 00:00–23:59; no timezone conversion. Limits must describe one same-day window. Leave blank for no bound. Stored settings are inactive on other types.
+           */
+          minTime?: string | null;
+          /**
+           * Optional inclusive bound in HH:mm format. Local 24-hour time, 00:00–23:59; no timezone conversion. Limits must describe one same-day window. Leave blank for no bound. Stored settings are inactive on other types.
+           */
+          maxTime?: string | null;
+          /**
+           * Edit or reorder existing options to keep their row identity. Changing a value clears that selected answer during refresh; changing only the label keeps a still-valid value. Historical submissions retain the original label and value.
+           */
+          options?:
+            | {
+                label: string;
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
           id?: string | null;
         }[]
       | null;
@@ -14861,6 +14995,7 @@ export interface FormsSelect<T extends boolean = true> {
   fields?:
     | T
     | {
+        entryType?: T;
         name?: T;
         label?: T;
         type?: T;
@@ -14895,6 +15030,49 @@ export interface FormsSelect<T extends boolean = true> {
           | {
               label?: T;
               value?: T;
+              id?: T;
+            };
+        displayText?: T;
+        groupDescription?: T;
+        questions?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              type?: T;
+              required?: T;
+              contactRole?: T;
+              placeholder?: T;
+              helpText?: T;
+              defaultValue?: T;
+              allowedFileTypes?: T;
+              maxFileSizeMB?: T;
+              maxFiles?: T;
+              defaultSelections?:
+                | T
+                | {
+                    value?: T;
+                    id?: T;
+                  };
+              minSelections?: T;
+              maxSelections?: T;
+              defaultChecked?: T;
+              minLength?: T;
+              maxLength?: T;
+              minValue?: T;
+              maxValue?: T;
+              step?: T;
+              minDate?: T;
+              maxDate?: T;
+              minTime?: T;
+              maxTime?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
               id?: T;
             };
         id?: T;

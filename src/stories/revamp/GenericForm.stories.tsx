@@ -88,6 +88,12 @@ const meta = {
       control: false,
       description: 'Caller-owned published identity; never an editor-entered option.',
     },
+    entries: {
+      name: 'Ordered layout entries',
+      control: 'object',
+      description:
+        'Questions once in their defined order, headings, descriptions, dividers and labelled groups. Plain text only.',
+    },
     fields: {
       name: 'Questions and controls',
       control: 'object',
@@ -844,3 +850,46 @@ export const PrivateFiles: Story = {
     ).toBeVisible()
   },
 }
+
+export const LayoutEntries: Story = {
+  args: {
+    entries: [
+      { kind: 'heading', text: 'Enquiry details' },
+      { kind: 'description', text: 'Tell us who you are and where to direct your enquiry.' },
+      {
+        kind: 'group',
+        label: 'Your contact details',
+        description: 'We use these details only to reply to your enquiry.',
+        questions: ['visitor_name', 'reply_to', 'contact_number'],
+      },
+      { kind: 'separator' },
+      {
+        kind: 'group',
+        label: 'Your enquiry',
+        questions: ['preferred_department', 'enquiry_details'],
+      },
+      { kind: 'question', name: 'contact_permission' },
+    ],
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByRole('heading', { name: 'Enquiry details' })).toBeVisible()
+    await expect(canvas.getByRole('group', { name: 'Your contact details' })).toBeVisible()
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await waitFor(() => expect(canvas.getByText('Your name is required.')).toBeVisible())
+    await userEvent.type(canvas.getByLabelText(/^Your name/), 'Alex Taylor')
+    await userEvent.type(canvas.getByLabelText(/^Email address/), 'alex@example.com')
+    await userEvent.click(canvas.getByRole('combobox'))
+    await userEvent.click(canvas.getByRole('option', { name: 'Library' }))
+    await userEvent.click(canvas.getByRole('checkbox'))
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await waitFor(() => expect(args.onSubmit).toHaveBeenCalled())
+    const values = (args.onSubmit as ReturnType<typeof fn>).mock.calls.at(-1)?.[0]
+    await expect(Object.keys(values)).toEqual([
+      ...exampleFields.map((field) => field.name),
+      'website',
+    ])
+  },
+}
+
+export const LayoutPreview: Story = { args: LayoutEntries.args }

@@ -641,20 +641,21 @@ exclusions and complete source traceability are in the local scope reference.
   stored under custom names with readable answers; no new collection columns,
   endpoint or email template. FORM-03's broader control catalogue remains open.
 
-- [ ] **FORM-03 — Initial control catalogue.** Text, multiline text, email, phone, URL,
+- [x] **FORM-03 — Initial control catalogue.** Text, multiline text, email, phone, URL,
   number, single select, multi-select, radio group, checkbox, checkbox group,
   switch, date, time, file upload and submit button.
 
-  Work: In progress · Priority: First enhancement · Baseline: Partial.
-  Current evidence: Fifteen controls share authoring/presentation/intake: text, email, phone, URL, number, textarea, select, checkbox, radio, checkbox group, multi-select, switch, date, time and private files. The private-file increment is implemented; release/merge and hosted-provider acceptance remain tracked below. See [attachment contract](form-private-attachments.md). Switch/Date/Time is merged and verified in [PR #27](https://github.com/tanishraj/payload-cms-starter-kit/pull/27); see [temporal contract](form-switch-date-time-controls.md). See [choice contract](form-choice-controls.md) and [URL/Number contract](form-url-number-controls.md).
-  Evidence: [src/lib/forms.ts](../../src/lib/forms.ts).
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Work: Verified · Priority: First enhancement · Baseline: Partial.
+  Current evidence: Fifteen registered question controls share typed native authoring, presentation, validation and original answer capture. The existing configurable submit button completes the initial catalogue. Private-file transport, original filenames, authorization, retry/recovery and artifact exclusion are verified in [PR #28](https://github.com/tanishraj/payload-cms-starter-kit/pull/28); layout/conditions, broad scopes, hosted provider/scanning acceptance and remaining forms milestones are separate.
+  Evidence: [control registration](form-choice-controls.md#adding-another-control), [attachment contract](form-private-attachments.md), `src/lib/forms.ts`, `tests/int/form-files*`, `tests/e2e/generic-form.e2e.spec.ts`.
+  Owner: Codex · Commit/PR: [PR #28](https://github.com/tanishraj/payload-cms-starter-kit/pull/28), `083082d6` · Verified on: 2026-10-14 · Acceptance: [current-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38587383727) on `1b4ba8a8` — 2,637 integration pass/one Docker-dependent skip, native form journeys and gated production build pass. Governance passed first attempt. Contact6 passed first attempt; Generic Form passed on retry after the initial public-page navigation exceeded 20 seconds before upload interaction. Broader VERIFY/AdminUX repeatability remains open; no assertion or warning was suppressed.
 
 - [ ] **FORM-04 — Layout entries.** Headings, descriptions, separators and field groups;
   supported width, spacing, size, shape, variant and responsive presentation.
 
-  Work: Assess · Priority: First enhancement · Baseline: Partial.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Work: In progress · Priority: First enhancement · Baseline: Partial.
+  Current increment: ordered native display entries and one-level groups, shared typed questions, public projection/revision/history and sourced Storybook presentation. See [contract](form-layout-entries.md). Full appearance/acceptance remains open.
+  Owner: Codex · Commit/PR: `feat/form-layout-entries` (pending) · Verified on: 2026-10-14 (local) · Acceptance/test evidence: 2,664 integration pass/one Docker skip, both native journeys without retries, production/Storybook builds and context/type/lint/audit gates; CI/merge pending.
 
 - [ ] **FORM-05 — Identity and configuration.** Stable field ID separate from editable
   label/name/order; help text, placeholder, default, required state and type-specific
@@ -2013,3 +2014,33 @@ owns the instructions for shipped behavior.
 | 2026-10-14 | SUBMIT-05; VERIFY | Private build-artifact boundary hardened before merge | Codex | A synthetic local upload reproduced Next.js tracing it into standalone output despite production local uploads being disabled. Add explicit tracing/Docker-context exclusions and a read-only mandatory artifact check after every production build. | `feat/form-private-attachments`, PR #28 update pending | Prior-head CI is not merge evidence for this additional privacy fix. Local artifact reproduction is confirmed; fixed regression, fresh release and new current-head Quality must pass before merge. No real user file was involved. |
 
 | 2026-10-14 | SUBMIT-05; FORM-03/05; VERIFY | Final private-upload boundary verified locally | Codex | Production tracing/Docker exclusions and a mandatory artifact gate prevent local private files entering bundles. A genuine new response clears pending/error/uploaded file rows, explains re-upload and preserves ordinary answers. | PR #28 final-head update pending | Full final isolated suite: 2,637 pass/one Docker-dependent skip; both final native journeys pass without retries (2.7m); production/Storybook builds, type/lint/audit/generators and all 15 context tests pass. Fresh production build with a synthetic private file present reports 79 traces and privateUploadsIncluded=false; the same guard first rejected the reproduced old bundle. One repeat hit an occupied disposable Mongo port in API fixture startup; rerunning after browser teardown passed without code/assertion changes or skipped fixtures. Earlier CI on ace7edce is superseded for merge; final current-head Quality is required. |
+
+| 2026-10-14 | FORM-03; SUBMIT-05; DF-07; VERIFY | Private-file increment merged; initial catalogue verified | Codex | Fifteen question controls and configurable submit, private metadata/storage, authorized history/downloads, durable retry/recovery, cleanup and deployment artifact protection. Broad scoped-resource/provider/remaining forms acceptance is still open. | [PR #28](https://github.com/tanishraj/payload-cms-starter-kit/pull/28), `083082d6` | [Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38587383727) passed on exact head `1b4ba8a8`: 2,637 integration pass/one Docker-dependent skip; native form journeys and fresh production build/private-artifact check pass. Governance passed first attempt. Contact6 passed first attempt; Generic Form passed on retry after the initial public-page navigation exceeded 20 seconds before upload interaction. Broader VERIFY/AdminUX repeatability remains open; no assertion or warning was suppressed. Verified merged feature branch deleted locally/remotely; develop preserved. Fresh `feat/form-layout-entries` created from merged develop before new implementation. |
+
+| 2026-10-14 | FORM-04; applicable FORM-07/DF-08 | Next forms increment ready | Codex | Continue forms with typed layout/display entries such as headings, descriptions, separators and groups, using verified source/Storybook first. Conditions follow as a bounded increment; do not introduce a visual editor or weaken question/answer identity. | `feat/form-layout-entries`, based on `083082d6` | Private-file increment merged after final-head Quality. No layout-entry implementation claimed yet; the full forms checklist remains active. |
+
+
+| 2026-10-14 | FORM-04; DF-07; SUBMIT-01/02; ADMINUX | Layout increment implemented; release verification in progress | Codex | One ordered native array of questions, headings, descriptions, separators and groups, sourced Storybook first. Legacy paths/IDs/revision hashes preserved; groups share question schema and global validation. Optional layout revision/history, explicit recovery and no phantom answer/email rows. | `feat/form-layout-entries` | Desktop light/mobile dark reviewed, Storybook validation/submission play complete; actual browser first-error focus and component focus checks pass. 24 layout contracts and 11 private-file/database tests pass. Expanded native journeys/full release gates and merge pending. Appearance/conditions/broad acceptance remain open. |
+
+
+| 2026-10-14 | FORM-04; DF-07; SUBMIT-01/02; VERIFY | Layout increment locally verified; CI pending | Codex | Canonical sourced layout presentation, one ordered native authoring flow, question-only answer boundary, legacy revision compatibility and layout-aware history/recovery. | `feat/form-layout-entries` | Complete isolated regression: 2,664 integration tests pass/one Docker-dependent skip; Generic Form and Contact6 native journeys pass without retries (3.4m). Production build/private-artifact inspection, Storybook build/play, type/lint, Payload generators, deterministic context and audit pass under the unchanged approved Braces exception. No new environment/dependency/migration/stylesheet. CI/merge pending; broad FORM-04 appearance/acceptance and conditions remain open. |
+
+
+Native form API ownership correction is under final verification. The shared
+Payload REST router owns submit/upload/private-download URLs and preserves
+unread bounded streams, publication/revision/retry and access/transaction checks.
+Direct real-MongoDB routing tests exercise rejection, accepted receipt replay,
+private downloads and trash retention. Failed Quality on `f9930e9` remains part
+of the record; the final exact-head gate must pass before merge.
+
+
+2026-10-15: Canonical native REST correction passes final local release gates:
+2,665 integration tests/one Docker-dependent skip, both governance journeys
+(52.3s) followed by both native form journeys (2.9m), all without retries or
+diagnostic preloading. Fixture imports load Payload before its dependent config;
+all assertions remain. Actual REST tests retain JSON/upload bounds, accepted
+receipt replay, authorized/private downloads, unrelated-token rejection, original
+files after Form deletion and trash retention. Fresh production build inspects
+73 traces with no private uploads. Types, lint (one existing warning), Payload
+generators, context checks/tests and unchanged approved-exception audit pass.
+Exact-head Quality/merge evidence remains pending.

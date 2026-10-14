@@ -1,6 +1,5 @@
 import configPromise from '@payload-config'
-import { getPayload } from 'payload'
-import { NextResponse } from 'next/server'
+import { getPayload, type Payload } from 'payload'
 import { FORM_FILE_MAX_BYTES, isUploadToken } from '@/lib/formAttachments'
 import {
   stageFormAttachment,
@@ -25,8 +24,12 @@ const limiter = new InMemoryRateLimiter({
   windowMs: 10 * 60 * 1000,
 })
 const json = (body: object, status = 200) =>
-  NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } })
-export async function POST(request: Request, context: { params: Promise<{ slug: string }> }) {
+  Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } })
+export async function POST(
+  request: Request,
+  context: { params: Promise<{ slug: string }> },
+  suppliedPayload?: Payload,
+) {
   const { slug } = await context.params
   if (!attachmentStorageAvailable())
     return json({ message: 'File uploads are unavailable. Please contact the website team.' }, 503)
@@ -56,7 +59,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
   const rateKey = `${getClientIPAddress(request)}:${slug}`
   const rate = limiter.check(rateKey)
   if (rate.limited)
-    return NextResponse.json(
+    return Response.json(
       { message: 'Too many uploads. Please wait before trying again.' },
       {
         status: 429,
@@ -64,7 +67,7 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
       },
     )
   limiter.record(rateKey)
-  const payload = await getPayload({ config: configPromise })
+  const payload = suppliedPayload ?? (await getPayload({ config: configPromise }))
   if (await findSubmissionReceipt(payload, identity.submissionKeyHash))
     return json(
       {

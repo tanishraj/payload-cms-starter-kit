@@ -218,3 +218,17 @@ The pinned form world extends through authenticated labelled Switch and native d
 ### Private file increment — 14 October 2026
 
 Authenticated Input Special 1 preserves the native picker, bordered metadata rows and remove action; Direct Upload Special 7 supplies progress composition with the exact Radix Luma Progress dependency. Integration adds real progress, explicit retry, abort/removal and send blocking, with existing Field labels/help/errors. Native admin download integration uses the existing administration styling boundary; no frontend palette is loaded into Payload. The file list keeps long names within its row, labels removal/retry and explains private-upload versus final response capture. Canonical workshop upload/removal/retry/submission states and desktop/390px Neutral dark are reviewed. Finish disposition: ship this bounded sourced behavior; full admin accessibility, hosted storage/scanning acceptance and the earlier workshop contrast qualification remain open.
+
+
+### Form layout entries — finish review
+
+Operate mode, pinned upstream world. Authenticated
+@shadcnblocks/field-field-advanced-4, form-form-multi-field-6 and
+field-field-advanced-5 supply fieldsets, legends, descriptions and dividers. Typed
+question slots preserve existing controls/validation; plain text wraps and heading
+levels follow the GenericForm/Contact6 hierarchy. Desktop light and 390px mobile
+dark were reviewed in the canonical Storybook entry; groups have accessible names
+and descriptions. Validation, first-error focus and confirmation were exercised
+without forced clicks. Verdict: presentation ready for this bounded increment.
+Broader theme/accessibility/native administration acceptance remains tracked;
+no new palette, stylesheet or duplicate catalogue entry.

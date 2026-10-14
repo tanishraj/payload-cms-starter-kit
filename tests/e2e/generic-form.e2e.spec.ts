@@ -84,7 +84,7 @@ for (const block of [
       await page.goto('/admin/collections/forms/create', { waitUntil: 'domcontentloaded' })
       await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
       await fillNativeField(page, 'title', formTitle)
-      const addField = page.getByRole('button', { name: 'Add Field', exact: true })
+      const addField = page.getByRole('button', { name: 'Add Entry', exact: true })
       await addNativeRow(page, addField, 'fields.0.name')
       await fillNativeField(page, 'fields.0.name', 'visitor_name')
       await fillNativeField(page, 'fields.0.label', 'Your name')
@@ -216,6 +216,31 @@ for (const block of [
         true,
       )
 
+      for (const [index, label, value] of [
+        [12, 'Heading', 'Additional information'],
+        [13, 'Description', 'You can leave extra context for our team.'],
+        [14, 'Separator', ''],
+        [15, 'Question group', 'Extra details'],
+      ] as const) {
+        await addNativeRow(page, addField, `fields.${index}.entryType`)
+        await page.locator(`#field-fields__${index}__entryType`).getByRole('combobox').click()
+        await editNativeForm(
+          page,
+          () => page.getByRole('option', { name: label, exact: true }).click(),
+          `fields.${index}.entryType`,
+          label === 'Question group' ? 'group' : label.toLowerCase(),
+        )
+        if (value) await fillNativeField(page, `fields.${index}.displayText`, value)
+      }
+      await fillNativeField(page, 'fields.15.groupDescription', 'Only share relevant context.')
+      await addNativeRow(
+        page,
+        page.getByRole('button', { name: 'Add Question', exact: true }),
+        'fields.15.questions.0.name',
+      )
+      await fillNativeField(page, 'fields.15.questions.0.name', 'additional_context')
+      await fillNativeField(page, 'fields.15.questions.0.label', 'Anything else?')
+
       const formResponsePromise = page.waitForResponse(
         (r) => new URL(r.url()).pathname === '/api/forms' && r.request().method() === 'POST',
       )
@@ -308,6 +333,16 @@ for (const block of [
             waitUntil: 'domcontentloaded',
           })
           await expect(visitor.getByRole('heading', { name: 'Ask our team' })).toBeVisible()
+          await expect(
+            visitor.getByRole('heading', { name: 'Additional information', exact: true }),
+          ).toBeVisible()
+          await expect(
+            visitor.getByRole('group', { name: 'Extra details', exact: true }),
+          ).toHaveAccessibleDescription('Only share relevant context.')
+          await visitor
+            .getByLabel('Anything else?', { exact: true })
+            .fill('Please include accessibility information.')
+
           await expect(visitor.getByLabel('Your name', { exact: true })).toHaveValue(
             'Campus visitor',
           )
@@ -548,6 +583,25 @@ for (const block of [
           expect(docs[0].formRevision).toBe(stale.form.revision)
           expect(docs[0].submitterPhone).toBeFalsy() // Time named phone is an ordinary answer.
           expect(docs[0].submitterEmail).toBeFalsy() // Number named email is an ordinary answer.
+          expect(docs[0].formSnapshot.entries).toEqual(
+            expect.arrayContaining([
+              { kind: 'heading', text: 'Additional information' },
+              { kind: 'description', text: 'You can leave extra context for our team.' },
+              { kind: 'separator' },
+              {
+                kind: 'group',
+                label: 'Extra details',
+                description: 'Only share relevant context.',
+                questions: ['additional_context'],
+              },
+            ]),
+          )
+          expect(docs[0].data.additional_context).toBe('Please include accessibility information.')
+          expect(
+            docs[0].answers.some((answer: { name: string }) =>
+              ['heading', 'description', 'group', 'separator'].includes(answer.name),
+            ),
+          ).toBe(false)
           expect(docs[0].formSnapshot.fields[0]).toMatchObject({
             maxLength: 6,
             defaultValue: 'Guest',

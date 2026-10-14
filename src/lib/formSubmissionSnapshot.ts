@@ -1,3 +1,9 @@
+import {
+  getFormQuestions,
+  projectFormLayout,
+  type FormEntry,
+  type FormLayoutEntry,
+} from '@/lib/formLayout'
 import type { FormAnswer, FormAnswers } from '@/lib/forms'
 import { createHash } from 'node:crypto'
 
@@ -9,7 +15,8 @@ import {
 } from '@/lib/forms'
 
 type SnapshotForm = {
-  fields: SimpleFormField[]
+  entries?: FormLayoutEntry[]
+  fields: FormEntry[]
   id: number | string
   slug: string
   submissionIntent?: unknown
@@ -41,7 +48,7 @@ export const buildFormSubmissionSnapshot = (
   values: FormAnswers,
   attachments: { token: string; filename: string; fieldName: string }[] = [],
 ) => {
-  const fields = form.fields.map((field) => ({
+  const fields = getFormQuestions(form.fields).map((field) => ({
     contactRole: field.contactRole ?? null,
     id: field.id ?? null,
     label: field.label,
@@ -53,7 +60,9 @@ export const buildFormSubmissionSnapshot = (
     type: field.type,
     ...getFormFieldConfiguration(field),
   }))
+  const entries = form.entries ?? projectFormLayout(form.fields)
   const formSnapshot = {
+    ...(entries ? { entries } : {}),
     fields,
     formatVersion: 1,
     formID: form.id,

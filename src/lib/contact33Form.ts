@@ -71,6 +71,8 @@ export function validateContact33FormDefinition(
   form: Pick<Contact33FormLike, 'fields'> | null | undefined,
 ): true | string {
   const fields = form?.fields ?? []
+  if (fields.some((field) => field.entryType != null && field.entryType !== 'question'))
+    return 'Contact 33 has fixed questions and cannot render layout entries. Use Generic Form or Contact Cards & Form.'
 
   for (const [name, expectedType] of Object.entries(expectedTypes) as Array<
     [Contact33CoreFieldName, (typeof expectedTypes)[Contact33CoreFieldName]]
@@ -96,7 +98,8 @@ export function validateContact33FormDefinition(
   }
 
   const unsupportedRequiredField = fields.find(
-    (field) => field.required && field.name !== 'phone' && !(field.name in expectedTypes),
+    (field) =>
+      field.required && field.name !== 'phone' && (!field.name || !(field.name in expectedTypes)),
   )
 
   return unsupportedRequiredField

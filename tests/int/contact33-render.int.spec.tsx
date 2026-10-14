@@ -68,6 +68,23 @@ afterEach(() => {
 })
 
 describe('contact33 block', () => {
+  it('fails closed when a previously selected fixed form gains layout entries', () => {
+    const html = renderToStaticMarkup(
+      createElement(Contact33BlockComponent, {
+        title: 'Contact us',
+        image: { alt: 'Campus', height: 900, width: 1200, url: '/contact.jpg' },
+        imageAlt: 'Campus',
+        form: {
+          ...contactForm,
+          fields: [...contactForm.fields, { entryType: 'heading', displayText: 'New section' }],
+        },
+      } as never),
+    )
+    expect(html).toContain('This contact form is currently unavailable.')
+    expect(html).not.toContain('<form')
+    expect(html).not.toContain('Send inquiry')
+  })
+
   it.each(['compact', 'default', 'comfortable'] as const)(
     'uses shared outer spacing for %s size',
     (size) => {

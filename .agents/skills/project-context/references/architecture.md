@@ -234,3 +234,21 @@ Quality runs native governance/form browser journeys before the production build
 `formAttachmentStorage.ts` independently parses private provider configuration through runtime.server: development owner-only `.private/form-attachments`, production disabled or separate HTTPS S3 bucket/credentials. Public Media plugins, URLs and ACLs are never used. Private metadata is a hidden non-upload collection. A bounded octet-stream endpoint stages verified files under random keys; submission transactions claim them with the durable receipt, and transactional reads avoid parallel pagination counts. Downloads authenticate full inbox permission, enforce exact submission access and verify receipt linkage and bytes, forcing no-store binary attachments. Cleanup is a bounded trusted CLI with transaction/reference protection, 24-hour pending expiry, trash retention and retried permanent deletion; production schedules it hourly. The fifteen-control form renderer stays client-safe; provider, crypto/content inspection and Payload operations remain server-only. See [operations](../../../../docs/operations/private-form-attachments.md). Existing runtime layers/ownership are unchanged; the broader graph's historical freshness warning remains distinct from current deterministic inventory.
 
 Private local uploads are excluded from Next.js output tracing and Docker build context. Every `pnpm build` runs `verify-private-attachment-artifact.mjs` after compilation and fails if server traces or standalone output contain `.private`. A real synthetic-file build first reproduced traced/bundled private data; the exclusion and read-only artifact gate prevent shipping it. This is part of the private-file boundary, not an environment-only guarantee.
+
+
+### Native form API ownership
+
+`formEndpoints.ts` registers reusable Form submit/upload handlers and the private
+submission download on their owning Payload collections. These public URLs remain
+`/api/forms/:slug/submit`, `/api/forms/:slug/attachments` and
+`/api/form-submissions/:id/attachments/:token`; there is one REST dispatch owner
+and one implementation per URL, rather than overlapping Next handlers and
+Payload's API catch-all. Lazy adapters pass the existing `req.payload` instance
+and the original unread Request stream to handlers under `src/endpoints/forms`.
+The 256KiB JSON limit, 3MiB upload stream limit, published-revision checks,
+idempotency/transaction claims, generic history/notifications, and current
+authorized no-store binary download checks remain mandatory. No eager Payload
+body/file parsing, public Media fallback, route prewarming or weaker test assertion
+is introduced. CI's previous upload requests reached Payload REST and returned
+route-not-found; native registration makes this URL resolvable by that router.
+The underlying platform routing discrepancy is not claimed to be diagnosed.

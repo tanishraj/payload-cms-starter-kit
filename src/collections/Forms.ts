@@ -1,5 +1,5 @@
+import { formEndpoints } from '@/endpoints/formEndpoints'
 import { requireFormAttachmentStorage } from '@/hooks/requireFormAttachmentStorage'
-import { formFileTypeOptions } from '@/lib/formAttachments'
 import { type CollectionConfig } from 'payload'
 
 import {
@@ -11,23 +11,40 @@ import {
 } from '@/access/featureAccess'
 import { projectSlugField } from '@/fields/projectSlugField'
 import { revalidateDeletedFormCache, revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
-import {
-  FORM_MAX_FIELDS,
-  FORM_MAX_SINGLE_LINE_LENGTH,
-  FORM_MAX_TEXTAREA_LENGTH,
-  supportsFormTextLimits,
-  formFieldTypeOptions,
-  formSubmissionIntentOptions,
-  isTextLikeFormFieldType,
-  isMultipleChoiceFormFieldType,
-  isBooleanFormFieldType,
-  isSelectFormFieldType,
-  isValidFormFieldName,
-  validateFormFieldDefinitionsForIntent,
-} from '@/lib/forms'
+import { FORM_MAX_FIELDS, formSubmissionIntentOptions } from '@/lib/forms'
+import { formQuestionFields } from '@/fields/formQuestionFields'
+import { FORM_MAX_LAYOUT_ENTRIES, validateFormEntries } from '@/lib/formLayout'
+import type { Field } from 'payload'
+
+// Keep legacy question paths. Only top-level question controls need the entry selector.
+const topLevelQuestionFields: Field[] = formQuestionFields.map(function decorate(field): Field {
+  if (field.type === 'row') return { ...field, fields: field.fields.map(decorate) }
+  const condition = field.admin?.condition
+  const question = (_: unknown, sibling: Record<string, unknown>) =>
+    sibling?.entryType == null || sibling.entryType === 'question'
+  const result = {
+    ...field,
+    admin: {
+      ...field.admin,
+      condition: (data, sibling, context) =>
+        question(data, sibling) && (!condition || condition(data, sibling, context)),
+    },
+  } as Field
+  // Display rows have no answer name/label/type. Parent validation enforces all question requirements.
+  if ('name' in result && ['name', 'label', 'type'].includes(result.name ?? '')) {
+    if ('required' in result) result.required = false
+    if (result.type === 'text' && !result.hasMany && result.name === 'name') {
+      const validate = result.validate
+      result.validate = (value, context) =>
+        question(context.data, context.siblingData) ? (validate?.(value, context) ?? true) : true
+    }
+  }
+  return result
+})
 
 export const Forms: CollectionConfig = {
   slug: 'forms',
+  endpoints: formEndpoints,
   labels: {
     singular: 'Form',
     plural: 'Forms',
@@ -175,401 +192,69 @@ export const Forms: CollectionConfig = {
       type: 'array',
       required: true,
       minRows: 1,
-      maxRows: FORM_MAX_FIELDS,
+      maxRows: FORM_MAX_LAYOUT_ENTRIES,
       validate: (value, { data }) =>
-        validateFormFieldDefinitionsForIntent({
-          fields: value,
-          submissionIntent: (data as { submissionIntent?: unknown }).submissionIntent,
-        }),
+        validateFormEntries(value, (data as { submissionIntent?: unknown }).submissionIntent),
       labels: {
-        singular: 'Field',
-        plural: 'Fields',
+        singular: 'Entry',
+        plural: 'Entries',
       },
       admin: {
         description:
-          'Generic Form and Contact Cards & Form render these questions. Edit existing rows to preserve question identity when relabelling, renaming or reordering; deleting and recreating a row creates a new question. Visitors review published changes before resubmitting. Review Submission has fixed questions and does not support these presentation settings.',
+          'Generic Form and Contact Cards & Form render this ordered list of questions and display entries. Add a Question group for related questions; headings, descriptions and separators do not collect answers. Edit existing rows to preserve question identity when relabelling, renaming or reordering; deleting and recreating a row creates a new question. Visitors review published changes before resubmitting. Review Submission has fixed questions and does not support these presentation settings.',
         initCollapsed: false,
       },
       fields: [
         {
-          type: 'row',
-          fields: [
-            {
-              name: 'name',
-              type: 'text',
-              required: true,
-              admin: {
-                description:
-                  'Unique key stored with answers, such as preferred_department. Renaming changes future answer keys and may require updates to external mappings; original submissions retain their keys. Start with a letter; use letters, numbers and underscores. The names constructor, prototype and website are reserved.',
-                width: '50%',
-              },
-              validate: (value: unknown) => {
-                if (typeof value !== 'string' || !value.trim()) {
-                  return 'Field name is required.'
-                }
-
-                return isValidFormFieldName(value.trim())
-                  ? true
-                  : 'Names must start with a letter and use only letters, numbers and underscores. Do not use constructor, prototype or website.'
-              },
-            },
-            {
-              name: 'label',
-              type: 'text',
-              required: true,
-              admin: {
-                width: '50%',
-              },
-            },
-          ],
-        },
-        {
-          type: 'row',
-          fields: [
-            {
-              name: 'type',
-              type: 'select',
-              required: true,
-              options: [...formFieldTypeOptions],
-              defaultValue: 'text',
-              admin: {
-                width: '50%',
-              },
-            },
-            {
-              name: 'required',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                width: '50%',
-              },
-            },
-          ],
-        },
-        {
-          name: 'contactRole',
-          label: 'Use answer as',
+          name: 'entryType',
+          label: 'Entry',
           type: 'select',
+          defaultValue: 'question',
           options: [
-            { label: 'Submitter name', value: 'name' },
-            { label: 'Submitter email', value: 'email' },
-            { label: 'Submitter phone', value: 'phone' },
+            { label: 'Question', value: 'question' },
+            { label: 'Heading', value: 'heading' },
+            { label: 'Description', value: 'description' },
+            { label: 'Separator', value: 'separator' },
+            { label: 'Question group', value: 'group' },
           ],
           admin: {
-            isClearable: true,
             description:
-              'Optional: use this answer for inbox contact details and confirmation emails. Each role can be assigned once; choose Text for name, Email for email, or Phone for phone. Leave empty for ordinary questions.',
+              'Choose a question or a display entry. Groups contain questions, with one shared label and optional description.',
           },
         },
+        ...topLevelQuestionFields,
         {
-          name: 'placeholder',
-          type: 'text',
-          admin: {
-            condition: (_, siblingData) => isTextLikeFormFieldType(siblingData?.type ?? 'text'),
-          },
-        },
-        {
-          name: 'helpText',
-          label: 'Help text',
+          name: 'displayText',
+          label: 'Display text / group label',
           type: 'textarea',
-          maxLength: 1_000,
+          maxLength: 2000,
           admin: {
-            condition: (data, siblingData) =>
-              data?.submissionIntent !== 'review' || Boolean(siblingData?.helpText),
+            condition: (_, sibling) =>
+              ['heading', 'description', 'group'].includes(sibling?.entryType),
             description:
-              'Optional instructions below this question. Keep the label meaningful; help text is not a placeholder.',
+              'Plain text. Heading/group label: 200 characters; description: 2,000. Display entries are never stored as answers.',
           },
         },
         {
-          name: 'defaultValue',
-          label: 'Initial answer',
+          name: 'groupDescription',
+          label: 'Group description',
           type: 'textarea',
-          admin: {
-            condition: (data, siblingData) =>
-              siblingData?.type !== 'file' &&
-              !isBooleanFormFieldType(siblingData?.type) &&
-              !isMultipleChoiceFormFieldType(siblingData?.type) &&
-              (data?.submissionIntent !== 'review' || Boolean(siblingData?.defaultValue)),
-            description:
-              'Optional starting answer for new responses. For Select or Radio, enter an option value, not its label. Must satisfy this question’s validation. Visitors can change or clear it; the server never supplies omitted answers.',
-          },
+          maxLength: 2000,
+          admin: { condition: (_, sibling) => sibling?.entryType === 'group' },
         },
         {
-          name: 'allowedFileTypes',
-          label: 'Allowed file formats',
-          type: 'select',
-          hasMany: true,
-          defaultValue: ['pdf', 'docx', 'png', 'jpg'],
-          options: formFileTypeOptions.map(({ label, value }) => ({ label, value })),
-          admin: {
-            condition: (_, siblingData) => siblingData?.type === 'file',
-            description:
-              'Leave unset for PDF, DOCX, PNG and JPEG. Server checks file content as well as extension. Files are private attachments, never public Media.',
-          },
-        },
-        {
-          type: 'row',
-          fields: [
-            {
-              name: 'maxFileSizeMB',
-              label: 'Maximum size per file (MB)',
-              type: 'number',
-              min: 1,
-              max: 3,
-              admin: {
-                condition: (_, siblingData) => siblingData?.type === 'file',
-                width: '50%',
-                description:
-                  'Whole number 1–3. Default 3 MB. The bound keeps uploads below hosted request limits.',
-              },
-            },
-            {
-              name: 'maxFiles',
-              label: 'Maximum files',
-              type: 'number',
-              min: 1,
-              max: 5,
-              admin: {
-                condition: (_, siblingData) => siblingData?.type === 'file',
-                width: '50%',
-                description:
-                  'Whole number 1–5. Default one file. A response may attach at most ten files across all questions.',
-              },
-            },
-          ],
-        },
-        {
-          name: 'defaultSelections',
-          label: 'Initial selections',
+          name: 'questions',
+          label: 'Group questions',
           type: 'array',
-          maxRows: 100,
-          labels: { singular: 'Selection', plural: 'Selections' },
-          admin: {
-            condition: (_, siblingData) => isMultipleChoiceFormFieldType(siblingData?.type),
-            description:
-              'Optional starting choices for new responses. Enter option values, not labels; each value must be unique and still exist. Leave empty to let visitors choose. These values never refill answers after question-change recovery.',
-          },
-          fields: [{ name: 'value', type: 'text', required: true }],
-        },
-        {
-          type: 'row',
-          fields: [
-            {
-              name: 'minSelections',
-              label: 'Minimum selections',
-              type: 'number',
-              min: 0,
-              admin: {
-                width: '50%',
-                step: 1,
-                condition: (_, siblingData) => isMultipleChoiceFormFieldType(siblingData?.type),
-                description:
-                  'Optional minimum number of choices. Required questions need at least one even when this is zero. A new form may start empty; visitors must satisfy this rule before submitting.',
-              },
-            },
-            {
-              name: 'maxSelections',
-              label: 'Maximum selections',
-              type: 'number',
-              min: 1,
-              admin: {
-                width: '50%',
-                step: 1,
-                condition: (_, siblingData) => isMultipleChoiceFormFieldType(siblingData?.type),
-                description:
-                  'Optional maximum number of choices, no greater than the available options. Leave blank to allow all options. Limits must be whole numbers; minimum cannot exceed maximum.',
-              },
-            },
-          ],
-        },
-        {
-          name: 'defaultChecked',
-          label: 'Initially checked',
-          type: 'checkbox',
-          admin: {
-            condition: (data, siblingData) =>
-              isBooleanFormFieldType(siblingData?.type) &&
-              (data?.submissionIntent !== 'review' || siblingData?.defaultChecked === true),
-            description:
-              'Optional checkboxes and switches only. Required acceptance questions must start unchecked/off so visitors make their own choice.',
-          },
-        },
-        {
-          type: 'row',
-          fields: [
-            {
-              name: 'minLength',
-              label: 'Minimum characters',
-              type: 'number',
-              min: 0,
-              admin: {
-                width: '50%',
-                step: 1,
-                condition: (data, siblingData) =>
-                  supportsFormTextLimits(siblingData?.type) &&
-                  (data?.submissionIntent !== 'review' || siblingData?.minLength != null),
-                description:
-                  'Text and Textarea only. Blank optional answers remain valid. Spaces at the start/end are trimmed before counting.',
-              },
-            },
-            {
-              name: 'maxLength',
-              label: 'Maximum characters',
-              type: 'number',
-              min: 1,
-              admin: {
-                width: '50%',
-                step: 1,
-                condition: (data, siblingData) =>
-                  supportsFormTextLimits(siblingData?.type) &&
-                  (data?.submissionIntent !== 'review' || siblingData?.maxLength != null),
-                description: `Leave blank for the built-in cap: Text ${FORM_MAX_SINGLE_LINE_LENGTH}, Textarea ${FORM_MAX_TEXTAREA_LENGTH}. Settings are retained but inactive if you change to another control type.`,
-              },
-            },
-          ],
-        },
-        {
-          type: 'row',
-          fields: [
-            {
-              name: 'minValue',
-              label: 'Minimum value',
-              type: 'number',
-              admin: {
-                width: '33%',
-                step: 0.1,
-                condition: (data, siblingData) =>
-                  siblingData?.type === 'number' &&
-                  (data?.submissionIntent !== 'review' || siblingData?.minValue != null),
-                description:
-                  'Number only. Optional inclusive lower limit; negative and decimal values are allowed.',
-              },
-            },
-            {
-              name: 'maxValue',
-              label: 'Maximum value',
-              type: 'number',
-              admin: {
-                width: '33%',
-                step: 0.1,
-                condition: (data, siblingData) =>
-                  siblingData?.type === 'number' &&
-                  (data?.submissionIntent !== 'review' || siblingData?.maxValue != null),
-                description:
-                  'Number only. Optional inclusive upper limit, no smaller than the minimum. Whole-number settings must be within ±9,007,199,254,740,991.',
-              },
-            },
-            {
-              name: 'step',
-              label: 'Allowed increment',
-              type: 'number',
-              min: 0,
-              admin: {
-                width: '33%',
-                step: 0.1,
-                condition: (data, siblingData) =>
-                  siblingData?.type === 'number' &&
-                  (data?.submissionIntent !== 'review' || siblingData?.step != null),
-                description:
-                  'Optional positive increment: 1 for unit steps, 0.5 for half-unit steps. Starts at the minimum, or zero if no minimum is set. Leave blank to allow any decimal value. Numeric settings are retained but inactive on other types.',
-              },
-            },
-          ],
-        },
-        {
-          type: 'row',
-          fields: [
-            {
-              name: 'minDate',
-              label: 'Earliest date',
-              type: 'text',
-              maxLength: 10,
-              admin: {
-                width: '50%',
-                condition: (_, siblingData) => siblingData?.type === 'date',
-                description:
-                  'Optional inclusive bound in YYYY-MM-DD format. Calendar date only; no timezone conversion. Years 0001–9999. Leave blank for no bound. Stored settings are inactive on other types.',
-              },
-            },
-            {
-              name: 'maxDate',
-              label: 'Latest date',
-              type: 'text',
-              maxLength: 10,
-              admin: {
-                width: '50%',
-                condition: (_, siblingData) => siblingData?.type === 'date',
-                description:
-                  'Optional inclusive bound in YYYY-MM-DD format. Calendar date only; no timezone conversion. Years 0001–9999. Leave blank for no bound. Stored settings are inactive on other types.',
-              },
-            },
-          ],
-        },
-        {
-          type: 'row',
-          fields: [
-            {
-              name: 'minTime',
-              label: 'Earliest time',
-              type: 'text',
-              maxLength: 5,
-              admin: {
-                width: '50%',
-                condition: (_, siblingData) => siblingData?.type === 'time',
-                description:
-                  'Optional inclusive bound in HH:mm format. Local 24-hour time, 00:00–23:59; no timezone conversion. Limits must describe one same-day window. Leave blank for no bound. Stored settings are inactive on other types.',
-              },
-            },
-            {
-              name: 'maxTime',
-              label: 'Latest time',
-              type: 'text',
-              maxLength: 5,
-              admin: {
-                width: '50%',
-                condition: (_, siblingData) => siblingData?.type === 'time',
-                description:
-                  'Optional inclusive bound in HH:mm format. Local 24-hour time, 00:00–23:59; no timezone conversion. Limits must describe one same-day window. Leave blank for no bound. Stored settings are inactive on other types.',
-              },
-            },
-          ],
-        },
-        {
-          name: 'options',
-          type: 'array',
-          labels: {
-            singular: 'Option',
-            plural: 'Options',
-          },
+          maxRows: FORM_MAX_FIELDS,
+          labels: { singular: 'Question', plural: 'Questions' },
           admin: {
             initCollapsed: false,
-            condition: (_, siblingData) => isSelectFormFieldType(siblingData?.type),
+            condition: (_, sibling) => sibling?.entryType === 'group',
             description:
-              'Edit or reorder existing options to keep their row identity. Changing a value clears that selected answer during refresh; changing only the label keeps a still-valid value. Historical submissions retain the original label and value.',
+              'Add or reorder questions in this group. Names and IDs must be unique across the whole form. A form supports up to 100 questions in total. Edit existing rows to retain identity; recreating a question gives it a new identity.',
           },
-          fields: [
-            {
-              type: 'row',
-              fields: [
-                {
-                  name: 'label',
-                  type: 'text',
-                  required: true,
-                  admin: {
-                    width: '50%',
-                  },
-                },
-                {
-                  name: 'value',
-                  type: 'text',
-                  required: true,
-                  admin: {
-                    width: '50%',
-                  },
-                },
-              ],
-            },
-          ],
+          fields: formQuestionFields,
         },
       ],
     },

@@ -1,3 +1,4 @@
+import { validateFormLayout, type FormLayoutEntry } from '@/lib/formLayout'
 import type { FormAnswers } from '@/lib/forms'
 import { validateFormFieldDefinitions, type SimpleFormField } from '@/lib/forms'
 import type { GenericFormResult } from '@/components/revamp/generic-form'
@@ -50,6 +51,10 @@ export async function parseGenericFormResponse(
       /^[a-f0-9]{64}$/.test(updated.revision) &&
       'fields' in updated &&
       validateFormFieldDefinitions(updated.fields) === true &&
+      validateFormLayout(
+        'entries' in updated ? updated.entries : undefined,
+        updated.fields as SimpleFormField[],
+      ) === true &&
       'submitButtonLabel' in updated &&
       typeof updated.submitButtonLabel === 'string'
     ) {
@@ -57,6 +62,9 @@ export async function parseGenericFormResponse(
         success: false,
         message: body.message,
         updatedForm: {
+          ...('entries' in updated && updated.entries
+            ? { entries: updated.entries as FormLayoutEntry[] }
+            : {}),
           fields: updated.fields as SimpleFormField[],
           revision: updated.revision,
           submitButtonLabel: updated.submitButtonLabel,

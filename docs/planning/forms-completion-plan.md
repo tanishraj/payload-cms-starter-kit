@@ -51,3 +51,36 @@ Private attachments are implemented on `feat/form-private-attachments` as the ne
 The private-file increment passes local release checks before commit/push: 2,630 integration tests/one Docker-dependent skip, both final native upload journeys without retries, production/Storybook builds, 47 focused upload tests and all 15 context tests, generators/type/lint/audit. The new private collection updates the deterministic inventory's explicit count from 22 to 23; original digest checking remains intact. Current-head GitHub Quality and merge are the next gate. Hosted private-bucket policy and full section scopes remain outside this bounded proof.
 
 Final private-upload release adds mandatory production artifact exclusion/inspection after a synthetic file reproduced Next.js standalone inclusion. The fixed fresh build reports no private uploads across 79 traces. Final local source: 2,637 integration tests/one Docker-dependent skip, both native journeys without retries, production/Storybook builds and required gates. New-response recovery explicitly clears old file rows while retaining other answers. An occupied disposable Mongo test port required a clean repeat; no fixtures/checks were skipped. PR #28 must pass Quality on its final updated head before merge.
+
+[PR #28](https://github.com/tanishraj/payload-cms-starter-kit/pull/28) merged as `083082d6` after [final-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38587383727) passed on `1b4ba8a8`. CI: 2,637 integration tests/one Docker-dependent skip, both native form journeys and gated production build/private-artifact inspection pass. Governance passed first attempt. Contact6 passed first attempt; Generic Form passed on retry after the initial public-page navigation exceeded 20 seconds before upload interaction. Broader VERIFY/AdminUX repeatability remains open; no assertion or warning was suppressed. FORM-03's initial fifteen-control catalogue plus submit is verified; broad SUBMIT-05 section/provider acceptance and the remaining forms milestones stay open. The verified feature branch is deleted. Continue on fresh `feat/form-layout-entries`, created from merged develop before new implementation; layout/display entries and then conditions are next.
+
+
+## Ordered layout increment
+
+On `feat/form-layout-entries`: sourced Storybook presentation is reviewed, and
+native ordered headings/descriptions/separators/groups are implemented with one
+shared question schema and unchanged legacy paths/identities. Display rows stay
+outside answers; optional published layout participates in revision/history.
+See [contract](form-layout-entries.md). Focused contracts and actual MongoDB
+publication/draft/grouped-upload checks pass. Both expanded native journeys pass without retries. Complete local regression: 2,664 integration tests/one Docker-dependent skip, production/Storybook builds and context/type/lint/audit gates pass; CI/merge evidence is pending. FORM-04/DF-07 remain open
+for supported appearance and complete acceptance. Conditions follow separately.
+
+
+Native form API ownership correction is under final verification. The shared
+Payload REST router owns submit/upload/private-download URLs and preserves
+unread bounded streams, publication/revision/retry and access/transaction checks.
+Direct real-MongoDB routing tests exercise rejection, accepted receipt replay,
+private downloads and trash retention. Failed Quality on `f9930e9` remains part
+of the record; the final exact-head gate must pass before merge.
+
+
+2026-10-15: Canonical native REST correction passes final local release gates:
+2,665 integration tests/one Docker-dependent skip, both governance journeys
+(52.3s) followed by both native form journeys (2.9m), all without retries or
+diagnostic preloading. Fixture imports load Payload before its dependent config;
+all assertions remain. Actual REST tests retain JSON/upload bounds, accepted
+receipt replay, authorized/private downloads, unrelated-token rejection, original
+files after Form deletion and trash retention. Fresh production build inspects
+73 traces with no private uploads. Types, lint (one existing warning), Payload
+generators, context checks/tests and unchanged approved-exception audit pass.
+Exact-head Quality/merge evidence remains pending.

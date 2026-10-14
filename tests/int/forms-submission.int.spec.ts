@@ -90,7 +90,7 @@ const getField = (fieldName: string): NamedField => {
 
 const loadRouteModule = async () => {
   vi.resetModules()
-  return import('@/app/api/forms/[slug]/submit/route')
+  return import('@/endpoints/forms/submit')
 }
 
 describe('form submission model', () => {
