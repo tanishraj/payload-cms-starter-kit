@@ -35,3 +35,7 @@ Frozen installation, 50 focused dependency/policy/context tests, TypeScript and 
 Before approval, the exact candidate above passed the unchanged audit evaluator and exception schema against a fresh registry audit in a dry run without changing the active exception. After the user’s explicit approval, only this exact entry was applied. The authoritative audit and GitHub Quality must pass before merge; no additional exception or gate bypass is authorized.
 
 After applying the approved entry, the authoritative production audit passes with only advisory 1240992 excepted. All 46 dependency policy/version tests pass; project-context update/check pass. GitHub Quality at the approval commit remains the final merge gate.
+
+## Inventory repair before merge
+
+The first approved-renewal Quality run passed the audit and 2,369 integration tests but failed the deterministic inventory contract. The final approval documentation had been edited after inventory generation; operations documentation participates in the source digest. The exact failure was reproduced locally. Regenerate only after all monitored documentation edits, then rerun the unchanged inventory contract and CI setup sequence before pushing. This is a stale generated artifact, not a test-policy exception or application change.
