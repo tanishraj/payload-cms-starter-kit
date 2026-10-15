@@ -602,7 +602,7 @@ function FormPresentation({
                                 checked={field.value === true}
                                 onCheckedChange={(checked) => field.onChange(checked === true)}
                                 onBlur={field.onBlur}
-                                required={Boolean(definition.required)}
+                                required={isRequired}
                                 disabled={inactive}
                               />
                               <FieldLabel htmlFor={id}>{label}</FieldLabel>
@@ -629,6 +629,7 @@ function FormPresentation({
                               controlRef={field.ref}
                               onBlur={field.onBlur}
                               name={definition.name}
+                              required={isRequired}
                               policy={definition}
                               disabled={inactive || !onFileUpload}
                               value={
@@ -689,7 +690,7 @@ function FormPresentation({
                               value={value}
                               onValueChange={field.onChange}
                               disabled={inactive}
-                              required={Boolean(definition.required)}
+                              required={isRequired}
                             >
                               <SelectTrigger
                                 {...a11y}
@@ -721,7 +722,7 @@ function FormPresentation({
                               name={definition.name}
                               value={value}
                               type={definition.type}
-                              required={Boolean(definition.required)}
+                              required={isRequired}
                               disabled={inactive}
                               min={bounds?.minimum}
                               max={bounds?.maximum}
@@ -733,7 +734,7 @@ function FormPresentation({
                               name={definition.name}
                               value={value}
                               disabled={inactive}
-                              required={Boolean(definition.required)}
+                              required={isRequired}
                               maxLength={getFormFieldMaxLength(definition)}
                               minLength={definition.minLength ?? undefined}
                               rows={5}
@@ -747,7 +748,7 @@ function FormPresentation({
                               name={definition.name}
                               value={value}
                               disabled={inactive}
-                              required={Boolean(definition.required)}
+                              required={isRequired}
                               maxLength={getFormFieldMaxLength(definition)}
                               minLength={
                                 supportsFormTextLimits(definition.type)

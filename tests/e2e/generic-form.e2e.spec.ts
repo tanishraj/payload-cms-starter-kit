@@ -299,6 +299,18 @@ for (const block of [
         `Form publication ${formResponse.status()}: ${await formResponse.text()}`,
       ).toBe(true)
       const { doc: form } = await formResponse.json()
+      const departmentField = form.fields.find(
+        (field: { name?: string }) => field.name === 'preferred_department',
+      )
+      const referenceField = form.fields.find(
+        (field: { name?: string }) => field.name === 'reference_link',
+      )
+      expect(referenceField).toMatchObject({
+        requiredWhenVisible: true,
+        visibilityConditions: [
+          { fieldID: departmentField.id, operator: 'equals', value: 'admissions' },
+        ],
+      })
       expect(form.appearance).toMatchObject({
         width: 'wide',
         columns: 'two',
@@ -428,6 +440,9 @@ for (const block of [
           await expect(menu).toBeVisible()
           expect(await menu.evaluate((element) => !!element.closest('section'))).toBe(true)
           await visitor.getByRole('option', { name: 'Admissions', exact: true }).click()
+          await expect(
+            visitor.getByRole('combobox', { name: 'Which department can help?', exact: true }),
+          ).toHaveText('Admissions')
           await expect(visitor.getByLabel('Reference link', { exact: true })).toBeVisible()
           await expect(visitor.getByLabel('Reference link', { exact: true })).toHaveAttribute('required', '')
           await visitor.getByLabel('Reference link', { exact: true }).fill('example.com')

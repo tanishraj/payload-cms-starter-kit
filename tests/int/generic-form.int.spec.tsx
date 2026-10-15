@@ -9,7 +9,8 @@ const fields: SimpleFormField[] = [
   { name: 'permission', label: 'Contact me', type: 'checkbox' },
 ]
 const success = { success: true, message: 'Received.' }
-beforeAll(() =>
+const originalScrollIntoView = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'scrollIntoView')
+beforeAll(() => {
   vi.stubGlobal(
     'ResizeObserver',
     class {
@@ -17,9 +18,18 @@ beforeAll(() =>
       unobserve() {}
       disconnect() {}
     },
-  ),
-)
-afterAll(() => vi.unstubAllGlobals())
+  )
+  Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    configurable: true,
+    value: vi.fn(),
+  })
+})
+afterAll(() => {
+  if (originalScrollIntoView)
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', originalScrollIntoView)
+  else Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView')
+  vi.unstubAllGlobals()
+})
 afterEach(cleanup)
 const answer = () =>
   fireEvent.change(screen.getByLabelText(/Your question/), { target: { value: ' My question ' } })
@@ -90,6 +100,41 @@ describe('generic form presentation', () => {
       restriction_details: 'Peanuts',
       website: '',
     }))
+  })
+  it('reveals select-conditioned questions using the selected option value', async () => {
+    render(
+      <GenericForm
+        fields={[
+          {
+            id: 'department-id',
+            name: 'department',
+            label: 'Which department can help?',
+            type: 'select',
+            options: [
+              { label: 'Admissions', value: 'admissions' },
+              { label: 'Library', value: 'library' },
+            ],
+          },
+          {
+            id: 'reference-link-id',
+            name: 'reference_link',
+            label: 'Reference link',
+            type: 'url',
+            requiredWhenVisible: true,
+            visibilityConditions: [
+              { fieldID: 'department-id', operator: 'equals', value: 'admissions' },
+            ],
+          },
+        ]}
+        onSubmit={async () => success}
+      />,
+    )
+
+    expect(screen.queryByLabelText(/Reference link/)).toBeNull()
+    fireEvent.click(screen.getByRole('combobox', { name: 'Which department can help?' }))
+    fireEvent.click(await screen.findByRole('option', { name: 'Admissions' }))
+    expect(await screen.findByLabelText(/Reference link/)).toBeTruthy()
+    expect(screen.getByLabelText(/Reference link/).getAttribute('required')).toBe('')
   })
   it('normalizes custom answers, locks controls during submission, and confirms once', async () => {
     let resolve!: (value: GenericFormResult) => void
