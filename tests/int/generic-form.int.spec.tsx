@@ -104,16 +104,40 @@ describe('generic form presentation', () => {
   it('reveals select-conditioned questions using the selected option value', async () => {
     render(
       <GenericForm
+        appearance={{ columns: 'two', spacing: 'compact' }}
+        entries={[
+          { kind: 'question', name: 'visitor_name' },
+          { kind: 'question', name: 'department' },
+          { kind: 'question', name: 'contact_permission' },
+          { kind: 'heading', text: 'Additional information' },
+          { kind: 'question', name: 'reference_link' },
+          { kind: 'question', name: 'visit_duration' },
+        ]}
         fields={[
+          {
+            id: 'visitor-name-id',
+            name: 'visitor_name',
+            label: 'Your name',
+            type: 'text',
+            required: true,
+            defaultValue: 'Campus visitor',
+          },
           {
             id: 'department-id',
             name: 'department',
             label: 'Which department can help?',
             type: 'select',
+            required: true,
             options: [
               { label: 'Admissions', value: 'admissions' },
               { label: 'Library', value: 'library' },
             ],
+          },
+          {
+            id: 'permission-id',
+            name: 'contact_permission',
+            label: 'You may contact me',
+            type: 'checkbox',
           },
           {
             id: 'reference-link-id',
@@ -125,12 +149,26 @@ describe('generic form presentation', () => {
               { fieldID: 'department-id', operator: 'equals', value: 'admissions' },
             ],
           },
+          {
+            id: 'visit-duration-id',
+            name: 'visit_duration',
+            label: 'Visit duration',
+            type: 'number',
+            defaultValue: '1.5',
+            minValue: 0.5,
+            maxValue: 4,
+            step: 0.5,
+          },
         ]}
+        protectRetries
+        revision="published-form-revision"
         onSubmit={async () => success}
       />,
     )
 
     expect(screen.queryByLabelText(/Reference link/)).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Send Message' }))
+    expect(await screen.findByText('Which department can help? is required.')).toBeTruthy()
     fireEvent.click(screen.getByRole('combobox', { name: 'Which department can help?' }))
     fireEvent.click(await screen.findByRole('option', { name: 'Admissions' }))
     expect(await screen.findByLabelText(/Reference link/)).toBeTruthy()

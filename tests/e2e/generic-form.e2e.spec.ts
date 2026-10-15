@@ -311,6 +311,9 @@ for (const block of [
           { fieldID: departmentField.id, operator: 'equals', value: 'admissions' },
         ],
       })
+      expect(departmentField.options).toContainEqual(
+        expect.objectContaining({ label: 'Admissions', value: 'admissions' }),
+      )
       expect(form.appearance).toMatchObject({
         width: 'wide',
         columns: 'two',

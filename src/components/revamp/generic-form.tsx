@@ -212,13 +212,10 @@ function FormPresentation({
     },
     shouldFocusError: true,
   })
-  const watchedAnswerValues = useWatch({
+  const watchedAnswers = useWatch({
     control: form.control,
-    name: fields.map((field) => `answers.${field.name}` as `answers.${string}`),
-  })
-  const watchedAnswers = Object.fromEntries(
-    fields.map((field, index) => [field.name, watchedAnswerValues[index]]),
-  ) as FormAnswers
+    name: 'answers',
+  }) as FormAnswers
   const visibleFields = getVisibleFormFields(fields, watchedAnswers)
   const formIsDirty = form.formState.isDirty
   const previousWatchedAnswers = useRef(watchedAnswers)
