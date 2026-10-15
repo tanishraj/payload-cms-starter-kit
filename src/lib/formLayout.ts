@@ -55,11 +55,17 @@ export function validateFormLayout(value: unknown, fields: SimpleFormField[]): t
   return true
 }
 
-export type FormEntry = { [K in keyof SimpleFormField]?: SimpleFormField[K] | null } & {
+type FormQuestionEntry = Omit<Partial<SimpleFormField>, 'visibilityConditions'> & {
+  visibilityConditions?: unknown
+}
+
+export type FormEntry = Omit<{ [K in keyof SimpleFormField]?: SimpleFormField[K] | null }, 'visibilityConditions'> & {
+  // Payload's native JSON type is intentionally broad; validate before projection.
+  visibilityConditions?: unknown
   entryType?: 'question' | 'heading' | 'description' | 'separator' | 'group' | null
   displayText?: string | null
   groupDescription?: string | null
-  questions?: Partial<SimpleFormField>[] | null
+  questions?: FormQuestionEntry[] | null
 }
 
 /** Call definition validation before trusting these projected questions. Never recurse. */

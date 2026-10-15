@@ -93,6 +93,10 @@ track the proof; the FORM/SUBMIT groups below track the complete capability.
 - [ ] **DF-08 — Complete conditions and appearance.** Declarative visibility/required
   rules and supported size/shape/layout props work in Payload preview, public
   rendering and Storybook. Preserve selected upstream presentation requirements.
+  Appearance is merged. Conditional visibility is in progress on
+  `feat/form-conditional-rules`; see the [condition contract](form-conditional-rules.md).
+  Local renderer/schema/intake tests and Storybook build pass. Full native E2E and
+  final CI evidence remain before this combined acceptance can be checked.
 - [ ] **DF-09 — Verify access and failure states.** Unauthorized edits/inbox/file
   access are denied; drafts do not alter live forms; accessible errors, retry,
   pending/success and safe test mode are exercised.

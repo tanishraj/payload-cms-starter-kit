@@ -118,6 +118,33 @@ for (const block of [
       await fillNativeField(page, 'fields.3.name', 'reference_link')
       await fillNativeField(page, 'fields.3.label', 'Reference link')
       await fillNativeField(page, 'fields.3.helpText', 'Include https:// or http://.')
+      const ruleEditor = page.getByRole('group', { name: 'Show this question when…' }).last()
+      await editNativeForm(
+        page,
+        () => ruleEditor.getByRole('button', { name: 'Add condition' }).click(),
+        'fields.3.visibilityConditions',
+      )
+      await editNativeForm(
+        page,
+        () => ruleEditor.getByLabel('Question').selectOption({ label: 'Which department can help? (select)' }),
+        'fields.3.visibilityConditions',
+      )
+      await editNativeForm(
+        page,
+        () => ruleEditor.getByLabel('Answer').selectOption('equals'),
+        'fields.3.visibilityConditions',
+      )
+      await editNativeForm(
+        page,
+        () => ruleEditor.getByLabel('Value').selectOption({ label: 'admissions' }),
+        'fields.3.visibilityConditions',
+      )
+      await editNativeForm(
+        page,
+        () => page.locator('input[name="fields.3.requiredWhenVisible"]').check(),
+        'fields.3.requiredWhenVisible',
+        true,
+      )
       await addNativeRow(page, addField, 'fields.4.name')
       await chooseNativeType(page, 4, 'Number')
       await fillNativeField(page, 'fields.4.name', 'email')
@@ -393,7 +420,6 @@ for (const block of [
             'inputmode',
             'decimal',
           )
-          await visitor.getByLabel('Reference link', { exact: true }).fill('example.com')
           await visitor.getByLabel('Visit duration', { exact: true }).fill('1.25')
           await visitor
             .getByRole('combobox', { name: 'Which department can help?', exact: true })
@@ -402,6 +428,20 @@ for (const block of [
           await expect(menu).toBeVisible()
           expect(await menu.evaluate((element) => !!element.closest('section'))).toBe(true)
           await visitor.getByRole('option', { name: 'Admissions', exact: true }).click()
+          await expect(visitor.getByLabel('Reference link', { exact: true })).toBeVisible()
+          await expect(visitor.getByLabel('Reference link', { exact: true })).toHaveAttribute('required', '')
+          await visitor.getByLabel('Reference link', { exact: true }).fill('example.com')
+          await visitor
+            .getByRole('combobox', { name: 'Which department can help?', exact: true })
+            .click()
+          await visitor.getByRole('option', { name: 'Library', exact: true }).click()
+          await expect(visitor.getByLabel('Reference link', { exact: true })).toBeHidden()
+          await visitor
+            .getByRole('combobox', { name: 'Which department can help?', exact: true })
+            .click()
+          await visitor.getByRole('option', { name: 'Admissions', exact: true }).click()
+          await expect(visitor.getByLabel('Reference link', { exact: true })).toHaveValue('')
+          await visitor.getByLabel('Reference link', { exact: true }).fill('example.com')
           await visitor.getByRole('checkbox', { name: 'You may contact me', exact: true }).check()
           await visitor.getByRole('button', { name: 'Submit', exact: true }).click()
           await expect(visitor.getByText(/Reference link must be a full/)).toBeVisible()

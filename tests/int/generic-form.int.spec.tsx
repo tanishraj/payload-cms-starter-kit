@@ -51,6 +51,46 @@ describe('generic form presentation', () => {
     )
     expect(onSubmit).not.toHaveBeenCalled()
   })
+  it('shows conditional questions, clears answers when hidden, and requires them only while visible', async () => {
+    const onSubmit = vi.fn(async () => success)
+    render(
+      <GenericForm
+        fields={[
+          { id: 'consent-id', name: 'has_restrictions', label: 'Any dietary restrictions?', type: 'checkbox' },
+          {
+            id: 'details-id',
+            name: 'restriction_details',
+            label: 'Describe your restrictions',
+            type: 'textarea',
+            requiredWhenVisible: true,
+            visibilityConditions: [{ fieldID: 'consent-id', operator: 'equals', value: 'true' }],
+          },
+        ]}
+        onSubmit={onSubmit}
+      />,
+    )
+    const consent = screen.getByRole('checkbox', { name: 'Any dietary restrictions?' })
+    expect(screen.queryByLabelText(/Describe your restrictions/)).toBeNull()
+    fireEvent.click(consent)
+    const details = await screen.findByLabelText(/Describe your restrictions/)
+    fireEvent.change(details, { target: { value: 'Peanuts' } })
+    fireEvent.click(consent)
+    await waitFor(() => expect(screen.queryByLabelText(/Describe your restrictions/)).toBeNull())
+    await waitFor(() => expect(screen.getByText(/Cleared responses to Describe your restrictions/)).toBeTruthy())
+    fireEvent.click(consent)
+    const restored = await screen.findByLabelText(/Describe your restrictions/)
+    expect((restored as HTMLTextAreaElement).value).toBe('')
+    fireEvent.click(screen.getByRole('button', { name: 'Send Message' }))
+    await waitFor(() => expect(screen.getByText('Describe your restrictions is required.')).toBeTruthy())
+    expect(onSubmit).not.toHaveBeenCalled()
+    fireEvent.change(restored, { target: { value: 'Peanuts' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Send Message' }))
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledWith({
+      has_restrictions: true,
+      restriction_details: 'Peanuts',
+      website: '',
+    }))
+  })
   it('normalizes custom answers, locks controls during submission, and confirms once', async () => {
     let resolve!: (value: GenericFormResult) => void
     const onSubmit = vi.fn(

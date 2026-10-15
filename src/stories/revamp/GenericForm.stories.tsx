@@ -63,7 +63,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Fifteen current Payload controls, custom labels/names, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Fields to configure questions/options/required state; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
+          'Authenticated Shadcnblocks source: @shadcnblocks/form-form-patterns-4 (https://www.shadcnblocks.com/components/form), with @shadcnblocks/checkbox-checkbox-standard-1 (https://www.shadcnblocks.com/components/checkbox). Preserves the original stacked FieldGroup, max-w-md layout, typography and full-width button. Fresh Radix Luma dependencies use official Neutral light/dark. Dynamic controls, stable-ID conditional visibility, all-match rules, conditional requiredness, hidden-answer clearing, shared validation, unique IDs, accessible errors, pending, success and retry. One catalogue entry covers the shared presentation and its native Payload adapter. Stories use synthetic data and local demonstration callbacks; CMS Preview disables submissions. In production, the block selects a reusable Form, inherits the website theme and submits through the shared endpoint. Edit Questions to configure controls and rules; schema changes reset the demo. The supported layout is the upstream vertical layout; use the theme/viewport toolbar to review appearance and responsive shape.',
       },
     },
   },
@@ -104,7 +104,7 @@ const meta = {
       name: 'Questions and controls',
       control: 'object',
       description:
-        'Supported text, email, phone, URL, number, textarea, select, checkbox, radio, checkbox group, multi-select, switch, date, time and private file definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state and contact roles are editable.',
+        'Supported text, email, phone, URL, number, textarea, select, checkbox, radio, checkbox group, multi-select, switch, date, time and private file definitions. Names, labels, help text, initial answers, text length limits, options, placeholders, required state, required-when-shown state and contact roles are editable. Conditional rules use earlier questions, stable IDs and require all rules to match.',
     },
     heading: { name: 'Heading', control: 'text' },
     description: { name: 'Description', control: 'text' },
@@ -130,6 +130,50 @@ export const TextOnly: Story = {
   args: {
     fields: [{ name: 'question', label: 'Your question', type: 'text', required: true }],
     description: 'A reusable form can ask just one question.',
+  },
+}
+export const ConditionalQuestion: Story = {
+  name: 'Conditional question',
+  args: {
+    fields: [
+      {
+        id: 'has-restrictions',
+        name: 'has_restrictions',
+        label: 'Do you have any dietary restrictions?',
+        type: 'checkbox',
+      },
+      {
+        id: 'restriction-details',
+        name: 'restriction_details',
+        label: 'Please describe your dietary restrictions',
+        type: 'textarea',
+        requiredWhenVisible: true,
+        visibilityConditions: [
+          { fieldID: 'has-restrictions', operator: 'equals', value: 'true' },
+        ],
+      },
+    ],
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    const consent = canvas.getByRole('checkbox', { name: /dietary restrictions/i })
+    expect(canvas.queryByLabelText(/please describe/i)).not.toBeInTheDocument()
+    await userEvent.click(consent)
+    const details = await canvas.findByLabelText(/please describe/i)
+    await userEvent.type(details, 'Peanuts')
+    await userEvent.click(consent)
+    expect(canvas.queryByLabelText(/please describe/i)).not.toBeInTheDocument()
+    await userEvent.click(consent)
+    const visibleDetails = await canvas.findByLabelText(/please describe/i)
+    expect(visibleDetails).toHaveValue('')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(canvas.getByText('Please describe your dietary restrictions is required.')).toBeVisible()
+    expect(args.onSubmit).not.toHaveBeenCalled()
+    await userEvent.type(visibleDetails, 'Peanuts')
+    await userEvent.click(canvas.getByRole('button', { name: 'Send enquiry' }))
+    await expect(args.onSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({ has_restrictions: true, restriction_details: 'Peanuts' }),
+    )
   },
 }
 export const Disabled: Story = { args: { disabled: true } }

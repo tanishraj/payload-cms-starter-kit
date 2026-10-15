@@ -261,3 +261,11 @@ snapshot, with explicit review/recovery and preserved compatible answers. Defaul
 groups remain absent from legacy output/hashes. Fixed clients reject active settings,
 including revisionless intake; no new endpoint, provider, dependency or palette.
 See [appearance contract](../../../../docs/planning/form-appearance-controls.md).
+
+Form questions can reference earlier stable-ID questions with declarative visibility
+rules. Payload's custom `FormVisibilityRules` field authors the rules; `formConditions.ts`
+evaluates them consistently. All rules must match, and a question may be conditionally
+required. Hidden answers and private upload tokens are cleared client-side, excluded
+from normalized intake, and rejected when nonempty in a forged request. Conditions enter
+published revisions, and stale recovery explains answers that are newly hidden. See
+the [conditional question contract](../../../../docs/planning/form-conditional-rules.md).

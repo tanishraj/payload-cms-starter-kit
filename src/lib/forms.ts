@@ -6,6 +6,8 @@ import {
 } from '@/lib/formAttachments'
 import { getFormTemporalError, validateFormTemporalConstraints } from '@/lib/formTemporal'
 import { getFormNumberError, validateFormNumberConstraints } from '@/lib/formNumber'
+import type { FormVisibilityCondition } from '@/lib/formConditions'
+import { getVisibleFormFields, validateFormVisibilityConditions } from '@/lib/formConditions'
 
 export const formFieldTypeOptions = [
   {
@@ -95,6 +97,8 @@ export type SimpleFormField = FormFilePolicy & {
   placeholder?: string | null
   required?: boolean | null
   type: FormFieldType
+  visibilityConditions?: FormVisibilityCondition[] | null
+  requiredWhenVisible?: boolean | null
 }
 
 export type FormAnswer = boolean | string | string[]
@@ -264,6 +268,8 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
       }
       fieldIDs.add(field.id)
     }
+    if (field.requiredWhenVisible != null && typeof field.requiredWhenVisible !== 'boolean')
+      return `The conditional required setting for "${name}" must be true or false.`
     if (
       field.helpText != null &&
       (typeof field.helpText !== 'string' || field.helpText.length > 1_000)
@@ -289,7 +295,10 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
       if (field.defaultChecked != null && typeof field.defaultChecked !== 'boolean') {
         return `The initial ${field.type === 'switch' ? 'switch' : 'checkbox'} value for "${name}" must be true or false.`
       }
-      if (field.required && field.defaultChecked === true) {
+      if (
+        (field.required || (field.requiredWhenVisible && field.visibilityConditions?.length)) &&
+        field.defaultChecked === true
+      ) {
         return field.type === 'switch'
           ? `Required switch "${name}" must start off so visitors make their own choice.`
           : `Required checkbox "${name}" must start unchecked so visitors make their own choice.`
@@ -391,7 +400,15 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
         const defaults = field.defaultSelections.map((choice: { value: string }) => choice.value)
         // An empty starting state is always allowed; visitors satisfy required/minimum rules.
         const { errors } = validateFormSubmission({
-          fields: [{ ...field, required: false, minSelections: defaults.length ? minimum : 0 }],
+          fields: [
+            {
+              ...field,
+              required: false,
+              requiredWhenVisible: false,
+              visibilityConditions: [],
+              minSelections: defaults.length ? minimum : 0,
+            },
+          ],
           values: { [name]: defaults },
         })
         if (errors[name]) return `Initial selections: ${errors[name]}`
@@ -407,13 +424,17 @@ export const validateFormFieldDefinitions = (value: unknown): true | string => {
       if (typeof field.defaultValue !== 'string')
         return `The initial answer for "${name}" must contain text.`
       const { errors } = validateFormSubmission({
-        fields: [{ ...field, required: false }],
+        fields: [
+          { ...field, required: false, requiredWhenVisible: false, visibilityConditions: [] },
+        ],
         values: { [name]: field.defaultValue },
       })
       if (errors[name]) return `Initial answer: ${errors[name]}`
     }
   }
 
+  const visibilityValidation = validateFormVisibilityConditions(value as SimpleFormField[])
+  if (visibilityValidation !== true) return visibilityValidation
   return true
 }
 
@@ -545,6 +566,12 @@ export const isValidFormURL = (value: string): boolean => {
 
 /** Include only active, meaningful configuration; legacy revisions stay unchanged. */
 export const getFormFieldConfiguration = (field: SimpleFormField) => ({
+  ...(Array.isArray(field.visibilityConditions) && field.visibilityConditions.length
+    ? { visibilityConditions: field.visibilityConditions.map((condition) => ({ ...condition })) }
+    : {}),
+  ...(field.requiredWhenVisible && field.visibilityConditions?.length
+    ? { requiredWhenVisible: true }
+    : {}),
   ...(field.helpText ? { helpText: field.helpText } : {}),
   ...(field.type === 'file' ? getFormFilePolicy(field) : {}),
   ...(field.type === 'date' && field.minDate ? { minDate: field.minDate } : {}),
@@ -656,8 +683,21 @@ export const validateFormSubmission = ({
     errors.values = 'Submitted values contain an invalid field.'
   }
 
+  const visibleNames = new Set(
+    getVisibleFormFields(fields, values as Record<string, unknown>).map((field) => field.name),
+  )
+
   for (const field of fields) {
     const rawValue = Object.hasOwn(values, field.name) ? values[field.name] : undefined
+    const required = Boolean(
+      field.required || (field.requiredWhenVisible && field.visibilityConditions?.length),
+    )
+
+    if (!visibleNames.has(field.name)) {
+      if (Object.hasOwn(values, field.name))
+        errors[field.name] = `${field.label} is hidden. Remove this answer and submit again.`
+      continue
+    }
 
     if (field.type === 'file') {
       const tokens = rawValue === undefined ? [] : rawValue
@@ -672,7 +712,7 @@ export const validateFormSubmission = ({
         continue
       }
       normalizedData[field.name] = [...tokens]
-      if (field.required && !tokens.length)
+      if (required && !tokens.length)
         errors[field.name] = `${field.label}: upload at least one file.`
       continue
     }
@@ -690,7 +730,7 @@ export const validateFormSubmission = ({
       const normalizedValue = normalizeCheckboxValue(rawValue)
       normalizedData[field.name] = normalizedValue
 
-      if (field.required && !normalizedValue) {
+      if (required && !normalizedValue) {
         errors[field.name] =
           field.type === 'switch'
             ? `${field.label} must be turned on.`
@@ -723,7 +763,7 @@ export const validateFormSubmission = ({
       normalizedData[field.name] = (field.options ?? [])
         .filter((option) => selected.includes(option.value))
         .map((option) => option.value)
-      const minimum = Math.max(field.required ? 1 : 0, field.minSelections ?? 0)
+      const minimum = Math.max(required ? 1 : 0, field.minSelections ?? 0)
       const maximum = field.maxSelections ?? field.options?.length ?? FORM_MAX_CHOICES
       if (selected.length < minimum)
         errors[field.name] =
@@ -749,7 +789,7 @@ export const validateFormSubmission = ({
       continue
     }
 
-    if (field.required && !normalizedValue) {
+    if (required && !normalizedValue) {
       errors[field.name] = `${field.label} is required.`
       continue
     }

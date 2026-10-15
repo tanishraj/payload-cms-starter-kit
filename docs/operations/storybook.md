@@ -50,6 +50,12 @@ focuses an explanation and waits for deliberate resubmission. It uses synthetic
 callbacks, not the API. See [revision recovery](../planning/form-revision-recovery.md)
 for the production protocol and legacy-client boundary.
 
+Conditional Question demonstrates stable-ID rules that show a follow-up only when
+all conditions match. It proves that hiding a question clears its answer, reopening
+starts empty, conditional requiredness blocks an incomplete response, and only
+active answers reach the synthetic callback. The Payload Admin authoring and public
+intake contract is in [conditional form questions](../planning/form-conditional-rules.md).
+
 
 The native Generic Form block now uses this presentation with the website's shared
 theme. Its publication/submission/draft-isolation/disabled-preview journey passed on

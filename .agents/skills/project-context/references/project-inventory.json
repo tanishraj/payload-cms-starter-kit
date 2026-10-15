@@ -2678,6 +2678,7 @@
       "src/components/admin/FeatureAccessControls.tsx",
       "src/components/admin/FirstAdminNotice.tsx",
       "src/components/admin/FormAttachmentDownload.tsx",
+      "src/components/admin/FormVisibilityRules.tsx",
       "src/components/admin/PageCreateView.tsx",
       "src/components/admin/PageRecipeSetup.scss",
       "src/components/admin/PageRecipeSetup.tsx",
@@ -2882,6 +2883,7 @@
       "src/lib/formAttachmentStorage.server.ts",
       "src/lib/formAttachments.server.ts",
       "src/lib/formAttachments.ts",
+      "src/lib/formConditions.ts",
       "src/lib/formLayout.ts",
       "src/lib/formNotifications.ts",
       "src/lib/formNumber.ts",
@@ -3147,6 +3149,7 @@
       "tests/int/form-answer-recovery.int.spec.ts",
       "tests/int/form-appearance.int.spec.tsx",
       "tests/int/form-choice-controls.int.spec.ts",
+      "tests/int/form-conditional-visibility.int.spec.ts",
       "tests/int/form-field-configuration.int.spec.ts",
       "tests/int/form-files-database.int.spec.ts",
       "tests/int/form-files-presentation.int.spec.tsx",
@@ -3315,7 +3318,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "6089861c9c8e8d40e9a1356317920c75be26ea38902817a9c51885c64898eafb"
+    "sha256": "57625b84e42d1f9dcf106440e584429702edd4aa1116fd0694298bfbd4cc0521"
   },
   "surfaces": {
     "access": [
@@ -3385,6 +3388,7 @@
       "src/lib/formAttachmentStorage.server.ts",
       "src/lib/formAttachments.server.ts",
       "src/lib/formAttachments.ts",
+      "src/lib/formConditions.ts",
       "src/lib/formLayout.ts",
       "src/lib/formNotifications.ts",
       "src/lib/formNumber.ts",
@@ -3582,6 +3586,7 @@
       "tests/int/form-answer-recovery.int.spec.ts",
       "tests/int/form-appearance.int.spec.tsx",
       "tests/int/form-choice-controls.int.spec.ts",
+      "tests/int/form-conditional-visibility.int.spec.ts",
       "tests/int/form-field-configuration.int.spec.ts",
       "tests/int/form-files-database.int.spec.ts",
       "tests/int/form-files-presentation.int.spec.tsx",
