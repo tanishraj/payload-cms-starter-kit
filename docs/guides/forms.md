@@ -211,4 +211,29 @@ Fixed **Contact Form (Contact 33)** and **Review Submission** do not support lay
 entries. Use a dynamic block with General/Lead intent for this workflow.
 
 See [layout contract](../planning/form-layout-entries.md) for developer boundaries
-and remaining appearance/conditional-rule work. No new environment settings.
+and remaining conditional-rule work. Supported appearance is described below. No new environment settings.
+
+
+## Form appearance
+
+Open **Forms → Form appearance**, also available in the Page relationship drawer.
+These settings apply to every placement of that reusable Form. Choose a maximum
+form width, one/two question columns, normal/compact spacing, and supported submit
+button appearance/size/shape/width. Defaults keep the selected block’s presentation.
+Two columns appear only with at least 32rem of available form width; narrow cards
+and phones stay stacked. Long/compound questions and display entries remain full
+width. Width never widens the Page block’s card/section.
+
+Primary/Outline/Secondary and Default/Small/Large use existing theme tokens and
+upstream variants. Theme default/Pill controls only the submit shape. Full width
+or Fit label controls the submit width. Inputs keep their upstream appearance;
+there is no arbitrary CSS, color, input-size or breakpoint editor. Fixed Contact
+33 and Review Submission require default appearance. Native publication/selection
+explains unsupported settings rather than silently ignoring them.
+
+Save and preview the Form/Page, then publish the Form to update all placements.
+Visitors with an older revision receive the updated appearance and keep compatible
+answers for review and deliberate resubmission. Original submission history retains
+its appearance snapshot. Draft appearance is visible only in authenticated preview,
+where sending/uploading stays disabled. See the [supported settings and developer
+contract](../planning/form-appearance-controls.md). No new environment variables.

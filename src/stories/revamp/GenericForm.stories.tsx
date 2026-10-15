@@ -80,6 +80,12 @@ const meta = {
     })),
   },
   argTypes: {
+    appearance: {
+      name: 'Supported appearance',
+      control: 'object',
+      description:
+        'width: default/narrow/wide/full; spacing: default/compact; columns: default/one/two (fixed 32rem form-width breakpoint); buttonVariant: default/outline/secondary; buttonSize: default/sm/lg; buttonShape: default/pill; buttonWidth: default/content. Defaults preserve the selected block. No CSS, colors or validation overrides.',
+    },
     protectRetries: {
       control: false,
       description: 'Caller-owned retry protection; uses one in-memory random key per attempt.',
@@ -233,6 +239,12 @@ export const CMSPreview: Story = {
   name: 'CMS preview',
   args: { size: 'compact' },
   argTypes: {
+    appearance: {
+      name: 'Supported appearance',
+      control: 'object',
+      description:
+        'width: default/narrow/wide/full; spacing: default/compact; columns: default/one/two (fixed 32rem form-width breakpoint); buttonVariant: default/outline/secondary; buttonSize: default/sm/lg; buttonShape: default/pill; buttonWidth: default/content. Defaults preserve the selected block. No CSS, colors or validation overrides.',
+    },
     size: {
       name: 'Section padding',
       control: 'select',
@@ -893,3 +905,42 @@ export const LayoutEntries: Story = {
 }
 
 export const LayoutPreview: Story = { args: LayoutEntries.args }
+
+/** Authenticated source: form-form-layouts-3/-6, button-button-standard-4,
+ * button-button-outline-1/secondary-1/sizes-1/-2. */
+export const Appearance: Story = {
+  args: {
+    ...LayoutEntries.args,
+    appearance: {
+      width: 'wide',
+      columns: 'two',
+      spacing: 'compact',
+      buttonVariant: 'outline',
+      buttonSize: 'lg',
+      buttonShape: 'pill',
+      buttonWidth: 'content',
+    },
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button', { name: args.submitButtonLabel })
+    await expect(button).toHaveAttribute('data-variant', 'outline')
+    await expect(button).toHaveAttribute('data-size', 'lg')
+    await expect(button).toHaveClass('rounded-full')
+    await userEvent.click(button)
+    await expect(
+      canvas.getByText('Please correct the highlighted fields and try again.'),
+    ).toBeVisible()
+  },
+}
+export const AppearancePreview: Story = { args: Appearance.args }
+export const NarrowAppearance: Story = {
+  args: {
+    appearance: {
+      width: 'narrow',
+      spacing: 'compact',
+      buttonVariant: 'secondary',
+      buttonSize: 'sm',
+    },
+  },
+}

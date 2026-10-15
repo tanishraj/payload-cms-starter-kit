@@ -252,3 +252,12 @@ body/file parsing, public Media fallback, route prewarming or weaker test assert
 is introduced. CI's previous upload requests reached Payload REST and returned
 route-not-found; native registration makes this URL resolvable by that router.
 The underlying platform routing discrepancy is not claimed to be diagnosed.
+
+
+Supported Form appearance is one browser-safe typed allowlist and native reusable
+Form group; both public/disabled-preview adapters pass the same settings. Canonical
+non-default appearance contributes to the published/intake revision and original
+snapshot, with explicit review/recovery and preserved compatible answers. Default
+groups remain absent from legacy output/hashes. Fixed clients reject active settings,
+including revisionless intake; no new endpoint, provider, dependency or palette.
+See [appearance contract](../../../../docs/planning/form-appearance-controls.md).

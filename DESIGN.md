@@ -140,7 +140,7 @@ Achromatic surfaces and text keep questions central; the destructive role adds r
 
 ## Layout
 
-The workshop supports responsive reflow with Storybook's theme and viewport toolbars. Component-specific composition belongs in a surface brief. Generic Form is fluid to its container, capped at the inherited medium maximum width (28rem), with a vertical form stack and full-width submit action. It does not expose a column-count, density or alternative-layout prop.
+The workshop supports responsive reflow with Storybook's theme and viewport toolbars. Component-specific composition belongs in a surface brief. Generic Form is fluid to its container, capped at the inherited medium maximum width (28rem), with a vertical form stack and full-width submit action. The default remains unchanged; supported sourced width, compact spacing and one/two-column choices are exposed through typed appearance props. Two columns require 32rem of available form width; display entries/groups and long controls span the grid. See the [appearance contract](docs/planning/form-appearance-controls.md).
 
 The reused rhythm is half-rem heading spacing, three-quarter-rem field spacing, one-rem form spacing and one-and-three-quarter-rem FieldGroup spacing. Checkbox labels stay beside the checkbox and wrap. The Field vertical orientation makes controls fill available width.
 
@@ -158,7 +158,7 @@ The workshop's base radius is inherited from Neutral, with the larger scaled rad
 
 ### Buttons
 
-The shipped form uses the default primary button with the default height, medium small text and full available width. Hover reduces primary fill opacity. Keyboard focus shows a ring; a direct press shifts it slightly downward. Disabled and pending states prevent interaction and reduce opacity. Other upstream Button variants remain available in the dependency; they are not exposed as Generic Form configuration.
+The shipped form uses the default primary button with the default height, medium small text and full available width. Hover reduces primary fill opacity. Keyboard focus shows a ring; a direct press shifts it slightly downward. Disabled and pending states prevent interaction and reduce opacity. Supported configuration now exposes Primary/Outline/Secondary, Default/Small/Large, inherited/Pill corners and full/label width. The selected block default remains unchanged; no arbitrary styles/colors or icon-only submit action are exposed.
 
 ### Inputs / Fields
 
@@ -232,3 +232,14 @@ and descriptions. Validation, first-error focus and confirmation were exercised
 without forced clicks. Verdict: presentation ready for this bounded increment.
 Broader theme/accessibility/native administration acceptance remains tracked;
 no new palette, stylesheet or duplicate catalogue entry.
+
+
+### Form appearance — 15 October 2026
+
+Authenticated Pro form-layouts-3/-6 and text-button variant/size/rounded sources
+extend the existing presentation, with one typed shared Form appearance contract.
+Desktop/mobile and dark review, responsive computed widths/gaps, actual error focus
+and completed Storybook play support **ship for this bounded presentation**.
+The Neutral light muted-surface contrast issue remains recorded; native/release
+evidence and complete accessibility/launch acceptance are distinct. No new palette,
+stylesheet, duplicate catalogue or visual editor. See the [contract](docs/planning/form-appearance-controls.md).

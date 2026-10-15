@@ -241,6 +241,27 @@ for (const block of [
       await fillNativeField(page, 'fields.15.questions.0.name', 'additional_context')
       await fillNativeField(page, 'fields.15.questions.0.label', 'Anything else?')
 
+      for (const [name, label, value] of [
+        ['width', 'Wide (42rem)', 'wide'],
+        ['columns', 'Two columns when space allows', 'two'],
+        ['spacing', 'Compact', 'compact'],
+        ['buttonVariant', 'Outline', 'outline'],
+        ['buttonSize', 'Large', 'lg'],
+        ['buttonShape', 'Pill', 'pill'],
+        ['buttonWidth', 'Fit label', 'content'],
+      ] as const) {
+        const path = `appearance.${name}`
+        const field = page.locator(`#field-appearance__${name}`)
+        await field.getByRole('combobox').click()
+        await editNativeForm(
+          page,
+          () => page.getByRole('option', { name: label, exact: true }).click(),
+          path,
+          value,
+        )
+        await expect(field.getByText(label, { exact: true })).toBeVisible()
+      }
+
       const formResponsePromise = page.waitForResponse(
         (r) => new URL(r.url()).pathname === '/api/forms' && r.request().method() === 'POST',
       )
@@ -251,6 +272,15 @@ for (const block of [
         `Form publication ${formResponse.status()}: ${await formResponse.text()}`,
       ).toBe(true)
       const { doc: form } = await formResponse.json()
+      expect(form.appearance).toMatchObject({
+        width: 'wide',
+        columns: 'two',
+        spacing: 'compact',
+        buttonVariant: 'outline',
+        buttonSize: 'lg',
+        buttonShape: 'pill',
+        buttonWidth: 'content',
+      })
       const authHeaders = { Origin: new URL(page.url()).origin, Referer: page.url() }
       for (const invalid of [
         { step: 0 },
@@ -445,11 +475,23 @@ for (const block of [
           await expect(visitDate).toBeFocused()
           await visitDate.fill('2026-10-22')
           await visitTime.fill('10:30')
+          await expect(
+            visitor.getByRole('button', { name: 'Submit', exact: true }),
+          ).toHaveAttribute('data-variant', 'outline')
+          await expect(
+            visitor.getByRole('button', { name: 'Submit', exact: true }),
+          ).toHaveAttribute('data-size', 'lg')
           // Publish after the visitor has loaded and answered the old revision.
           const changed = await page.request.patch(`/api/forms/${form.id}`, {
             headers: authHeaders,
             data: {
               _status: 'published',
+              appearance: {
+                ...form.appearance,
+                width: 'narrow',
+                columns: 'one',
+                buttonVariant: 'secondary',
+              },
               fields: form.fields.map((field: { name: string; options?: { value: string }[] }) =>
                 field.name === 'visitor_name'
                   ? {
@@ -490,6 +532,14 @@ for (const block of [
           expect(staleResponse.status()).toBe(409)
           const stale = await staleResponse.json()
           expect(stale.code).toBe('FORM_CHANGED')
+          expect(stale.form.appearance).toMatchObject({
+            width: 'narrow',
+            columns: 'one',
+            buttonVariant: 'secondary',
+          })
+          await expect(
+            visitor.getByRole('button', { name: 'Submit', exact: true }),
+          ).toHaveAttribute('data-variant', 'secondary')
           expect(JSON.stringify(stale)).not.toContain('notificationRecipients')
           await expect(
             visitor.getByRole('status').filter({ hasText: 'The questions have changed.' }),
@@ -581,6 +631,7 @@ for (const block of [
           const { docs } = await submissions.json()
           expect(docs).toHaveLength(1)
           expect(docs[0].formRevision).toBe(stale.form.revision)
+          expect(docs[0].formSnapshot.appearance).toEqual(stale.form.appearance)
           expect(docs[0].submitterPhone).toBeFalsy() // Time named phone is an ordinary answer.
           expect(docs[0].submitterEmail).toBeFalsy() // Number named email is an ordinary answer.
           expect(docs[0].formSnapshot.entries).toEqual(
@@ -705,6 +756,7 @@ for (const block of [
             headers: authHeaders,
             data: {
               _status: 'draft',
+              appearance: { ...form.appearance, width: 'full', buttonVariant: 'outline' },
               fields: form.fields.map((field: { name: string }) =>
                 field.name === 'preferred_department'
                   ? { ...field, label: 'Draft-only question' }
@@ -718,12 +770,19 @@ for (const block of [
             visitor.getByText('Which department can help?', { exact: false }),
           ).toBeVisible()
           await expect(visitor.getByText('Draft-only question', { exact: true })).toHaveCount(0)
+          await expect(
+            visitor.getByRole('button', { name: 'Submit', exact: true }),
+          ).toHaveAttribute('data-variant', 'secondary')
           await page.goto(`/preview/page/${document.id}`, {
             waitUntil: 'domcontentloaded',
             timeout: 120_000, // The complete preview renderer compiles cold on the CI dev server.
           })
           await expect(page.getByText(/Preview only — submissions are disabled/)).toBeVisible()
           await expect(page.getByRole('button', { name: 'Submit', exact: true })).toBeDisabled()
+          await expect(page.getByRole('button', { name: 'Submit', exact: true })).toHaveAttribute(
+            'data-variant',
+            'outline',
+          )
           await expect(page.getByLabel(/Supporting documents/)).toBeDisabled()
           expect(
             await page.request

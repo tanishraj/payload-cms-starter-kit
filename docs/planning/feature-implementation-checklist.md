@@ -1,6 +1,6 @@
 # Website feature implementation checklist
 
-Updated: 14 October 2026 (Asia/Dubai).
+Updated: 15 October 2026 (Asia/Dubai).
 
 ## Current direction
 
@@ -654,8 +654,8 @@ exclusions and complete source traceability are in the local scope reference.
   supported width, spacing, size, shape, variant and responsive presentation.
 
   Work: In progress · Priority: First enhancement · Baseline: Partial.
-  Current increment: ordered native display entries and one-level groups, shared typed questions, public projection/revision/history and sourced Storybook presentation. See [contract](form-layout-entries.md). Full appearance/acceptance remains open.
-  Owner: Codex · Commit/PR: `feat/form-layout-entries` (pending) · Verified on: 2026-10-14 (local) · Acceptance/test evidence: 2,664 integration pass/one Docker skip, both native journeys without retries, production/Storybook builds and context/type/lint/audit gates; CI/merge pending.
+  Current increment: ordered native display entries/groups are merged. Source-supported Form appearance is implemented on `feat/form-appearance-controls`; see [appearance contract](form-appearance-controls.md). Full forms acceptance and exact-head CI/merge remain required before completion.
+  Owner: Codex · Commit/PR: [PR #29](https://github.com/tanishraj/payload-cms-starter-kit/pull/29), `2d18b58a`; appearance PR pending · Verified on: 2026-10-15 (layout merge and appearance local checks) · Acceptance/test evidence: appearance local integration suite 2,693 passed/one Docker-dependent skip; both native Generic Form and Contact6 journeys passed; production build verified 73 traces and no private uploads. Focused appearance/layout/client/database tests (77 passed), Storybook build, TypeScript, targeted ESLint and project-context checks pass. Exact-head appearance Quality and merge remain pending.
 
 - [ ] **FORM-05 — Identity and configuration.** Stable field ID separate from editable
   label/name/order; help text, placeholder, default, required state and type-specific
@@ -2044,3 +2044,11 @@ files after Form deletion and trash retention. Fresh production build inspects
 73 traces with no private uploads. Types, lint (one existing warning), Payload
 generators, context checks/tests and unchanged approved-exception audit pass.
 Exact-head Quality/merge evidence remains pending.
+
+
+| 2026-10-15 | FORM-04; DF-07; SUBMIT-01/02/05; VERIFY; ADMINUX | Layout/native-API increment merged | Codex | Ordered native questions/headings/descriptions/separators/groups, stable identities, layout revision/history/recovery, no display answers, and one canonical Payload owner for bounded form submit/upload/private-download URLs. Source/Storybook precedes native authoring integration. Fixed clients fail closed for unsupported layouts. | [PR #29](https://github.com/tanishraj/payload-cms-starter-kit/pull/29), `2d18b58a` | [Exact-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38630786542) passes on `c32cca69`: 2,665 integration tests/one Docker-dependent skip; both native form journeys first attempt (7.2m); production artifact has 73 traces/no private uploads. Both governance journeys pass, with Admin feature grants requiring one retry after Pages-grant visibility exceeded five seconds. Broad VERIFY/AdminUX repeatability stays open. Earlier failed route-dispatch run and correction retained in the contract. Local complete suite, four ordinary-loader browser journeys without retry, builds/types/lint/generators/context/audit pass. Verified feature tip deleted locally/remotely; develop preserved. |
+
+| 2026-10-15 | FORM-04; DF-07/08 | Next forms increment ready | Codex | Continue with source-supported appearance settings, then stable-ID conditions in a separate increment; no new visual editor, duplicate catalogue or invented palette. | `feat/form-appearance-controls`, based on `2d18b58a` | Fresh branch created after the verified merge. No appearance implementation claimed; complete forms checklist remains active. |
+
+
+| 2026-10-15 | FORM-04; DF-08; applicable history/UX | Appearance locally verified; exact-head CI pending | Codex | One explicit native Form appearance group maps to sourced typed Storybook/production/preview props. Legacy defaults/hashes stay unchanged; active settings enter revision/original history and stale recovery without changing answers. Fixed clients fail closed. See [contract](form-appearance-controls.md). | `feat/form-appearance-controls` | Storybook-first desktop/mobile/dark review and play complete. Local: 2,693 integration tests passed/one Docker skip; two native journeys passed; 73 production traces/no private uploads; Storybook build, typegen, TypeScript, ESLint, context checks pass. Known Neutral light contrast remains; no new dependencies/environment/styles. Exact-head Quality/merge remains required. Conditions follow separately. |

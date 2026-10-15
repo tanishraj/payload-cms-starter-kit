@@ -1,5 +1,7 @@
 'use client'
 
+import { projectFormAppearance, validateFormAppearance } from '@/lib/formAppearance'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle } from 'lucide-react'
 import Image from 'next/image'
@@ -202,11 +204,12 @@ export function Contact33({
   })
   const [message, setMessage] = useState<string | null>(null)
   const [messageTone, setMessageTone] = useState<'default' | 'destructive'>('default')
-  const formSlug = form?.fields?.some(
-    (field) => field.entryType != null && field.entryType !== 'question',
-  )
-    ? undefined
-    : form?.slug?.trim()
+  const formSlug =
+    validateFormAppearance(form?.appearance) !== true ||
+    projectFormAppearance(form?.appearance) ||
+    form?.fields?.some((field) => field.entryType != null && field.entryType !== 'question')
+      ? undefined
+      : form?.slug?.trim()
   const isFormAvailable = Boolean(formSlug)
   const submitLabel = form?.submitButtonLabel?.trim() || 'Send message'
 

@@ -617,3 +617,13 @@ updates layout while retaining valid stable-ID answers; display rows never becom
 answers/notification rows. Grouped files retain private-provider publication and
 intake boundaries. No migration/new environment/dependency/style is introduced.
 See [layout contract](../../../../docs/planning/form-layout-entries.md).
+
+
+Generic Form and Contact6 pass the reusable Form's optional typed `appearance`
+through the same reviewed production/disabled-preview presentation; blocks do not
+store duplicate overrides. Defaults retain the source block, including Contact6's
+legacy first-short-question row. Explicit two-column grids use the fixed 32rem
+form-container breakpoint, keeping narrow cards/phones stacked and display/compound
+controls full width. Compact gaps and upstream submit variants/sizes/Pill shape
+are scoped props, not new stylesheets or a palette. Canonical Storybook appearance
+controls/states remain in the same Blocks entries. See [contract](../../../../docs/planning/form-appearance-controls.md).

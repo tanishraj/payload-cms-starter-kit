@@ -1,3 +1,4 @@
+import { projectFormAppearance, type FormAppearance } from '@/lib/formAppearance'
 import {
   getFormQuestions,
   projectFormLayout,
@@ -15,6 +16,7 @@ import {
 } from '@/lib/forms'
 
 type SnapshotForm = {
+  appearance?: FormAppearance | null
   entries?: FormLayoutEntry[]
   fields: FormEntry[]
   id: number | string
@@ -61,7 +63,9 @@ export const buildFormSubmissionSnapshot = (
     ...getFormFieldConfiguration(field),
   }))
   const entries = form.entries ?? projectFormLayout(form.fields)
+  const appearance = projectFormAppearance(form.appearance)
   const formSnapshot = {
+    ...(appearance ? { appearance } : {}),
     ...(entries ? { entries } : {}),
     fields,
     formatVersion: 1,

@@ -46,6 +46,7 @@ export function GenericFormBlockPresentation({
             key={definition.slug}
             heading={heading?.trim() ?? ''}
             description={description?.trim() || undefined}
+            appearance={definition.appearance}
             entries={definition.entries}
             fields={definition.fields}
             revision={definition.revision}

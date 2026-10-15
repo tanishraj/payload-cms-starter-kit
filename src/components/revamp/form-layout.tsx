@@ -5,6 +5,7 @@
  * Preserve FieldSet/Legend/Description/Group and FieldSeparator compositions.
  * Adaptations: typed display entries and caller-supplied question controls.
  */
+import { cn } from '@/lib/utils'
 import { Fragment, type ReactNode, useId } from 'react'
 import { FieldDescription, FieldGroup, FieldLegend, FieldSeparator, FieldSet } from './ui/field'
 import type { FormLayoutEntry } from '@/lib/formLayout'
@@ -14,7 +15,11 @@ export function FormLayout({
   names,
   children,
   headingLevel = 3,
+  twoColumns = false,
+  compact = false,
 }: {
+  twoColumns?: boolean
+  compact?: boolean
   headingLevel?: 3 | 4
   entries?: FormLayoutEntry[]
   names: string[]
@@ -22,6 +27,7 @@ export function FormLayout({
 }) {
   const prefix = useId()
   if (!entries) return children
+  const fullWidth = twoColumns && '@lg/form:col-span-2'
   const Heading = headingLevel === 3 ? 'h3' : 'h4'
   const questions = new Map(names.map((name, i) => [name, children[i]]))
   return entries.map((entry, i) => {
@@ -31,22 +37,22 @@ export function FormLayout({
         return <Fragment key={id}>{questions.get(entry.name)}</Fragment>
       case 'heading':
         return (
-          <Heading key={id} className="text-base font-medium wrap-anywhere">
+          <Heading key={id} className={cn('text-base font-medium wrap-anywhere', fullWidth)}>
             {entry.text}
           </Heading>
         )
       case 'description':
         return (
-          <FieldDescription key={id} className="whitespace-pre-line wrap-anywhere">
+          <FieldDescription key={id} className={cn('whitespace-pre-line wrap-anywhere', fullWidth)}>
             {entry.text}
           </FieldDescription>
         )
       case 'separator':
-        return <FieldSeparator key={id} />
+        return <FieldSeparator key={id} className={cn(fullWidth)} />
       case 'group':
         return (
           <FieldSet
-            className="min-w-0"
+            className={cn('min-w-0', fullWidth, compact && 'gap-3')}
             key={id}
             aria-describedby={entry.description ? `${id}-description` : undefined}
           >
@@ -59,7 +65,9 @@ export function FormLayout({
                 {entry.description}
               </FieldDescription>
             )}
-            <FieldGroup>
+            <FieldGroup
+              className={cn(twoColumns && 'grid gap-4 @lg/form:grid-cols-2', compact && 'gap-3')}
+            >
               {entry.questions.map((name) => (
                 <Fragment key={name}>{questions.get(name)}</Fragment>
               ))}

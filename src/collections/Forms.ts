@@ -1,3 +1,4 @@
+import { formAppearanceField } from '@/fields/formAppearanceField'
 import { formEndpoints } from '@/endpoints/formEndpoints'
 import { requireFormAttachmentStorage } from '@/hooks/requireFormAttachmentStorage'
 import { type CollectionConfig } from 'payload'
@@ -127,6 +128,7 @@ export const Forms: CollectionConfig = {
         },
       ],
     },
+    formAppearanceField,
     {
       name: 'notificationRecipients',
       label: 'Notification Recipients',
