@@ -114,8 +114,13 @@ On `feat/form-appearance-controls`, sourced supported width/spacing/columns and
 submit variant/size/shape/width map to one reusable native Form appearance group.
 Defaults preserve legacy output/hashes. Active settings participate in original
 revision/history and explicit stale recovery without changing answer semantics.
-Storybook-first review/play and local focused/full release checks are complete:
+Storybook-first review/play and local focused/full release checks passed:
 2,693 integration tests passed with one Docker-dependent skip; both native form
 journeys passed; the build verified 73 traces and no private uploads. Exact-head
-Quality/merge remain the next gates. See [contract](form-appearance-controls.md).
-Conditions follow on a new branch after merge; broader forms acceptance stays open.
+[Quality passed](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38641309862)
+and [PR #30 merged](https://github.com/tanishraj/payload-cms-starter-kit/pull/30)
+as `9c6f148a`. The hosted Generic Form browser case was marked flaky after a
+420-second timeout and retry navigation timeout before the overall run passed;
+broader repeatability remains tracked. The next clean branch is
+`feat/form-conditional-rules`; conditions have not started. Broader forms
+acceptance stays open. See [contract](form-appearance-controls.md).

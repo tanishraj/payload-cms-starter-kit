@@ -83,8 +83,12 @@ occurred on the first story transition; a fresh task browser confirmed the play.
 Contact6 shape and mobile wrapping were reviewed; dark axe WCAG A/AA has zero
 violations. Existing Neutral light muted-surface contrast findings persist and
 are recorded in the Storybook runbook; this is not complete AA/theme acceptance.
-Finish verdict: ready for the bounded sourced appearance increment; native and
-release/CI evidence must also pass before merge. No visual-editor work.
+Finish verdict: bounded sourced appearance increment is merged. Local focused/full
+integration, native browser journeys, Storybook, types/lint and the production
+artifact guard pass. Exact-head Quality passed and PR #30 merged; its hosted
+Generic Form browser case was marked flaky after a 420-second timeout and retry
+navigation timeout before overall success. Broader browser repeatability remains
+open. No visual-editor work.
 
 ## Verification and delivery
 
@@ -93,6 +97,6 @@ configuration, minimal projection/original history, fixed clients, refresh and
 answer preservation. The real-MongoDB form-file suite also verifies native REST
 appearance publication rejection, draft isolation, stale recovery, original
 accepted snapshots and durable receipt replay. Both existing native browser
-journeys now author all settings and verify production, refresh, history and
-disabled draft preview. Full local/current-head Quality/merge evidence is kept
-in the main checklist. Conditions and broader forms acceptance remain open.
+journeys author all settings and verify production, refresh, history and disabled
+draft preview. Full local/Quality/merge evidence is in the main checklist.
+Conditional rules and broader forms acceptance remain open.
