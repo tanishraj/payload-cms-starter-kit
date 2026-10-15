@@ -5163,6 +5163,9 @@ export interface Form {
         )
       | null;
     required?: boolean | null;
+    /**
+     * When this question is shown, visitors must answer it. Add at least one visibility condition below.
+     */
     requiredWhenVisible?: boolean | null;
     visibilityConditions?:
       | {
@@ -5297,6 +5300,9 @@ export interface Form {
             | 'multiSelect'
             | 'checkbox';
           required?: boolean | null;
+          /**
+           * When this question is shown, visitors must answer it. Add at least one visibility condition below.
+           */
           requiredWhenVisible?: boolean | null;
           visibilityConditions?:
             | {
