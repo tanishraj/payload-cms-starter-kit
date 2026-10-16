@@ -243,3 +243,14 @@ including Media and globals. This is a bounded first rollout, not complete tenan
 isolation. Limits: 50 roots, 5,000 effective source IDs and 100 Page levels; overflows
 fail closed. Request-only permission memoization is not an authorization cache
 across requests. See [runbook](../../../../docs/operations/section-scoped-access.md).
+
+
+Dashboard onboarding stores only `forma-getting-started-v1` visibility in the
+built-in `payload-preferences` collection/endpoint. Session-derived ownership
+and access-enforced reads isolate accounts; saved preferences cannot authorize
+a task. Current root Page reads suppress scoped actions when assignments are
+missing/unavailable. Minimal current draft reads supply resume links; native
+editors still enforce permission on entry/save. Recent work reads latest saved
+draft state. There is no new collection/schema/migration/environment setting,
+bootstrap wizard, invitation or automatic content/publication operation. See
+[onboarding scope](../../../../docs/operations/admin-getting-started.md).

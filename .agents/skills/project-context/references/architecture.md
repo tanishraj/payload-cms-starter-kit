@@ -223,8 +223,16 @@ See `docs/planning/form-revision-recovery.md` for precise boundaries.
 
 The native dynamic-form browser journey runs through `pnpm test:e2e:forms` on the
 required loopback test database and is a Quality gate. The fixture worker retains
-the `react-server`/tsx options needed for Payload config import, while the Next web
-server uses its normal framework-managed React contexts. Forcing `react-server`
+`react-server`/tsx for its existing form helpers. Governance browser fixtures use a
+short-lived Node subprocess with explicit loader flags, a bounded deadline and
+structured IPC; Payload configuration stays outside Playwright's worker transform
+graph. Both parent and subprocess validate the loopback test database before work,
+and the subprocess boots the canonical Payload config before importing fixture
+helpers, then closes Payload before reporting success. Access, optional
+onboarding and Review moderation are independent native journeys with the existing
+per-test budget. Governance cleanup deletes only recorded Page IDs through the
+Local API, children before roots, independently of browser cookies. The Next web
+server keeps its normal framework-managed React contexts. Forcing `react-server`
 globally on Next breaks its public frontend compilation/SSR.
 
 ## October 7 security patch baseline
@@ -287,3 +295,13 @@ feature and section (or Admin). The first rollout covers Pages, Forms, Reusable
 Sections, submissions and related operational rows; other feature grants are
 site-wide. No provider/environment/schema migration or separate editor is added.
 See [scope boundary and limits](../../../../docs/operations/section-scoped-access.md).
+
+
+The native Dashboard adds one optional sourced getting-started panel. Its
+server-only loader uses current scoped root/draft reads with access enforcement;
+account-owned native Payload preferences persist guide visibility. No onboarding
+flag grants permission or certifies readiness. Missing assignments, query errors
+and optional preference errors remain distinct. The client verifies saved values
+and restores focus on hide/reopen. Scoped Tailwind/preflight affects only this
+widget and inherits native Payload colors; no public theme or provider changes.
+See [contract](../../../../docs/operations/admin-getting-started.md).

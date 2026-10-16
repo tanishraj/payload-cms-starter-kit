@@ -1,6 +1,15 @@
 # Admin onboarding and everyday UX plan
 
-Updated: 6 October 2026 (Asia/Dubai). Status: proposed acceptance, not shipped UI.
+Updated: 16 October 2026 (Asia/Dubai). Status: broad acceptance plan; bounded dashboard increment under verification.
+
+## Current checkpoint
+
+Core forms are accepted by the user; advanced forms work is deferred. Section
+access merged in PR #33. The next selected increment is optional, account-owned
+dashboard guidance with current scope/draft facts and no-assignment recovery.
+See [getting started contract](../operations/admin-getting-started.md). Historical
+forms-first sequencing below is superseded. No broad onboarding box or usability
+study target is complete merely because the guide exists.
 
 ## Outcome and boundaries
 

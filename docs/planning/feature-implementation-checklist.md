@@ -1752,9 +1752,9 @@ handoff. Manager section guidance depends on verified ACCESS work.
 
 - [ ] **ONBOARD-04 — First Admin orientation.** Explain first-account ownership and show a short next-action area leading to a real first draft. No automatic publication or lengthy mandatory walkthrough.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/admin-onboarding` · Verified on: 2026-10-16 · Increment: [optional dashboard guide](../operations/admin-getting-started.md), native preference/focus/scoped-task evidence in the work log. Broader acceptance stays open.
 
 - [ ] **ONBOARD-05 — Minimal site setup.** Use valid existing defaults; let an Admin set identity, theme and timezone with concise explanations. Advanced production settings remain separate and current values are preserved.
 
@@ -1782,33 +1782,33 @@ handoff. Manager section guidance depends on verified ACCESS work.
 
 - [ ] **ONBOARD-09 — Progress based on facts.** Derive readiness/completion from current server facts where measurable. Personal skip/dismiss preferences never imply healthy infrastructure, correct grants or published content.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Not yet assessed.
+  Work: In progress · Priority: Selected · Baseline: Not yet assessed.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/admin-onboarding` · Verified on: 2026-10-16 · Increment: [optional dashboard guide](../operations/admin-getting-started.md), native preference/focus/scoped-task evidence in the work log. Broader acceptance stays open.
 
-- [ ] **ONBOARD-10 — Skip, resume and replay.** Users can dismiss optional guidance, resume relevant incomplete tasks and reopen help. Returning users do not repeat onboarding; deleted/moved/restricted records resolve safely.
+- [x] **ONBOARD-10 — Skip, resume and replay.** Users can dismiss optional guidance, resume relevant incomplete tasks and reopen help. Returning users do not repeat onboarding; deleted/moved/restricted records resolve safely.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Not yet assessed.
+  Work: Verified · Priority: Selected · Baseline: Not yet assessed.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/admin-onboarding` · Verified on: 2026-10-16 · Increment: [optional dashboard guide](../operations/admin-getting-started.md), native preference/focus/scoped-task evidence in the work log. Verified for the supported dashboard guide: account-owned hide/reopen survives reload, current scoped drafts supply resume links, missing/revoked assignments override hidden guidance, and native destinations recheck access. A general help index remains ONBOARD-17.
 
 - [ ] **ONBOARD-11 — Role-aware starting point.** Admin sees useful full-access actions; Manager sees allowed features and eventual sections. Developer setup is not a third role and onboarding never grants access.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/admin-onboarding` · Verified on: 2026-10-16 · Increment: [optional dashboard guide](../operations/admin-getting-started.md), native preference/focus/scoped-task evidence in the work log. Broader acceptance stays open.
 
 - [ ] **ONBOARD-12 — Manager access explanation.** Summarize actual create/edit/publish permissions and assigned scope in plain language. Direct links and server operations revalidate scope; read-only dependencies are labelled.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/admin-onboarding` · Verified on: 2026-10-16 · Increment: [optional dashboard guide](../operations/admin-getting-started.md), native preference/focus/scoped-task evidence in the work log. Broader acceptance stays open.
 
 - [ ] **ONBOARD-13 — No-assignment recovery.** An active Manager with no grants sees an explanation, configured Admin contact route and retry action. No dead create links, hidden-record disclosure or automatic escalation.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/admin-onboarding` · Verified on: 2026-10-16 · Increment: [optional dashboard guide](../operations/admin-getting-started.md), native preference/focus/scoped-task evidence in the work log. Broader acceptance stays open.
 
 - [ ] **ONBOARD-14 — Team setup guidance.** Admins can create either role and assign features/scopes with clear dependencies and least-access defaults for Managers. Preview effective access without logging in as another user.
 
@@ -1862,9 +1862,9 @@ handoff. Manager section guidance depends on verified ACCESS work.
 
 - [ ] **ADMINUX-02 — Useful dashboard actions.** Reuse recent edits and attention indicators; offer a relevant next task and resume links with draft/public state. Distinguish actual counts, unavailable queries and access-filtered results.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/admin-onboarding` · Verified on: 2026-10-16 · Increment: [optional dashboard guide](../operations/admin-getting-started.md), native preference/focus/scoped-task evidence in the work log. Broader acceptance stays open.
 
 - [ ] **ADMINUX-03 — Progressive configuration.** Show common content controls first and reveal advanced options on demand. Configured values remain visible and required errors cannot be hidden inside collapsed groups.
 
@@ -2107,3 +2107,27 @@ Exact-head Quality/merge evidence remains pending.
 | 2026-10-16 | ACCESS-02–09; PAGE; SUBMIT-05/10 | Implemented and locally verified; merge governed by PR | Codex | User accepts core forms and protected email links; advanced forms deferred. Add native section roots, descendant Page policies, section-owned Forms/Reusable Sections, intake-captured submission scope, protected CSV/files and related operational rows. Other feature grants stay explicitly site-wide. | [Feature PR](https://github.com/tanishraj/payload-cms-starter-kit/pulls?q=is%3Apr+head%3Afeat%2Fsection-scoped-access) | Local full regression: 2,757 passed/one existing Docker-dependent skip; both governance journeys pass (39.1s), final frozen-source native form journeys pass (3.0m). Production build: 73 traces/no private uploads. Generators, TypeScript, full lint (one existing warning), dependency policy and context pass; 49 final access/context contracts pass. An earlier Contact6 authoring wait timed out while server source was edited; the final source-frozen run passed, without weakening assertions. Exact-head CI and merge status are governed by the linked PR. See [runbook](../operations/section-scoped-access.md). No environment/provider/dependency change or ownership backfill. |
 
 | 2026-10-16 | SUBMIT-02/11; VERIFY | Export increment merged; advanced forms deferred | Codex | PR #32 merged as `76e3dba2`; user accepts core forms and protected email links. Section access is selected next. | [PR #32](https://github.com/tanishraj/payload-cms-starter-kit/pull/32) | [Exact-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38873878285) passed: 2,745 integration tests/one existing Docker skip, both governance and both native form journeys, production private-artifact guard. Generic Form passed on retry after its initial public navigation timed out; broader repeatability remains open. No claim that the earlier pending checks or all broad forms boxes are complete. |
+
+| 2026-10-16 | ONBOARD-04/09–13; ADMINUX-02 | In progress | Codex | On fresh `feat/admin-onboarding`, build one optional sourced next-task guide, current section-aware dashboard actions, account-owned dismiss/reopen preferences and honest no-access/query-failure states. Reuse native editors and existing recipes; no setup wizard, readiness claims or automatic content creation/publication. | Feature PR to follow | Storybook-first source: authenticated `@shadcnblocks/empty-empty-actions-2`; production presentation, controls, Default/edge states and hide/reopen play. Desktop light/390px dark review passes. Payload data/persistence integration and release evidence follow. |
+
+| 2026-10-16 | ONBOARD-04/09–13; ADMINUX-02 | Native integration verified; final release gates | Codex | Access-enforced current sections/drafts; latest saved recent work; account-owned native preferences; confirmed persistence and hydration-safe keyboard controls; non-dismissible missing-access recovery. No setup wizard/readiness claims, data seed, invitation or automatic publication. | `feat/admin-onboarding` | Focused model/client/dashboard/Mongo tests pass; full integration 2,778 pass/one existing Docker-dependent skip. Native governance/onboarding pass (43.0s). A first fixture-only setup timeout, fixed keyboard hydration race and corrected partial-group test fixture are recorded, without weaker assertions/timeouts. Desktop/mobile review and two scoped axe scans pass (0 WCAG A/AA violations or incomplete checks). Form regressions and production/CI gates follow. |
+
+| 2026-10-16 | ONBOARD-10; applicable ONBOARD-04/09/11–13; ADMINUX-02 | Supported guide locally verified; merge governed by PR | Codex | Optional sourced dashboard next action, account-owned visibility and hydration-safe keyboard recovery; current sections/drafts drive destinations and missing-access states. ONBOARD-10 is verified for this supported guide; broader onboarding/readiness/help/support/pilot groups remain open. | [Feature PR](https://github.com/tanishraj/payload-cms-starter-kit/pulls?q=is%3Apr+head%3Afeat%2Fadmin-onboarding) | Final full integration: 2,778 pass/one existing Docker-dependent skip. Native governance/onboarding: 2 pass (43.0s); existing Generic Form/Contact6 journeys: 2 pass (3.2m), no retry. Fresh production guard: 73 traces/no private uploads; final Storybook, type, lint (one existing warning), generators, audit and context pass. Scoped light/dark axe: zero WCAG A/AA violations/incomplete checks. Exact-head CI and merge status belong to the linked PR. No new environment variable/dependency/schema/migration; no readiness or novice-study claim. |
+
+
+| 2026-10-16 | ONBOARD-10; VERIFY | First CI failure diagnosed; browser lifecycle corrected | Codex | First PR #34 Quality passed integration, then failed the Manager Page redirect assertion. Retry trace showed HTTP 400 duplicate slug; created records were previously registered for cleanup only after the URL assertion. Verify native create response/status/draft, register cleanup immediately and wait for the exact editor navigation. First-attempt save timing is unknown because its trace was not collected. | [PR #34](https://github.com/tanishraj/payload-cms-starter-kit/pull/34), [failed run evidence](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38889839101) | Fresh local Next run: both governance journeys pass (1.1m). Updated response-aware journey: both pass (46.8s). No production behavior/access/slug policy or timeout was relaxed. Exact-head Quality must pass before merge; the earlier failure remains recorded. |
+
+
+| 2026-10-16 | ONBOARD-10; VERIFY | Fixture and browser journey boundaries corrected | Codex | Second CI passed integration. Retry trace proves scoped native Page save returned 201 and editor opened; the combined journey later exhausted its unchanged three-minute budget during re-login. Other attempts stalled before UI. Split access/onboarding/Review journeys; preload Payload before worker fixture imports; clean recorded Page IDs through the guarded Local API even after browser closure. | [PR #34](https://github.com/tanishraj/payload-cms-starter-kit/pull/34), [second failure evidence](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38897909977) | Worker/config and real-Mongo fixture contracts pass (9 tests), including child-before-root exact-ID cleanup and unrelated Page preservation. No application behavior, access/slug policy, timeout or retry count was relaxed. Repeated browser and exact-head CI verification follow; the original startup-stall internals remain unproven. |
+
+
+| 2026-10-16 | ONBOARD-10; VERIFY | Fixture process boundary verified; repeated browser checks running | Codex | Preload-only experiment also stalled locally and was discarded. Governance browser helpers now use a short-lived standalone Node process with explicit loader flags, bounded failure deadline, guarded loopback test URI, structured IPC and shutdown before success. Shared account definitions stay pure; original Local API fixtures retain exact-ID cleanup. | [PR #34](https://github.com/tanishraj/payload-cms-starter-kit/pull/34) | Standalone seed/cleanup pass. All 14 process/config/real-Mongo contracts pass, including unsafe-DB rejection before fork, loader isolation, shutdown ordering, sanitized failure and killing a stalled child. Three native journeys are running twice without retries; full regression and exact-head CI follow. No production code, environment contract or browser timeout change. |
+
+
+| 2026-10-16 | ONBOARD-10; VERIFY | Repeated native journeys pass after process lifecycle fix | Codex | Earlier isolated-process run passed five cases and exposed an IPC cleanup exit. Retain the child disconnect listener during async work, stop on parent loss and wait for close plus result. Keep safe exit-code/signal errors; no raw driver output. Access/onboarding/Review cases remain separate with unchanged native assertions and budgets. | [PR #34](https://github.com/tanishraj/payload-cms-starter-kit/pull/34) | Three native journeys repeated twice with zero retries: 6 pass (1.5m). Full integration: 2,783 pass/one existing skip. Process/config/real-Mongo contracts: 14 pass, lifecycle contract recheck: 5 pass. Final deterministic context and current-head Quality remain release gates; earlier CI/local failures remain recorded. |
+
+
+| 2026-10-16 | ONBOARD-10; VERIFY | Canonical fixture boot order corrected | Codex | Third CI passed integration, access administration and Review moderation. Onboarding UI completed, but cleanup stalled and retries collided with retained fixtures. Initialize canonical Payload config before fixture helper imports; report config/import/database phases separately. | [PR #34](https://github.com/tanishraj/payload-cms-starter-kit/pull/34), [third CI evidence](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38903102965) | Ten actual seed/cleanup cycles pass (20 isolated processes). Focused JS lint passes. Native repeat, deterministic context and current-head CI follow; no application access/slug policy or timeout changed. |
+
+
+| 2026-10-16 | ONBOARD-10; VERIFY | Canonical boot runtime checks pass | Codex | Canonical config initialization now precedes fixture helper imports, with precise import/database stages. | [PR #34](https://github.com/tanishraj/payload-cms-starter-kit/pull/34) | Ten real seed/cleanup cycles pass (20 processes); three native journeys repeated twice with no retries pass (6 cases, 1.6m). JS lint passes. Full integration and current-head Quality govern the final commit/merge. |

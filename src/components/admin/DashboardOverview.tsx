@@ -3,6 +3,12 @@ import type { Payload } from 'payload'
 import { ADMIN_FEATURES, type AdminFeatureKey } from '@/access/adminFeatures'
 import { getGrantedFeatureKeys, hasFeature, isAdmin } from '@/access/featureAccess'
 import type { User } from '@/payload-types'
+import {
+  loadDashboardSections,
+  loadDashboardOnboarding,
+  canOpenDashboardFeature,
+} from '@/lib/adminOnboarding'
+import { DashboardGettingStarted } from './DashboardGettingStarted'
 
 import './DashboardOverview.scss'
 
@@ -130,15 +136,16 @@ const emptyDocs = async () => ({ docs: [] as DashboardDoc[] })
 export async function DashboardOverview({ payload, user }: DashboardOverviewProps) {
   if (!user) return null
 
+  const sections = await loadDashboardSections(payload, user)
   const visibility = {
     articles: hasFeature(user, 'articles'),
-    formSubmissions: hasFeature(user, 'formSubmissions'),
+    formSubmissions: canOpenDashboardFeature(user, sections, 'formSubmissions'),
     media: hasFeature(user, 'media'),
     newsEvents: hasFeature(user, 'newsEvents'),
-    pages: hasFeature(user, 'pages'),
-    reusableSections: hasFeature(user, 'reusableSections'),
+    pages: canOpenDashboardFeature(user, sections, 'pages'),
+    reusableSections: canOpenDashboardFeature(user, sections, 'reusableSections'),
     reviews: hasFeature(user, 'reviews'),
-    workQueue: hasFeature(user, 'actionQueue'),
+    workQueue: canOpenDashboardFeature(user, sections, 'actionQueue'),
   }
   const secureQuery = { overrideAccess: false as const, user }
 
@@ -155,6 +162,7 @@ export async function DashboardOverview({ payload, user }: DashboardOverviewProp
     recentNews,
     recentReviews,
     recentSubmissionsResult,
+    onboarding,
   ] = await Promise.all([
     visibility.pages
       ? payload.count({ collection: 'pages', ...secureQuery }).catch(countUnavailable)
@@ -202,12 +210,26 @@ export async function DashboardOverview({ payload, user }: DashboardOverviewProp
       : countHidden(),
     visibility.pages
       ? payload
-          .find({ collection: 'pages', ...secureQuery, depth: 0, limit: 5, sort: '-updatedAt' })
+          .find({
+            collection: 'pages',
+            ...secureQuery,
+            draft: true,
+            depth: 0,
+            limit: 5,
+            sort: '-updatedAt',
+          })
           .catch(emptyDocs)
       : emptyDocs(),
     visibility.articles
       ? payload
-          .find({ collection: 'articles', ...secureQuery, depth: 0, limit: 5, sort: '-updatedAt' })
+          .find({
+            collection: 'articles',
+            ...secureQuery,
+            draft: true,
+            depth: 0,
+            limit: 5,
+            sort: '-updatedAt',
+          })
           .catch(emptyDocs)
       : emptyDocs(),
     visibility.newsEvents
@@ -215,6 +237,7 @@ export async function DashboardOverview({ payload, user }: DashboardOverviewProp
           .find({
             collection: 'news-events',
             ...secureQuery,
+            draft: true,
             depth: 0,
             limit: 5,
             sort: '-updatedAt',
@@ -223,7 +246,14 @@ export async function DashboardOverview({ payload, user }: DashboardOverviewProp
       : emptyDocs(),
     visibility.reviews
       ? payload
-          .find({ collection: 'reviews', ...secureQuery, depth: 0, limit: 5, sort: '-updatedAt' })
+          .find({
+            collection: 'reviews',
+            ...secureQuery,
+            draft: true,
+            depth: 0,
+            limit: 5,
+            sort: '-updatedAt',
+          })
           .catch(emptyDocs)
       : emptyDocs(),
     visibility.formSubmissions
@@ -237,6 +267,7 @@ export async function DashboardOverview({ payload, user }: DashboardOverviewProp
           })
           .catch(emptyDocs)
       : emptyDocs(),
+    loadDashboardOnboarding(payload, user, sections),
   ])
 
   const recentEdits: RecentItem[] = [
@@ -303,7 +334,9 @@ export async function DashboardOverview({ payload, user }: DashboardOverviewProp
       label: '+ Upload Media',
     },
   ].filter(({ enabled }) => enabled)
-  const grantedFeatureKeys = isAdmin(user) ? [] : getGrantedFeatureKeys(user)
+  const grantedFeatureKeys = isAdmin(user)
+    ? []
+    : getGrantedFeatureKeys(user).filter((key) => canOpenDashboardFeature(user, sections, key))
   const hasAssignedWorkspace = isAdmin(user) || grantedFeatureKeys.length > 0
   const hasDashboardModules = hasContent || hasAttention || quickActions.length > 0
 
@@ -318,18 +351,7 @@ export async function DashboardOverview({ payload, user }: DashboardOverviewProp
         </p>
       </header>
 
-      {!hasAssignedWorkspace ? (
-        <section
-          className="admin-dashboard-overview__empty"
-          aria-labelledby="dashboard-empty-title"
-        >
-          <h2 id="dashboard-empty-title">No features assigned yet</h2>
-          <p>
-            Your account is active, but an Admin has not assigned a website feature to it. Contact
-            an Admin when you need access.
-          </p>
-        </section>
-      ) : null}
+      <DashboardGettingStarted key={user.id} task={onboarding} />
 
       {hasAssignedWorkspace && !hasDashboardModules ? (
         <section

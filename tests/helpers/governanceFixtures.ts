@@ -1,18 +1,25 @@
 import type { Payload } from 'payload'
 
-import type { AdminFeatureGrants } from '@/access/adminFeatures'
 import { TRUSTED_REVIEW_PROMOTION_CONTEXT } from '@/hooks/enforceReviewModeration'
 import { SKIP_CACHE_REVALIDATION_CONTEXT } from '@/hooks/revalidateCmsContent'
 import { buildWorkQueueDedupeKey } from '@/lib/workQueue'
 
-import { getRequiredTestDatabaseURI } from './testDatabaseSafety'
+import {
+  governanceAdmin,
+  reviewManager,
+  governanceSecondAdmin,
+  accessManager,
+  type GovernanceAccount,
+} from './governanceAccounts'
+export {
+  governanceAdmin,
+  governanceSecondAdmin,
+  accessManager,
+  reviewManager,
+} from './governanceAccounts'
+export type { GovernanceAccount } from './governanceAccounts'
 
-export type GovernanceAccount = {
-  email: string
-  password: string
-  role: 'admin' | 'siteManager'
-  features?: AdminFeatureGrants
-}
+import { getRequiredTestDatabaseURI } from './testDatabaseSafety'
 
 export type GovernanceQueueSource = {
   sourceCollection: 'form-submissions' | 'reviews'
@@ -22,6 +29,7 @@ export type GovernanceQueueSource = {
 
 export type GovernanceFixture = {
   admin: GovernanceAccount
+  pageIDs: string[]
   pendingReview: {
     id: string
     slug: string
@@ -29,31 +37,6 @@ export type GovernanceFixture = {
   }
   reviewManager: GovernanceAccount
   queueSources: readonly GovernanceQueueSource[]
-}
-
-export const governanceAdmin: GovernanceAccount = {
-  email: 'governance-admin@example.test',
-  password: 'governance-admin-password',
-  role: 'admin',
-}
-
-export const governanceSecondAdmin: GovernanceAccount = {
-  email: 'governance-second-admin@example.test',
-  password: 'governance-second-admin-password',
-  role: 'admin',
-}
-
-export const accessManager: GovernanceAccount = {
-  email: 'governance-access-manager@example.test',
-  password: 'governance-access-manager-password',
-  role: 'siteManager',
-}
-
-export const reviewManager: GovernanceAccount = {
-  email: 'governance-review-manager@example.test',
-  password: 'governance-review-manager-password',
-  role: 'siteManager',
-  features: { reviews: true },
 }
 
 export const governanceReview = {
@@ -291,7 +274,7 @@ async function deleteGovernanceQueueItemsWithPayload(
 
 async function deleteExactDocument(
   payload: Payload,
-  collection: 'categories' | 'forms' | 'form-submissions' | 'reviews' | 'users',
+  collection: 'categories' | 'forms' | 'form-submissions' | 'pages' | 'reviews' | 'users',
   document: FixtureDocument | undefined,
   context?: Record<string, unknown>,
 ): Promise<void> {
@@ -308,8 +291,20 @@ async function deleteExactDocument(
 
 async function cleanupGovernanceFixturesWithPayload(
   payload: Payload,
-  fixture?: Pick<GovernanceFixture, 'queueSources'>,
+  fixture?: Pick<GovernanceFixture, 'queueSources' | 'pageIDs'>,
 ): Promise<void> {
+  // Browser contexts may already be closed after a timeout. Delete only the
+  // recorded fixture IDs through the guarded Local API, children before roots.
+  for (const id of [...(fixture?.pageIDs ?? [])].reverse()) {
+    await deleteExactDocument(
+      payload,
+      'pages',
+      { id },
+      {
+        [SKIP_CACHE_REVALIDATION_CONTEXT]: true,
+      },
+    )
+  }
   const records = await findGovernanceRecords(payload, fixture?.queueSources)
   const recoveredQueueSources =
     fixture?.queueSources ??
@@ -493,6 +488,7 @@ export async function seedGovernanceBase(): Promise<GovernanceFixture> {
 
   return {
     admin: { ...governanceAdmin },
+    pageIDs: [],
     pendingReview: {
       id: String(review.id),
       slug: governanceReview.slug,
@@ -507,7 +503,7 @@ export async function seedGovernanceBase(): Promise<GovernanceFixture> {
 }
 
 export async function cleanupGovernanceFixtures(
-  fixture?: Pick<GovernanceFixture, 'queueSources'>,
+  fixture?: Pick<GovernanceFixture, 'queueSources' | 'pageIDs'>,
 ): Promise<void> {
   const testDatabaseURI = getRequiredTestDatabaseURI()
   process.env.MONGODB_URI = testDatabaseURI
