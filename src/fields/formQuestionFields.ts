@@ -67,7 +67,27 @@ export const formQuestionFields: Field[] = [
           width: '50%',
         },
       },
+      {
+        name: 'requiredWhenVisible',
+        label: 'Required when shown',
+        type: 'checkbox',
+        defaultValue: false,
+        admin: {
+          width: '50%',
+          condition: (_, siblingData) => Array.isArray(siblingData?.visibilityConditions) && siblingData.visibilityConditions.length > 0,
+          description: 'When this question is shown, visitors must answer it. Add at least one visibility condition below.',
+        },
+      },
     ],
+  },
+  {
+    name: 'visibilityConditions',
+    label: 'Show this question when…',
+    type: 'json',
+    defaultValue: [],
+    admin: {
+      components: { Field: '@/components/admin/FormVisibilityRules#FormVisibilityRules' },
+    },
   },
   {
     name: 'contactRole',

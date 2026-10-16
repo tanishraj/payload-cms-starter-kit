@@ -9,7 +9,8 @@ const fields: SimpleFormField[] = [
   { name: 'permission', label: 'Contact me', type: 'checkbox' },
 ]
 const success = { success: true, message: 'Received.' }
-beforeAll(() =>
+const originalScrollIntoView = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'scrollIntoView')
+beforeAll(() => {
   vi.stubGlobal(
     'ResizeObserver',
     class {
@@ -17,9 +18,18 @@ beforeAll(() =>
       unobserve() {}
       disconnect() {}
     },
-  ),
-)
-afterAll(() => vi.unstubAllGlobals())
+  )
+  Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    configurable: true,
+    value: vi.fn(),
+  })
+})
+afterAll(() => {
+  if (originalScrollIntoView)
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', originalScrollIntoView)
+  else Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView')
+  vi.unstubAllGlobals()
+})
 afterEach(cleanup)
 const answer = () =>
   fireEvent.change(screen.getByLabelText(/Your question/), { target: { value: ' My question ' } })
@@ -50,6 +60,119 @@ describe('generic form presentation', () => {
       'Your question is required.',
     )
     expect(onSubmit).not.toHaveBeenCalled()
+  })
+  it('shows conditional questions, clears answers when hidden, and requires them only while visible', async () => {
+    const onSubmit = vi.fn(async () => success)
+    render(
+      <GenericForm
+        fields={[
+          { id: 'consent-id', name: 'has_restrictions', label: 'Any dietary restrictions?', type: 'checkbox' },
+          {
+            id: 'details-id',
+            name: 'restriction_details',
+            label: 'Describe your restrictions',
+            type: 'textarea',
+            requiredWhenVisible: true,
+            visibilityConditions: [{ fieldID: 'consent-id', operator: 'equals', value: 'true' }],
+          },
+        ]}
+        onSubmit={onSubmit}
+      />,
+    )
+    const consent = screen.getByRole('checkbox', { name: 'Any dietary restrictions?' })
+    expect(screen.queryByLabelText(/Describe your restrictions/)).toBeNull()
+    fireEvent.click(consent)
+    const details = await screen.findByLabelText(/Describe your restrictions/)
+    fireEvent.change(details, { target: { value: 'Peanuts' } })
+    fireEvent.click(consent)
+    await waitFor(() => expect(screen.queryByLabelText(/Describe your restrictions/)).toBeNull())
+    await waitFor(() => expect(screen.getByText(/Cleared responses to Describe your restrictions/)).toBeTruthy())
+    fireEvent.click(consent)
+    const restored = await screen.findByLabelText(/Describe your restrictions/)
+    expect((restored as HTMLTextAreaElement).value).toBe('')
+    fireEvent.click(screen.getByRole('button', { name: 'Send Message' }))
+    await waitFor(() => expect(screen.getByText('Describe your restrictions is required.')).toBeTruthy())
+    expect(onSubmit).not.toHaveBeenCalled()
+    fireEvent.change(restored, { target: { value: 'Peanuts' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Send Message' }))
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledWith({
+      has_restrictions: true,
+      restriction_details: 'Peanuts',
+      website: '',
+    }))
+  })
+  it('reveals select-conditioned questions using the selected option value', async () => {
+    render(
+      <GenericForm
+        appearance={{ columns: 'two', spacing: 'compact' }}
+        entries={[
+          { kind: 'question', name: 'visitor_name' },
+          { kind: 'question', name: 'department' },
+          { kind: 'question', name: 'contact_permission' },
+          { kind: 'heading', text: 'Additional information' },
+          { kind: 'question', name: 'reference_link' },
+          { kind: 'question', name: 'visit_duration' },
+        ]}
+        fields={[
+          {
+            id: 'visitor-name-id',
+            name: 'visitor_name',
+            label: 'Your name',
+            type: 'text',
+            required: true,
+            defaultValue: 'Campus visitor',
+          },
+          {
+            id: 'department-id',
+            name: 'department',
+            label: 'Which department can help?',
+            type: 'select',
+            required: true,
+            options: [
+              { label: 'Admissions', value: 'admissions' },
+              { label: 'Library', value: 'library' },
+            ],
+          },
+          {
+            id: 'permission-id',
+            name: 'contact_permission',
+            label: 'You may contact me',
+            type: 'checkbox',
+          },
+          {
+            id: 'reference-link-id',
+            name: 'reference_link',
+            label: 'Reference link',
+            type: 'url',
+            requiredWhenVisible: true,
+            visibilityConditions: [
+              { fieldID: 'department-id', operator: 'equals', value: 'admissions' },
+            ],
+          },
+          {
+            id: 'visit-duration-id',
+            name: 'visit_duration',
+            label: 'Visit duration',
+            type: 'number',
+            defaultValue: '1.5',
+            minValue: 0.5,
+            maxValue: 4,
+            step: 0.5,
+          },
+        ]}
+        protectRetries
+        revision="published-form-revision"
+        onSubmit={async () => success}
+      />,
+    )
+
+    expect(screen.queryByLabelText(/Reference link/)).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Send Message' }))
+    expect(await screen.findByText('Which department can help? is required.')).toBeTruthy()
+    fireEvent.click(screen.getByRole('combobox', { name: 'Which department can help?' }))
+    fireEvent.click(await screen.findByRole('option', { name: 'Admissions' }))
+    expect(await screen.findByRole('textbox', { name: 'Reference link' })).toBeTruthy()
+    expect(screen.getByRole('textbox', { name: 'Reference link' }).getAttribute('required')).toBe('')
   })
   it('normalizes custom answers, locks controls during submission, and confirms once', async () => {
     let resolve!: (value: GenericFormResult) => void

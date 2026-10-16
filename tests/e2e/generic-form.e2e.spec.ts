@@ -96,13 +96,18 @@ for (const block of [
       await chooseNativeType(page, 1, 'Select')
       await fillNativeField(page, 'fields.1.name', 'preferred_department')
       await fillNativeField(page, 'fields.1.label', 'Which department can help?')
-      await addNativeRow(
-        page,
-        page.getByRole('button', { name: 'Add Option', exact: true }),
-        'fields.1.options.0.label',
-      )
-      await fillNativeField(page, 'fields.1.options.0.label', 'Admissions')
-      await fillNativeField(page, 'fields.1.options.0.value', 'admissions')
+      for (const [index, label, value] of [
+        [0, 'Admissions', 'admissions'],
+        [1, 'Library', 'library'],
+      ] as const) {
+        await addNativeRow(
+          page,
+          page.getByRole('button', { name: 'Add Option', exact: true }),
+          `fields.1.options.${index}.label`,
+        )
+        await fillNativeField(page, `fields.1.options.${index}.label`, label)
+        await fillNativeField(page, `fields.1.options.${index}.value`, value)
+      }
       await editNativeForm(
         page,
         () => page.locator('input[name="fields.1.required"]').check(),
@@ -118,6 +123,33 @@ for (const block of [
       await fillNativeField(page, 'fields.3.name', 'reference_link')
       await fillNativeField(page, 'fields.3.label', 'Reference link')
       await fillNativeField(page, 'fields.3.helpText', 'Include https:// or http://.')
+      const ruleEditor = page.getByRole('group', { name: 'Show this question when…' }).last()
+      await editNativeForm(
+        page,
+        () => ruleEditor.getByRole('button', { name: 'Add condition' }).click(),
+        'fields.3.visibilityConditions',
+      )
+      await editNativeForm(
+        page,
+        () => ruleEditor.getByLabel('Question').selectOption({ label: 'Which department can help? (select)' }),
+        'fields.3.visibilityConditions',
+      )
+      await editNativeForm(
+        page,
+        () => ruleEditor.getByLabel('Answer').selectOption('equals'),
+        'fields.3.visibilityConditions',
+      )
+      await editNativeForm(
+        page,
+        () => ruleEditor.getByLabel('Value').selectOption({ label: 'admissions' }),
+        'fields.3.visibilityConditions',
+      )
+      await editNativeForm(
+        page,
+        () => page.locator('input[name="fields.3.requiredWhenVisible"]').check(),
+        'fields.3.requiredWhenVisible',
+        true,
+      )
       await addNativeRow(page, addField, 'fields.4.name')
       await chooseNativeType(page, 4, 'Number')
       await fillNativeField(page, 'fields.4.name', 'email')
@@ -272,6 +304,24 @@ for (const block of [
         `Form publication ${formResponse.status()}: ${await formResponse.text()}`,
       ).toBe(true)
       const { doc: form } = await formResponse.json()
+      const departmentField = form.fields.find(
+        (field: { name?: string }) => field.name === 'preferred_department',
+      )
+      const referenceField = form.fields.find(
+        (field: { name?: string }) => field.name === 'reference_link',
+      )
+      expect(referenceField).toMatchObject({
+        requiredWhenVisible: true,
+        visibilityConditions: [
+          { fieldID: departmentField.id, operator: 'equals', value: 'admissions' },
+        ],
+      })
+      expect(departmentField.options).toContainEqual(
+        expect.objectContaining({ label: 'Admissions', value: 'admissions' }),
+      )
+      expect(departmentField.options).toContainEqual(
+        expect.objectContaining({ label: 'Library', value: 'library' }),
+      )
       expect(form.appearance).toMatchObject({
         width: 'wide',
         columns: 'two',
@@ -358,6 +408,8 @@ for (const block of [
 
         const visitor = await browser.newPage()
         visitor.setDefaultTimeout(20_000)
+        // Match the accessible name; exact label text includes the required asterisk.
+        const referenceLink = visitor.getByRole('textbox', { name: 'Reference link', exact: true })
         try {
           await visitor.goto('/' + document.slug, {
             waitUntil: 'domcontentloaded',
@@ -393,7 +445,6 @@ for (const block of [
             'inputmode',
             'decimal',
           )
-          await visitor.getByLabel('Reference link', { exact: true }).fill('example.com')
           await visitor.getByLabel('Visit duration', { exact: true }).fill('1.25')
           await visitor
             .getByRole('combobox', { name: 'Which department can help?', exact: true })
@@ -402,15 +453,30 @@ for (const block of [
           await expect(menu).toBeVisible()
           expect(await menu.evaluate((element) => !!element.closest('section'))).toBe(true)
           await visitor.getByRole('option', { name: 'Admissions', exact: true }).click()
+          await expect(
+            visitor.getByRole('combobox', { name: 'Which department can help?', exact: true }),
+          ).toHaveText('Admissions')
+          await expect(referenceLink).toBeVisible()
+          await expect(referenceLink).toHaveAttribute('required', '')
+          await referenceLink.fill('example.com')
+          await visitor
+            .getByRole('combobox', { name: 'Which department can help?', exact: true })
+            .click()
+          await visitor.getByRole('option', { name: 'Library', exact: true }).click()
+          await expect(referenceLink).toBeHidden()
+          await visitor
+            .getByRole('combobox', { name: 'Which department can help?', exact: true })
+            .click()
+          await visitor.getByRole('option', { name: 'Admissions', exact: true }).click()
+          await expect(referenceLink).toHaveValue('')
+          await referenceLink.fill('example.com')
           await visitor.getByRole('checkbox', { name: 'You may contact me', exact: true }).check()
           await visitor.getByRole('button', { name: 'Submit', exact: true }).click()
           await expect(visitor.getByText(/Reference link must be a full/)).toBeVisible()
           await expect(
             visitor.getByText('Visit duration must use increments of 0.5 starting from 0.5.'),
           ).toBeVisible()
-          await visitor
-            .getByLabel('Reference link', { exact: true })
-            .fill('https://example.com/visit')
+          await referenceLink.fill('https://example.com/visit')
           await visitor.getByLabel('Visit duration', { exact: true }).fill('1.50')
           await visitor
             .getByRole('radiogroup', { name: 'Enquiry route', exact: true })
@@ -549,7 +615,7 @@ for (const block of [
             visitor.getByLabel('Full name', { exact: true }),
           ).toHaveAccessibleDescription('Use 3–6 characters.')
           await visitor.getByLabel('Full name', { exact: true }).fill('Taylor')
-          await expect(visitor.getByLabel('Reference link', { exact: true })).toHaveValue(
+          await expect(referenceLink).toHaveValue(
             'https://example.com/visit',
           )
           await expect(visitor.getByLabel('Visit duration', { exact: true })).toHaveValue('')

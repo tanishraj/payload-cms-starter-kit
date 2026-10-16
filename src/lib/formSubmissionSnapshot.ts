@@ -76,7 +76,7 @@ export const buildFormSubmissionSnapshot = (
   }
   // Payload JSON fields parse string input as JSON text; use an object envelope
   // to preserve arbitrary strings and booleans without reinterpretation.
-  const answers = fields.map((field) => {
+  const answers = fields.filter((field) => Object.hasOwn(values, field.name)).map((field) => {
     const value = values[field.name] ?? ''
     return {
       displayValue:

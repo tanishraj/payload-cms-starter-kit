@@ -5164,6 +5164,19 @@ export interface Form {
       | null;
     required?: boolean | null;
     /**
+     * When this question is shown, visitors must answer it. Add at least one visibility condition below.
+     */
+    requiredWhenVisible?: boolean | null;
+    visibilityConditions?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+    /**
      * Optional: use this answer for inbox contact details and confirmation emails. Each role can be assigned once; choose Text for name, Email for email, or Phone for phone. Leave empty for ordinary questions.
      */
     contactRole?: ('name' | 'email' | 'phone') | null;
@@ -5287,6 +5300,19 @@ export interface Form {
             | 'multiSelect'
             | 'checkbox';
           required?: boolean | null;
+          /**
+           * When this question is shown, visitors must answer it. Add at least one visibility condition below.
+           */
+          requiredWhenVisible?: boolean | null;
+          visibilityConditions?:
+            | {
+                [k: string]: unknown;
+              }
+            | unknown[]
+            | string
+            | number
+            | boolean
+            | null;
           /**
            * Optional: use this answer for inbox contact details and confirmation emails. Each role can be assigned once; choose Text for name, Email for email, or Phone for phone. Leave empty for ordinary questions.
            */
@@ -15044,6 +15070,8 @@ export interface FormsSelect<T extends boolean = true> {
         label?: T;
         type?: T;
         required?: T;
+        requiredWhenVisible?: T;
+        visibilityConditions?: T;
         contactRole?: T;
         placeholder?: T;
         helpText?: T;
@@ -15085,6 +15113,8 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               type?: T;
               required?: T;
+              requiredWhenVisible?: T;
+              visibilityConditions?: T;
               contactRole?: T;
               placeholder?: T;
               helpText?: T;

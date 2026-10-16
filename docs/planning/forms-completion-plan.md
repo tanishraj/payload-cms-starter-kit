@@ -114,8 +114,32 @@ On `feat/form-appearance-controls`, sourced supported width/spacing/columns and
 submit variant/size/shape/width map to one reusable native Form appearance group.
 Defaults preserve legacy output/hashes. Active settings participate in original
 revision/history and explicit stale recovery without changing answer semantics.
-Storybook-first review/play and local focused/full release checks are complete:
+Storybook-first review/play and local focused/full release checks passed:
 2,693 integration tests passed with one Docker-dependent skip; both native form
 journeys passed; the build verified 73 traces and no private uploads. Exact-head
-Quality/merge remain the next gates. See [contract](form-appearance-controls.md).
-Conditions follow on a new branch after merge; broader forms acceptance stays open.
+[Quality passed](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38641309862)
+and [PR #30 merged](https://github.com/tanishraj/payload-cms-starter-kit/pull/30)
+as `9c6f148a`. The hosted Generic Form browser case was marked flaky after a
+420-second timeout and retry navigation timeout before the overall run passed;
+broader repeatability remains tracked. The next clean branch is
+`feat/form-conditional-rules`; conditional visibility has been implemented and is
+under review. Broader forms acceptance stays open. See
+[contract](form-appearance-controls.md).
+
+## Conditional visibility increment — 15 October 2026
+
+Implementation is underway on the fresh `feat/form-conditional-rules` branch.
+Editors choose stable-ID conditions against earlier questions; all rules must
+match. The shared public/intake contract supports answered/unanswered and typed
+exact comparisons, conditional requiredness, answer/file-token clearing, and
+server-side rejection of nonempty hidden values. Rules are captured in the
+published revision. See [condition contract](form-conditional-rules.md).
+
+Focused form suite: 86 tests pass, TypeScript and changed-file ESLint pass, and the
+full integration suite passes (2,701 passed, 1 skipped). The Storybook production
+build passes. Local native E2E could not reach the feature
+journeys: first the pinned Playwright Chromium was absent and its installer made
+no progress; using installed Chrome exposed the existing local MongoDB endpoint as
+standalone (transactions unavailable). No user database service was modified.
+Native Admin authoring/public journeys and exact-head CI remain required before
+merge; DF-08 stays unchecked.

@@ -63,7 +63,7 @@ export function recoverFormAnswers(
       if (Array.isArray(value) && Array.isArray(compatible) && compatible.length !== value.length)
         partiallyClearedLabels.add(old.label)
       const { errors, normalizedData } = validateFormSubmission({
-        fields: [field],
+        fields: [{ ...field, visibilityConditions: [], requiredWhenVisible: false }],
         values: { [field.name]: compatible },
       })
       if (!Object.keys(errors).length) {

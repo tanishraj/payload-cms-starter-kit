@@ -83,6 +83,11 @@ Nine globals are registered:
   and intake; dormant type-specific settings are excluded. Fixed Review Submission rejects unsupported
   configuration. Duplicate present field/choice row identities fail authoring, legacy missing IDs remain
   supported, and choice IDs do not alter the legacy fingerprint. See [question configuration](../../../../docs/planning/form-field-configuration.md).
+  Questions also support stable-ID visibility rules against earlier questions. Every rule must
+  match; typed exact values and answered/unanswered checks share one preview/public/intake evaluator.
+  Hidden nonempty values are rejected server-side and omitted from normalized submissions/history;
+  hidden private upload tokens are never claimed. Conditional requiredness applies only while shown.
+  See [conditional question contract](../../../../docs/planning/form-conditional-rules.md).
 - WorkQueue stores deduplicated actionable conditions. OperationalAuditEvents stores selected immutable operational history. Both record their source feature for Site Manager row filtering. Users own authentication, Admin/Site Manager roles, and feature grants.
 
 ## Feature and Publication Governance

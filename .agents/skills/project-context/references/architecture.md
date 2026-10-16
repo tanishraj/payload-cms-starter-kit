@@ -105,11 +105,14 @@ CI-only controller creates an owner-labeled MongoDB 8.0.29 container on loopback
 controller accepts only a matching GitHub run identity and safe `_test` database URIs. The job
 installs bundled Chromium, regenerates Payload types and the Admin import map and rejects either
 drift, runs TypeScript, lint, the complete integration suite, exactly two critical Admin/Site
-Manager feature-governance and Review-moderation browser journeys, and the Node 22 Vercel production
-build. The job supplies fixed non-secret values; isolated browser configuration may load only the
+Manager feature-governance and Review-moderation browser journeys, the Generic Form/Contact6
+journeys, and the Node 22 Vercel production build. The job supplies fixed non-secret values; isolated
+browser configuration may load only the
 tracked non-secret `test.env` fixture, never ignored developer `.env` or `.env.atlas.local`, a
 production environment file, or a production secret. Its final step always verifies ownership
-before removing the exact container. Project-context maintenance stays local; the ownership-checked
+before removing the exact container. A pinned upload-artifact action always attempts to retain only
+`playwright-report/` and `test-results/` for seven days, including failure snapshots and retry traces.
+Project-context maintenance stays local; the ownership-checked
 production-image verifier is a local/release portability and build-secret inspection gate rather
 than a GitHub job.
 
@@ -168,7 +171,7 @@ so moving that Page beneath a parent does not leave consent UI pointing at its l
   The focused runtime-import config proves that boundary in a real worker without a server or
   database connection.
 - Run `pnpm test:e2e:governance` for the two critical feature-grant/revocation and submitted-Review
-  moderation journeys. GitHub CI runs exactly this browser file; the full E2E suite remains local.
+  moderation journeys. GitHub CI also runs `pnpm test:e2e:forms`; the full E2E suite remains local.
 - Run `pnpm generate:types` after schema changes.
 - Run `pnpm generate:importmap` after custom Admin component changes.
 - Run `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` in proportion to risk.
@@ -261,3 +264,11 @@ snapshot, with explicit review/recovery and preserved compatible answers. Defaul
 groups remain absent from legacy output/hashes. Fixed clients reject active settings,
 including revisionless intake; no new endpoint, provider, dependency or palette.
 See [appearance contract](../../../../docs/planning/form-appearance-controls.md).
+
+Form questions can reference earlier stable-ID questions with declarative visibility
+rules. Payload's custom `FormVisibilityRules` field authors the rules; `formConditions.ts`
+evaluates them consistently. All rules must match, and a question may be conditionally
+required. Hidden answers and private upload tokens are cleared client-side, excluded
+from normalized intake, and rejected when nonempty in a forged request. Conditions enter
+published revisions, and stale recovery explains answers that are newly hidden. See
+the [conditional question contract](../../../../docs/planning/form-conditional-rules.md).

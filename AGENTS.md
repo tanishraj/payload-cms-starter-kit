@@ -52,3 +52,13 @@ Every new component and block must have Docs and Default, with labelled playgrou
 ## Shadcnblocks source priority
 
 All new user-facing components and blocks must be selected from Shadcnblocks, using the user's Pro access. shadcn/ui primitives are allowed as dependencies of those selections, not as independently selected replacements. Themes remain sourced from official shadcn/ui per the earlier requirement. Verify authenticated source retrieval before implementation; never recreate unavailable Pro source from screenshots or memory.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

@@ -40,6 +40,49 @@ afterEach(() => {
 })
 
 describe('generic form CMS integration', () => {
+  it('preserves stable visibility rules through the published CMS projection', () => {
+    const conditional = {
+      ...form,
+      fields: [
+        {
+          id: 'department-id',
+          name: 'preferred_department',
+          label: 'Which department?',
+          type: 'select',
+          required: true,
+          options: [
+            { id: 'admissions-option', label: 'Admissions', value: 'admissions' },
+            { id: 'library-option', label: 'Library', value: 'library' },
+          ],
+        },
+        {
+          id: 'reference-link-id',
+          name: 'reference_link',
+          label: 'Reference link',
+          type: 'url',
+          requiredWhenVisible: true,
+          visibilityConditions: [
+            { fieldID: 'department-id', operator: 'equals', value: 'admissions' },
+          ],
+        },
+      ],
+    } as Form
+
+    const projectedFields = projectGenericForm(conditional)?.fields
+    expect(projectedFields?.[0]).toMatchObject({ id: 'department-id', name: 'preferred_department' })
+    expect(projectedFields?.[0].options).toContainEqual(
+      expect.objectContaining({ label: 'Admissions', value: 'admissions' }),
+    )
+    expect(projectedFields?.[1]).toMatchObject({
+      id: 'reference-link-id',
+      name: 'reference_link',
+      requiredWhenVisible: true,
+      visibilityConditions: [
+        { fieldID: 'department-id', operator: 'equals', value: 'admissions' },
+      ],
+    })
+  })
+
   it('projects only public supported definitions and rejects review, unpublished and invalid schemas', () => {
     expect(projectGenericForm(form)).toEqual({
       slug: form.slug,

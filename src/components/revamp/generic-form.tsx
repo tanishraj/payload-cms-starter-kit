@@ -23,7 +23,7 @@ import type { FormAnswers } from '@/lib/forms'
  * Adaptations: typed schema, shared validation, unique IDs, submission states.
  */
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
-import { Controller, useForm, type Resolver, type ResolverResult } from 'react-hook-form'
+import { Controller, useForm, useWatch, type Resolver, type ResolverResult } from 'react-hook-form'
 
 import { Button } from '@/components/revamp/ui/button'
 import { Switch } from '@/components/revamp/ui/switch'
@@ -54,6 +54,7 @@ import {
 } from '@/components/revamp/ui/select'
 import { cn } from '@/lib/utils'
 import { recoverFormAnswers } from '@/lib/recoverFormAnswers'
+import { getVisibleFormFields } from '@/lib/formConditions'
 import { Textarea } from '@/components/revamp/ui/textarea'
 import {
   FORM_HONEYPOT_FIELD_NAME,
@@ -146,6 +147,7 @@ function FormPresentation({
   const [updatedSubmitLabel, setSubmitButtonLabel] = useState<string | null>(null)
   const submitButtonLabel = updatedSubmitLabel ?? initialSubmitLabel
   const [recoveryMessage, setRecoveryMessage] = useState<string | null>(null)
+  const [conditionalStatus, setConditionalStatus] = useState('')
   const recoveryRef = useRef<HTMLParagraphElement>(null)
   const splitFirstRow =
     !entries &&
@@ -184,7 +186,12 @@ function FormPresentation({
   const protectsAttempt = protectRetries || fields.some((field) => field.type === 'file')
   const [result, setResult] = useState<GenericFormResult | null>(null)
   const resolver: Resolver<Answers> = (input): ResolverResult<Answers> => {
-    const { errors, normalizedData } = validateFormSubmission({ fields, values: input.answers })
+    const activeFields = getVisibleFormFields(fields, input.answers)
+    const activeNames = new Set(activeFields.map((field) => field.name))
+    const activeAnswers = Object.fromEntries(
+      Object.entries(input.answers).filter(([name]) => activeNames.has(name)),
+    )
+    const { errors, normalizedData } = validateFormSubmission({ fields, values: activeAnswers })
     if (Object.keys(errors).length) {
       return {
         values: {},
@@ -205,6 +212,59 @@ function FormPresentation({
     },
     shouldFocusError: true,
   })
+  const watchedAnswers = useWatch({
+    control: form.control,
+    name: 'answers',
+  }) as FormAnswers
+  const visibleFields = getVisibleFormFields(fields, watchedAnswers)
+  const formIsDirty = form.formState.isDirty
+  const previousWatchedAnswers = useRef(watchedAnswers)
+  useEffect(() => {
+    const visibleNames = new Set(visibleFields.map((field) => field.name))
+    let clearedUploads = false
+    const clearedLabels: string[] = []
+    for (const definition of fields) {
+      if (visibleNames.has(definition.name)) continue
+      const value = watchedAnswers[definition.name]
+      const meaningful =
+        typeof value === 'boolean'
+          ? value
+          : Array.isArray(value)
+            ? value.length > 0
+            : typeof value === 'string' && value.trim().length > 0
+      if (!meaningful) continue
+      clearedLabels.push(definition.label)
+      if (definition.type === 'file' && Array.isArray(value)) {
+        for (const token of value) uploadedFiles.current.delete(token)
+        blockedUploads.current.delete(definition.id ?? definition.name)
+        clearedUploads = true
+      }
+      const emptyValue =
+        definition.type === 'file' || isMultipleChoiceFormFieldType(definition.type)
+          ? []
+          : isBooleanFormFieldType(definition.type)
+            ? false
+            : ''
+      form.setValue(`answers.${definition.name}`, emptyValue as FormAnswers[string], {
+        shouldDirty: true,
+        shouldValidate: false,
+      })
+    }
+    if (clearedUploads)
+      setUploadsBlocked([...blockedUploads.current.values()].some(Boolean))
+    if (clearedLabels.length && formIsDirty) {
+      setConditionalStatus(
+        `Cleared responses to ${clearedLabels.join(', ')} because ${clearedLabels.length === 1 ? 'the question is' : 'those questions are'} now hidden.`,
+      )
+    } else if (
+      visibleFields.some(
+        (field) => previousWatchedAnswers.current[field.name] !== watchedAnswers[field.name],
+      )
+    ) {
+      setConditionalStatus('')
+    }
+    previousWatchedAnswers.current = watchedAnswers
+  }, [fields, form, formIsDirty, visibleFields, watchedAnswers])
   useEffect(() => {
     if (result?.success) messageRef.current?.focus()
   }, [result])
@@ -221,6 +281,16 @@ function FormPresentation({
     answers: FormAnswers,
   ) => {
     const recovered = recoverFormAnswers(fields, updated.fields, answers, uploadedFiles.current)
+    const updatedVisibleNames = new Set(
+      getVisibleFormFields(updated.fields, recovered.values).map((field) => field.name),
+    )
+    const newlyHiddenLabels = updated.fields
+      .filter((field) => !updatedVisibleNames.has(field.name))
+      .filter((field) => {
+        const value = recovered.values[field.name]
+        return Array.isArray(value) ? value.length > 0 : Boolean(value)
+      })
+      .map((field) => field.label)
     setAppearance({ value: updated.appearance })
     setEntries(updated.entries)
     setFields(updated.fields)
@@ -234,7 +304,7 @@ function FormPresentation({
       (label) => !partialFiles.includes(label),
     )
     setRecoveryMessage(
-      `The questions have changed. Your compatible answers are still here. ${recovered.clearedLabels.length ? `These answers were cleared because their questions changed: ${recovered.clearedLabels.join(', ')}. ` : ''}${partialChoices.length ? `Removed choices were cleared in: ${partialChoices.join(', ')}. Remaining selections are still here. ` : ''}${partialFiles.length ? `Incompatible files were cleared in: ${partialFiles.join(', ')}. Remaining files are still here. ` : ''}Review the updated questions before submitting again.`,
+      `The questions have changed. Your compatible answers are still here. ${recovered.clearedLabels.length ? `These answers were cleared because their questions changed: ${recovered.clearedLabels.join(', ')}. ` : ''}${newlyHiddenLabels.length ? `These answers were cleared because their questions are now hidden: ${newlyHiddenLabels.join(', ')}. ` : ''}${partialChoices.length ? `Removed choices were cleared in: ${partialChoices.join(', ')}. Remaining selections are still here. ` : ''}${partialFiles.length ? `Incompatible files were cleared in: ${partialFiles.join(', ')}. Remaining files are still here. ` : ''}Review the updated questions before submitting again.`,
     )
     setResult(null)
   }
@@ -318,6 +388,11 @@ function FormPresentation({
             {recoveryMessage}
           </FieldDescription>
         )}
+        {conditionalStatus && (
+          <FieldDescription role="status" aria-live="polite">
+            {conditionalStatus}
+          </FieldDescription>
+        )}
         <noscript>
           <FieldDescription>Enable JavaScript to send this form.</FieldDescription>
         </noscript>
@@ -341,9 +416,9 @@ function FormPresentation({
         </FieldDescription>
         {!result?.success && (
           <>
-            {fields.some(
+            {visibleFields.some(
               (field) =>
-                field.required ||
+                field.required || (field.requiredWhenVisible && field.visibilityConditions?.length) ||
                 (isMultipleChoiceFormFieldType(field.type) && (field.minSelections ?? 0) > 0),
             ) && <FieldDescription>Fields marked * are required.</FieldDescription>}
             {!result?.requestKeyConflict && (hasErrors || result?.success === false) && (
@@ -402,9 +477,9 @@ function FormPresentation({
                 twoColumns={twoColumns}
                 headingLevel={layout === 'contact6' ? 4 : 3}
                 entries={entries}
-                names={fields.map((field) => field.name)}
+                names={visibleFields.map((field) => field.name)}
               >
-                {fields.map((definition, index) => (
+                {visibleFields.map((definition, index) => (
                   <Controller
                     key={definition.id ?? definition.name}
                     name={`answers.${definition.name}`}
@@ -433,7 +508,10 @@ function FormPresentation({
                         definition.minSelections ?? 0,
                       )
                       const maximum = definition.maxSelections
-                      const isRequired = Boolean(definition.required) || (multiple && minimum > 0)
+                      const isRequired = Boolean(
+                        definition.required ||
+                          (definition.requiredWhenVisible && definition.visibilityConditions?.length),
+                      ) || (multiple && minimum > 0)
                       const selectionHelp = multiple
                         ? maximum != null && minimum === maximum
                           ? `Choose exactly ${minimum} option${minimum === 1 ? '' : 's'}.`
@@ -521,7 +599,7 @@ function FormPresentation({
                                 checked={field.value === true}
                                 onCheckedChange={(checked) => field.onChange(checked === true)}
                                 onBlur={field.onBlur}
-                                required={Boolean(definition.required)}
+                                required={isRequired}
                                 disabled={inactive}
                               />
                               <FieldLabel htmlFor={id}>{label}</FieldLabel>
@@ -548,6 +626,7 @@ function FormPresentation({
                               controlRef={field.ref}
                               onBlur={field.onBlur}
                               name={definition.name}
+                              required={isRequired}
                               policy={definition}
                               disabled={inactive || !onFileUpload}
                               value={
@@ -608,7 +687,7 @@ function FormPresentation({
                               value={value}
                               onValueChange={field.onChange}
                               disabled={inactive}
-                              required={Boolean(definition.required)}
+                              required={isRequired}
                             >
                               <SelectTrigger
                                 {...a11y}
@@ -640,7 +719,7 @@ function FormPresentation({
                               name={definition.name}
                               value={value}
                               type={definition.type}
-                              required={Boolean(definition.required)}
+                              required={isRequired}
                               disabled={inactive}
                               min={bounds?.minimum}
                               max={bounds?.maximum}
@@ -652,7 +731,7 @@ function FormPresentation({
                               name={definition.name}
                               value={value}
                               disabled={inactive}
-                              required={Boolean(definition.required)}
+                              required={isRequired}
                               maxLength={getFormFieldMaxLength(definition)}
                               minLength={definition.minLength ?? undefined}
                               rows={5}
@@ -666,7 +745,7 @@ function FormPresentation({
                               name={definition.name}
                               value={value}
                               disabled={inactive}
-                              required={Boolean(definition.required)}
+                              required={isRequired}
                               maxLength={getFormFieldMaxLength(definition)}
                               minLength={
                                 supportsFormTextLimits(definition.type)
