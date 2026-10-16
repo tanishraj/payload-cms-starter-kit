@@ -11,12 +11,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/revamp/ui/empty'
+import type { OnboardingAction } from '@/lib/adminOnboardingShared'
 import './onboarding-panel.css'
 
 export type OnboardingPanelProps = {
   title: string
   description: string
-  action: { label: string; href: string }
+  action: OnboardingAction
   collapsed?: boolean
   dismissible?: boolean
   ready?: boolean
@@ -75,11 +76,27 @@ export function OnboardingPanel({
           </EmptyHeader>
           <EmptyContent>
             <div className="flex flex-wrap justify-center gap-2">
-              <Button asChild>
-                <a href={action.href}>
-                  <ArrowRight data-icon="inline-start" />
-                  {action.label}
-                </a>
+              <Button asChild={!action.disabled} disabled={action.disabled}>
+                {action.disabled ? (
+                  <>
+                    <ArrowRight data-icon="inline-start" />
+                    {action.label}
+                  </>
+                ) : (
+                  <a
+                    href={action.href}
+                    target={action.target}
+                    rel={action.target === '_blank' ? 'noopener noreferrer' : undefined}
+                    aria-label={
+                      action.target === '_blank'
+                        ? `${action.label} (opens in a new tab)`
+                        : undefined
+                    }
+                  >
+                    <ArrowRight data-icon="inline-start" />
+                    {action.label}
+                  </a>
+                )}
               </Button>
               {dismissible ? (
                 <Button

@@ -35,3 +35,9 @@
   @import 'tailwindcss/preflight.css';
   @tailwind utilities source(none);
 }
+
+/* Payload fades mouse-focused links. These links are sourced buttons, whose
+ * upstream focus/active treatment stays opaque; keep native text links unchanged. */
+.admin-onboarding a[data-slot='button'][data-variant] {
+  opacity: 1;
+}

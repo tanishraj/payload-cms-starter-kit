@@ -4,6 +4,7 @@ import type { User } from '@/payload-types'
 import { ADMIN_FEATURES, type AdminFeatureKey } from '@/access/adminFeatures'
 import { getGrantedFeatureKeys, hasFeature, isAdmin } from '@/access/featureAccess'
 import { normalizeSectionRoots, rootPageFilter, scopedSourceFeatures } from '@/access/sectionAccess'
+import { loadAccountGuidePreference } from './accountGuidePreference'
 import { ONBOARDING_PREFERENCE_KEY, type OnboardingTask } from './adminOnboardingShared'
 
 export type DashboardSections = {
@@ -119,24 +120,7 @@ export async function loadDashboardOnboarding(
     definition.resource.kind === 'collection'
       ? `/admin/collections/${definition.resource.slug}`
       : `/admin/globals/${definition.resource.slug}`
-  const preferencePromise = payload
-    .find({
-      collection: 'payload-preferences',
-      user,
-      overrideAccess: false,
-      depth: 0,
-      limit: 1,
-      sort: '-updatedAt',
-      where: {
-        and: [
-          { key: { equals: ONBOARDING_PREFERENCE_KEY } },
-          { 'user.value': { equals: user.id } },
-          { 'user.relationTo': { equals: 'users' } },
-        ],
-      },
-    })
-    .then((result) => ({ value: result.docs[0]?.value, unavailable: false }))
-    .catch(() => ({ value: undefined, unavailable: true }))
+  const preferencePromise = loadAccountGuidePreference(payload, user, ONBOARDING_PREFERENCE_KEY)
   const collection =
     feature in draftCollections ? draftCollections[feature as keyof typeof draftCollections] : null
   const draftPromise = collection
@@ -156,14 +140,6 @@ export async function loadDashboardOnboarding(
         .catch(() => ({ doc: undefined, unavailable: true }))
     : Promise.resolve({ doc: undefined, unavailable: false })
   const [preference, draft] = await Promise.all([preferencePromise, draftPromise])
-  const value = preference.value
-  const collapsed = Boolean(
-    value &&
-    typeof value === 'object' &&
-    !Array.isArray(value) &&
-    'dismissed' in value &&
-    value.dismissed === true,
-  )
   const context = isAdmin(user)
     ? ''
     : sections.roots.length
@@ -176,7 +152,11 @@ export async function loadDashboardOnboarding(
     !isAdmin(user) && sections.status === 'missing'
       ? ' Pages, Forms and submissions need an assigned website section; ask an Admin for that access.'
       : ''
-  const base = { collapsed, dismissible: true, preferenceUnavailable: preference.unavailable }
+  const base = {
+    collapsed: preference.collapsed,
+    dismissible: true,
+    preferenceUnavailable: preference.unavailable,
+  }
   if (draft.unavailable)
     return {
       ...base,

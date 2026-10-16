@@ -15,7 +15,7 @@ type WorkerMessage =
 
 /** Keep Payload's config graph outside Playwright's worker transformer. */
 function runFixture(
-  command: 'seed' | 'cleanup',
+  command: 'seed' | 'cleanup' | 'seed-user',
   fixture?: CleanupFixture,
 ): Promise<GovernanceFixture | undefined> {
   // Validate before any child or database operation; never forward the URI to logs.
@@ -78,4 +78,9 @@ export async function seedGovernanceBase(): Promise<GovernanceFixture> {
 
 export async function cleanupGovernanceFixtures(fixture?: CleanupFixture): Promise<void> {
   await runFixture('cleanup', fixture)
+}
+
+/** Form journeys must not import Payload into Playwright's transformed worker. */
+export async function seedBrowserTestUser(): Promise<void> {
+  await runFixture('seed-user')
 }

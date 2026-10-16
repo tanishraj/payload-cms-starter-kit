@@ -2322,6 +2322,7 @@
       "docs/operations/developer-workflows.md",
       "docs/operations/editorial-governance.md",
       "docs/operations/mongodb-deployment.md",
+      "docs/operations/page-editing-guide.md",
       "docs/operations/private-form-attachments.md",
       "docs/operations/runtime-and-providers.md",
       "docs/operations/section-scoped-access.md",
@@ -2673,6 +2674,7 @@
       "src/components/ContentActions.tsx",
       "src/components/ContentLink.tsx",
       "src/components/SectionEyebrow.tsx",
+      "src/components/admin/AccountGettingStartedGuide.tsx",
       "src/components/admin/AdminSessionBar.tsx",
       "src/components/admin/AdminUserMenu.tsx",
       "src/components/admin/DashboardGettingStarted.tsx",
@@ -2687,6 +2689,8 @@
       "src/components/admin/FormSubmissionExport.tsx",
       "src/components/admin/FormVisibilityRules.tsx",
       "src/components/admin/PageCreateView.tsx",
+      "src/components/admin/PageEditingGuide.tsx",
+      "src/components/admin/PageEditingGuideField.tsx",
       "src/components/admin/PageRecipeSetup.scss",
       "src/components/admin/PageRecipeSetup.tsx",
       "src/components/admin/TwoFactor.scss",
@@ -2883,6 +2887,7 @@
       "src/hooks/syncWorkQueueItem.ts",
       "src/hooks/updateFormSubmissionActivity.ts",
       "src/hooks/validateSEOContract.ts",
+      "src/lib/accountGuidePreference.ts",
       "src/lib/adminOnboarding.ts",
       "src/lib/adminOnboardingShared.ts",
       "src/lib/analyticsConsent.ts",
@@ -2932,6 +2937,7 @@
       "src/lib/openGraphImages.tsx",
       "src/lib/operationalAudit.ts",
       "src/lib/pageBreadcrumbs.ts",
+      "src/lib/pageEditingGuide.ts",
       "src/lib/pagePaths.ts",
       "src/lib/recoverFormAnswers.ts",
       "src/lib/redirects.ts",
@@ -3216,6 +3222,7 @@
       "tests/int/leadership-profiles.int.spec.tsx",
       "tests/int/legal-page-paths.int.spec.ts",
       "tests/int/legal-pages-migration.int.spec.ts",
+      "tests/int/lexical-fixture-loader.int.spec.ts",
       "tests/int/live-preview-import-boundary.int.spec.ts",
       "tests/int/live-preview-renderer.int.spec.tsx",
       "tests/int/logos20.int.spec.tsx",
@@ -3257,6 +3264,7 @@
       "tests/int/page-blocks.int.spec.ts",
       "tests/int/page-breadcrumbs.int.spec.tsx",
       "tests/int/page-create-view.int.spec.tsx",
+      "tests/int/page-editing-guide.int.spec.tsx",
       "tests/int/page-header-actions.int.spec.tsx",
       "tests/int/page-recipe-endpoint.int.spec.ts",
       "tests/int/page-recipe-setup.int.spec.tsx",
@@ -3347,7 +3355,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "64cc34490de89642829393081f1efcc9ec9ee0270c7124c06aaf4edaae2f568d"
+    "sha256": "9b6fa5291ce0357b5b609a3789ac89f7438175b2c962263b76495a70e1b42b84"
   },
   "surfaces": {
     "access": [
@@ -3406,6 +3414,7 @@
       "src/hooks/validateSEOContract.ts"
     ],
     "libraries": [
+      "src/lib/accountGuidePreference.ts",
       "src/lib/adminOnboarding.ts",
       "src/lib/adminOnboardingShared.ts",
       "src/lib/analyticsConsent.ts",
@@ -3455,6 +3464,7 @@
       "src/lib/openGraphImages.tsx",
       "src/lib/operationalAudit.ts",
       "src/lib/pageBreadcrumbs.ts",
+      "src/lib/pageEditingGuide.ts",
       "src/lib/pagePaths.ts",
       "src/lib/recoverFormAnswers.ts",
       "src/lib/redirects.ts",
@@ -3666,6 +3676,7 @@
       "tests/int/leadership-profiles.int.spec.tsx",
       "tests/int/legal-page-paths.int.spec.ts",
       "tests/int/legal-pages-migration.int.spec.ts",
+      "tests/int/lexical-fixture-loader.int.spec.ts",
       "tests/int/live-preview-import-boundary.int.spec.ts",
       "tests/int/live-preview-renderer.int.spec.tsx",
       "tests/int/logos20.int.spec.tsx",
@@ -3707,6 +3718,7 @@
       "tests/int/page-blocks.int.spec.ts",
       "tests/int/page-breadcrumbs.int.spec.tsx",
       "tests/int/page-create-view.int.spec.tsx",
+      "tests/int/page-editing-guide.int.spec.tsx",
       "tests/int/page-header-actions.int.spec.tsx",
       "tests/int/page-recipe-endpoint.int.spec.ts",
       "tests/int/page-recipe-setup.int.spec.tsx",

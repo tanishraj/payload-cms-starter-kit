@@ -35,6 +35,13 @@ value. Hide/reopen preserves keyboard focus. Disclosure controls stay disabled u
 their handlers hydrate; ordinary task links work without that interaction. The dashboard's recent work uses the
 latest saved drafts, retaining its explicit Draft/Published labels.
 
+## Continue in the Page editor
+
+The Page Content tab now reuses the same sourced guide presentation with current
+native form facts, a safe saved-preview link and its own optional account visibility.
+See [Page editing guide](page-editing-guide.md). Hiding one guide does not hide the
+other. The developer quickstart and safe preflight shipped separately in PR #35.
+
 ## Implementation boundary
 
 `adminOnboarding.ts` is a server-only loader. Access-enforced Page reads validate
@@ -136,3 +143,24 @@ policy or timeout change.
 Canonical-boot native recheck: all three journeys pass twice without retries
 (6 passes, 1.6m), after the ten successful seed/cleanup cycles. Required final
 regression and current-head GitHub Quality still govern merge.
+
+
+### Fixture resolver correction during first-draft verification
+
+PR #36's first CI run passed the new Page journey but reproduced config-import
+stalls in Review setup. A local repeat also stalled before the Page UI. The bounded
+process alone was therefore insufficient. `lexicalFixtureLoader.mjs` adapts
+[Payload's upstream CLI resolver](https://github.com/payloadcms/payload/pull/18398)
+for the installed Lexical 0.50 dependency: select its equivalent static build
+before importing Payload configuration. It preserves explicit environment
+conditions and all unrelated package resolution, including React's server
+condition. The application and dependency versions are unchanged. Retain the
+90-second process deadline and exact-ID cleanup. The dynamic-form account seed now
+uses this process too, rather than initializing Payload inside Playwright.
+
+This is confined to the standalone test worker. Upgrading Payload alone does not
+remove the need: the upstream fix applies to its CLI, whereas this worker imports
+configuration directly. Reassess removal when its Lexical Node exports no longer
+use the asynchronous wrappers, or when fixtures run through the fixed CLI. Verify
+both governance and forms without retries before removing it. The cancelled run
+and subsequent verification remain recorded in the implementation checklist.

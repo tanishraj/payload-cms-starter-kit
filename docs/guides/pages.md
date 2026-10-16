@@ -17,7 +17,26 @@ Do not use it for:
 
 Pages define real frontend routes. A published Page can become the homepage through `Layout Defaults`. The CMS maintains its owned Navigation Link and creates 301 Redirects for the old path when a published slug/parent path changes, including affected descendants.
 
-The parent validator prevents self-parenting and circular hierarchies. Referenced Pages cannot be unpublished when doing so would invalidate configured relationships. Layout offers 43 blocks, SEO is publish-validated, and live preview renders every production Page block in desktop, tablet, and mobile frames.
+The parent validator prevents self-parenting and circular hierarchies. Referenced Pages cannot be unpublished when doing so would invalidate configured relationships. Layout offers the approved block catalogue, SEO is publish-validated, and live preview renders every production Page block in desktop, tablet, and mobile frames.
+
+## First draft to preview
+
+1. Create a Page. Admins can choose Blank Page or Landing Page; Site Managers use
+   the native form and choose a Parent inside an assigned section.
+2. Open Content. In Layout, choose **Add Block**, select a block and expand it if
+   collapsed. Fill in its content. **Show All** expands the block rows.
+3. Choose **Save Draft** and wait for Payload's confirmation. Correct any reported
+   fields if saving fails; a pending request is not confirmation.
+4. Use **Preview saved page** in the optional guide to open the saved draft in a
+   new tab. Unsaved edits stay in the editor and are not included in that link.
+   Use native **Live Preview** for current edits and desktop/tablet/mobile checks.
+5. Publish deliberately when ready. A draft stays private; publishing a Page does
+   not automatically choose it as the homepage in Layout Defaults.
+
+**Hide guide** and **Getting started** remember this account's page-guide display
+preference independently of the dashboard guide. Guidance grants no access and
+never publishes content. See the [guide contract](../operations/page-editing-guide.md)
+for exact states and recovery.
 
 ## Step-By-Step Medical College Example
 

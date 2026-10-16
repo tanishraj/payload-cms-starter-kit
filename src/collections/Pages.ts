@@ -172,6 +172,10 @@ export const Pages: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      admin: {
+        description:
+          'Name this page so your team can find it. Edit the visible page content in the blocks below.',
+      },
     },
     projectSlugField({
       useAsSlug: 'title',
@@ -205,14 +209,25 @@ export const Pages: CollectionConfig = {
           label: 'Content',
           fields: [
             {
+              name: 'pageEditingGuide',
+              type: 'ui',
+              admin: {
+                components: {
+                  Field: '@/components/admin/PageEditingGuideField#PageEditingGuideField',
+                },
+              },
+            },
+            {
               name: 'layout',
               label: 'Layout',
+              labels: { singular: 'Block', plural: 'Blocks' },
               type: 'blocks',
               blocks: pageBuilderBlocks,
               required: false,
               validate: validateUniqueBlockAnchorIDs,
               admin: {
-                description: 'Compose the page using reusable content blocks.',
+                description:
+                  'Choose Add Block to build the page. Fill in each block, use Save Draft and check Live Preview. Publish only when the page is ready.',
                 initCollapsed: true,
               },
             },
