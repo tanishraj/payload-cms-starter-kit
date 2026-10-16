@@ -1,6 +1,7 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
-import { seedTestUser, testUser } from '../helpers/seedUser'
+import { testUser } from '../helpers/seedUser'
+import { seedBrowserTestUser } from '../helpers/governanceBrowserFixtures'
 import { login } from '../helpers/login'
 
 /** Await the editor's own debounced server-state response rather than a fixed delay. */
@@ -80,7 +81,7 @@ for (const block of [
       testInfo.setTimeout(420_000)
       page.setDefaultTimeout(20_000)
       const formTitle = `Generic enquiry acceptance ${block.slug} ${testInfo.retry}`
-      await seedTestUser()
+      await seedBrowserTestUser()
       await login({ page, user: testUser })
       await page.goto('/admin/collections/forms/create', { waitUntil: 'domcontentloaded' })
       await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
@@ -417,6 +418,7 @@ for (const block of [
         try {
           await visitor.goto('/' + document.slug, {
             waitUntil: 'domcontentloaded',
+            timeout: 120_000, // Match preview's bounded cold compilation budget.
           })
           await expect(visitor.getByRole('heading', { name: 'Ask our team' })).toBeVisible()
           await expect(

@@ -10,7 +10,14 @@ process.once('message', async ({ command, fixture }) => {
   try {
     const { getRequiredTestDatabaseURI } = await import('./testDatabaseSafety.ts')
     process.env.MONGODB_URI = getRequiredTestDatabaseURI()
-    if (command !== 'seed' && command !== 'cleanup') throw new Error('Unsupported fixture command')
+    if (!['seed', 'cleanup', 'seed-user'].includes(command))
+      throw new Error('Unsupported fixture command')
+    // Apply the upstream Lexical CLI resolution fix only in this test process.
+    // Node's async register API supports the complete declared Node 22 range.
+    const { register } = await import('node:module')
+    register('./lexicalFixtureLoader.mjs', import.meta.url, {
+      data: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+    })
     report('Payload runtime import')
     const { getPayload } = await import('payload')
     // Boot the canonical application graph before loading fixture helpers, which
@@ -20,12 +27,16 @@ process.once('message', async ({ command, fixture }) => {
     report('database initialization')
     const payload = await getPayload({ config })
     report('fixture module import')
-    const helpers = await import('./governanceFixtures.ts')
-    report(command === 'seed' ? 'fixture seed' : 'fixture cleanup')
+    const helpers = await import(
+      command === 'seed-user' ? './seedUser.ts' : './governanceFixtures.ts'
+    )
+    report(command === 'cleanup' ? 'fixture cleanup' : 'fixture seed')
     const result =
-      command === 'seed'
-        ? await helpers.seedGovernanceBase()
-        : await helpers.cleanupGovernanceFixtures(fixture)
+      command === 'seed-user'
+        ? await helpers.seedTestUser()
+        : command === 'seed'
+          ? await helpers.seedGovernanceBase()
+          : await helpers.cleanupGovernanceFixtures(fixture)
     report('database shutdown')
     await payload.destroy()
     process.send?.({ type: 'result', result }, () => process.exit(0))

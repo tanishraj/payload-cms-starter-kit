@@ -115,8 +115,8 @@ CI-only controller creates an owner-labeled MongoDB 8.0.29 container on loopback
 `rs0` member as `127.0.0.1:27017`, and waits for the exact version and writable-primary state. The
 controller accepts only a matching GitHub run identity and safe `_test` database URIs. The job
 installs bundled Chromium, regenerates Payload types and the Admin import map and rejects either
-drift, runs TypeScript, lint, the complete integration suite, exactly two critical Admin/Site
-Manager feature-governance and Review-moderation browser journeys, the Generic Form/Contact6
+drift, runs TypeScript, lint, the complete integration suite, four native Admin/Site Manager
+access, dashboard guidance, first-draft guidance and Review-moderation browser journeys, the Generic Form/Contact6
 journeys, and the Node 22 Vercel production build. The job supplies fixed non-secret values; isolated
 browser configuration may load only the
 tracked non-secret `test.env` fixture, never ignored developer `.env` or `.env.atlas.local`, a
@@ -319,3 +319,15 @@ and optional preference errors remain distinct. The client verifies saved values
 and restores focus on hide/reopen. Scoped Tailwind/preflight affects only this
 widget and inherits native Payload colors; no public theme or provider changes.
 See [contract](../../../../docs/operations/admin-getting-started.md).
+
+
+Governance fixture commands and the dynamic-form test account seed run in the same
+short-lived, database-guarded Node child process. Playwright never initializes
+Payload for those operations. IPC reports import/database phases, enforces a
+90-second process deadline and requires clean shutdown before success. This bounds
+config-import stalls. Before Payload imports, a test-only resolver adapted from
+[Payload's upstream CLI fix](https://github.com/payloadcms/payload/pull/18398)
+selects Lexical 0.50's matching static development/production exports to avoid its
+asynchronous Node wrappers. Explicit conditions and every unrelated package remain
+unchanged; neither application resolution nor dependencies are modified. Public form navigation and authenticated preview each have a 120-second cold
+compilation allowance within the unchanged seven-minute form journey budget.

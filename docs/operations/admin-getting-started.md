@@ -143,3 +143,24 @@ policy or timeout change.
 Canonical-boot native recheck: all three journeys pass twice without retries
 (6 passes, 1.6m), after the ten successful seed/cleanup cycles. Required final
 regression and current-head GitHub Quality still govern merge.
+
+
+### Fixture resolver correction during first-draft verification
+
+PR #36's first CI run passed the new Page journey but reproduced config-import
+stalls in Review setup. A local repeat also stalled before the Page UI. The bounded
+process alone was therefore insufficient. `lexicalFixtureLoader.mjs` adapts
+[Payload's upstream CLI resolver](https://github.com/payloadcms/payload/pull/18398)
+for the installed Lexical 0.50 dependency: select its equivalent static build
+before importing Payload configuration. It preserves explicit environment
+conditions and all unrelated package resolution, including React's server
+condition. The application and dependency versions are unchanged. Retain the
+90-second process deadline and exact-ID cleanup. The dynamic-form account seed now
+uses this process too, rather than initializing Payload inside Playwright.
+
+This is confined to the standalone test worker. Upgrading Payload alone does not
+remove the need: the upstream fix applies to its CLI, whereas this worker imports
+configuration directly. Reassess removal when its Lexical Node exports no longer
+use the asynchronous wrappers, or when fixtures run through the fixed CLI. Verify
+both governance and forms without retries before removing it. The cancelled run
+and subsequent verification remain recorded in the implementation checklist.

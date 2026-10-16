@@ -4,7 +4,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mocks = vi.hoisted(() => ({ fork: vi.fn() }))
 vi.mock('node:child_process', () => ({ fork: mocks.fork }))
-import { seedGovernanceBase, cleanupGovernanceFixtures } from '../helpers/governanceBrowserFixtures'
+import {
+  seedGovernanceBase,
+  cleanupGovernanceFixtures,
+  seedBrowserTestUser,
+} from '../helpers/governanceBrowserFixtures'
 
 const originalEnv = { ...process.env }
 const uri = 'mongodb://127.0.0.1:27017/governance-bridge_test?replicaSet=rs0&directConnection=true'
@@ -24,6 +28,24 @@ describe('governance browser fixture process boundary', () => {
     process.env.TEST_MONGODB_URI = 'mongodb+srv://user:private-password@remote.invalid/live'
     await expect(seedGovernanceBase()).rejects.toThrow('Unsafe test database URI')
     expect(mocks.fork).not.toHaveBeenCalled()
+  })
+  it('rejects unsafe form seeding before starting a Payload process', async () => {
+    process.env.TEST_MONGODB_URI = 'mongodb://remote.invalid/live'
+    await expect(seedBrowserTestUser()).rejects.toThrow('Unsafe test database URI')
+    expect(mocks.fork).not.toHaveBeenCalled()
+  })
+  it('seeds form accounts through the same bounded process and awaits shutdown', async () => {
+    const promise = seedBrowserTestUser()
+    expect(child.send).toHaveBeenCalledWith({ command: 'seed-user', fixture: undefined })
+    let resolved = false
+    promise.then(() => {
+      resolved = true
+    })
+    child.emit('message', { type: 'result' })
+    await Promise.resolve()
+    expect(resolved).toBe(false)
+    child.emit('close', 0)
+    await expect(promise).resolves.toBeUndefined()
   })
   it('isolates loader flags and waits for clean child shutdown before resolving cleanup', async () => {
     process.env.NODE_OPTIONS = '--inspect --import=hostile-loader'

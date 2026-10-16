@@ -3222,6 +3222,7 @@
       "tests/int/leadership-profiles.int.spec.tsx",
       "tests/int/legal-page-paths.int.spec.ts",
       "tests/int/legal-pages-migration.int.spec.ts",
+      "tests/int/lexical-fixture-loader.int.spec.ts",
       "tests/int/live-preview-import-boundary.int.spec.ts",
       "tests/int/live-preview-renderer.int.spec.tsx",
       "tests/int/logos20.int.spec.tsx",
@@ -3354,7 +3355,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "c655d9b093026f25af03af6a1b587537c4191253b4edf03950877af08f0d4017"
+    "sha256": "9b6fa5291ce0357b5b609a3789ac89f7438175b2c962263b76495a70e1b42b84"
   },
   "surfaces": {
     "access": [
@@ -3675,6 +3676,7 @@
       "tests/int/leadership-profiles.int.spec.tsx",
       "tests/int/legal-page-paths.int.spec.ts",
       "tests/int/legal-pages-migration.int.spec.ts",
+      "tests/int/lexical-fixture-loader.int.spec.ts",
       "tests/int/live-preview-import-boundary.int.spec.ts",
       "tests/int/live-preview-renderer.int.spec.tsx",
       "tests/int/logos20.int.spec.tsx",
