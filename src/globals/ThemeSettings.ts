@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { siteSetupGuideField } from '@/fields/siteSetupGuide'
 
 import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
 import { defaultWebsiteTheme, websiteThemeOptions } from '@/lib/themes/websiteThemes'
@@ -24,6 +25,7 @@ export const ThemeSettings: GlobalConfig = {
     afterChange: [revalidateGlobalsCacheForGlobal],
   },
   fields: [
+    siteSetupGuideField('theme-settings'),
     {
       name: 'themeColor',
       type: 'select',

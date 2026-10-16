@@ -8,6 +8,7 @@ import {
   loadDashboardOnboarding,
   canOpenDashboardFeature,
 } from '@/lib/adminOnboarding'
+import { getSiteSetupDestination } from '@/lib/siteSetupGuide'
 import { DashboardGettingStarted } from './DashboardGettingStarted'
 
 import './DashboardOverview.scss'
@@ -334,6 +335,8 @@ export async function DashboardOverview({ payload, user }: DashboardOverviewProp
       label: '+ Upload Media',
     },
   ].filter(({ enabled }) => enabled)
+  const setup = isAdmin(user) ? getSiteSetupDestination(user) : null
+  if (setup) quickActions.push({ enabled: true, ...setup })
   const grantedFeatureKeys = isAdmin(user)
     ? []
     : getGrantedFeatureKeys(user).filter((key) => canOpenDashboardFeature(user, sections, key))

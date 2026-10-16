@@ -208,3 +208,10 @@ empty layout, unsaved changes, saving, saved draft and public-version examples. 
 Action control supports a safe new-tab target and a genuinely disabled pending
 action. Story interactions verify target/rel and that saving has no clickable link.
 See [Page editing guide](page-editing-guide.md); there is no second presentation entry.
+
+
+Site setup states reuse **Admin / Getting started** with an optional accessible
+region/reopen label. Identity, Appearance, unsaved/saving, existing public version,
+limited settings access and hide/reopen examples use the production task model
+and sourced presentation. Native settings, permissions and draft isolation are
+verified separately in [the setup guide](site-setup-guide.md).

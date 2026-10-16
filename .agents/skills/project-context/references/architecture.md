@@ -331,3 +331,12 @@ selects Lexical 0.50's matching static development/production exports to avoid i
 asynchronous Node wrappers. Explicit conditions and every unrelated package remain
 unchanged; neither application resolution nor dependencies are modified. Public form navigation and authenticated preview each have a 120-second cold
 compilation allowance within the unchanged seven-minute form journey budget.
+
+
+Native Site Identity and Appearance include the same sourced optional guide used
+for Dashboard/Page help. Explicit non-persisted UI fields observe current native
+form and lock state; forward links are unavailable while dirty or processing.
+The server reads only account-owned preferences and capability flags, not another
+copy of global settings. Admin quick actions open Site Identity; Manager links
+respect existing feature grants. Public global reads and native draft/publication
+authority are unchanged. See [site setup](../../../../docs/operations/site-setup-guide.md).

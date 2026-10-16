@@ -2326,6 +2326,7 @@
       "docs/operations/private-form-attachments.md",
       "docs/operations/runtime-and-providers.md",
       "docs/operations/section-scoped-access.md",
+      "docs/operations/site-setup-guide.md",
       "docs/operations/starter-clone-checklist.md",
       "docs/operations/storybook.md",
       "next.config.ts",
@@ -2693,6 +2694,8 @@
       "src/components/admin/PageEditingGuideField.tsx",
       "src/components/admin/PageRecipeSetup.scss",
       "src/components/admin/PageRecipeSetup.tsx",
+      "src/components/admin/SiteSetupGuide.tsx",
+      "src/components/admin/SiteSetupGuideField.tsx",
       "src/components/admin/TwoFactor.scss",
       "src/components/admin/TwoFactorAuthForm.tsx",
       "src/components/admin/TwoFactorLoginView.tsx",
@@ -2851,6 +2854,7 @@
       "src/fields/projectSlugField.ts",
       "src/fields/publicationMetadataFields.ts",
       "src/fields/sectionOwnership.ts",
+      "src/fields/siteSetupGuide.ts",
       "src/globals/AnalyticsSettings.ts",
       "src/globals/CookieConsentSettings.ts",
       "src/globals/NewsEventsDetailTemplate.ts",
@@ -2956,6 +2960,7 @@
       "src/lib/seo.ts",
       "src/lib/siteOffices.ts",
       "src/lib/siteOfficesShared.ts",
+      "src/lib/siteSetupGuide.ts",
       "src/lib/siteTimeZone.server.ts",
       "src/lib/siteTimeZone.ts",
       "src/lib/siteUrl.ts",
@@ -3325,6 +3330,7 @@
       "tests/int/setup-checks.int.spec.ts",
       "tests/int/setup-cli.int.spec.ts",
       "tests/int/site-offices.int.spec.ts",
+      "tests/int/site-setup-guide.int.spec.tsx",
       "tests/int/site-time-zone.int.spec.ts",
       "tests/int/sitemap.int.spec.ts",
       "tests/int/speed-insights.int.spec.ts",
@@ -3355,7 +3361,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "9b6fa5291ce0357b5b609a3789ac89f7438175b2c962263b76495a70e1b42b84"
+    "sha256": "b921ed33ac212827afea241e888802182e15d31605ab8e608938066a3acd5b84"
   },
   "surfaces": {
     "access": [
@@ -3382,7 +3388,8 @@
       "src/fields/formQuestionFields.ts",
       "src/fields/projectSlugField.ts",
       "src/fields/publicationMetadataFields.ts",
-      "src/fields/sectionOwnership.ts"
+      "src/fields/sectionOwnership.ts",
+      "src/fields/siteSetupGuide.ts"
     ],
     "hooks": [
       "src/hooks/createRedirectsForChangedPagePath.ts",
@@ -3483,6 +3490,7 @@
       "src/lib/seo.ts",
       "src/lib/siteOffices.ts",
       "src/lib/siteOfficesShared.ts",
+      "src/lib/siteSetupGuide.ts",
       "src/lib/siteTimeZone.server.ts",
       "src/lib/siteTimeZone.ts",
       "src/lib/siteUrl.ts",
@@ -3779,6 +3787,7 @@
       "tests/int/setup-checks.int.spec.ts",
       "tests/int/setup-cli.int.spec.ts",
       "tests/int/site-offices.int.spec.ts",
+      "tests/int/site-setup-guide.int.spec.tsx",
       "tests/int/site-time-zone.int.spec.ts",
       "tests/int/sitemap.int.spec.ts",
       "tests/int/speed-insights.int.spec.ts",

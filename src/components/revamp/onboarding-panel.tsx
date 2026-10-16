@@ -15,6 +15,7 @@ import type { OnboardingAction } from '@/lib/adminOnboardingShared'
 import './onboarding-panel.css'
 
 export type OnboardingPanelProps = {
+  guideLabel?: string
   title: string
   description: string
   action: OnboardingAction
@@ -29,6 +30,7 @@ export type OnboardingPanelProps = {
 /** Source: authenticated @shadcnblocks/empty-empty-actions-2.
  * Preserve the source Empty/Header/Content and paired actions; callers own facts and persistence. */
 export function OnboardingPanel({
+  guideLabel = 'Getting started',
   title,
   description,
   action,
@@ -50,7 +52,7 @@ export function OnboardingPanel({
     }
   }, [collapsed])
   return (
-    <section className="admin-onboarding" aria-label="Getting started">
+    <section className="admin-onboarding" aria-label={guideLabel}>
       {collapsed && dismissible ? (
         <Button
           type="button"
@@ -61,7 +63,7 @@ export function OnboardingPanel({
           onClick={() => onToggle(false)}
         >
           <BookOpen data-icon="inline-start" />
-          Getting started
+          {guideLabel}
         </Button>
       ) : (
         <Empty>

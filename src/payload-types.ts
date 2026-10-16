@@ -15413,11 +15413,16 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Set your website identity in Brand and review its timezone in Regional. Save a draft before publishing changes.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */
 export interface SiteSetting {
   id: string;
+  /**
+   * The website name used in shared branding and default metadata.
+   */
   siteName: string;
   siteDescription?: string | null;
   logo?: (string | null) | Media;

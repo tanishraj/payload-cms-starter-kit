@@ -7,6 +7,7 @@ export type OnboardingAction = {
   disabled?: boolean
 }
 export type OnboardingTask = {
+  guideLabel?: string
   title: string
   description: string
   action: OnboardingAction
