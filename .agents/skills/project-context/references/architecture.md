@@ -189,8 +189,10 @@ so moving that Page beneath a parent does not leave consent UI pointing at its l
   option with the fixed Payload/TypeScript import flags, and starts a fresh development server.
   The focused runtime-import config proves that boundary in a real worker without a server or
   database connection.
-- Run `pnpm test:e2e:governance` for the two critical feature-grant/revocation and submitted-Review
-  moderation journeys. GitHub CI also runs `pnpm test:e2e:forms`; the full E2E suite remains local.
+- Run `pnpm test:e2e:governance` for feature-grant/revocation, dashboard onboarding, first-draft
+  editing/preview, site setup and submitted-Review moderation. The Page journey awaits native
+  server field state before expanding a newly added block; its placeholder is not edit-ready.
+  GitHub CI also runs `pnpm test:e2e:forms`; the full E2E suite remains local.
 - Run `pnpm generate:types` after schema changes.
 - Run `pnpm generate:importmap` after custom Admin component changes.
 - Run `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` in proportion to risk.

@@ -566,8 +566,26 @@ test.describe('governance browser journeys', () => {
     await expect(guide.getByRole('heading', { name: 'Add your first block' })).toBeVisible()
     await guide.getByRole('link', { name: 'Go to page blocks' }).click()
     await page.getByRole('button', { name: 'Add Block', exact: true }).first().click()
+    // ADD_ROW creates a placeholder before Payload's debounced server state arrives.
+    // Expanding it early can be overwritten by that response on slower CI workers.
+    const editorPath = new URL(page.url()).pathname
+    const blockState = page.waitForResponse(async (response) => {
+      const request = response.request()
+      return (
+        new URL(response.url()).pathname === editorPath &&
+        request.method() === 'POST' &&
+        Boolean(request.headers()['next-action']) &&
+        (await response.text()).includes('layout.0.title')
+      )
+    })
     await page.getByRole('button', { name: /Page Header/ }).click()
-    await page.getByRole('button', { name: 'Show All', exact: true }).click()
+    expect((await blockState).ok()).toBe(true)
+    const block = page.locator('#layout-row-0')
+    await expect(block.locator('.blocks-field__block-pill-pageHeader')).toBeVisible()
+    const toggle = block.locator('button.collapsible__toggle').first()
+    if ((await toggle.getAttribute('class'))?.includes('collapsible__toggle--collapsed')) {
+      await toggle.click()
+    }
     const heading = page.locator('#field-layout__0__title')
     await expect(heading).toBeVisible()
     await heading.fill('A first draft worth previewing')
