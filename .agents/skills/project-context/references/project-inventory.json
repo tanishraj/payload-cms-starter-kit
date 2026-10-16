@@ -2256,6 +2256,7 @@
       "project-context:check",
       "project-context:update",
       "report:permissions-migration",
+      "setup:check",
       "start",
       "storybook",
       "test",
@@ -2317,6 +2318,7 @@
       "docs/operations/dependency-audit-remediation-2026-10-07.md",
       "docs/operations/dependency-audit-remediation-2026-10-14.md",
       "docs/operations/dependency-management.md",
+      "docs/operations/developer-quickstart.md",
       "docs/operations/developer-workflows.md",
       "docs/operations/editorial-governance.md",
       "docs/operations/mongodb-deployment.md",
@@ -3312,6 +3314,8 @@
       "tests/int/section-eyebrow.int.spec.tsx",
       "tests/int/semantic-radius-contract.int.spec.ts",
       "tests/int/seo-contract.int.spec.ts",
+      "tests/int/setup-checks.int.spec.ts",
+      "tests/int/setup-cli.int.spec.ts",
       "tests/int/site-offices.int.spec.ts",
       "tests/int/site-time-zone.int.spec.ts",
       "tests/int/sitemap.int.spec.ts",
@@ -3343,7 +3347,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "7b64add686ec0f82f606b76f7bae383d45d13a1a4761f6223fd85885fe29e94a"
+    "sha256": "64cc34490de89642829393081f1efcc9ec9ee0270c7124c06aaf4edaae2f568d"
   },
   "surfaces": {
     "access": [
@@ -3760,6 +3764,8 @@
       "tests/int/section-eyebrow.int.spec.tsx",
       "tests/int/semantic-radius-contract.int.spec.ts",
       "tests/int/seo-contract.int.spec.ts",
+      "tests/int/setup-checks.int.spec.ts",
+      "tests/int/setup-cli.int.spec.ts",
       "tests/int/site-offices.int.spec.ts",
       "tests/int/site-time-zone.int.spec.ts",
       "tests/int/sitemap.int.spec.ts",

@@ -19,6 +19,17 @@ Payload's REST API and Admin remain enabled. GraphQL is disabled because a fresh
 no application query or mutation consumer. That evidence covers this repository only; confirm unknown
 external consumers before changing an already deployed application's API contract.
 
+## Developer diagnostics
+
+Use [Developer quickstart](developer-quickstart.md) and `pnpm setup:check` for
+read-only local prerequisites. The command reuses the pure runtime parser and
+starter contract; it never initializes Payload, creates files/accounts/content or
+prints configured values. `--production` selects Next's production environment and
+retains all production constraints. A zero exit code is not proof of login,
+authenticated preview, real storage operations or launch readiness; these remain
+explicit manual checks. Optional email/domain/analytics setup does not block local
+drafts when those providers are not selected.
+
 ## Environment Variables
 
 | Variable                          | Required           | Purpose                                                                                       |

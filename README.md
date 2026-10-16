@@ -11,7 +11,8 @@ with the complete [scope reference](docs/planning/feature-scope-reference.md).
 The [admin onboarding and UX plan](docs/planning/admin-onboarding-ux.md) adds
 developer setup, role-aware first-page journeys and everyday usability acceptance.
 These are planned enhancements; current instructions below describe shipped setup.
-Dynamic forms and generic submissions are the first selected enhancement.
+Core forms and scoped access are shipped. The current enhancement is developer
+and editorial onboarding; advanced forms remain deferred.
 Update the checklist with each relevant implementation and its verification evidence.
 
 ## Supported Starter Contract
@@ -25,13 +26,11 @@ The repo fails fast if you try to boot a Vercel production profile with the defa
 
 ## First Boot
 
-1. Copy `.env.example` to `.env`.
-2. Start the transaction-capable local MongoDB with `docker compose up -d --wait mongo`, or point
-   `MONGODB_URI` at an existing replica set.
-3. Set `PAYLOAD_SECRET`.
-4. Run `pnpm install`.
-5. Run `pnpm dev`.
-6. Open `http://localhost:3000` and create the first admin user.
+Follow the [developer quickstart](docs/operations/developer-quickstart.md) for the
+single local setup path: pinned Node/pnpm → preserve/create `.env` → local replica-set
+MongoDB → `pnpm setup:check` → first Admin → saved draft and authenticated preview.
+The guide covers the temporary first-Admin flag and disabling it after bootstrap.
+Email, analytics and a production domain are optional for local drafts.
 
 ## Production Docker Image
 

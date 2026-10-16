@@ -147,6 +147,9 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
+      '@next/env':
+        specifier: 16.3.8
+        version: 16.3.8
       '@playwright/test':
         specifier: 1.58.2
         version: 1.58.2
@@ -189,6 +192,9 @@ importers:
       jsdom:
         specifier: 28.0.0
         version: 28.0.0(@noble/hashes@2.4.0)(supports-color@7.2.0)
+      mongodb:
+        specifier: 6.20.0
+        version: 6.20.0
       prettier:
         specifier: ^3.4.2
         version: 3.9.4
