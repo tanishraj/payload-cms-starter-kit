@@ -141,18 +141,19 @@ The user reaffirmed on 2026-10-14: finish the forms milestone before other build
 | Order | Work | Gate |
 | --- | --- | --- |
 | 1 — Core accepted; advanced work deferred | Dynamic forms and generic submissions: DF-01–10, FORM and SUBMIT | Custom field → public render → validated submission → revision-aware inbox/export. Include required security/access prerequisites. |
-| 2 — Selected; in progress | Section-scoped Site Manager permissions: ACCESS, applicable PAGE/SEC/VERIFY | Allowed operations succeed; direct cross-scope API/preview/history/file operations fail. |
-| 3 | Draft/publication/history reliability and shared changes | Conflict, restore-as-draft, shared draft isolation and failed delivery behavior verified. |
-| 4 | Theme/props/Storybook, reusable data and remaining content capabilities | Extend verified existing behavior; new presentations follow Storybook-first revamp conventions. |
-| 5 | Media/search/SEO/site experiences and operational gaps | Assess and verify starter coverage before adding functionality. |
-| 6 | Release verification | Accessibility/usability, staging, backup restore and rollback evidence; no unresolved data-loss or access leaks. |
+| 2 — First increment shipped (PR #33); broader scopes open | Section-scoped Site Manager permissions: ACCESS, applicable PAGE/SEC/VERIFY | Allowed operations succeed; direct cross-scope API/preview/history/file operations fail. |
+| 3 — Selected; optional guide shipped (PR #34), developer setup in progress | Developer/Admin/Site Manager onboarding and everyday UX | Optional current-access guidance, preserved environment, safe setup diagnostics and real draft/preview evidence. |
+| 4 | Draft/publication/history reliability and shared changes | Conflict, restore-as-draft, shared draft isolation and failed delivery behavior verified. |
+| 5 | Theme/props/Storybook, reusable data and remaining content capabilities | Extend verified existing behavior; new presentations follow Storybook-first revamp conventions. |
+| 6 | Media/search/SEO/site experiences and operational gaps | Assess and verify starter coverage before adding functionality. |
+| 7 | Release verification | Accessibility/usability, staging, backup restore and rollback evidence; no unresolved data-loss or access leaks. |
 
 Existing Storybook/block revamp work is preserved. It is not automatically declared
 complete or expanded into a rebuild of the existing catalogue. Cross-cutting safety
 and compatibility tasks can be prerequisites of any phase. Onboarding and admin
 UX acceptance applies within each phase; see the [role journeys and readiness
 plan](admin-onboarding-ux.md). Deliver the first useful draft flow before client
-handoff without moving the selected dynamic-forms priority.
+handoff; the latest sequencing decision above supersedes historical forms-first instructions.
 
 ## Initial source findings
 
@@ -1734,21 +1735,21 @@ handoff. Manager section guidance depends on verified ACCESS work.
 
 - [ ] **ONBOARD-01 — Developer quickstart.** One discoverable, tested path from clone to working admin and first preview, with supported runtime/package manager, environment template, MongoDB prerequisites and concrete troubleshooting. Never overwrite a local environment file.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Partial.
+  Work: In progress · Priority: Cross-cutting / Handoff · Baseline: Partial.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/developer-quickstart` · Verified on: 2026-10-16 · Increment: [developer quickstart](../operations/developer-quickstart.md), read-only CLI and isolated clone-fixture tests. Local verification: 2,797 integration tests pass (one existing Docker-dependent skip), including real CLI precedence/exit-code/secret-redaction and read-only Mongo/filesystem checks; TypeScript/lint/audit/context pass. Current-head GitHub Quality and merge remain pending. Authenticated first-preview and broader launch/usability acceptance remain explicit manual work.
 
 - [ ] **ONBOARD-02 — Safe prerequisite diagnostics.** Non-mutating runtime/database/storage/preview checks report readiness, affected task and actionable fix without displaying secrets. Assess existing validation before adding tooling.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Not yet assessed.
+  Work: In progress · Priority: Cross-cutting / Handoff · Baseline: Not yet assessed.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/developer-quickstart` · Verified on: 2026-10-16 · Increment: [developer quickstart](../operations/developer-quickstart.md), read-only CLI and isolated clone-fixture tests. Local verification: 2,797 integration tests pass (one existing Docker-dependent skip), including real CLI precedence/exit-code/secret-redaction and read-only Mongo/filesystem checks; TypeScript/lint/audit/context pass. Current-head GitHub Quality and merge remain pending. Authenticated first-preview and broader launch/usability acceptance remain explicit manual work.
 
 - [ ] **ONBOARD-03 — Build versus launch readiness.** Separate authoring prerequisites from production launch checks. Optional email/analytics/domain work does not block local drafts; existing production constraints remain enforced.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Not yet assessed.
+  Work: In progress · Priority: Cross-cutting / Handoff · Baseline: Not yet assessed.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/developer-quickstart` · Verified on: 2026-10-16 · Increment: [developer quickstart](../operations/developer-quickstart.md), read-only CLI and isolated clone-fixture tests. Local verification: 2,797 integration tests pass (one existing Docker-dependent skip), including real CLI precedence/exit-code/secret-redaction and read-only Mongo/filesystem checks; TypeScript/lint/audit/context pass. Current-head GitHub Quality and merge remain pending. Authenticated first-preview and broader launch/usability acceptance remain explicit manual work.
 
 - [ ] **ONBOARD-04 — First Admin orientation.** Explain first-account ownership and show a short next-action area leading to a real first draft. No automatic publication or lengthy mandatory walkthrough.
 
@@ -2131,3 +2132,10 @@ Exact-head Quality/merge evidence remains pending.
 
 
 | 2026-10-16 | ONBOARD-10; VERIFY | Canonical boot runtime checks pass | Codex | Canonical config initialization now precedes fixture helper imports, with precise import/database stages. | [PR #34](https://github.com/tanishraj/payload-cms-starter-kit/pull/34) | Ten real seed/cleanup cycles pass (20 processes); three native journeys repeated twice with no retries pass (6 cases, 1.6m). JS lint passes. Full integration and current-head Quality govern the final commit/merge. |
+
+### Developer setup increment
+
+| Date | Feature/task IDs | Status | Owner | Change/decision | Commit/PR | Verification |
+| --- | --- | --- | --- | --- | --- | --- |
+| 2026-10-16 | ONBOARD-01–03 | Developer setup increment in progress | Codex | Reuse existing runtime/provider validation and Compose; add one quickstart and operator-only read-only setup checks. Preserve existing env files, explain empty-database bootstrap, distinguish checked capability from manual preview/upload/launch work, and suppress raw errors/ambient driver logging. | `feat/developer-quickstart` | Focused runtime/dependency and real CLI clone-fixture checks pass; production constraints unchanged. Local full regression and current-head Quality follow. No new environment variable, application role, schema, seed or content publication. |
+| 2026-10-16 | ONBOARD-01–03; VERIFY | Developer setup locally verified | Codex | One discoverable native-admin quickstart plus `pnpm setup:check [--production]`; reuse Next environment loading and startup validators. No automatic setup mutations or readiness overclaim. Pin diagnostic-only Next env/driver dependencies already present in the lock graph; retain transitive versions. | `feat/developer-quickstart` | Full integration: 2,797 pass/one existing Docker skip. Final focused release checks: 24 pass. TypeScript, full lint (one existing warning), approved production audit and deterministic context pass. CJS interop and dangling-symlink cases corrected before release. No new env variable/schema/migration/UI; native browser/production regression and exact-head merge status follow in GitHub Quality. |

@@ -24,6 +24,7 @@
     "report:permissions-migration": "cross-env NODE_OPTIONS=\"--conditions=react-server\" tsx scripts/report-two-role-feature-migration.mjs",
     "export:db": "node scripts/export-db.mjs",
     "migrate:offices": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server\" tsx scripts/migrate-office-locations.ts",
+    "setup:check": "tsx scripts/check-setup.ts",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:project-context": "vitest run --config ./vitest.config.mts tests/int/project-context-lib.int.spec.ts tests/int/project-context-repository.int.spec.ts",
@@ -87,6 +88,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@next/env": "16.3.8",
     "@playwright/test": "1.58.2",
     "@storybook/addon-a11y": "10.6.0",
     "@storybook/addon-docs": "10.6.0",
@@ -101,6 +103,7 @@
     "eslint": "^9.16.0",
     "eslint-config-next": "16.3.8",
     "jsdom": "28.0.0",
+    "mongodb": "6.20.0",
     "prettier": "^3.4.2",
     "shadcn": "^4.16.0",
     "storybook": "10.6.0",

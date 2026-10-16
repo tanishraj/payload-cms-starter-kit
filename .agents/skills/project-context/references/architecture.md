@@ -121,6 +121,14 @@ Project-context maintenance stays local; the ownership-checked
 production-image verifier is a local/release portability and build-secret inspection gate rather
 than a GitHub job.
 
+The operator-only `pnpm setup:check` script uses Next's environment precedence,
+the existing pure runtime/provider validation, bounded MongoDB capability/Users
+reads and local filesystem access metadata. It never initializes Payload or writes
+setup state. Static diagnostics withhold configured values and raw errors; manual
+sign-in/preview, actual storage operations and launch remain explicitly unverified.
+`--production` retains production constraints. See the
+[developer quickstart](../../../../docs/operations/developer-quickstart.md).
+
 ## Caching and Delivery Safety
 
 The production Dockerfile supports both a `payload_build_env` dotenv secret file and individual

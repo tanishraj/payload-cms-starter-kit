@@ -2,6 +2,14 @@
 
 Use this checklist when copying the starter into a new client repository. The goal is to replace client-specific defaults without disturbing the core CMS behavior or the current starter contract.
 
+## Local first boot
+
+Start with the [developer quickstart](developer-quickstart.md). Preserve an existing
+`.env`, select the pinned toolchain, start the local MongoDB replica set and run
+`pnpm setup:check`. Complete the first Admin → saved draft → authenticated preview
+path before preparing launch. The sections below cover client handoff and launch;
+they are not all prerequisites for local authoring.
+
 ## Replace Client Identity
 
 - Update the project name and description in `package.json` if the clone will be published or handed off.
