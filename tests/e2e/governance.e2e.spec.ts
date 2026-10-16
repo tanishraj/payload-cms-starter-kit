@@ -153,6 +153,32 @@ test.describe('governance browser journeys', () => {
       await login({ page, user: currentFixture.admin })
     })
 
+    await test.step('hide and reopen optional guidance with confirmed account persistence', async () => {
+      const guide = page.getByRole('region', { name: 'Getting started', exact: true })
+      const hide = guide.getByRole('button', { name: 'Hide guide', exact: true })
+      await expect(hide).toBeVisible()
+      await page.screenshot({ path: test.info().outputPath('onboarding-admin-desktop.png') })
+      await expect(hide).toBeEnabled()
+      await hide.focus()
+      await page.keyboard.press('Enter')
+      await expect(
+        guide.getByRole('button', { name: 'Getting started', exact: true }),
+      ).toBeFocused()
+      await page.reload({ waitUntil: 'domcontentloaded' })
+      await expect(
+        guide.getByRole('button', { name: 'Getting started', exact: true }),
+      ).toBeVisible()
+      await expect(guide.getByRole('button', { name: 'Hide guide' })).toHaveCount(0)
+      await expect(
+        guide.getByRole('button', { name: 'Getting started', exact: true }),
+      ).toBeEnabled()
+      await guide.getByRole('button', { name: 'Getting started', exact: true }).focus()
+      await page.keyboard.press('Enter')
+      await expect(guide.getByRole('button', { name: 'Hide guide', exact: true })).toBeFocused()
+      await page.reload({ waitUntil: 'domcontentloaded' })
+      await expect(guide.getByRole('button', { name: 'Hide guide', exact: true })).toBeVisible()
+    })
+
     const createdAdmin = await test.step('create and read back a second Admin', async () => {
       await page.goto('/admin/collections/users/create')
       await fillNewUserCredentials(page, governanceSecondAdmin)
@@ -231,6 +257,19 @@ test.describe('governance browser journeys', () => {
       await test.step('verify initial Pages-only access', async () => {
         await login({ page: managerPage, user: accessManager })
 
+        const guide = managerPage.getByRole('region', { name: 'Getting started', exact: true })
+        await expect(guide).toContainText(sectionPages[0].title)
+        await expect(guide).not.toContainText(sectionPages[1].title)
+        // The Admin created a draft section root. Resume it through the real guide.
+        await guide.getByRole('link', { name: 'Continue draft', exact: true }).click()
+        await expect(managerPage.locator('#field-title')).toHaveValue(sectionPages[0].title)
+        await managerPage.goto('/admin', { waitUntil: 'domcontentloaded' })
+        await managerPage.setViewportSize({ width: 390, height: 844 })
+        await managerPage.screenshot({
+          path: test.info().outputPath('onboarding-manager-mobile.png'),
+          fullPage: true,
+        })
+        await managerPage.setViewportSize({ width: 1280, height: 720 })
         await expect(managerPage.getByRole('link', { name: 'Pages', exact: true })).toBeVisible()
         await expect(managerPage.getByRole('link', { name: 'Articles', exact: true })).toHaveCount(
           0,
@@ -246,7 +285,8 @@ test.describe('governance browser journeys', () => {
       })
 
       await test.step('create a Page within the assigned section and deny the other section', async () => {
-        await managerPage.goto('/admin/collections/pages/create', { waitUntil: 'domcontentloaded' })
+        await managerPage.goto('/admin', { waitUntil: 'domcontentloaded' })
+        await managerPage.getByRole('link', { name: '+ New Page', exact: true }).click()
         await expect(managerPage.locator('form[data-form-ready="true"]')).toBeVisible()
         await managerPage.locator('#field-title').fill('Manager-created scoped Page')
         await managerPage.locator('#field-parent').getByRole('combobox').click()
@@ -349,6 +389,31 @@ test.describe('governance browser journeys', () => {
           ],
           totalDocs: 1,
         })
+      })
+      await test.step('explain missing section access without a dead Page action', async () => {
+        const response = await page.request.patch(`/api/users/${createdManager.id}`, {
+          headers: await getPayloadAuthHeaders(page),
+          data: { features: { pages: true, reviews: false }, sectionRoots: [] },
+        })
+        expect(response.ok()).toBe(true)
+        expect((await response.json()).doc).toMatchObject({
+          sectionRoots: [],
+          features: { pages: true, reviews: false },
+        })
+        await login({ page: managerPage, user: accessManager })
+        const guide = managerPage.getByRole('region', { name: 'Getting started', exact: true })
+        await expect(
+          guide.getByRole('heading', { name: 'No website sections assigned' }),
+        ).toBeVisible()
+        await expect(
+          managerPage.getByRole('link', { name: '+ New Page', exact: true }),
+        ).toHaveCount(0)
+        await expect(guide.getByRole('button', { name: 'Hide guide' })).toHaveCount(0)
+        await guide.getByRole('link', { name: 'Check access again' }).click()
+        await expect(
+          guide.getByRole('heading', { name: 'No website sections assigned' }),
+        ).toBeVisible()
+        await expect(guide).not.toContainText(sectionPages[0].title)
       })
     } finally {
       await managerContext.close()

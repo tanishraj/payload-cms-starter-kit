@@ -287,3 +287,13 @@ feature and section (or Admin). The first rollout covers Pages, Forms, Reusable
 Sections, submissions and related operational rows; other feature grants are
 site-wide. No provider/environment/schema migration or separate editor is added.
 See [scope boundary and limits](../../../../docs/operations/section-scoped-access.md).
+
+
+The native Dashboard adds one optional sourced getting-started panel. Its
+server-only loader uses current scoped root/draft reads with access enforcement;
+account-owned native Payload preferences persist guide visibility. No onboarding
+flag grants permission or certifies readiness. Missing assignments, query errors
+and optional preference errors remain distinct. The client verifies saved values
+and restores focus on hide/reopen. Scoped Tailwind/preflight affects only this
+widget and inherits native Payload colors; no public theme or provider changes.
+See [contract](../../../../docs/operations/admin-getting-started.md).

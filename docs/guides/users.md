@@ -73,3 +73,14 @@ See the complete 29-feature action table in
 - [Audit Log](./operational-audit-events.md)
 - [Action Queue](./work-queue.md)
 - [Form Submissions](./form-submissions.md)
+
+## Start work from the dashboard
+
+The optional Getting started guide offers an accessible draft or assigned task.
+Hide/reopen is saved for your own account. Missing features or sections show a
+non-dismissible explanation and Check access again; ask the Admin who created the
+account for the required assignment. An Admin assigns root Pages under Users →
+Manageable website sections. A feature grant and valid section are both needed
+for scoped authoring or the submission inbox; other destinations retain site-wide
+feature grants. See [section boundaries](../operations/section-scoped-access.md)
+and [dashboard guidance](../operations/admin-getting-started.md).

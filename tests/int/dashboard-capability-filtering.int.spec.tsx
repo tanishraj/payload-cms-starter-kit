@@ -6,6 +6,8 @@ const mocks = vi.hoisted(() => ({
   find: vi.fn(),
 }))
 
+vi.mock('@payloadcms/ui', () => ({ useConfig: () => ({ config: { routes: { api: '/api' } } }) }))
+
 import { DashboardOverview } from '@/components/admin/DashboardOverview'
 
 const articleManager = {
@@ -49,6 +51,10 @@ describe('dashboard capability filtering', () => {
     const calls = [...mocks.count.mock.calls, ...mocks.find.mock.calls]
     expect(calls.length).toBeGreaterThan(0)
     for (const [options] of calls) {
+      if (options.collection === 'payload-preferences') {
+        expect(options).toMatchObject({ overrideAccess: false, user: articleManager })
+        continue
+      }
       expect(options).toEqual(
         expect.objectContaining({
           collection: 'articles',
@@ -117,7 +123,9 @@ describe('dashboard capability filtering', () => {
     expect(html).toContain('Appearance')
     expect(html).toContain('/admin/globals/theme-settings')
     expect(mocks.count).not.toHaveBeenCalled()
-    expect(mocks.find).not.toHaveBeenCalled()
+    expect(mocks.find.mock.calls.every(([args]) => args.collection === 'payload-preferences')).toBe(
+      true,
+    )
   })
 
   it('preserves all quick actions for an administrator', async () => {
@@ -202,5 +210,54 @@ describe('dashboard capability filtering', () => {
     )
     expect(html).toContain('A recent review')
     expect(html).toContain('/admin/collections/reviews/review-1')
+  })
+  it('offers recovery instead of Page creation for a feature grant without sections', async () => {
+    const html = await renderDashboard({
+      id: 'no-section',
+      role: 'siteManager',
+      features: { pages: true },
+    })
+    expect(html).toContain('No website sections assigned')
+    expect(html).toContain('Check access again')
+    expect(html).not.toContain('+ New Page')
+    expect(html).not.toContain('Content Overview')
+    expect(mocks.find).not.toHaveBeenCalled()
+    expect(mocks.count).not.toHaveBeenCalled()
+  })
+  it('does not surface stale roots or dead creation links after they stop being root Pages', async () => {
+    const html = await renderDashboard({
+      id: 'stale-section',
+      role: 'siteManager',
+      features: { pages: true },
+      sectionRoots: ['moved-root'],
+    })
+    expect(html).toContain('No website sections assigned')
+    expect(html).not.toContain('+ New Page')
+    expect(mocks.find).toHaveBeenCalledTimes(1)
+    expect(mocks.count).not.toHaveBeenCalled()
+  })
+  it('keeps a failed scope query honest and hides source details', async () => {
+    mocks.find.mockRejectedValue(new Error('private database credential'))
+    const html = await renderDashboard({
+      id: 'failed-section',
+      role: 'siteManager',
+      features: { pages: true },
+      sectionRoots: ['root-a'],
+    })
+    expect(html).toContain('Website sections unavailable')
+    expect(html).not.toContain('private database credential')
+    expect(html).not.toContain('+ New Page')
+  })
+  it('loads latest saved draft state for recent work instead of its older publication', async () => {
+    await renderDashboard(articleManager)
+    expect(mocks.find).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'articles',
+        user: articleManager,
+        overrideAccess: false,
+        draft: true,
+        limit: 5,
+      }),
+    )
   })
 })

@@ -3,6 +3,8 @@ import { getPayload, handleEndpoints, type Payload } from 'payload'
 import { beforeAll, afterAll, describe, expect, it, vi } from 'vitest'
 import { createTestMongoServer } from '../helpers/mongoMemoryServer'
 import type { User, Page, Form } from '@/payload-types'
+import { loadDashboardOnboarding, loadDashboardSections } from '@/lib/adminOnboarding'
+import { ONBOARDING_PREFERENCE_KEY } from '@/lib/adminOnboardingShared'
 
 vi.mock('next/cache', () => ({ revalidateTag: vi.fn(), revalidatePath: vi.fn() }))
 let payload: Payload, stop: (() => Promise<void>) | undefined
@@ -534,5 +536,78 @@ describe('section boundaries through real Payload and MongoDB', () => {
         data: { parent: b.id },
       }),
     ).rejects.toThrow()
+  })
+  it('keeps guide preferences account-owned and recomputes accessible draft destinations', async () => {
+    const draft = await payload.create({
+      collection: 'pages',
+      user: admin,
+      draft: true,
+      data: { title: 'Private onboarding draft A', parent: a.id },
+    })
+    const headers = await login(manager)
+    const preference = await dispatch(`payload-preferences/${ONBOARDING_PREFERENCE_KEY}`, headers, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        value: { dismissed: true },
+        user: { relationTo: 'users', value: otherManager.id },
+      }),
+    })
+    expect(preference.status).toBe(200)
+    const sections = await loadDashboardSections(payload, manager)
+    const task = await loadDashboardOnboarding(payload, manager, sections)
+    expect(task).toMatchObject({
+      collapsed: true,
+      action: { href: `/admin/collections/pages/${draft.id}` },
+    })
+    const otherTask = await loadDashboardOnboarding(
+      payload,
+      otherManager,
+      await loadDashboardSections(payload, otherManager),
+    )
+    expect(otherTask.collapsed).toBe(false)
+    const otherPreferences = await payload.find({
+      collection: 'payload-preferences',
+      ...asManager(),
+      where: { 'user.value': { equals: otherManager.id } },
+    })
+    expect(otherPreferences.docs).toHaveLength(0)
+    await payload.update({ collection: 'pages', id: draft.id, user: admin, data: { parent: b.id } })
+    const afterMove = await loadDashboardOnboarding(
+      payload,
+      manager,
+      await loadDashboardSections(payload, manager),
+    )
+    expect(afterMove.action.href).not.toContain(draft.id)
+    expect(afterMove.description).not.toContain('Private onboarding draft A')
+  })
+  it('shows a non-dismissible recovery state after sections are revoked, ignoring saved guide preferences', async () => {
+    const updated = await payload.update({
+      collection: 'users',
+      id: manager.id,
+      user: admin,
+      data: { sectionRoots: [] },
+    })
+    try {
+      const task = await loadDashboardOnboarding(
+        payload,
+        updated,
+        await loadDashboardSections(payload, updated),
+      )
+      expect(task).toMatchObject({
+        title: 'No website sections assigned',
+        collapsed: false,
+        dismissible: false,
+        action: { href: '/admin' },
+      })
+      expect(task.description).not.toContain('Section A')
+    } finally {
+      await payload.update({
+        collection: 'users',
+        id: manager.id,
+        user: admin,
+        data: { sectionRoots: [a.id] },
+      })
+    }
   })
 })

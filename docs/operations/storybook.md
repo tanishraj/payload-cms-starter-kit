@@ -185,3 +185,18 @@ Default has a callback play; Preparing and No Results expose native disabled/bus
 states. No service or real submission data is used. The native Payload list adapter
 owns filtering, permissions, download and toasts. See the
 [export contract](../planning/form-revision-exports.md).
+
+## Admin getting started
+
+**Admin / Getting started** imports the production OnboardingPanel from authenticated
+`@shadcnblocks/empty-empty-actions-2`. Default/Docs expose task copy, destination,
+visibility, dismissibility, pending and failure controls. Continue Draft, Assigned
+Sections, No Sections, Unavailable, Hidden, Saving, Preference Failure, Long Content
+Starting and Hide And Reopen use synthetic data. No account or service calls occur.
+Desktop light and 390px dark were reviewed before Payload integration; the native
+account preference and scope contracts live in the [guide](admin-getting-started.md).
+
+Getting started was also checked in light Default and 390px dark Long Content
+with scoped axe: zero WCAG A/AA violations and zero incomplete checks. The Native
+Payload adapter verifies keyboard/persistence separately. This scope does not
+certify the rest of the admin or measure novice usability.

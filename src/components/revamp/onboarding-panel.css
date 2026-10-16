@@ -1,0 +1,37 @@
+/* Native admin integration of the sourced Shadcnblocks presentation.
+ * Reuse Payload's current palette; the workshop falls back to its official Neutral tokens.
+ * Scoped Tailwind includes no document-wide reset or public-site theme declarations. */
+@reference "tailwindcss/theme.css";
+@source "./onboarding-panel.tsx";
+@source "./ui/empty.tsx";
+@source "./ui/button.tsx";
+@custom-variant dark (&:is(.dark *, [data-theme="dark"] *));
+
+@theme inline {
+  --color-background: var(--theme-elevation-0, var(--background));
+  --color-foreground: var(--theme-text, var(--foreground));
+  --color-primary: var(--theme-text, var(--primary));
+  --color-primary-foreground: var(--theme-elevation-0, var(--primary-foreground));
+  --color-muted: var(--theme-elevation-100, var(--muted));
+  --color-muted-foreground: var(--theme-elevation-600, var(--muted-foreground));
+  --color-secondary: var(--theme-elevation-100, var(--secondary));
+  --color-secondary-foreground: var(--theme-text, var(--secondary-foreground));
+  --color-border: var(--theme-elevation-150, var(--border));
+  --color-input: var(--theme-elevation-150, var(--input));
+  --color-ring: var(--theme-elevation-800, var(--ring));
+  --color-destructive: var(--theme-error-500, var(--destructive));
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+.admin-onboarding {
+  /* Official Neutral radius, matching the existing workshop foundation. */
+  --radius: 0.625rem;
+  overflow-wrap: anywhere;
+}
+
+@scope (.admin-onboarding) {
+  @import 'tailwindcss/preflight.css';
+  @tailwind utilities source(none);
+}
