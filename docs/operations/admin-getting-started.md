@@ -87,3 +87,13 @@ form journeys pass (3.2m). Fresh production build passes with 73 traces and no
 private uploads; final Storybook, generators, TypeScript, full lint (one existing
 warning), dependency policy and context pass. Exact-head CI and merge remain
 governed by the feature PR; broad onboarding acceptance is not inferred.
+
+The first PR #34 Quality run passed integration but failed the Manager Page
+redirect assertion. The captured retry returned HTTP 400 for a duplicate slug;
+the test had registered created Pages for cleanup only after a five-second URL
+assertion. The journey now verifies the native multipart create response and
+its saved draft, registers the returned ID immediately, and waits for the exact
+editor navigation before readback. A fresh local Next run passed both journeys
+(1.1m); the response-aware run passed both (46.8s). No production access, slug,
+validation or timeout policy was relaxed. The first attempt had no trace, so its
+exact save timing is not inferred from the retry. Final CI remains a merge gate.

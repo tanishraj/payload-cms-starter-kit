@@ -294,19 +294,39 @@ test.describe('governance browser journeys', () => {
           managerPage.getByRole('option', { name: sectionPages[1].title, exact: true }),
         ).toHaveCount(0)
         await managerPage.getByRole('option', { name: sectionPages[0].title, exact: true }).click()
-        await managerPage.getByRole('button', { name: 'Save Draft', exact: true }).click()
-        await expect(managerPage).toHaveURL((url) =>
-          /\/admin\/collections\/pages\/[a-f0-9]{24}$/.test(url.pathname),
+        const createResponsePromise = managerPage.waitForResponse(
+          (response) =>
+            new URL(response.url()).pathname === '/api/pages' &&
+            response.request().method() === 'POST' &&
+            response.request().headers()['content-type']?.startsWith('multipart/form-data'),
         )
+        await managerPage.getByRole('button', { name: 'Save Draft', exact: true }).click()
+        const createResponse = await createResponsePromise
+        const created = await createResponse.json()
+        expect(createResponse.status(), JSON.stringify(created)).toBe(201)
+        const currentID = created.doc.id as string
+        // Register the saved record before navigation assertions, so a cold route or
+        // later failure cannot leave an orphan that collides with the next attempt.
+        sectionPages.push({ id: currentID, title: created.doc.title })
+        expect(created.doc).toMatchObject({
+          title: 'Manager-created scoped Page',
+          slug: 'manager-created-scoped-page',
+          parent: sectionPages[0].id,
+          _status: 'draft',
+        })
+        const editPath = `/admin/collections/pages/${currentID}`
+        await managerPage.waitForURL((url) => url.pathname === editPath, {
+          waitUntil: 'domcontentloaded',
+        })
+        await expect(managerPage).toHaveURL((url) => url.pathname === editPath)
+        await expect(managerPage.locator('#field-title')).toHaveValue(created.doc.title)
         const headers = await getPayloadAuthHeaders(managerPage)
-        const currentID = new URL(managerPage.url()).pathname.split('/').pop()!
         const saved = await managerPage.request.get(`/api/pages/${currentID}?depth=0&draft=true`, {
           headers,
         })
         expect(saved.status()).toBe(200)
         const record = await saved.json()
         expect(record.parent).toBe(sectionPages[0].id)
-        sectionPages.push({ id: currentID, title: record.title })
         expect(
           (
             await managerPage.request.get(`/api/pages/${sectionPages[1].id}?draft=true`, {
