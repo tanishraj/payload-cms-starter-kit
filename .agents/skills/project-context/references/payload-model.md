@@ -59,7 +59,7 @@ Nine globals are registered:
   stale intake returns a sanitized 409 changed-form definition before persistence
   or notifications. The shared client preserves valid answers by unchanged unique
   row ID/control type, explains cleared answers and requires deliberate resubmission.
-  Generic clients now carry an attempt key; hidden immutable receipt hashes and a unique sparse Mongo index protect accepted retries for the submission lifetime. Replays return the original confirmation before current-revision checks or side effects; conflicting answers require a deliberate new attempt. Keyless legacy clients retain the existing protocol. Full identity lifecycle, notification recovery and flattened exports remain separate work. See [retry contract](../../../../docs/planning/form-submission-retries.md). Shared form validation
+  Generic clients now carry an attempt key; hidden immutable receipt hashes and a unique sparse Mongo index protect accepted retries for the submission lifetime. Replays return the original confirmation before current-revision checks or side effects; conflicting answers require a deliberate new attempt. Keyless legacy clients retain the existing protocol. Notification recovery and full identity lifecycle acceptance remain separate work. Historical CSV export is documented below. See [retry contract](../../../../docs/planning/form-submission-retries.md). Shared form validation
   rejects non-plain answer records, undeclared names and malformed scalar values; checkbox inputs keep
   finite legacy HTML encodings. The fixed review engine explicitly opts into its seven separately
   validated extra keys. Authoring reserves constructor/prototype/website, validates supported types,
@@ -203,3 +203,20 @@ explicit changed-form recovery carry appearance; compatible answers remain.
 Fixed Review/Contact33 reject non-default settings, including later Form edits;
 revisionless intake rejects active appearance before persistence/email. See
 [contract](../../../../docs/planning/form-appearance-controls.md).
+
+
+### Historical submission exports
+
+The native FormSubmissions list extends its existing filters/search with one
+sourced export action. `GET /api/form-submissions/export` requires authentication
+and full inbox permission, then reads bounded cursor batches with the same req/user
+and `overrideAccess: false`; dependency/placement reads are insufficient. CSV uses
+one row per captured answer, original title/slug/question ID/name/label/type/revision,
+readable display and typed JSON. Legacy data is explicit without invented labels.
+No current Form lookup, file token/URL/bytes, hidden receipt or staff notes are
+exported. Ordinary exports exclude Trash. UTF-8 BOM/quoted cells/CRLF and formula
+neutralization protect spreadsheet use. More than 1,000 submissions or 8 MiB
+returns a recoverable error without partial CSV; start-time creation cutoff and
+ID cursors avoid offset drift. Workflow status/membership are best-effort, not an
+atomic backup. Test-mode exclusion and configurable webhooks remain future work.
+See [contract](../../../../docs/planning/form-revision-exports.md).

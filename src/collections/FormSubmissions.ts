@@ -36,6 +36,9 @@ export const FormSubmissions: CollectionConfig = {
   },
   admin: {
     group: 'Forms',
+    components: {
+      beforeListTable: ['/components/admin/FormSubmissionExport#FormSubmissionExport'],
+    },
     hidden: hideUnlessFeature('formSubmissions'),
     useAsTitle: 'submitterEmail',
     defaultColumns: [
@@ -49,7 +52,7 @@ export const FormSubmissions: CollectionConfig = {
       'lastActionAt',
     ],
     description:
-      'Stored form submissions. Submission payload fields stay read-only after creation, while operators can update operational status.',
+      'Stored submissions keep original answers read-only. Export answers (CSV) downloads the current filters and search across all pages, one row per answer, up to 1,000 submissions / 8 MiB. Files export filenames only; download files from the submission.',
     listSearchableFields: [
       'email',
       'submitterEmail',

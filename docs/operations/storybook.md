@@ -175,3 +175,13 @@ the new play finishes. Contact6 retains its outer card composition and wraps on
 mobile. Dark WCAG A/AA axe reports zero violations. Neutral light still reports
 the previously documented muted-surface contrast issue; no AA certification or
 palette override is claimed. Production inherits its existing website theme.
+
+
+## Submission export action
+
+**Admin / Form export** imports the production `FormExportAction`, using the
+existing Button dependency of authenticated `@shadcnblocks/input-input-special-1`.
+Default has a callback play; Preparing and No Results expose native disabled/busy
+states. No service or real submission data is used. The native Payload list adapter
+owns filtering, permissions, download and toasts. See the
+[export contract](../planning/form-revision-exports.md).

@@ -14,10 +14,10 @@ Reusable Payload Forms selected by native page blocks; fifteen shared controls w
 | --- | --- | --- | --- |
 | 1 — Merged | Owner-activity correction | SUBMIT-10, DF-05, ADMINUX-15 | Owner-only assignment/reassignment/removal stamps activity; unchanged owner does not; real authorized storage and denied mutation verified. |
 | 2 | Field identity, configuration and authoring clarity | FORM-01/05/06, DF-02/06 | Stable field/choice identity, help/default/constraints, safe names, relabel/reorder/rename/remove compatibility and understandable editing warnings verified. |
-| 3 | Complete initial control catalogue and extensibility | FORM-03/08, DF-07 | URL, number, multi-select, radio, checkbox group, switch, date and time added through explicit typed contracts, with shared validation, formatting, Storybook and native Payload evidence. Existing six controls retain compatibility. File transport follows milestone 4. |
+| 3 — Merged initial catalogue | Complete initial control catalogue and extensibility | FORM-03/08, DF-07 | URL, number, multi-select, radio, checkbox group, switch, date and time added through explicit typed contracts, with shared validation, formatting, Storybook and native Payload evidence. Existing six controls retain compatibility. File transport follows milestone 4. |
 | 4 | Private file controls and their permissions/lifecycle | SUBMIT-05, applicable FORM-03/05 | Private storage, type/size limits, authorized reads, scope/lifecycle cleanup and failed-submission behavior verified; public Media is not used as the private attachment boundary. |
-| 5 | Layout entries, appearance and conditional rules | FORM-04/07, DF-08, SUBMIT-03/07 | Supported groups/headings/descriptions/separators/layout props, stable-ID declarative show/require rules and matching client/server behavior. Inactive answers excluded; accessible focus/error recovery verified. |
-| 6 | Revision/history acceptance and exports | SUBMIT-01/02/04/11, DF-02/06 | Published/draft isolation and full change matrix; readable historical meaning and authorized revision-aware export/mappings survive rename/remove/type changes. |
+| 5 — Merged supported contract | Layout entries, appearance and conditional rules | FORM-04/07, DF-08, SUBMIT-03/07 | Supported groups/headings/descriptions/separators/layout props, stable-ID declarative show/require rules and matching client/server behavior. Inactive answers excluded; accessible focus/error recovery verified. |
+| 6 — In progress | Revision/history acceptance and exports | SUBMIT-01/02/04/11, DF-02/06 | Published/draft isolation and full change matrix; readable historical meaning and authorized revision-aware export/mappings survive rename/remove/type changes. |
 | 7 | Operational inbox and notification reliability | SUBMIT-06/08/09/10, DF-05 | Remaining inbox permissions/workflow/follow-up, controlled reply-to/title/recipients, persistent delivery state and safe deduplicated retries; abuse controls assessed across intended deployment. |
 | 8 | Safe testing and complete editor/visitor journeys | SUBMIT-12, DF-09, ADMINUX-14/15/16 | Authorized labelled test submissions stay out of ordinary inbox/export/notification paths; native create/edit/preview/publish/submit/manage/export/recovery journeys and accessibility verified. |
 | 9 | Close forms acceptance and handoff | DF-10; applicable FORM/SUBMIT groups | Required tests/build/security gates pass, operator/developer documentation matches shipped behavior, accepted decisions and remaining explicit deferrals are recorded. |
@@ -143,3 +143,25 @@ no progress; using installed Chrome exposed the existing local MongoDB endpoint 
 standalone (transactions unavailable). No user database service was modified.
 Native Admin authoring/public journeys and exact-head CI remain required before
 merge; DF-08 stays unchecked.
+
+## Current delivery checkpoint — 16 October 2026
+
+[PR #31](https://github.com/tanishraj/payload-cms-starter-kit/pull/31) is merged as
+`e18690eb` after [exact-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38861826953)
+passed on `311fec42`. Both governance and both native form journeys passed first
+attempt; integration, generated outputs and production/private-artifact gates
+passed. This supersedes the earlier pending local-browser/CI checkpoint. Supported
+conditions/appearance are verified; the feature branch is deleted.
+
+Continue milestone 6 on fresh `feat/form-revision-exports`, created from merged
+develop. [Historical CSV exports](form-revision-exports.md) use the native inbox
+filters/search and captured labels/names/typed values, with explicit legacy rows,
+private-file omission and enforced access/size limits. Focused and real native
+Payload/MongoDB tests pass. Final local release: 2,745 integration tests pass/one
+existing Docker-dependent skip; both native form download journeys and both
+governance journeys pass first attempt. Production build inspects 73 traces/no
+private uploads; Storybook and required gates pass. Exact-head GitHub Quality is
+the merge gate; status/evidence is on the
+[feature PR](https://github.com/tanishraj/payload-cms-starter-kit/pulls?q=is%3Apr+head%3Afeat%2Fform-revision-exports).
+Webhook authoring, notification reliability, safe test mode and final
+forms acceptance remain in the sequence.
