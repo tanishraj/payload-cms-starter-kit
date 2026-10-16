@@ -10,6 +10,7 @@ import {
   useFormProcessing,
 } from '@payloadcms/ui'
 import { AccountGettingStartedGuide } from './AccountGettingStartedGuide'
+import { getSiteStructureDestination } from '@/lib/siteStructureGuide'
 import { getPageEditingTask, PAGE_EDITING_GUIDE_KEY } from '@/lib/pageEditingGuide'
 
 export function PageEditingGuide({
@@ -35,6 +36,7 @@ export function PageEditingGuide({
     ? `${config.serverURL || ''}/preview/page/${encodeURIComponent(String(id))}`
     : null
   const task = getPageEditingTask({
+    structureAction: getSiteStructureDestination(user),
     previewURL,
     hasBlocks,
     modified,

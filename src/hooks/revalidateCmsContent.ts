@@ -198,7 +198,8 @@ export const revalidateRedirectsCache: CollectionAfterChangeHook = ({ doc, previ
   return doc
 }
 
-export const revalidateDeletedPageCache: CollectionAfterDeleteHook = ({ doc }) => {
+export const revalidateDeletedPageCache: CollectionAfterDeleteHook = ({ context, doc }) => {
+  if (context?.[SKIP_CACHE_REVALIDATION_CONTEXT] === true) return doc
   if (doc._status === 'published') {
     revalidateTags(CMS_CACHE_TAGS.pages, CMS_CACHE_TAGS.sitemap)
   }

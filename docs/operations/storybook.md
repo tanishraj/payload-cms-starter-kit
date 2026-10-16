@@ -215,3 +215,9 @@ region/reopen label. Identity, Appearance, unsaved/saving, existing public versi
 limited settings access and hide/reopen examples use the production task model
 and sourced presentation. Native settings, permissions and draft isolation are
 verified separately in [the setup guide](site-setup-guide.md).
+
+
+Homepage and navigation states extend **Admin / Getting started** using the same
+production task model and sourced panel: missing/selected homepage, limited menu
+access, unsaved/processing, public settings, hide/reopen and the granted
+published-Page transition. See [native guidance](homepage-navigation-guide.md).

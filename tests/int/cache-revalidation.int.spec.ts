@@ -48,6 +48,15 @@ const afterChange = (
   } as never)
 
 describe('CMS cache revalidation', () => {
+  it('bypasses published Page deletion revalidation only for explicit server fixture context', () => {
+    const doc = { _status: 'published' }
+    expect(revalidateDeletedPageCache({ doc, context: { [SKIP_CACHE_REVALIDATION_CONTEXT]: true } } as never)).toBe(doc)
+    expect(mocks.revalidateTag).not.toHaveBeenCalled()
+    revalidateDeletedPageCache({ doc, context: { [SKIP_CACHE_REVALIDATION_CONTEXT]: false } } as never)
+    expect(mocks.revalidateTag).toHaveBeenCalledWith(CMS_CACHE_TAGS.pages, immediateRevalidationProfile)
+    expect(mocks.revalidateTag).toHaveBeenCalledWith(CMS_CACHE_TAGS.sitemap, immediateRevalidationProfile)
+  })
+
   it('invalidates published form dependencies on deletion and respects fixture bypass', () => {
     mocks.revalidateTag.mockClear()
     revalidateDeletedFormCache({ doc: {}, context: {} } as never)

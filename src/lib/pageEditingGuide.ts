@@ -1,9 +1,10 @@
-import type { OnboardingTask } from './adminOnboardingShared'
+import type { OnboardingAction, OnboardingTask } from './adminOnboardingShared'
 
 /** Visibility only; independent of the dashboard guide and never access authority. */
 export const PAGE_EDITING_GUIDE_KEY = 'forma-page-editing-guide-v1'
 
 export function getPageEditingTask(input: {
+  structureAction?: OnboardingAction | null
   previewURL: string | null
   hasBlocks: boolean
   modified: boolean
@@ -53,11 +54,19 @@ export function getPageEditingTask(input: {
         'In Layout, choose Add Block and fill in its content. Use Save Draft, then check the result in Live Preview. A blank page has no blocks to display; publishing is a separate action.',
       action: blocks,
     }
+  if (input.hasPublishedDoc && input.structureAction)
+    return {
+      ...base,
+      title: 'Help visitors find your published page',
+      description:
+        'A public version exists. Publishing does not make this the homepage or add a menu item. Open Layout Defaults to choose the homepage and site header/footer, then edit menu items in the selected Header or Footer. These settings are site-wide. Use Live Preview above to keep checking this page; Save Draft keeps new edits separate from the public version.',
+      action: input.structureAction,
+    }
   return {
     ...base,
     title: 'Check your saved page',
     description: input.hasPublishedDoc
-      ? 'A public version of this page exists. Preview saved page opens the latest saved version in a new tab. Save Draft keeps new changes separate from the public version; use Publish only when those changes are ready.'
+      ? 'A public version of this page exists. Preview saved page opens the latest saved version in a new tab. Save Draft keeps new changes separate from the public version; use Publish only when those changes are ready. Publishing does not make this the homepage or add a menu item. Ask an Admin to update site-wide layout or menus if you do not have access.'
       : 'Preview saved page opens the latest saved draft in a new tab. Use Live Preview above to check desktop, tablet and mobile. This page stays private until you choose Publish; publishing does not automatically make it the homepage.',
     action: preview,
   }

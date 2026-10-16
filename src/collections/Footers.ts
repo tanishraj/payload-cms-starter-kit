@@ -23,7 +23,8 @@ export const Footers: CollectionConfig = {
     hidden: hideUnlessFeature('footers'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'updatedAt'],
-    description: 'Reusable site footer presets powered by footer layout blocks.',
+    description:
+      'Edit links in a Footer Layout, publish the Footer, then select it in Layout Defaults. Pages may hide or override the default Footer.',
     listSearchableFields: ['title', 'slug'],
   },
   access: {

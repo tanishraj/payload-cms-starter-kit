@@ -173,6 +173,15 @@ export const PageSettings: GlobalConfig = {
           description: 'Pick which page, header, and footer are active across the whole site.',
           fields: [
             {
+              name: 'siteStructureGuide',
+              type: 'ui',
+              admin: {
+                components: {
+                  Field: '@/components/admin/SiteStructureGuideField#SiteStructureGuideField',
+                },
+              },
+            },
+            {
               name: 'homepage',
               label: 'Homepage',
               type: 'relationship',
@@ -182,7 +191,8 @@ export const PageSettings: GlobalConfig = {
               },
               validate: validatePublishedFrontPage,
               admin: {
-                description: 'The published page that renders at the root URL (/).',
+                description:
+                  'Choose a published page for /. Publishing a Page does not select it here or add it to a menu. Save Draft stages this choice; Publish applies it site-wide.',
               },
             },
             {
@@ -191,7 +201,8 @@ export const PageSettings: GlobalConfig = {
               type: 'relationship',
               relationTo: 'headers',
               admin: {
-                description: 'The header preset rendered on every page.',
+                description:
+                  'Select a published Header preset. Edit its Layout menu items in Headers and publish that record. Pages using a custom header may override this default.',
               },
             },
             {
@@ -200,7 +211,8 @@ export const PageSettings: GlobalConfig = {
               type: 'relationship',
               relationTo: 'footers',
               admin: {
-                description: 'The footer preset rendered on every page.',
+                description:
+                  'Select a published Footer preset. Edit its Layout links in Footers and publish that record. Pages may hide or override this default.',
               },
             },
           ],

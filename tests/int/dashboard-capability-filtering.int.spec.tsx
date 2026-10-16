@@ -94,6 +94,7 @@ describe('dashboard capability filtering', () => {
     expect(html).toContain('+ New Article')
     expect(html).toContain('Authorized article')
     expect(html).not.toContain('Review site settings')
+    expect(html).not.toContain('Review homepage and navigation')
     expect(html).not.toContain('+ New Page')
     expect(html).not.toContain('+ New News / Event')
     expect(html).not.toContain('+ Upload Media')
@@ -139,6 +140,7 @@ describe('dashboard capability filtering', () => {
       '+ New Reusable Section',
       '+ Upload Media',
       'Review site settings',
+      'Review homepage and navigation',
     ]) {
       expect(html).toContain(label)
     }

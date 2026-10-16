@@ -1,6 +1,6 @@
 # Website feature implementation checklist
 
-Updated: 16 October 2026 (Asia/Dubai).
+Updated: 17 October 2026 (Asia/Dubai).
 
 ## Current direction
 
@@ -1921,11 +1921,11 @@ handoff. Manager section guidance depends on verified ACCESS work.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
-- [ ] **ADMINUX-12 — Navigation and homepage guidance.** Link the page-creation journey to permitted navigation/homepage settings, explain public reachability and missing links, and prevent Manager actions outside their assigned authority.
+- [x] **ADMINUX-12 — Navigation and homepage guidance.** Link the page-creation journey to permitted navigation/homepage settings, explain public reachability and missing links, and prevent Manager actions outside their assigned authority.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Not yet assessed.
+  Work: Verified native guidance · Priority: Cross-cutting / Handoff · Baseline: Source present.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/homepage-setup-guidance` · Verified on: 2026-10-17 · Increment: reuse native Page/Layout Defaults editing, sourced optional guidance and current feature grants; no automatic assignment, menu insertion or publication. 133 focused checks, the native Page publication → homepage draft → Header destination → Manager-denial journey, and scoped light/dark accessibility pass. Full local integration passes (2,862 tests; one existing skip); all six governance journeys pass without retries. Exact-head build/CI and merge evidence are owned by the feature PR; broader launch/handoff and novice-user acceptance remain open.
 
 - [ ] **ADMINUX-13 — Media selection assistance.** Explain upload requirements, missing/invalid files, descriptive alt text and references to reused assets. Scope-sensitive or private form uploads retain their distinct storage/access boundaries.
 
@@ -2174,3 +2174,12 @@ Exact-head Quality/merge evidence remains pending.
 
 
 | 2026-10-16 | ONBOARD-05/06; VERIFY | CI block-readiness race corrected | Codex | PR #37's setup journey passed on CI; the existing Page journey expanded an ADD_ROW placeholder before its debounced server field state arrived. Retained retry trace confirms the click preceded completion of that response. Await the native field-state response and ready Page Header row before explicitly expanding it. No application behavior, assertion, timeout or retry policy changed. | [PR #37](https://github.com/tanishraj/payload-cms-starter-kit/pull/37), [failed CI evidence](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38953738085) | Affected Page journey passes three consecutive runs with retries disabled (1.0m). TypeScript and affected lint pass. The failed CI passed 2,842 integration tests and the other four governance journeys; forms/build were not reached. All five local governance/onboarding journeys also pass without retries (1.2m). Final inventory update/check passes and full integration passes again (2,842 tests, one existing Docker skip; 54.38s). Fresh exact-head CI remains the merge gate. |
+
+
+| 2026-10-17 | ADMINUX-12; ONBOARD-18 | Homepage/navigation guidance in progress | Codex | Existing Layout Defaults, Headers, Footers and Navigation Links own configuration. Reuse the sourced guide to explain homepage selection versus page publication/menu placement. Connect a saved public Page to Layout Defaults only with its existing site-wide grant; preserve native drafts, scope, validation and publication. | `feat/homepage-setup-guidance` | Authenticated upstream source reverified. Storybook states precede native integration. Engineering and broader usability acceptance remain open; no environment variable or provider change. |
+
+
+| 2026-10-17 | ADMINUX-12; VERIFY | Native homepage guidance verified; final regression pending | Codex | A clean public Page leads to permitted Layout Defaults. Native Homepage draft save preserves public homepage/Header/Footer selections; menu editing remains in native presets. Page-only Manager sees no settings action and direct update returns 403. Fix published Page deletion to honor the existing trusted cache-bypass context for fixture cleanup; normal public invalidation remains tested. | `feat/homepage-setup-guidance` | 133 focused checks pass. Native journey passes without retries (26.5s); light/dark scoped axe has zero violations/incomplete results. Storybook build/review and detector pass. Initial local port conflict was isolated on 3001; a temporary-copy exclusion omitted source media directories and was corrected. Earlier native runs exposed a missing Headers landmark in the test and the published-fixture cleanup hook, both corrected without weakening assertions or increasing timeouts. Full six-journey/integration/build/CI evidence follows. |
+
+
+| 2026-10-17 | ADMINUX-12; VERIFY | Full local regression verified | Codex | Finish the supported native homepage/navigation guidance increment and preserve ordinary published Page cache invalidation while making fixture bypass consistent. Source, native task behavior, permissions, generated artifacts and current project context reviewed together. | `feat/homepage-setup-guidance` | Full integration: 2,862 pass/one existing opt-in Docker skip (79.63s). All six governance/onboarding journeys pass without retries (2.3m) on port 3001 in a secret-free temporary copy with identical application source. Focused contracts: 133 pass. Repeat types/import map are deterministic; final TypeScript and affected lint pass; full lint has one existing warning. Final Storybook build, bounded desktop/mobile review, scoped light/dark axe and single detector pass succeed. Approved production audit passes. Production build passes; artifact guard reports 73 traces/private uploads excluded. Exact-head CI/merge evidence follows in the feature PR. Final operator-document edits require one last inventory refresh/check before commit. No live local server/cache, production data or environment file was overwritten. |

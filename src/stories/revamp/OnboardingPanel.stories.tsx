@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { useState } from 'react'
+import { getSiteStructureTask } from '@/lib/siteStructureGuide'
 import { getSiteSetupTask } from '@/lib/siteSetupGuide'
 import { getPageEditingTask } from '@/lib/pageEditingGuide'
 import { expect, fn, userEvent, within } from 'storybook/test'
@@ -198,4 +199,64 @@ export const SiteSetupHideAndReopen: Story = {
     await userEvent.click(canvas.getByRole('button', { name: 'Site setup' }))
     await expect(canvas.getByRole('heading', { name: 'Review your site identity' })).toBeVisible()
   },
+}
+
+// Layout guidance reuses the same production presentation and catalogue entry.
+const structureState = {
+  menuAction: { label: 'Open Headers', href: '/admin/collections/headers' },
+  hasHomepageSelection: false,
+  modified: false,
+  processing: false,
+  hasPublishedDoc: false,
+  collapsed: false,
+}
+export const HomepageNotSelected: Story = { args: getSiteStructureTask(structureState) }
+export const HomepageSelected: Story = {
+  args: getSiteStructureTask({ ...structureState, hasHomepageSelection: true }),
+}
+export const HomepageLimitedAccess: Story = {
+  args: getSiteStructureTask({ ...structureState, hasHomepageSelection: true, menuAction: null }),
+}
+export const HomepageUnsaved: Story = {
+  args: getSiteStructureTask({ ...structureState, modified: true }),
+  play: async ({ canvasElement }) => {
+    await expect(
+      within(canvasElement).getByRole('button', { name: 'Choose a homepage' }),
+    ).toBeDisabled()
+    await expect(within(canvasElement).queryByRole('link')).not.toBeInTheDocument()
+  },
+}
+export const HomepageSaving: Story = {
+  args: getSiteStructureTask({ ...structureState, processing: true }),
+}
+export const HomepagePublicVersion: Story = {
+  args: getSiteStructureTask({
+    ...structureState,
+    hasHomepageSelection: true,
+    hasPublishedDoc: true,
+  }),
+}
+export const HomepageHideAndReopen: Story = {
+  args: getSiteStructureTask(structureState),
+  render: (args) => <InteractivePanel {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: 'Hide guide' }))
+    await expect(canvas.getByRole('button', { name: 'Homepage and navigation' })).toHaveFocus()
+    await userEvent.click(canvas.getByRole('button', { name: 'Homepage and navigation' }))
+    await expect(
+      canvas.getByRole('heading', { name: 'Choose what visitors see at the homepage' }),
+    ).toBeVisible()
+  },
+}
+
+export const PublishedPageNavigation: Story = {
+  args: getPageEditingTask({
+    ...pageState,
+    hasPublishedDoc: true,
+    structureAction: {
+      label: 'Review homepage and navigation',
+      href: '/admin/globals/page-settings',
+    },
+  }),
 }

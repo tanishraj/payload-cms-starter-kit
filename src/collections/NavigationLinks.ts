@@ -122,7 +122,8 @@ export const NavigationLinks: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'linkType', 'sourceType', 'updatedAt'],
     listSearchableFields: ['title', 'url'],
-    description: 'Reusable destinations for menus, CTAs, legal links, and utility links.',
+    description:
+      'Reusable destinations for menus, CTAs, legal and utility links. Creating or publishing a Navigation Link does not add a visible menu item; place it in a supported Header, Footer or page block.',
   },
   access: {
     create: requireFeature('navigationLinks'),

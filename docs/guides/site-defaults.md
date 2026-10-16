@@ -10,7 +10,11 @@
 - `Header` selects the Header preset rendered across the public layout.
 - `Footer` selects the Footer preset rendered across the public layout.
 
+Publishing a Page does not automatically select it as Homepage or add a menu item. Edit menu items in the selected Header or Footer Layout, then publish that record. A reusable Navigation Link alone does not create a visible menu item. Pages may override the Header/Footer defaults.
+
 Edit and publish the source Page/Header/Footer before selecting it here. These relationships select active records; they do not edit their content.
+
+**Save Draft** stages these site-wide selections; **Publish** applies them. The optional **Homepage and navigation** guide explains the next step and can be hidden/reopened independently of other guides. Users need the Layout Defaults grant; section access alone does not grant site-wide configuration. See the [guidance contract](../operations/homepage-navigation-guide.md).
 
 ## Page Appearance
 
@@ -37,7 +41,7 @@ This is separate from the in-page `Announcement` block.
 3. Select those three records under `Site Structure`.
 4. Review the default Page appearance.
 5. If a campus notice is required, enable the announcement bar, add concise items, select an animation, and validate its timing.
-6. Save and verify `/`, a nested Page, mobile layout, dismissal, scrolling, and Header spacing.
+6. Save a draft or explicitly Publish when ready, then verify `/`, a nested Page, mobile layout, dismissal, scrolling, and Header spacing.
 
 ## Common Mistakes And Recovery
 
