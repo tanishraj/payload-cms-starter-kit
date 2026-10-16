@@ -72,7 +72,13 @@ React Server Components load public CMS data. Focused client components own inte
   authenticated `POST /api/pages/create-from-recipe` collection endpoint accepts only a Page title
   and approved recipe ID, creates through Payload with `draft: true` and access enforcement, and
   returns the native edit destination. Existing Page editing and relationship-drawer creation keep
-  Payload's native document view.
+  Payload's native document view. A non-persisted UI field before Page Layout observes native
+  dirty/processing/public-version facts and reuses the sourced optional getting-started panel.
+  Saved preview opens the access-enforced preview route in a separate tab; it does not transport
+  unsaved form values. Dashboard/Page visibility use independent account-owned preference keys
+  with one shared confirmed-write adapter and access-enforced server read helper. Drawers,
+  read-only, trashed and locked documents omit the Page guide. See the
+  [Page editing guide](../../../../docs/operations/page-editing-guide.md).
 - Dashboard attention remains feature-driven. Pending submitted Reviews, open Form Submissions, and
   Action Queue counts query only destinations granted to the authenticated user with
   `overrideAccess: false`. Counts and quick actions for ungranted features are absent, and failed

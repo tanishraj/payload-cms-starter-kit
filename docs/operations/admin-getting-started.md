@@ -35,6 +35,13 @@ value. Hide/reopen preserves keyboard focus. Disclosure controls stay disabled u
 their handlers hydrate; ordinary task links work without that interaction. The dashboard's recent work uses the
 latest saved drafts, retaining its explicit Draft/Published labels.
 
+## Continue in the Page editor
+
+The Page Content tab now reuses the same sourced guide presentation with current
+native form facts, a safe saved-preview link and its own optional account visibility.
+See [Page editing guide](page-editing-guide.md). Hiding one guide does not hide the
+other. The developer quickstart and safe preflight shipped separately in PR #35.
+
 ## Implementation boundary
 
 `adminOnboarding.ts` is a server-only loader. Access-enforced Page reads validate

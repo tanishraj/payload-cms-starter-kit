@@ -200,3 +200,11 @@ Getting started was also checked in light Default and 390px dark Long Content
 with scoped axe: zero WCAG A/AA violations and zero incomplete checks. The Native
 Payload adapter verifies keyboard/persistence separately. This scope does not
 certify the rest of the admin or measure novice usability.
+
+## Page editing guidance
+
+**Admin / Getting started** reuses its production sourced panel for Page first-draft,
+empty layout, unsaved changes, saving, saved draft and public-version examples. The
+Action control supports a safe new-tab target and a genuinely disabled pending
+action. Story interactions verify target/rel and that saving has no clickable link.
+See [Page editing guide](page-editing-guide.md); there is no second presentation entry.

@@ -1,3 +1,5 @@
+import axe from 'axe-core'
+import { writeFile } from 'node:fs/promises'
 import { expect, test, type Page } from '@playwright/test'
 
 import {
@@ -8,6 +10,60 @@ import {
   type GovernanceFixture,
 } from '../helpers/governanceBrowserFixtures'
 import { login } from '../helpers/login'
+
+async function checkPageGuideAccessibility(page: Page, name: string) {
+  await page.mouse.move(0, 0)
+  await page.locator('.admin-onboarding').evaluate(async (element) => {
+    await Promise.all(
+      element
+        .getAnimations({ subtree: true })
+        .map((animation) => animation.finished.catch(() => {})),
+    )
+  })
+  await page.addScriptTag({ content: axe.source })
+  const result = await page.evaluate(async () => {
+    if (!('axe' in window)) throw new Error('Accessibility engine did not load.')
+    const engine = window.axe as typeof import('axe-core')
+    const results = await engine.run('.admin-onboarding', {
+      runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] },
+    })
+    return {
+      geometry: Array.from(
+        document.querySelectorAll('.admin-onboarding a, .admin-onboarding button'),
+      ).map((element) => {
+        const box = element.getBoundingClientRect()
+        const style = getComputedStyle(element)
+        return {
+          tag: element.tagName,
+          box: { x: box.x, y: box.y, width: box.width, height: box.height },
+          background: style.backgroundColor,
+          color: style.color,
+          opacity: style.opacity,
+          stack: document
+            .elementsFromPoint(box.x + box.width / 2, box.y + box.height / 2)
+            .slice(0, 6)
+            .map((node) => ({ tag: node.tagName, class: node.getAttribute('class') })),
+        }
+      }),
+      violations: results.violations.map(({ id, nodes }) => ({
+        id,
+        targets: nodes.map(({ target }) => target),
+      })),
+      incomplete: results.incomplete.map(({ id, nodes }) => ({
+        id,
+        nodes: nodes.map(({ target, any, all, none }) => ({
+          target,
+          checks: [...any, ...all, ...none].map(({ id, message, data }) => ({ id, message, data })),
+        })),
+      })),
+    }
+  })
+  const reportPath = test.info().outputPath(name)
+  await writeFile(reportPath, JSON.stringify(result, null, 2))
+  await test.info().attach(name, { path: reportPath, contentType: 'application/json' })
+  expect(result.violations).toEqual([])
+  expect(result.incomplete).toEqual([])
+}
 
 const reviewBody = 'A deterministic submitted Review awaiting moderation.'
 
@@ -263,6 +319,9 @@ test.describe('governance browser journeys', () => {
             response.request().method() === 'POST' &&
             response.request().headers()['content-type']?.startsWith('multipart/form-data'),
         )
+        await expect(
+          managerPage.getByRole('region', { name: 'Getting started', exact: true }),
+        ).toContainText('Parent in an assigned section')
         await managerPage.getByRole('button', { name: 'Save Draft', exact: true }).click()
         const createResponse = await createResponsePromise
         const created = await createResponse.json()
@@ -476,6 +535,109 @@ test.describe('governance browser journeys', () => {
     } finally {
       await managerContext.close()
     }
+  })
+
+  test('Page guide follows a real blank draft through blocks, save and authenticated preview', async ({
+    page,
+    browser,
+  }) => {
+    if (!fixture) throw new Error('Expected governance fixture.')
+    const currentFixture = fixture
+    await login({ page, user: currentFixture.admin })
+    await page.goto('/admin/collections/pages/create')
+    await page
+      .getByRole('textbox', { name: 'Page title', exact: true })
+      .fill(`First draft ${Date.now()}`)
+    const created = page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname === '/api/pages/create-from-recipe' &&
+        response.request().method() === 'POST',
+    )
+    await page.getByRole('button', { name: 'Create draft', exact: true }).click()
+    const response = await created
+    const result = await response.json()
+    expect(response.status()).toBe(201)
+    currentFixture.pageIDs.push(result.id)
+    await page.waitForURL((url) => url.pathname === `/admin/collections/pages/${result.id}`, {
+      waitUntil: 'commit',
+    })
+    await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
+    const guide = page.getByRole('region', { name: 'Getting started', exact: true })
+    await expect(guide.getByRole('heading', { name: 'Add your first block' })).toBeVisible()
+    await guide.getByRole('link', { name: 'Go to page blocks' }).click()
+    await page.getByRole('button', { name: 'Add Block', exact: true }).first().click()
+    await page.getByRole('button', { name: /Page Header/ }).click()
+    await page.getByRole('button', { name: 'Show All', exact: true }).click()
+    const heading = page.locator('#field-layout__0__title')
+    await expect(heading).toBeVisible()
+    await heading.fill('A first draft worth previewing')
+    await expect(
+      guide.getByRole('heading', { name: 'Save your changes before previewing' }),
+    ).toBeVisible()
+    const saved = page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname === `/api/pages/${result.id}` &&
+        response.request().method() === 'PATCH',
+    )
+    await page.getByRole('button', { name: 'Save Draft', exact: true }).click()
+    const saveResponse = await saved
+    expect(saveResponse.ok()).toBe(true)
+    expect((await saveResponse.json()).doc).toMatchObject({
+      _status: 'draft',
+      layout: [{ blockType: 'pageHeader', title: 'A first draft worth previewing' }],
+    })
+    await expect(guide.getByRole('heading', { name: 'Check your saved page' })).toBeVisible()
+    await heading.fill('Unsaved work stays in the editor')
+    await expect(
+      guide.getByRole('heading', { name: 'Save your changes before previewing' }),
+    ).toBeVisible()
+    const previewOpened = page.waitForEvent('popup')
+    await guide.getByRole('link', { name: /Preview saved page/ }).click()
+    const preview = await previewOpened
+    try {
+      await expect(
+        preview.getByRole('heading', { name: 'A first draft worth previewing', exact: true }),
+      ).toBeVisible({ timeout: 120_000 })
+      expect(new URL(preview.url()).pathname).toBe(`/preview/page/${result.id}`)
+      await expect(page.locator('#field-layout__0__title')).toHaveValue(
+        'Unsaved work stays in the editor',
+      )
+      await guide.scrollIntoViewIfNeeded()
+      await checkPageGuideAccessibility(page, 'page-guide-light-a11y.json')
+      await page.screenshot({ path: test.info().outputPath('page-guide-saved-desktop.png') })
+      await page.setViewportSize({ width: 390, height: 844 })
+      await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'))
+      await guide.scrollIntoViewIfNeeded()
+      await checkPageGuideAccessibility(page, 'page-guide-dark-a11y.json')
+      await page.screenshot({ path: test.info().outputPath('page-guide-saved-mobile.png') })
+    } finally {
+      await preview.close()
+    }
+    const savedAgain = page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname === `/api/pages/${result.id}` &&
+        response.request().method() === 'PATCH',
+    )
+    await page.getByRole('button', { name: 'Save Draft', exact: true }).click()
+    expect((await savedAgain).ok()).toBe(true)
+    await expect(guide.getByRole('heading', { name: 'Check your saved page' })).toBeVisible()
+    const visitor = await browser.newContext()
+    try {
+      const denied = await visitor.request.get(`/preview/page/${result.id}`)
+      expect(denied.status()).not.toBe(200)
+    } finally {
+      await visitor.close()
+    }
+    await guide.getByRole('button', { name: 'Hide guide' }).click()
+    await expect(guide.getByRole('button', { name: 'Getting started', exact: true })).toBeVisible()
+    await page.reload({ waitUntil: 'domcontentloaded' })
+    await expect(guide.getByRole('button', { name: 'Getting started', exact: true })).toBeVisible()
+    await guide.getByRole('button', { name: 'Getting started', exact: true }).click()
+    await expect(guide.getByRole('heading', { name: 'Check your saved page' })).toBeVisible()
+    const current = await page.request.get(`/api/pages/${result.id}?draft=true`, {
+      headers: await getPayloadAuthHeaders(page),
+    })
+    expect((await current.json())._status).toBe('draft')
   })
 
   test('Reviews Site Manager approves a submitted Review', async ({ browser, page }) => {

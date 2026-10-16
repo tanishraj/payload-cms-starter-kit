@@ -187,6 +187,9 @@ export interface UserAuthOperations {
  */
 export interface Page {
   id: string;
+  /**
+   * Name this page so your team can find it. Edit the visible page content in the blocks below.
+   */
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -198,7 +201,7 @@ export interface Page {
    */
   parent?: (string | null) | Page;
   /**
-   * Compose the page using reusable content blocks.
+   * Choose Add Block to build the page. Fill in each block, use Save Draft and check Live Preview. Publish only when the page is ready.
    */
   layout?:
     | (

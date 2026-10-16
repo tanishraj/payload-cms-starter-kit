@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { useState } from 'react'
+import { getPageEditingTask } from '@/lib/pageEditingGuide'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { OnboardingPanel, type OnboardingPanelProps } from '@/components/revamp/onboarding-panel'
 
@@ -34,7 +35,10 @@ const meta = {
       description: 'Current next-task title, derived by the server in production.',
     },
     description: { control: 'text', description: 'Short task and access explanation.' },
-    action: { control: 'object', description: 'Permitted destination and descriptive link label.' },
+    action: {
+      control: 'object',
+      description: 'Permitted destination, label, optional new-tab target and disabled state.',
+    },
     collapsed: { control: 'boolean', name: 'Guide hidden' },
     dismissible: { control: 'boolean', name: 'Allow hiding guidance' },
     ready: { control: 'boolean', name: 'Disclosure controls hydrated' },
@@ -110,4 +114,43 @@ export const HideAndReopen: Story = {
     await userEvent.click(canvas.getByRole('button', { name: 'Getting started' }))
     await expect(canvas.getByRole('heading', { name: 'Create a page' })).toBeVisible()
   },
+}
+
+const pageState = {
+  previewURL: '/preview/page/example',
+  hasBlocks: true,
+  modified: false,
+  processing: false,
+  hasPublishedDoc: false,
+  siteManager: true,
+  collapsed: false,
+}
+
+// The native Page editor reuses this same sourced presentation and catalogue entry.
+export const PageFirstDraft: Story = {
+  args: getPageEditingTask({ ...pageState, previewURL: null, hasBlocks: false }),
+}
+export const PageEmptyLayout: Story = {
+  args: getPageEditingTask({ ...pageState, hasBlocks: false }),
+}
+export const PageUnsavedChanges: Story = {
+  args: getPageEditingTask({ ...pageState, modified: true }),
+  play: async ({ canvasElement }) => {
+    const link = within(canvasElement).getByRole('link', { name: /Preview saved page/ })
+    await expect(link).toHaveAttribute('target', '_blank')
+    await expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  },
+}
+export const PageSaving: Story = {
+  args: getPageEditingTask({ ...pageState, processing: true }),
+  play: async ({ canvasElement }) => {
+    await expect(
+      within(canvasElement).getByRole('button', { name: 'Preview saved page' }),
+    ).toBeDisabled()
+    await expect(within(canvasElement).queryByRole('link')).not.toBeInTheDocument()
+  },
+}
+export const PageSavedDraft: Story = { args: getPageEditingTask(pageState) }
+export const PageWithPublicVersion: Story = {
+  args: getPageEditingTask({ ...pageState, hasPublishedDoc: true }),
 }

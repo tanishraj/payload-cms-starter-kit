@@ -13,6 +13,13 @@ Registration order in [payload.config.ts](../../../../src/payload.config.ts) is 
 
 Exact symbols and files are generated in [project-inventory.json](project-inventory.json). Collections receive Trash through [withTrash.ts](../../../../src/plugins/withTrash.ts), except NewsEventClassifications: classification deletion remains a guarded hard delete. An in-use delete identifies the first referencing News & Events entry, Page, Reusable Section, Calendar/Annual Calendar/Tabs container, or Detail Page Template so the editor can remove or replace that relationship; classifications that must remain connected are archived instead. Content and structural presets opt into drafts/versions in their own configs; operational records and users are not public content.
 
+Pages have a non-persisted `pageEditingGuide` UI field before Layout. Its server component
+reads only the current account's optional visibility preference with `req`, `user` and
+`overrideAccess: false`; the client observes native form state. Preferences never grant access
+or mark content saved/published. Native block controls now use explicit Block/Blocks labels.
+The existing draft/publication/access schemas and routes remain authoritative; generated type
+changes are descriptions only. See [guide contract](../../../../docs/operations/page-editing-guide.md).
+
 ## Registered Globals
 
 Nine globals are registered:
