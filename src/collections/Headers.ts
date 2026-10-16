@@ -22,7 +22,8 @@ export const Headers: CollectionConfig = {
     hidden: hideUnlessFeature('headers'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'updatedAt'],
-    description: 'Reusable site header presets powered by header layout blocks.',
+    description:
+      'Edit menu items in a Header Layout, publish the Header, then select it in Layout Defaults. Pages may override the default Header.',
     listSearchableFields: ['title', 'slug'],
   },
   access: {

@@ -2321,6 +2321,7 @@
       "docs/operations/developer-quickstart.md",
       "docs/operations/developer-workflows.md",
       "docs/operations/editorial-governance.md",
+      "docs/operations/homepage-navigation-guide.md",
       "docs/operations/mongodb-deployment.md",
       "docs/operations/page-editing-guide.md",
       "docs/operations/private-form-attachments.md",
@@ -2696,6 +2697,8 @@
       "src/components/admin/PageRecipeSetup.tsx",
       "src/components/admin/SiteSetupGuide.tsx",
       "src/components/admin/SiteSetupGuideField.tsx",
+      "src/components/admin/SiteStructureGuide.tsx",
+      "src/components/admin/SiteStructureGuideField.tsx",
       "src/components/admin/TwoFactor.scss",
       "src/components/admin/TwoFactorAuthForm.tsx",
       "src/components/admin/TwoFactorLoginView.tsx",
@@ -2961,6 +2964,7 @@
       "src/lib/siteOffices.ts",
       "src/lib/siteOfficesShared.ts",
       "src/lib/siteSetupGuide.ts",
+      "src/lib/siteStructureGuide.ts",
       "src/lib/siteTimeZone.server.ts",
       "src/lib/siteTimeZone.ts",
       "src/lib/siteUrl.ts",
@@ -3331,6 +3335,7 @@
       "tests/int/setup-cli.int.spec.ts",
       "tests/int/site-offices.int.spec.ts",
       "tests/int/site-setup-guide.int.spec.tsx",
+      "tests/int/site-structure-guide.int.spec.tsx",
       "tests/int/site-time-zone.int.spec.ts",
       "tests/int/sitemap.int.spec.ts",
       "tests/int/speed-insights.int.spec.ts",
@@ -3361,7 +3366,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "b35fcbaa6a1727787ff857848f0a798e92731b8d5394f1c2e28d730499aee2e9"
+    "sha256": "451b68d56626148d3287c677383f23d0a135eb93c6754520506191c992b73ebc"
   },
   "surfaces": {
     "access": [
@@ -3491,6 +3496,7 @@
       "src/lib/siteOffices.ts",
       "src/lib/siteOfficesShared.ts",
       "src/lib/siteSetupGuide.ts",
+      "src/lib/siteStructureGuide.ts",
       "src/lib/siteTimeZone.server.ts",
       "src/lib/siteTimeZone.ts",
       "src/lib/siteUrl.ts",
@@ -3788,6 +3794,7 @@
       "tests/int/setup-cli.int.spec.ts",
       "tests/int/site-offices.int.spec.ts",
       "tests/int/site-setup-guide.int.spec.tsx",
+      "tests/int/site-structure-guide.int.spec.tsx",
       "tests/int/site-time-zone.int.spec.ts",
       "tests/int/sitemap.int.spec.ts",
       "tests/int/speed-insights.int.spec.ts",

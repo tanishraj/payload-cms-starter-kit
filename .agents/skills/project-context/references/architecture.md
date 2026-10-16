@@ -190,7 +190,7 @@ so moving that Page beneath a parent does not leave consent UI pointing at its l
   The focused runtime-import config proves that boundary in a real worker without a server or
   database connection.
 - Run `pnpm test:e2e:governance` for feature-grant/revocation, dashboard onboarding, first-draft
-  editing/preview, site setup and submitted-Review moderation. The Page journey awaits native
+  editing/preview, site setup, homepage/navigation and submitted-Review moderation. The Page journey awaits native
   server field state before expanding a newly added block; its placeholder is not edit-ready.
   GitHub CI also runs `pnpm test:e2e:forms`; the full E2E suite remains local.
 - Run `pnpm generate:types` after schema changes.
@@ -342,3 +342,18 @@ The server reads only account-owned preferences and capability flags, not anothe
 copy of global settings. Admin quick actions open Site Identity; Manager links
 respect existing feature grants. Public global reads and native draft/publication
 authority are unchanged. See [site setup](../../../../docs/operations/site-setup-guide.md).
+
+
+Native Page guidance links a clean public Page to Layout Defaults only for its
+actual management grant. Admin Dashboard adds the same shortcut. A non-persisted
+Site Structure UI field reuses the sourced panel; only homepage-presence is
+selected from form state. Native dirty/processing facts disable onward links, and
+capability props restrict Header/Footer destinations. No readiness claim or
+settings write is performed by guidance. See
+[homepage/navigation contract](../../../../docs/operations/homepage-navigation-guide.md).
+
+Published Page deletion honors the existing explicit server-only
+`skipCacheRevalidation` context, matching Page change hooks. Guarded fixture
+cleanup can therefore delete its recorded published Pages outside Next's request
+context. Ordinary published deletion still immediately invalidates Page/sitemap
+tags; no client-provided data or feature grant can set that server context.

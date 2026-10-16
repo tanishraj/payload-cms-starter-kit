@@ -270,3 +270,13 @@ server adapter; it threads the current request through access-enforced preferenc
 reads. No stored setting path/default, access policy, version behavior or migration
 changes. Native dirty/processing facts govern guidance, never permissions or
 claimed completion. See [setup contract](../../../../docs/operations/site-setup-guide.md).
+
+
+PageSettings registers `siteStructureGuide` inside Site Structure. Its server
+adapter requires the Layout Defaults update feature and threads the user/request
+through an access-enforced account preference read. The independent
+`forma-site-structure-guide-v1` preference stores only visibility. Header/Footer
+edit links require their management grants, never dependency-read access. Existing
+Page scope, site-wide settings grants, field paths/defaults, homepage validation
+and publication authority remain unchanged. Collection/field descriptions clarify
+menu ownership; generated type changes are documentation only.

@@ -31,7 +31,10 @@ The parent validator prevents self-parenting and circular hierarchies. Reference
    new tab. Unsaved edits stay in the editor and are not included in that link.
    Use native **Live Preview** for current edits and desktop/tablet/mobile checks.
 5. Publish deliberately when ready. A draft stays private; publishing a Page does
-   not automatically choose it as the homepage in Layout Defaults.
+   not automatically choose it as the homepage in Layout Defaults or add a visible menu item.
+6. With Layout Defaults permission, a clean Page with a public version offers
+   **Review homepage and navigation**. That configuration is site-wide. Otherwise,
+   keep using Preview saved page and ask an Admin for homepage/menu changes.
 
 **Hide guide** and **Getting started** remember this account's page-guide display
 preference independently of the dashboard guide. Guidance grants no access and

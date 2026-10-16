@@ -35,6 +35,7 @@ import { FirstAdminNotice as FirstAdminNotice_f517cc4d50b7795b66094dd474f40ed1 }
 import { FeatureAccessOverview as FeatureAccessOverview_af1d959a8e1a18eafc54fa9fd5e758b7 } from '@/components/admin/FeatureAccessControls'
 import { FeatureGroupControls as FeatureGroupControls_af1d959a8e1a18eafc54fa9fd5e758b7 } from '@/components/admin/FeatureAccessControls'
 import { SiteSetupGuideField as SiteSetupGuideField_3d1cd2c04df18ace0b01fa616cd8245d } from '@/components/admin/SiteSetupGuideField'
+import { SiteStructureGuideField as SiteStructureGuideField_93ca37820460cb5305526986a68e8beb } from '@/components/admin/SiteStructureGuideField'
 import { DashboardView as DashboardView_8d5ccf53266e3797f61e9453e2f2d431 } from '@/components/admin/DashboardView'
 import { TwoFactorLoginView as TwoFactorLoginView_0c096a82d618beae940aa81c00014aed } from '@/components/admin/TwoFactorLoginView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
@@ -79,6 +80,7 @@ export const importMap = {
   "@/components/admin/FeatureAccessControls#FeatureAccessOverview": FeatureAccessOverview_af1d959a8e1a18eafc54fa9fd5e758b7,
   "@/components/admin/FeatureAccessControls#FeatureGroupControls": FeatureGroupControls_af1d959a8e1a18eafc54fa9fd5e758b7,
   "@/components/admin/SiteSetupGuideField#SiteSetupGuideField": SiteSetupGuideField_3d1cd2c04df18ace0b01fa616cd8245d,
+  "@/components/admin/SiteStructureGuideField#SiteStructureGuideField": SiteStructureGuideField_93ca37820460cb5305526986a68e8beb,
   "@/components/admin/DashboardView#DashboardView": DashboardView_8d5ccf53266e3797f61e9453e2f2d431,
   "@/components/admin/TwoFactorLoginView#TwoFactorLoginView": TwoFactorLoginView_0c096a82d618beae940aa81c00014aed,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,

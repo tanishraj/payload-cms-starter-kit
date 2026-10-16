@@ -35,6 +35,13 @@ independently of optional guidance. Admin recipe creation is unchanged; Site
 Managers still create through the native section-aware form. Only Admin and Site
 Manager roles exist. No examples or Pages are seeded or published by this guide.
 
+On a clean Page with blocks and a public version, a user granted Layout Defaults
+gets **Review homepage and navigation**. This explains site-wide impact and the
+separate homepage/menu steps. Native Live Preview remains available above. Without
+that grant the guide keeps saved preview and explains asking an Admin. Private or
+unsaved drafts keep their previous preview behavior. See the
+[homepage/navigation contract](homepage-navigation-guide.md).
+
 ## Source and ownership
 
 The presentation reuses authenticated `@shadcnblocks/empty-empty-actions-2` and its

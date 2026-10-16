@@ -8,6 +8,7 @@ import {
   loadDashboardOnboarding,
   canOpenDashboardFeature,
 } from '@/lib/adminOnboarding'
+import { getSiteStructureDestination } from '@/lib/siteStructureGuide'
 import { getSiteSetupDestination } from '@/lib/siteSetupGuide'
 import { DashboardGettingStarted } from './DashboardGettingStarted'
 
@@ -337,6 +338,8 @@ export async function DashboardOverview({ payload, user }: DashboardOverviewProp
   ].filter(({ enabled }) => enabled)
   const setup = isAdmin(user) ? getSiteSetupDestination(user) : null
   if (setup) quickActions.push({ enabled: true, ...setup })
+  const structure = isAdmin(user) ? getSiteStructureDestination(user) : null
+  if (structure) quickActions.push({ enabled: true, ...structure })
   const grantedFeatureKeys = isAdmin(user)
     ? []
     : getGrantedFeatureKeys(user).filter((key) => canOpenDashboardFeature(user, sections, key))

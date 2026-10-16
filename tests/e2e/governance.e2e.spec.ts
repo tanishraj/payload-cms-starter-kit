@@ -782,6 +782,160 @@ test.describe('governance browser journeys', () => {
     }
   })
 
+  test('Published Page guidance connects permitted homepage setup without changing public settings on draft save', async ({
+    page,
+    browser,
+  }) => {
+    if (!fixture) throw new Error('Expected governance fixture.')
+    await login({ page, user: fixture.admin })
+    const headers = await getPayloadAuthHeaders(page)
+    const globalURL = '/api/globals/page-settings'
+    const originalResponse = await page.request.get(`${globalURL}?draft=true&depth=0`, { headers })
+    expect(originalResponse.ok()).toBe(true)
+    const original = await originalResponse.json()
+    const visitor = await browser.newContext()
+    const manager = await browser.newContext()
+    const relationshipID = (value: unknown) =>
+      value && typeof value === 'object' && 'id' in value ? value.id : (value ?? null)
+    let touchedLayout = false
+    try {
+      const publicBeforeResponse = await visitor.request.get(`${globalURL}?depth=0`)
+      expect(publicBeforeResponse.ok()).toBe(true)
+      const publicBefore = await publicBeforeResponse.json()
+      const title = `Homepage guidance ${Date.now()}`
+      const created = await page.request.post('/api/pages', {
+        headers,
+        data: {
+          title,
+          slug: `homepage-guidance-${Date.now()}`,
+          _status: 'draft',
+          layout: [{ blockType: 'pageHeader', title }],
+        },
+      })
+      expect(created.ok()).toBe(true)
+      const { doc } = await created.json()
+      fixture.pageIDs.push(doc.id)
+      await page.goto(`/admin/collections/pages/${doc.id}`, { waitUntil: 'domcontentloaded' })
+      const pageGuide = page.getByRole('region', { name: 'Getting started', exact: true })
+      await expect(pageGuide.getByRole('heading', { name: 'Check your saved page' })).toBeVisible()
+      await expect(
+        pageGuide.getByRole('link', { name: 'Review homepage and navigation' }),
+      ).toHaveCount(0)
+      const publishing = page.waitForResponse(
+        (r) =>
+          new URL(r.url()).pathname === `/api/pages/${doc.id}` && r.request().method() === 'PATCH',
+      )
+      await page.getByRole('button', { name: 'Publish changes', exact: true }).click()
+      const published = await publishing
+      expect(published.ok()).toBe(true)
+      expect((await published.json()).doc._status).toBe('published')
+      await expect(
+        pageGuide.getByRole('heading', { name: 'Help visitors find your published page' }),
+      ).toBeVisible()
+      // Publishing the Page alone must not select the homepage or replace menus.
+      const afterPagePublish = await visitor.request
+        .get(`${globalURL}?depth=0`)
+        .then((r) => r.json())
+      for (const field of ['homepage', 'activeHeader', 'activeFooter'])
+        expect(relationshipID(afterPagePublish[field])).toBe(relationshipID(publicBefore[field]))
+      await pageGuide.getByRole('link', { name: 'Review homepage and navigation' }).click()
+      await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
+      const guide = page.getByRole('region', { name: 'Homepage and navigation', exact: true })
+      await expect(guide).toContainText(
+        'Publishing a page does not make it the homepage or add a menu item',
+      )
+      const homepage = page.locator('#field-homepage').getByRole('combobox')
+      await homepage.fill(title)
+      await page.getByRole('option', { name: title, exact: true }).click()
+      await expect(guide.getByRole('button', { name: 'Open Headers' })).toBeDisabled()
+      const saving = page.waitForResponse(
+        (r) => new URL(r.url()).pathname === globalURL && r.request().method() === 'POST',
+      )
+      touchedLayout = true
+      await page.getByRole('button', { name: 'Save Draft', exact: true }).click()
+      const saved = await saving
+      expect(saved.ok()).toBe(true)
+      const savedResult = (await saved.json()).result
+      expect(savedResult._status).toBe('draft')
+      expect(relationshipID(savedResult.homepage)).toBe(doc.id)
+      await expect(guide.getByRole('link', { name: 'Open Headers' })).toBeVisible()
+      const publicAfter = await visitor.request.get(`${globalURL}?depth=0`).then((r) => r.json())
+      for (const field of ['homepage', 'activeHeader', 'activeFooter'])
+        expect(relationshipID(publicAfter[field])).toBe(relationshipID(publicBefore[field]))
+      await guide.scrollIntoViewIfNeeded()
+      await checkPageGuideAccessibility(page, 'homepage-light-a11y.json')
+      await page.screenshot({ path: test.info().outputPath('homepage-desktop.png') })
+      await page.setViewportSize({ width: 390, height: 844 })
+      await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'))
+      await checkPageGuideAccessibility(page, 'homepage-dark-a11y.json')
+      await page.screenshot({ path: test.info().outputPath('homepage-mobile.png') })
+      await guide.getByRole('button', { name: 'Hide guide' }).click()
+      await expect(
+        guide.getByRole('button', { name: 'Homepage and navigation', exact: true }),
+      ).toBeVisible()
+      await page.reload({ waitUntil: 'domcontentloaded' })
+      await guide.getByRole('button', { name: 'Homepage and navigation', exact: true }).click()
+      await expect(guide.getByRole('link', { name: 'Open Headers' })).toBeVisible()
+      await guide.getByRole('link', { name: 'Open Headers' }).click()
+      await page.waitForURL((url) => url.pathname === '/admin/collections/headers')
+      await expect(
+        page.getByText(
+          'Edit menu items in a Header Layout, publish the Header, then select it in Layout Defaults. Pages may override the default Header.',
+          { exact: true },
+        ),
+      ).toBeVisible()
+      // A Page-only Manager retains scoped publishing but cannot manage site-wide defaults.
+      const users = await page.request.get(
+        `/api/users?where[email][equals]=${encodeURIComponent(fixture.reviewManager.email)}&depth=0`,
+        { headers },
+      )
+      expect(users.ok()).toBe(true)
+      const managerID = (await users.json()).docs[0].id
+      const assigned = await page.request.patch(`/api/users/${managerID}`, {
+        headers,
+        data: { features: { pages: true, reviews: false }, sectionRoots: [doc.id] },
+      })
+      expect(assigned.ok()).toBe(true)
+      const managerPage = await manager.newPage()
+      await login({ page: managerPage, user: fixture.reviewManager })
+      await expect(
+        managerPage.getByRole('link', { name: 'Review homepage and navigation', exact: true }),
+      ).toHaveCount(0)
+      await managerPage.goto(`/admin/collections/pages/${doc.id}`, {
+        waitUntil: 'domcontentloaded',
+      })
+      await expect(
+        managerPage.getByRole('region', { name: 'Getting started', exact: true }),
+      ).toContainText('Ask an Admin')
+      await expect(
+        managerPage.getByRole('link', { name: 'Review homepage and navigation', exact: true }),
+      ).toHaveCount(0)
+      const denied = await managerPage.request.post(`${globalURL}?draft=true`, {
+        headers: await getPayloadAuthHeaders(managerPage),
+        data: { homepage: doc.id },
+      })
+      expect(denied.status()).toBe(403)
+    } finally {
+      await visitor.close()
+      await manager.close()
+      if (touchedLayout) {
+        const restore = await standaloneRequest.newContext({
+          baseURL: 'http://127.0.0.1:3000',
+          extraHTTPHeaders: headers,
+          timeout: 10_000,
+        })
+        try {
+          const result = await restore.post(`${globalURL}?draft=true`, {
+            data: { homepage: relationshipID(original.homepage), _status: 'draft' },
+          })
+          expect(result.ok()).toBe(true)
+        } finally {
+          await restore.dispose()
+        }
+      }
+    }
+  })
+
   test('Reviews Site Manager approves a submitted Review', async ({ browser, page }) => {
     if (!fixture) throw new Error('Expected governance fixture.')
     const currentFixture = fixture

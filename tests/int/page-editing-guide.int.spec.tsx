@@ -18,9 +18,10 @@ const state = vi.hoisted(() => ({
   drawerSlug: '',
   currentEditor: undefined as string | { id: string } | undefined,
   role: 'siteManager',
+  features: {} as Record<string, boolean>,
 }))
 vi.mock('@payloadcms/ui', () => ({
-  useAuth: () => ({ user: { id: 'manager', role: state.role } }),
+  useAuth: () => ({ user: { id: 'manager', role: state.role, features: state.features } }),
   useConfig: () => ({ config: { serverURL: 'https://example.test', routes: { api: '/api' } } }),
   useDocumentInfo: () => state,
   useDocumentDrawerContext: () => ({ drawerSlug: state.drawerSlug }),
@@ -55,6 +56,7 @@ beforeEach(() => {
     currentEditor: undefined,
     drawerSlug: '',
     role: 'siteManager',
+    features: {},
   })
 })
 afterEach(() => {
@@ -93,6 +95,23 @@ describe('page editing guidance facts', () => {
 })
 
 describe('native page guide adapter', () => {
+  it('shows the site-wide settings route only for a granted clean public Page', () => {
+    Object.assign(state, {
+      id: 'page-1',
+      hasBlocks: true,
+      hasPublishedDoc: true,
+      features: { layoutDefaults: true },
+    })
+    const view = render(<PageEditingGuide collapsed={false} preferenceUnavailable={false} />)
+    expect(
+      screen.getByRole('link', { name: 'Review homepage and navigation' }).getAttribute('href'),
+    ).toBe('/admin/globals/page-settings')
+    state.features = {}
+    view.rerender(<PageEditingGuide collapsed={false} preferenceUnavailable={false} />)
+    expect(screen.queryByRole('link', { name: 'Review homepage and navigation' })).toBeNull()
+    expect(screen.getByRole('link', { name: /Preview saved page/ })).toBeTruthy()
+  })
+
   it('uses a saved preview in a separate safe tab and keeps unsaved edits in the editor', () => {
     Object.assign(state, { id: 'page-1', hasBlocks: true, modified: true })
     render(<PageEditingGuide collapsed={false} preferenceUnavailable={false} />)

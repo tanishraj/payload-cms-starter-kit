@@ -9039,7 +9039,7 @@ export interface FormSubmission {
   deletedAt?: string | null;
 }
 /**
- * Reusable destinations for menus, CTAs, legal links, and utility links.
+ * Reusable destinations for menus, CTAs, legal and utility links. Creating or publishing a Navigation Link does not add a visible menu item; place it in a supported Header, Footer or page block.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "navigation-links".
@@ -9069,7 +9069,7 @@ export interface NavigationLink {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Reusable site header presets powered by header layout blocks.
+ * Edit menu items in a Header Layout, publish the Header, then select it in Layout Defaults. Pages may override the default Header.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "headers".
@@ -9159,7 +9159,7 @@ export interface HeaderNavbar12Block {
   blockType: 'headerNavbar12';
 }
 /**
- * Reusable site footer presets powered by footer layout blocks.
+ * Edit links in a Footer Layout, publish the Footer, then select it in Layout Defaults. Pages may hide or override the default Footer.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footers".
@@ -15585,15 +15585,15 @@ export interface CookieConsentSetting {
 export interface PageSetting {
   id: string;
   /**
-   * The published page that renders at the root URL (/).
+   * Choose a published page for /. Publishing a Page does not select it here or add it to a menu. Save Draft stages this choice; Publish applies it site-wide.
    */
   homepage?: (string | null) | Page;
   /**
-   * The header preset rendered on every page.
+   * Select a published Header preset. Edit its Layout menu items in Headers and publish that record. Pages using a custom header may override this default.
    */
   activeHeader?: (string | null) | Header;
   /**
-   * The footer preset rendered on every page.
+   * Select a published Footer preset. Edit its Layout links in Footers and publish that record. Pages may hide or override this default.
    */
   activeFooter?: (string | null) | Footer;
   pageAppearance: {
