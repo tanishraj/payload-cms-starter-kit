@@ -46,8 +46,16 @@ JavaScript are supported in this increment.
   hidden-answer and interaction coverage.
 - `src/stories/revamp/GenericForm.stories.tsx`: conditional question playground.
 - `tests/e2e/generic-form.e2e.spec.ts`: native authoring and public behavior for
-  Generic Form and Contact6; local execution remains pending an isolated replica-set
-  MongoDB and a compatible browser.
+  Generic Form and Contact6. Both complete local journeys passed on October 16, 2026
+  using Node 22.13.1, pinned Playwright Chromium and isolated MongoDB 8.0.29 (3.3 minutes).
+
+
+The native fixture authors both Admissions and Library for the source select, checks
+that both persist, and matches the conditional required textbox by accessible role
+and name. Exact raw-label matching includes the decorative required asterisk and
+previously reported the rendered field as missing. The shared renderer's focused
+interaction test uses the same accessible-name contract. Quality retains approved
+browser reports/results for seven days; see the developer workflow guide.
 
 This is one DF-08 increment. It does not complete the broader forms or website-builder
 acceptance checklist by itself.

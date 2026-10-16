@@ -171,8 +171,8 @@ describe('generic form presentation', () => {
     expect(await screen.findByText('Which department can help? is required.')).toBeTruthy()
     fireEvent.click(screen.getByRole('combobox', { name: 'Which department can help?' }))
     fireEvent.click(await screen.findByRole('option', { name: 'Admissions' }))
-    expect(await screen.findByLabelText(/Reference link/)).toBeTruthy()
-    expect(screen.getByLabelText(/Reference link/).getAttribute('required')).toBe('')
+    expect(await screen.findByRole('textbox', { name: 'Reference link' })).toBeTruthy()
+    expect(screen.getByRole('textbox', { name: 'Reference link' }).getAttribute('required')).toBe('')
   })
   it('normalizes custom answers, locks controls during submission, and confirms once', async () => {
     let resolve!: (value: GenericFormResult) => void

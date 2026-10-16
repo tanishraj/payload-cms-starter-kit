@@ -95,8 +95,8 @@ track the proof; the FORM/SUBMIT groups below track the complete capability.
   rendering and Storybook. Preserve selected upstream presentation requirements.
   Appearance is merged. Conditional visibility is in progress on
   `feat/form-conditional-rules`; see the [condition contract](form-conditional-rules.md).
-  Local renderer/schema/intake tests and Storybook build pass. Full native E2E and
-  final CI evidence remain before this combined acceptance can be checked.
+  Local renderer/schema/intake tests, Storybook build and both native form E2E
+  journeys pass. Final CI evidence remains before this combined acceptance can be checked.
 - [ ] **DF-09 — Verify access and failure states.** Unauthorized edits/inbox/file
   access are denied; drafts do not alter live forms; accessible errors, retry,
   pending/success and safe test mode are exercised.
@@ -2056,3 +2056,5 @@ Exact-head Quality/merge evidence remains pending.
 
 
 | 2026-10-15 | FORM-04; DF-08; applicable history/UX | Appearance increment merged; conditions next | Codex | One explicit native Form appearance group maps to sourced typed Storybook/production/preview props. Legacy defaults/hashes stay unchanged; active settings enter revision/original history and stale recovery without changing answers. Fixed clients fail closed. See [contract](form-appearance-controls.md). | [PR #30](https://github.com/tanishraj/payload-cms-starter-kit/pull/30), merge `9c6f148a`; next branch `feat/form-conditional-rules` | Storybook-first desktop/mobile/dark review and play complete. Local: 2,693 integration tests passed/one Docker skip; both native journeys passed; 73 production traces/no private uploads; Storybook build, typegen, TypeScript, ESLint and context checks pass. Exact-head Quality passed with one flaky Generic Form browser case (420-second timeout and retry navigation timeout before overall success). Known Neutral light contrast remains; no new dependencies/environment/styles. Conditions follow separately. |
+
+| 2026-10-16 | DF-08; VERIFY; CI diagnostics | Browser regression fixed locally; exact-head CI next | Codex | Correct required-question lookup to use the accessible textbox name and author both source-select options before testing conditional hide/reveal. Add user-approved, pinned seven-day retention of only Playwright reports/results, keeping read-only permissions and ownership-checked Mongo cleanup. | [PR #31](https://github.com/tanishraj/payload-cms-starter-kit/pull/31), `feat/form-conditional-rules` | Chromium reproduction proves raw exact-label matching includes the decorative required marker. Both complete native form journeys pass locally in 3.3 minutes against isolated MongoDB 8.0.29 on Node 22.13.1. All 49 focused form/workflow/context tests, TypeScript and changed-file lint pass; deterministic inventory refreshed. No runtime, schema, dependency or environment-variable changes in this fix. CI/merge status remains governed by PR #31; no broader forms checkbox closed. |

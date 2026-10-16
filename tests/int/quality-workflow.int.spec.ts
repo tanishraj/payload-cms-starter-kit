@@ -9,6 +9,7 @@ const approvedActions = [
   'actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4',
   'pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4',
   'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4',
+  'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4',
 ] as const
 
 const expectedRunSteps = [
@@ -134,7 +135,7 @@ describe('quality workflow contract', () => {
     expect(persistCredentialValues).toEqual(['false'])
     expect(approvedActions).toEqual(
       approvedActions.filter((action) =>
-        /^(actions\/checkout|pnpm\/action-setup|actions\/setup-node)@[0-9a-f]{40} # v4$/.test(
+        /^(actions\/checkout|pnpm\/action-setup|actions\/setup-node|actions\/upload-artifact)@[0-9a-f]{40} # v4$/.test(
           action,
         ),
       ),
@@ -257,6 +258,20 @@ describe('quality workflow contract', () => {
       /^      - name: Stop isolated MongoDB replica\n        if: always\(\)\n        run: pnpm ci:mongodb:stop\n?$/,
     )
     expect(source).not.toMatch(/^\s+run:\s*.*(?:cat|source).*\.env/m)
+  })
+
+  it('always preserves browser diagnostics with bounded retention and explicit paths', () => {
+    const source = readFileSync('.github/workflows/quality.yml', 'utf8')
+    const diagnostics = source.split(/(?=^      - )/m).find(
+      (step) => step.startsWith('      - name: Preserve browser diagnostics\n'),
+    )
+    expect(diagnostics).toContain('        if: always()\n')
+    expect(diagnostics).toContain('        uses: actions/upload-artifact@')
+    expect(diagnostics).toContain('          retention-days: 7\n')
+    expect(diagnostics).toContain('          if-no-files-found: ignore\n')
+    expect(diagnostics?.match(/          path: \|\n((?:            .+\n)+)/)?.[1]).toBe(
+      '            playwright-report/\n            test-results/\n',
+    )
   })
 
   it('maps the focused governance command to only the two-test browser file', () => {

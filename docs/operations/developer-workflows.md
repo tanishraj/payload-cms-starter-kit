@@ -97,13 +97,21 @@ pnpm exec playwright install chromium
 ```
 
 `pnpm test:e2e` remains the complete local browser suite. GitHub CI installs bundled Chromium with
-its Linux dependencies and runs only `pnpm test:e2e:governance`, which contains exactly the critical
-feature-grant/revocation and submitted-Review approval journeys. The shared login helper
+its Linux dependencies and runs `pnpm test:e2e:governance` (the critical
+feature-grant/revocation and submitted-Review approval journeys), followed by
+`pnpm test:e2e:forms` for Generic Form and Contact6. The shared login helper
 uses the accessible Email/Password labels and Log in button of the two-factor-aware
 login view, rather than legacy Payload field IDs. The feature-grant journey opens
 the initially collapsed Content group before editing grants and asserts the saved
 record URL independently of document load events. Persisted access and revoked
 session checks remain required.
+
+Quality always attempts to upload only `playwright-report/` and `test-results/` as
+`browser-diagnostics-<run-id>-<attempt>`, retained for seven days. Download that artifact
+from the Actions run to inspect failed browser snapshots and retry traces with
+`pnpm exec playwright show-trace <path-to-trace.zip>`. Missing browser output is ignored;
+test failures still fail the job. The upload does not change the workflow's read-only
+repository permissions or its final ownership-checked MongoDB cleanup.
 
 `pnpm ci:mongodb:start` and `pnpm ci:mongodb:stop` are GitHub-only controller commands, not local
 database helpers. They reject non-GitHub or mismatched run identity, validate both mutation URIs as
