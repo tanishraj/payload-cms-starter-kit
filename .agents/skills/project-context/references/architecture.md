@@ -223,8 +223,15 @@ See `docs/planning/form-revision-recovery.md` for precise boundaries.
 
 The native dynamic-form browser journey runs through `pnpm test:e2e:forms` on the
 required loopback test database and is a Quality gate. The fixture worker retains
-the `react-server`/tsx options needed for Payload config import, while the Next web
-server uses its normal framework-managed React contexts. Forcing `react-server`
+`react-server`/tsx for its existing form helpers. Governance browser fixtures use a
+short-lived Node subprocess with explicit loader flags, a bounded deadline and
+structured IPC; Payload configuration stays outside Playwright's worker transform
+graph. Both parent and subprocess validate the loopback test database before work,
+and the subprocess closes Payload before reporting success. Access, optional
+onboarding and Review moderation are independent native journeys with the existing
+per-test budget. Governance cleanup deletes only recorded Page IDs through the
+Local API, children before roots, independently of browser cookies. The Next web
+server keeps its normal framework-managed React contexts. Forcing `react-server`
 globally on Next breaks its public frontend compilation/SSR.
 
 ## October 7 security patch baseline

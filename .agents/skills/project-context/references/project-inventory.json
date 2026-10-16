@@ -3067,6 +3067,8 @@
       "tests/e2e/frontend.e2e.spec.ts",
       "tests/e2e/generic-form.e2e.spec.ts",
       "tests/e2e/governance.e2e.spec.ts",
+      "tests/helpers/governanceAccounts.ts",
+      "tests/helpers/governanceBrowserFixtures.ts",
       "tests/helpers/governanceFixtures.ts",
       "tests/helpers/login.ts",
       "tests/helpers/mongoMemoryServer.ts",
@@ -3197,6 +3199,7 @@
       "tests/int/global-announcement.int.spec.ts",
       "tests/int/global-footer.int.spec.ts",
       "tests/int/global-header.int.spec.ts",
+      "tests/int/governance-browser-fixtures.int.spec.ts",
       "tests/int/governance-fixtures.int.spec.ts",
       "tests/int/header-navbar-render.int.spec.ts",
       "tests/int/header-presets.int.spec.ts",
@@ -3340,7 +3343,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "df0ac8dfcc9f32e0f831b0f5577b1412e22c5cde9aa58947fc95b1e010846c5d"
+    "sha256": "a3c20b498077e168ebb0b1bba73742abea76fcc8a12d51ad86c27c24564de43c"
   },
   "surfaces": {
     "access": [
@@ -3645,6 +3648,7 @@
       "tests/int/global-announcement.int.spec.ts",
       "tests/int/global-footer.int.spec.ts",
       "tests/int/global-header.int.spec.ts",
+      "tests/int/governance-browser-fixtures.int.spec.ts",
       "tests/int/governance-fixtures.int.spec.ts",
       "tests/int/header-navbar-render.int.spec.ts",
       "tests/int/header-presets.int.spec.ts",

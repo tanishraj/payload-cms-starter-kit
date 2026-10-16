@@ -99,6 +99,7 @@ describe('governance fixture queue cleanup', () => {
 
     let payload: Payload | null = null
     let sentinelID: number | string | null = null
+    let pageSentinelID: string | null = null
     let latestFixture:
       | Awaited<ReturnType<typeof import('../helpers/governanceFixtures').seedGovernanceBase>>
       | undefined
@@ -135,9 +136,35 @@ describe('governance fixture queue cleanup', () => {
         overrideAccess: true,
       })
       sentinelID = sentinel.id
+      const pageSentinel = await payload.create({
+        collection: 'pages',
+        context: { [SKIP_CACHE_REVALIDATION_CONTEXT]: true },
+        data: { title: 'Unrelated Page sentinel', slug: 'unrelated-page-sentinel', layout: [] },
+        overrideAccess: true,
+      })
+      pageSentinelID = pageSentinel.id
 
       for (let cycle = 0; cycle < 2; cycle += 1) {
         latestFixture = await governanceFixtures.seedGovernanceBase()
+        const parent = await payload.create({
+          collection: 'pages',
+          context: { [SKIP_CACHE_REVALIDATION_CONTEXT]: true },
+          data: { title: `Fixture section ${cycle}`, slug: `fixture-section-${cycle}`, layout: [] },
+          overrideAccess: true,
+        })
+        latestFixture.pageIDs.push(parent.id)
+        const child = await payload.create({
+          collection: 'pages',
+          context: { [SKIP_CACHE_REVALIDATION_CONTEXT]: true },
+          data: {
+            title: `Fixture child ${cycle}`,
+            slug: `fixture-child-${cycle}`,
+            parent: parent.id,
+            layout: [],
+          },
+          overrideAccess: true,
+        })
+        latestFixture.pageIDs.push(child.id)
 
         if (cycle === 0) {
           const reviewManagerResult = await payload.find({
@@ -210,6 +237,26 @@ describe('governance fixture queue cleanup', () => {
           deleteSpy.mockRestore()
         }
 
+        const pageDeletes = deleteOrder.filter((entry) => entry.collection === 'pages')
+        expect(pageDeletes.map((entry) => entry.id)).toEqual([child.id, parent.id])
+        expect(
+          (
+            await payload.find({
+              collection: 'pages',
+              overrideAccess: true,
+              trash: true,
+              where: { id: { in: latestFixture.pageIDs } },
+            })
+          ).totalDocs,
+        ).toBe(0)
+        await expect(
+          payload.findByID({
+            collection: 'pages',
+            id: pageSentinelID,
+            overrideAccess: true,
+          }),
+        ).resolves.toMatchObject({ id: pageSentinelID })
+
         const reviewDeleteIndex = deleteOrder.findIndex(
           (entry) => entry.collection === 'reviews' && entry.id === latestFixture?.pendingReview.id,
         )
@@ -261,6 +308,14 @@ describe('governance fixture queue cleanup', () => {
           overrideAccess: true,
         })
       }
+      if (payload && pageSentinelID)
+        await payload.delete({
+          collection: 'pages',
+          id: pageSentinelID,
+          overrideAccess: true,
+          trash: true,
+          context: { [SKIP_CACHE_REVALIDATION_CONTEXT]: true },
+        })
       if (payload) await payload.destroy()
       await mongoServer.stop()
     }

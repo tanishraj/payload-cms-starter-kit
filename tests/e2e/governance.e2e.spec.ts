@@ -6,7 +6,7 @@ import {
   governanceSecondAdmin,
   seedGovernanceBase,
   type GovernanceFixture,
-} from '../helpers/governanceFixtures'
+} from '../helpers/governanceBrowserFixtures'
 import { login } from '../helpers/login'
 
 const reviewBody = 'A deterministic submitted Review awaiting moderation.'
@@ -153,32 +153,6 @@ test.describe('governance browser journeys', () => {
       await login({ page, user: currentFixture.admin })
     })
 
-    await test.step('hide and reopen optional guidance with confirmed account persistence', async () => {
-      const guide = page.getByRole('region', { name: 'Getting started', exact: true })
-      const hide = guide.getByRole('button', { name: 'Hide guide', exact: true })
-      await expect(hide).toBeVisible()
-      await page.screenshot({ path: test.info().outputPath('onboarding-admin-desktop.png') })
-      await expect(hide).toBeEnabled()
-      await hide.focus()
-      await page.keyboard.press('Enter')
-      await expect(
-        guide.getByRole('button', { name: 'Getting started', exact: true }),
-      ).toBeFocused()
-      await page.reload({ waitUntil: 'domcontentloaded' })
-      await expect(
-        guide.getByRole('button', { name: 'Getting started', exact: true }),
-      ).toBeVisible()
-      await expect(guide.getByRole('button', { name: 'Hide guide' })).toHaveCount(0)
-      await expect(
-        guide.getByRole('button', { name: 'Getting started', exact: true }),
-      ).toBeEnabled()
-      await guide.getByRole('button', { name: 'Getting started', exact: true }).focus()
-      await page.keyboard.press('Enter')
-      await expect(guide.getByRole('button', { name: 'Hide guide', exact: true })).toBeFocused()
-      await page.reload({ waitUntil: 'domcontentloaded' })
-      await expect(guide.getByRole('button', { name: 'Hide guide', exact: true })).toBeVisible()
-    })
-
     const createdAdmin = await test.step('create and read back a second Admin', async () => {
       await page.goto('/admin/collections/users/create')
       await fillNewUserCredentials(page, governanceSecondAdmin)
@@ -222,7 +196,9 @@ test.describe('governance browser journeys', () => {
         data: { title, layout: [], _status: 'draft' },
       })
       expect(response.status()).toBe(201)
-      sectionPages.push((await response.json()).doc)
+      const sectionPage = (await response.json()).doc
+      currentFixture.pageIDs.push(sectionPage.id)
+      sectionPages.push(sectionPage)
     }
 
     const createdManager = await test.step('create a Pages Site Manager', async () => {
@@ -257,19 +233,6 @@ test.describe('governance browser journeys', () => {
       await test.step('verify initial Pages-only access', async () => {
         await login({ page: managerPage, user: accessManager })
 
-        const guide = managerPage.getByRole('region', { name: 'Getting started', exact: true })
-        await expect(guide).toContainText(sectionPages[0].title)
-        await expect(guide).not.toContainText(sectionPages[1].title)
-        // The Admin created a draft section root. Resume it through the real guide.
-        await guide.getByRole('link', { name: 'Continue draft', exact: true }).click()
-        await expect(managerPage.locator('#field-title')).toHaveValue(sectionPages[0].title)
-        await managerPage.goto('/admin', { waitUntil: 'domcontentloaded' })
-        await managerPage.setViewportSize({ width: 390, height: 844 })
-        await managerPage.screenshot({
-          path: test.info().outputPath('onboarding-manager-mobile.png'),
-          fullPage: true,
-        })
-        await managerPage.setViewportSize({ width: 1280, height: 720 })
         await expect(managerPage.getByRole('link', { name: 'Pages', exact: true })).toBeVisible()
         await expect(managerPage.getByRole('link', { name: 'Articles', exact: true })).toHaveCount(
           0,
@@ -307,6 +270,7 @@ test.describe('governance browser journeys', () => {
         const currentID = created.doc.id as string
         // Register the saved record before navigation assertions, so a cold route or
         // later failure cannot leave an orphan that collides with the next attempt.
+        currentFixture.pageIDs.push(currentID)
         sectionPages.push({ id: currentID, title: created.doc.title })
         expect(created.doc).toMatchObject({
           title: 'Manager-created scoped Page',
@@ -410,6 +374,80 @@ test.describe('governance browser journeys', () => {
           totalDocs: 1,
         })
       })
+    } finally {
+      await managerContext.close()
+    }
+  })
+
+  test('optional onboarding resumes permitted work and recovers from removed assignments', async ({
+    browser,
+    page,
+  }) => {
+    if (!fixture) throw new Error('Expected governance fixture.')
+    const currentFixture = fixture
+    await login({ page, user: currentFixture.admin })
+
+    await test.step('hide and reopen optional guidance with confirmed account persistence', async () => {
+      const guide = page.getByRole('region', { name: 'Getting started', exact: true })
+      const hide = guide.getByRole('button', { name: 'Hide guide', exact: true })
+      await expect(hide).toBeVisible()
+      await page.screenshot({ path: test.info().outputPath('onboarding-admin-desktop.png') })
+      await expect(hide).toBeEnabled()
+      await hide.focus()
+      await page.keyboard.press('Enter')
+      await expect(
+        guide.getByRole('button', { name: 'Getting started', exact: true }),
+      ).toBeFocused()
+      await page.reload({ waitUntil: 'domcontentloaded' })
+      await expect(
+        guide.getByRole('button', { name: 'Getting started', exact: true }),
+      ).toBeVisible()
+      await expect(guide.getByRole('button', { name: 'Hide guide' })).toHaveCount(0)
+      await expect(
+        guide.getByRole('button', { name: 'Getting started', exact: true }),
+      ).toBeEnabled()
+      await guide.getByRole('button', { name: 'Getting started', exact: true }).focus()
+      await page.keyboard.press('Enter')
+      await expect(guide.getByRole('button', { name: 'Hide guide', exact: true })).toBeFocused()
+      await page.reload({ waitUntil: 'domcontentloaded' })
+      await expect(guide.getByRole('button', { name: 'Hide guide', exact: true })).toBeVisible()
+    })
+
+    const sectionPages: Array<{ id: string; title: string }> = []
+    for (const title of ['Onboarding assigned section', 'Onboarding other section']) {
+      const response = await page.request.post('/api/pages', {
+        headers: await getPayloadAuthHeaders(page),
+        data: { title, layout: [], _status: 'draft' },
+      })
+      const result = await response.json()
+      expect(response.status(), JSON.stringify(result)).toBe(201)
+      currentFixture.pageIDs.push(result.doc.id)
+      sectionPages.push(result.doc)
+    }
+    const managerResponse = await page.request.post('/api/users', {
+      headers: await getPayloadAuthHeaders(page),
+      data: { ...accessManager, features: { pages: true }, sectionRoots: [sectionPages[0].id] },
+    })
+    expect(managerResponse.status()).toBe(201)
+    const createdManager = (await managerResponse.json()).doc
+    const managerContext = await browser.newContext()
+    try {
+      await managerContext.route('https://www.gravatar.com/**', (route) => route.abort())
+      const managerPage = await managerContext.newPage()
+      await login({ page: managerPage, user: accessManager })
+      const guide = managerPage.getByRole('region', { name: 'Getting started', exact: true })
+      await expect(guide).toContainText(sectionPages[0].title)
+      await expect(guide).not.toContainText(sectionPages[1].title)
+      // The Admin created a draft section root. Resume it through the real guide.
+      await guide.getByRole('link', { name: 'Continue draft', exact: true }).click()
+      await expect(managerPage.locator('#field-title')).toHaveValue(sectionPages[0].title)
+      await managerPage.goto('/admin', { waitUntil: 'domcontentloaded' })
+      await managerPage.setViewportSize({ width: 390, height: 844 })
+      await managerPage.screenshot({
+        path: test.info().outputPath('onboarding-manager-mobile.png'),
+        fullPage: true,
+      })
+      await managerPage.setViewportSize({ width: 1280, height: 720 })
       await test.step('explain missing section access without a dead Page action', async () => {
         const response = await page.request.patch(`/api/users/${createdManager.id}`, {
           headers: await getPayloadAuthHeaders(page),
@@ -437,11 +475,6 @@ test.describe('governance browser journeys', () => {
       })
     } finally {
       await managerContext.close()
-      for (const sectionPage of [...sectionPages].reverse()) {
-        await page.request.delete(`/api/pages/${sectionPage.id}`, {
-          headers: await getPayloadAuthHeaders(page),
-        })
-      }
     }
   })
 

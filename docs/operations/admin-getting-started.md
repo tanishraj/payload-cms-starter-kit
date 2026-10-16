@@ -97,3 +97,29 @@ editor navigation before readback. A fresh local Next run passed both journeys
 (1.1m); the response-aware run passed both (46.8s). No production access, slug,
 validation or timeout policy was relaxed. The first attempt had no trace, so its
 exact save timing is not inferred from the retry. Final CI remains a merge gate.
+
+The second CI run passed integration. Its retry trace confirms the scoped Page
+create response was HTTP 201 and the editor opened, then the combined access plus
+onboarding journey exhausted its existing three-minute budget at a later login.
+Other attempts stalled in fixture startup before UI; timeout cleanup then depended
+on an already-closed browser and left section fixtures for the next retry.
+
+Access administration, optional onboarding and Review moderation now run as three
+independent native journeys, with the same timeout and assertions. A preload-only experiment also stalled locally and was discarded. Governance
+fixture setup/cleanup now runs in a short-lived standalone Node process, with
+explicit loader flags, structured IPC and a 90-second failure deadline below the
+unchanged three-minute browser budget. Parent and child both enforce the existing
+loopback test-database guard. Payload closes before a successful result; raw driver
+errors and environment values are not forwarded to logs. Test Page IDs are registered immediately and cleaned
+through the existing database-guarded Local API, independently of browser cookies,
+children before roots. Real Mongo tests prove that an unrelated Page survives.
+The exact runtime cause of the intermittent import stall is not claimed beyond
+this observed boundary; repeated local and exact-head CI results remain required.
+
+Final local fixture-boundary check: all three native journeys passed twice without
+retries (6 passes, 1.5m). An earlier repetition passed five cases but exposed an IPC
+cleanup exit. The child now retains its disconnect listener throughout async work,
+exits if its parent disappears, and the parent waits for process close and a result.
+Safe exit code/signal diagnostics preserve failure visibility. The full integration
+suite passed 2,783 tests/one existing skip; final context/type/lint and exact-head CI
+remain release gates. Browser timeouts and production behavior are unchanged.
