@@ -59,3 +59,9 @@ browser reports/results for seven days; see the developer workflow guide.
 
 This is one DF-08 increment. It does not complete the broader forms or website-builder
 acceptance checklist by itself.
+
+PR #31 merged as `e18690eb` on 16 October after exact-head
+[Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38861826953)
+passed on `311fec42`. Both native form and both governance journeys passed first
+attempt; integration and production artifact checks passed. The supported FORM-07
+and combined DF-08 acceptance are recorded as verified in the main checklist.

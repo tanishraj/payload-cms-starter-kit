@@ -63,6 +63,11 @@ React Server Components load public CMS data. Focused client components own inte
   this is single-instance defense in depth, while coordinated production enforcement belongs in
   Vercel WAF or a durable shared store. Forwarded client addresses contribute to limiter identity
   only on Vercel, where the deployment platform owns those headers.
+- Authenticated submission CSV exports share the native Payload REST router. The inbox action
+  reuses its current filters/search; bounded access-enforced cursor reads serialize captured
+  historical answers, never current Form definitions or private file tokens. Original meaning
+  survives question changes/deleted Forms; legacy rows are explicit. See the Payload model
+  and historical export contract for limits, spreadsheet safety and operational consistency.
 - Full-page Page creation uses a guided Admin setup with code-owned Blank and Landing recipes. The
   authenticated `POST /api/pages/create-from-recipe` collection endpoint accepts only a Page title
   and approved recipe ID, creates through Payload with `draft: true` and access enforcement, and

@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
+import { readFile } from 'node:fs/promises'
 import { seedTestUser, testUser } from '../helpers/seedUser'
 import { login } from '../helpers/login'
 
@@ -131,7 +132,10 @@ for (const block of [
       )
       await editNativeForm(
         page,
-        () => ruleEditor.getByLabel('Question').selectOption({ label: 'Which department can help? (select)' }),
+        () =>
+          ruleEditor
+            .getByLabel('Question')
+            .selectOption({ label: 'Which department can help? (select)' }),
         'fields.3.visibilityConditions',
       )
       await editNativeForm(
@@ -615,9 +619,7 @@ for (const block of [
             visitor.getByLabel('Full name', { exact: true }),
           ).toHaveAccessibleDescription('Use 3–6 characters.')
           await visitor.getByLabel('Full name', { exact: true }).fill('Taylor')
-          await expect(referenceLink).toHaveValue(
-            'https://example.com/visit',
-          )
+          await expect(referenceLink).toHaveValue('https://example.com/visit')
           await expect(visitor.getByLabel('Visit duration', { exact: true })).toHaveValue('')
           await visitor.getByLabel('Visit duration', { exact: true }).fill('2.50')
           await expect(
@@ -807,6 +809,28 @@ for (const block of [
           expect(downloaded.status()).toBe(200)
           expect(await downloaded.body()).toEqual(fileBytes)
           expect(downloaded.headers()['content-disposition']).toContain('attachment;')
+          expect((await visitor.request.get('/api/form-submissions/export')).status()).toBe(401)
+          await page.goto(`/admin/collections/form-submissions?where[form][equals]=${form.id}`, {
+            waitUntil: 'domcontentloaded',
+          })
+          const exportAnswers = page.getByRole('button', {
+            name: 'Export answers (CSV)',
+            exact: true,
+          })
+          await expect(exportAnswers).toBeEnabled()
+          const [csvDownload] = await Promise.all([
+            page.waitForEvent('download'),
+            exportAnswers.click(),
+          ])
+          const csv = await readFile((await csvDownload.path())!, 'utf8')
+          expect(csv).toContain('"history_source"')
+          expect(csv).toContain(docs[0].id)
+          expect(csv).toContain(docs[0].formRevision)
+          expect(csv).toContain('résumé.pdf')
+          expect(csv).not.toContain(uploadedFile.token)
+          await expect(
+            page.getByText('Exported 1 submission. Each answer has its own row.'),
+          ).toBeVisible()
           await page.goto(`/admin/collections/form-submissions/${docs[0].id}`, {
             waitUntil: 'domcontentloaded',
           })

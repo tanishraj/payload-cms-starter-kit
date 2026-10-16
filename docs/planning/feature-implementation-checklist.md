@@ -90,13 +90,16 @@ track the proof; the FORM/SUBMIT groups below track the complete capability.
 - [ ] **DF-07 — Complete controls and layout.** Expand to FORM-03/04 and type-specific
   validation through the same contract; private file intake needs a scoped storage
   and attachment access design, not the public Media trust boundary.
-- [ ] **DF-08 — Complete conditions and appearance.** Declarative visibility/required
+- [x] **DF-08 — Complete conditions and appearance.** Declarative visibility/required
   rules and supported size/shape/layout props work in Payload preview, public
   rendering and Storybook. Preserve selected upstream presentation requirements.
-  Appearance is merged. Conditional visibility is in progress on
-  `feat/form-conditional-rules`; see the [condition contract](form-conditional-rules.md).
-  Local renderer/schema/intake tests, Storybook build and both native form E2E
-  journeys pass. Final CI evidence remains before this combined acceptance can be checked.
+  Verified for the supported appearance and stable-ID all-match rule contract.
+  Appearance merged in PR #30; conditions merged in [PR #31](https://github.com/tanishraj/payload-cms-starter-kit/pull/31)
+  as `e18690eb` after [exact-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38861826953)
+  passed on `311fec42`. Both native form journeys passed first attempt; renderer,
+  schema/intake/recovery tests, Storybook and production build passed. See the
+  [condition contract](form-conditional-rules.md). Advanced rule groups/scripting
+  and configurable responsive breakpoints remain outside this supported contract.
 - [ ] **DF-09 — Verify access and failure states.** Unauthorized edits/inbox/file
   access are denied; drafts do not alter live forms; accessible errors, retry,
   pending/success and safe test mode are exercised.
@@ -679,11 +682,14 @@ exclusions and complete source traceability are in the local scope reference.
   Evidence: [configuration contract](form-field-configuration.md), [src/collections/Forms.ts](../../src/collections/Forms.ts), [src/lib/forms.ts](../../src/lib/forms.ts).
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
-- [ ] **FORM-07 — Conditions.** Declarative show/require rules reference stable field
+- [x] **FORM-07 — Conditions.** Declarative show/require rules reference stable field
   IDs; client and server agree. No executable configuration.
 
-  Work: Assess · Priority: First enhancement · Baseline: Gap.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Work: Verified · Priority: First enhancement · Baseline: Gap.
+  Evidence: [condition contract](form-conditional-rules.md); shared evaluator and authoring validation,
+  active-only client/server answers, conditional requiredness, hidden file-token protection,
+  published fingerprints and explicit recovery. Both canonical native journeys passed first attempt.
+  Owner: Codex · Commit/PR: [PR #31](https://github.com/tanishraj/payload-cms-starter-kit/pull/31), merge `e18690eb` · Verified on: 2026-10-16 · Acceptance: [exact-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38861826953) on `311fec42`.
 
 - [x] **FORM-08 — Extensibility.** One registered implementation adds a genuinely new
   control type with rendering, validation and answer formatting. Unknown/incomplete
@@ -785,8 +791,11 @@ exclusions and complete source traceability are in the local scope reference.
 - [ ] **SUBMIT-11 — Exports/integrations.** Authorized export and webhook mappings use
   the submitted revision's field names; renames/removals preserve historical meaning.
 
-  Work: Assess · Priority: First enhancement · Baseline: Partial.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Work: In progress · Priority: First enhancement · Baseline: Partial.
+  Evidence: [historical CSV contract](form-revision-exports.md), native inbox filtered/search export,
+  captured question identity/labels/names/typed values and explicit legacy rows. Full inbox
+  permission plus access-enforced batch reads; private file tokens and staff notes excluded.
+  Owner: Codex · Commit/PR: [feature PR](https://github.com/tanishraj/payload-cms-starter-kit/pulls?q=is%3Apr+head%3Afeat%2Fform-revision-exports) · Verified on: 2026-10-16 · Acceptance: 41 focused export tests and final full regression pass (2,745 tests / one existing Docker-dependent skip). Both native form download journeys and both governance journeys pass first attempt. Production/private-artifact and Storybook builds, generators/type/lint/context/audit pass. Exact-head Quality remains the merge gate. Configurable webhook mappings and broader acceptance remain open.
 
 - [ ] **SUBMIT-12 — Test mode.** Clearly labelled form testing without real notifications
   or ordinary production submissions; Storybook never calls production services.
@@ -2058,3 +2067,7 @@ Exact-head Quality/merge evidence remains pending.
 | 2026-10-15 | FORM-04; DF-08; applicable history/UX | Appearance increment merged; conditions next | Codex | One explicit native Form appearance group maps to sourced typed Storybook/production/preview props. Legacy defaults/hashes stay unchanged; active settings enter revision/original history and stale recovery without changing answers. Fixed clients fail closed. See [contract](form-appearance-controls.md). | [PR #30](https://github.com/tanishraj/payload-cms-starter-kit/pull/30), merge `9c6f148a`; next branch `feat/form-conditional-rules` | Storybook-first desktop/mobile/dark review and play complete. Local: 2,693 integration tests passed/one Docker skip; both native journeys passed; 73 production traces/no private uploads; Storybook build, typegen, TypeScript, ESLint and context checks pass. Exact-head Quality passed with one flaky Generic Form browser case (420-second timeout and retry navigation timeout before overall success). Known Neutral light contrast remains; no new dependencies/environment/styles. Conditions follow separately. |
 
 | 2026-10-16 | DF-08; VERIFY; CI diagnostics | Browser regression fixed locally; exact-head CI next | Codex | Correct required-question lookup to use the accessible textbox name and author both source-select options before testing conditional hide/reveal. Add user-approved, pinned seven-day retention of only Playwright reports/results, keeping read-only permissions and ownership-checked Mongo cleanup. | [PR #31](https://github.com/tanishraj/payload-cms-starter-kit/pull/31), `feat/form-conditional-rules` | Chromium reproduction proves raw exact-label matching includes the decorative required marker. Both complete native form journeys pass locally in 3.3 minutes against isolated MongoDB 8.0.29 on Node 22.13.1. All 49 focused form/workflow/context tests, TypeScript and changed-file lint pass; deterministic inventory refreshed. No runtime, schema, dependency or environment-variable changes in this fix. CI/merge status remains governed by PR #31; no broader forms checkbox closed. |
+
+| 2026-10-16 | DF-08; FORM-07; VERIFY | Conditions merged; historical export increment started | Codex | PR #31 merged after exact-head Quality; verified feature branch deleted. Continue forms on fresh `feat/form-revision-exports`, based on `e18690eb`, with native filtered/search CSV export from captured question metadata. | [PR #31](https://github.com/tanishraj/payload-cms-starter-kit/pull/31); new export PR pending | [Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38861826953) passed on `311fec42`; all four native governance/form journeys passed first attempt, integration/build/private-artifact gates passed. Export focused tests pass; current full release verification remains pending. No new environment/provider/dependency/style; broad forms acceptance stays open. |
+
+| 2026-10-16 | SUBMIT-02/11; ADMINUX-15; VERIFY | Historical CSV increment implemented and locally verified | Codex | Native inbox filters/search across pages; original captured identity/labels/names/options/typed values; honest legacy rows; file-token/staff-note omission; spreadsheet safety; explicit access, invalid-filter and size failures. | [Feature PR](https://github.com/tanishraj/payload-cms-starter-kit/pulls?q=is%3Apr+head%3Afeat%2Fform-revision-exports) | 41 focused tests; final full integration 2,745 passed/one existing Docker-dependent skip; both native form journeys (3.4m) and both governance journeys (31.3s) passed first attempt. Final production build inspected 73 traces/no private uploads; Storybook and required generators/type/lint/context/audit pass. Singular/plural feedback has focused coverage. Exact-head GitHub Quality is required before merge. Webhook mappings, notification reliability and safe test mode remain open. |

@@ -31,6 +31,14 @@ export const formEndpoints: Endpoint[] = [
 
 export const formSubmissionEndpoints: Endpoint[] = [
   {
+    path: '/export',
+    method: 'get',
+    handler: async (req) => {
+      const { exportFormSubmissions } = await import('./forms/exportSubmissions')
+      return exportFormSubmissions(req)
+    },
+  },
+  {
     path: '/:id/attachments/:token',
     method: 'get',
     handler: async (req) => {
