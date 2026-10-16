@@ -123,3 +123,16 @@ exits if its parent disappears, and the parent waits for process close and a res
 Safe exit code/signal diagnostics preserve failure visibility. The full integration
 suite passed 2,783 tests/one existing skip; final context/type/lint and exact-head CI
 remain release gates. Browser timeouts and production behavior are unchanged.
+
+The third CI run passed integration, access administration and Review moderation.
+The onboarding UI completed; its teardown stalled inside fixture cleanup and left
+Pages that collided on retry. The child now imports and initializes the canonical
+Payload config before importing fixture helpers (which also import app hooks),
+with separate config-import/database-init stages. Ten real seed/cleanup cycles
+passed locally (20 isolated processes). Native repeat and current-head Quality
+are required before merge; this is a test boot-order correction, not an application
+policy or timeout change.
+
+Canonical-boot native recheck: all three journeys pass twice without retries
+(6 passes, 1.6m), after the ten successful seed/cleanup cycles. Required final
+regression and current-head GitHub Quality still govern merge.

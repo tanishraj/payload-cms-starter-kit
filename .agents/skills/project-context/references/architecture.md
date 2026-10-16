@@ -227,7 +227,8 @@ required loopback test database and is a Quality gate. The fixture worker retain
 short-lived Node subprocess with explicit loader flags, a bounded deadline and
 structured IPC; Payload configuration stays outside Playwright's worker transform
 graph. Both parent and subprocess validate the loopback test database before work,
-and the subprocess closes Payload before reporting success. Access, optional
+and the subprocess boots the canonical Payload config before importing fixture
+helpers, then closes Payload before reporting success. Access, optional
 onboarding and Review moderation are independent native journeys with the existing
 per-test budget. Governance cleanup deletes only recorded Page IDs through the
 Local API, children before roots, independently of browser cookies. The Next web

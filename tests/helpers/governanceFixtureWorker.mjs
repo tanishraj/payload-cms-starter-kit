@@ -13,6 +13,12 @@ process.once('message', async ({ command, fixture }) => {
     if (command !== 'seed' && command !== 'cleanup') throw new Error('Unsupported fixture command')
     report('Payload runtime import')
     const { getPayload } = await import('payload')
+    // Boot the canonical application graph before loading fixture helpers, which
+    // also import application hooks. Otherwise their graphs can wait on each other.
+    report('Payload config import')
+    const { default: config } = await import('../../src/payload.config.js')
+    report('database initialization')
+    const payload = await getPayload({ config })
     report('fixture module import')
     const helpers = await import('./governanceFixtures.ts')
     report(command === 'seed' ? 'fixture seed' : 'fixture cleanup')
@@ -21,8 +27,6 @@ process.once('message', async ({ command, fixture }) => {
         ? await helpers.seedGovernanceBase()
         : await helpers.cleanupGovernanceFixtures(fixture)
     report('database shutdown')
-    const { default: config } = await import('../../src/payload.config.ts')
-    const payload = await getPayload({ config })
     await payload.destroy()
     process.send?.({ type: 'result', result }, () => process.exit(0))
   } catch {
