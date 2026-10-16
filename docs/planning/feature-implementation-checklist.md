@@ -45,12 +45,13 @@ collections/media, diagnostics and entry-point evidence.
 
 ## How to maintain the checklist
 
-- Delivery workflow confirmed by the user on 2026-10-14: complete one feature
-  increment, pass its acceptance and required repository checks, then merge into
-  `develop` before starting the next feature on a fresh branch. Keep commits clean
-  and pushed; delete only confirmed-merged feature branches and preserve `develop`.
-  Failed merge gates must be resolved; an expired security approval is not renewed
-  by general authorization to merge.
+- Delivery workflow updated by the user on 2026-10-17: use isolated Git worktrees
+  to start the next feature while an earlier PR runs CI. Keep one feature per
+  branch/PR, preserve reviewable dependent bases and merge verified prerequisites
+  first. Retarget dependent PRs to `develop` after prerequisite merge. Keep commits
+  clean/pushed and delete only confirmed-merged branches; preserve `develop` and
+  any unmerged worktree work. Failed merge gates still require resolution; general
+  merge authorization never renews an expired security exception.
 - A box means **the entire feature's applicable acceptance is verified**. An empty
   box may mean existing behavior needs verification, a partial enhancement remains,
   or the feature has not been assessed. It never means “rebuild this feature.”
@@ -1811,11 +1812,11 @@ handoff. Manager section guidance depends on verified ACCESS work.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
   Owner: Codex · Commit/PR: `feat/admin-onboarding` · Verified on: 2026-10-16 · Increment: [optional dashboard guide](../operations/admin-getting-started.md), native preference/focus/scoped-task evidence in the work log. Broader acceptance stays open.
 
-- [ ] **ONBOARD-14 — Team setup guidance.** Admins can create either role and assign features/scopes with clear dependencies and least-access defaults for Managers. Preview effective access without logging in as another user.
+- [x] **ONBOARD-14 — Team setup guidance.** Admins can create either role and assign features/scopes with clear dependencies and least-access defaults for Managers. Preview effective access without logging in as another user.
 
-  Work: Assess · Priority: Cross-cutting / Handoff · Baseline: Partial.
+  Work: Verified native selection preview · Priority: Cross-cutting / Handoff · Baseline: Partial.
   Acceptance/source map: [Admin UX plan](admin-onboarding-ux.md). Baselines are source inspection only; runtime and user acceptance remain unverified.
-  Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+  Owner: Codex · Commit/PR: `feat/team-setup-guidance` · Verified on: 2026-10-17 · Increment: preview selected native role/features/sections, preserve least-access defaults and distinguish scoped, site-wide and read-only dependencies. Save remains authoritative; no impersonation or automatic grant. The selected-access preview and existing native validation are verified; it is not a live topology/record-permission audit. Full permission diagnostics remain ACCESS-09. Native role creation, scoped/denied operations, session revocation and independent guide persistence pass. Exact-head CI/merge evidence is owned by its feature PR; broader novice-user acceptance remains open.
 
 - [ ] **ONBOARD-15 — Account activation and recovery.** Assess existing authentication first. If invitations are added, provide expiring single-use activation, deliberate resend, understandable expired-link states and a safe no-email setup path; never expose credentials.
 
@@ -2183,3 +2184,15 @@ Exact-head Quality/merge evidence remains pending.
 
 
 | 2026-10-17 | ADMINUX-12; VERIFY | Full local regression verified | Codex | Finish the supported native homepage/navigation guidance increment and preserve ordinary published Page cache invalidation while making fixture bypass consistent. Source, native task behavior, permissions, generated artifacts and current project context reviewed together. | `feat/homepage-setup-guidance` | Full integration: 2,862 pass/one existing opt-in Docker skip (79.63s). All six governance/onboarding journeys pass without retries (2.3m) on port 3001 in a secret-free temporary copy with identical application source. Focused contracts: 133 pass. Repeat types/import map are deterministic; final TypeScript and affected lint pass; full lint has one existing warning. Final Storybook build, bounded desktop/mobile review, scoped light/dark axe and single detector pass succeed. Approved production audit passes. Production build passes; artifact guard reports 73 traces/private uploads excluded. Exact-head CI/merge evidence follows in the feature PR. Final operator-document edits require one last inventory refresh/check before commit. No live local server/cache, production data or environment file was overwritten. |
+
+
+| 2026-10-17 | ONBOARD-14; ACCESS-09 | Team setup guidance in progress | Codex | User requested parallel feature work in a separate checkout while PR #38 runs. Use the `feat/team-setup-guidance` Git worktree based on its current head; preserve one feature per PR and merge verified prerequisites first. Reuse native Users/feature summaries and sourced guidance; show a selection preview rather than silently changing access. | `feat/team-setup-guidance` | Existing role/scope guards, read-only dependency summary and session revocation are retained. Storybook states precede native integration. No copied secret environment file or new environment variable. |
+
+
+| 2026-10-17 | ONBOARD-14; ACCESS-09; VERIFY | Native team guidance verified; final regression pending | Codex | Reuse the selected-access summary and canonical scope normalization in browser-safe modules; native Users still owns all fields, validation, access and session changes. Account-owned optional help previews role/grants/section counts without impersonation. | `feat/team-setup-guidance` | Existing 48 access contracts and 23 initial new guide tests pass. Native first attempt exposed inherited lock state on a new unsaved User; ignore that display-only flag until a saved ID exists and add a regression. Corrected real Admin/Manager journey passes without retries (34.1s), including both roles, missing sections, actual scoped/denied access, session revocation and persisted hide/reopen. Scoped light/dark axe has zero violations/incomplete results. Initial worktree test lacked an explicit Mongo profile; rerun/generators use the documented local *_test profile and synthetic test secret, with no local env file copied or overwritten. Full regression/build/CI follow. |
+
+
+| 2026-10-17 | ONBOARD-14; ONBOARD-06; VERIFY | Shared new-record lock semantics corrected | Codex | The first complete six-journey run passed five cases but exposed the same inherited lock flag in the existing Manager Page creation guide. Ignore document lock flags for unsaved Pages as well as Users; retain saved-record exclusions and add a Page regression. Assert the Page guide before registering its create-response waiter to avoid an orphan rejection when an assertion fails. | `feat/team-setup-guidance` | Earlier full integration passed 2,886 tests/one existing Docker skip before the final Page regression. Refresh the inventory and rerun against the final source (one additional test). The native repeat, final build and current-head CI remain gates; no assertion, timeout, retry or native access policy was relaxed. |
+
+
+| 2026-10-17 | ONBOARD-14; VERIFY | Local release gates pass | Codex | Complete the native team-selection preview and new-record Page/User lock display correction. Shared pure metadata retains server semantics and prior exports. | `feat/team-setup-guidance` | Final full integration: 2,887 pass/one existing opt-in Docker skip (56.61s). All six native governance/onboarding journeys pass without retries (1.6m) after the final fix. Production build/private artifact guard passes: 73 traces/private uploads excluded. Final Storybook build, bounded desktop/light/mobile/dark review, scoped axe, one clean detector pass, full lint (one existing warning), TypeScript, approved audit and project-context checks pass. Generator repeat and final exact-head CI/merge results are recorded on the PR. No environment/schema/role/provider change or secret env copy. |

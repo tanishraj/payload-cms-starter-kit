@@ -381,6 +381,14 @@ export const Users: CollectionConfig = {
   },
   fields: [
     {
+      name: 'teamSetupGuide',
+      type: 'ui',
+      admin: {
+        condition: (_data, _siblingData, { user }) => isAdmin(user),
+        components: { Field: '@/components/admin/TeamSetupGuideField#TeamSetupGuideField' },
+      },
+    },
+    {
       name: 'twoFactorSettings',
       type: 'ui',
       admin: { components: { Field: '@/components/admin/TwoFactorSettings#TwoFactorSettings' } },

@@ -2330,11 +2330,13 @@
       "docs/operations/site-setup-guide.md",
       "docs/operations/starter-clone-checklist.md",
       "docs/operations/storybook.md",
+      "docs/operations/team-setup-guide.md",
       "next.config.ts",
       "package.json",
       "src/access/adminFeatures.ts",
       "src/access/featureAccess.ts",
       "src/access/sectionAccess.ts",
+      "src/access/sectionScope.ts",
       "src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
       "src/app/(block-thumbnails)/layout.tsx",
       "src/app/(frontend)/ManagedCmsPage.tsx",
@@ -2699,6 +2701,8 @@
       "src/components/admin/SiteSetupGuideField.tsx",
       "src/components/admin/SiteStructureGuide.tsx",
       "src/components/admin/SiteStructureGuideField.tsx",
+      "src/components/admin/TeamSetupGuide.tsx",
+      "src/components/admin/TeamSetupGuideField.tsx",
       "src/components/admin/TwoFactor.scss",
       "src/components/admin/TwoFactorAuthForm.tsx",
       "src/components/admin/TwoFactorLoginView.tsx",
@@ -2973,6 +2977,7 @@
       "src/lib/systemPageActions.ts",
       "src/lib/systemPageTypes.ts",
       "src/lib/taxonomy.ts",
+      "src/lib/teamSetupGuide.ts",
       "src/lib/themes/websiteThemes.ts",
       "src/lib/twoFactor.ts",
       "src/lib/twoFactorCrypto.ts",
@@ -3349,6 +3354,7 @@
       "tests/int/system-page-rendering.int.spec.ts",
       "tests/int/tabs-content-active-color.int.spec.ts",
       "tests/int/taxonomy.int.spec.ts",
+      "tests/int/team-setup-guide.int.spec.tsx",
       "tests/int/team-showcase-hover-surface.int.spec.tsx",
       "tests/int/test-database-safety.int.spec.ts",
       "tests/int/testimonial-spotlight-config.int.spec.ts",
@@ -3366,13 +3372,14 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "451b68d56626148d3287c677383f23d0a135eb93c6754520506191c992b73ebc"
+    "sha256": "7db2d125b08f686e1e16c06df243f0c79ea1978ae30ed5b543f676e2068ee15e"
   },
   "surfaces": {
     "access": [
       "src/access/adminFeatures.ts",
       "src/access/featureAccess.ts",
-      "src/access/sectionAccess.ts"
+      "src/access/sectionAccess.ts",
+      "src/access/sectionScope.ts"
     ],
     "config": [
       "src/config/applicationOrigin.ts",
@@ -3505,6 +3512,7 @@
       "src/lib/systemPageActions.ts",
       "src/lib/systemPageTypes.ts",
       "src/lib/taxonomy.ts",
+      "src/lib/teamSetupGuide.ts",
       "src/lib/themes/websiteThemes.ts",
       "src/lib/twoFactor.ts",
       "src/lib/twoFactorCrypto.ts",
@@ -3808,6 +3816,7 @@
       "tests/int/system-page-rendering.int.spec.ts",
       "tests/int/tabs-content-active-color.int.spec.ts",
       "tests/int/taxonomy.int.spec.ts",
+      "tests/int/team-setup-guide.int.spec.tsx",
       "tests/int/team-showcase-hover-surface.int.spec.tsx",
       "tests/int/test-database-safety.int.spec.ts",
       "tests/int/testimonial-spotlight-config.int.spec.ts",

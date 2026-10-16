@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { useState } from 'react'
+import { getTeamSetupTask } from '@/lib/teamSetupGuide'
+import { ADMIN_FEATURE_KEYS } from '@/access/adminFeatures'
 import { getSiteStructureTask } from '@/lib/siteStructureGuide'
 import { getSiteSetupTask } from '@/lib/siteSetupGuide'
 import { getPageEditingTask } from '@/lib/pageEditingGuide'
@@ -259,4 +261,49 @@ export const PublishedPageNavigation: Story = {
       href: '/admin/globals/page-settings',
     },
   }),
+}
+
+const teamState = {
+  role: 'siteManager',
+  features: {},
+  sectionCount: 0,
+  modified: false,
+  processing: false,
+  existingAccount: false,
+  collapsed: false,
+}
+export const TeamNoFeatures: Story = { args: getTeamSetupTask(teamState) }
+export const TeamAdmin: Story = { args: getTeamSetupTask({ ...teamState, role: 'admin' }) }
+export const TeamMissingSections: Story = {
+  args: getTeamSetupTask({ ...teamState, features: { pages: true } }),
+}
+export const TeamScopedAndSiteWide: Story = {
+  args: getTeamSetupTask({
+    ...teamState,
+    features: { pages: true, articles: true, actionQueue: true },
+    sectionCount: 1,
+    modified: true,
+  }),
+}
+export const TeamSiteWideOnly: Story = {
+  args: getTeamSetupTask({ ...teamState, features: { articles: true }, existingAccount: true }),
+}
+export const TeamOperationalOnly: Story = {
+  args: getTeamSetupTask({ ...teamState, features: { actionQueue: true, auditLog: true } }),
+}
+export const TeamAllFeatures: Story = {
+  args: getTeamSetupTask({
+    ...teamState,
+    features: Object.fromEntries(ADMIN_FEATURE_KEYS.map((key) => [key, true])),
+    sectionCount: 2,
+  }),
+}
+export const TeamSaving: Story = {
+  args: getTeamSetupTask({ ...teamState, processing: true }),
+  play: async ({ canvasElement }) => {
+    await expect(
+      within(canvasElement).getByRole('button', { name: 'Review account role' }),
+    ).toBeDisabled()
+    await expect(within(canvasElement).queryByRole('link')).not.toBeInTheDocument()
+  },
 }

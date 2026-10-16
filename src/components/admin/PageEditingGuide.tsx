@@ -30,7 +30,8 @@ export function PageEditingGuide({
   const hasBlocks = useFormFields(([fields]) => Boolean(fields.layout?.rows?.length))
   const editorID =
     currentEditor && typeof currentEditor === 'object' ? currentEditor.id : currentEditor
-  const lockedByAnother = documentIsLocked && (!editorID || String(editorID) !== String(user?.id))
+  const lockedByAnother =
+    Boolean(id) && documentIsLocked && (!editorID || String(editorID) !== String(user?.id))
   if (drawerSlug || hasSavePermission === false || isTrashed || lockedByAnother) return null
   const previewURL = id
     ? `${config.serverURL || ''}/preview/page/${encodeURIComponent(String(id))}`

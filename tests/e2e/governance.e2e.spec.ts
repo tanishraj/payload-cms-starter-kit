@@ -209,9 +209,13 @@ test.describe('governance browser journeys', () => {
       await login({ page, user: currentFixture.admin })
     })
 
+    const teamGuide = page.getByRole('region', { name: 'Team setup', exact: true })
     const createdAdmin = await test.step('create and read back a second Admin', async () => {
       await page.goto('/admin/collections/users/create')
       await fillNewUserCredentials(page, governanceSecondAdmin)
+      await expect(
+        teamGuide.getByRole('heading', { name: 'Choose what this Site Manager can manage' }),
+      ).toBeVisible()
 
       const roleField = page.locator('#field-role')
       await expect(roleField).toHaveCount(1)
@@ -225,6 +229,10 @@ test.describe('governance browser journeys', () => {
       await adminOption.click()
       await expect(roleField.getByText('Admin', { exact: true })).toHaveCount(1)
       await expect(roleField.getByText('Admin', { exact: true })).toBeVisible()
+      await expect(
+        teamGuide.getByRole('heading', { name: 'Admin gives full access to the website' }),
+      ).toBeVisible()
+      await expect(teamGuide).toContainText('do not limit an Admin')
 
       const admin = await saveNewUser(page)
       expect(admin.email).toBe(governanceSecondAdmin.email)
@@ -261,12 +269,20 @@ test.describe('governance browser journeys', () => {
       await page.goto('/admin/collections/users/create')
       await fillNewUserCredentials(page, accessManager)
       await chooseSelectOption({ fieldID: '#field-role', label: 'Site Manager', page })
-      await page.locator('#field-sectionRoots').getByRole('combobox').click()
-      await page.getByRole('option', { name: sectionPages[0].title, exact: true }).click()
       await expandContentGrants(page)
       const pagesGrant = page.locator('input[name="features.pages"]')
       await expect(pagesGrant).toBeVisible()
       await pagesGrant.check()
+      await expect(
+        teamGuide.getByRole('heading', { name: 'Assign website sections for scoped work' }),
+      ).toBeVisible()
+      await teamGuide.getByRole('link', { name: 'Choose website sections' }).click()
+      await page.locator('#field-sectionRoots').getByRole('combobox').click()
+      await page.getByRole('option', { name: sectionPages[0].title, exact: true }).click()
+      await expect(teamGuide).toContainText(
+        'Pages across 1 selected section, including descendants',
+      )
+      await expect(teamGuide).toContainText('not confirmed until Save succeeds')
 
       const manager = await saveNewUser(page)
       expect(manager).toMatchObject({
@@ -282,12 +298,33 @@ test.describe('governance browser journeys', () => {
       return manager
     })
 
+    await expect(
+      teamGuide.getByRole('heading', { name: 'Review this account’s access selections' }),
+    ).toBeVisible()
+    await teamGuide.scrollIntoViewIfNeeded()
+    await checkPageGuideAccessibility(page, 'team-setup-light-a11y.json')
+    await page.screenshot({ path: test.info().outputPath('team-setup-desktop.png') })
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'))
+    await checkPageGuideAccessibility(page, 'team-setup-dark-a11y.json')
+    await page.screenshot({ path: test.info().outputPath('team-setup-mobile.png') })
+    await teamGuide.getByRole('button', { name: 'Hide guide' }).click()
+    await expect(teamGuide.getByRole('button', { name: 'Team setup', exact: true })).toBeFocused()
+    await page.reload({ waitUntil: 'domcontentloaded' })
+    await teamGuide.getByRole('button', { name: 'Team setup', exact: true }).click()
+    await expect(teamGuide.getByRole('button', { name: 'Hide guide' })).toBeFocused()
+    await page.setViewportSize({ width: 1280, height: 720 })
+    await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'light'))
+
     const managerContext = await browser.newContext()
     try {
       await managerContext.route('https://www.gravatar.com/**', (route) => route.abort())
       const managerPage = await managerContext.newPage()
       await test.step('verify initial Pages-only access', async () => {
         await login({ page: managerPage, user: accessManager })
+        await expect(
+          managerPage.getByRole('region', { name: 'Team setup', exact: true }),
+        ).toHaveCount(0)
 
         await expect(managerPage.getByRole('link', { name: 'Pages', exact: true })).toBeVisible()
         await expect(managerPage.getByRole('link', { name: 'Articles', exact: true })).toHaveCount(
@@ -313,15 +350,15 @@ test.describe('governance browser journeys', () => {
           managerPage.getByRole('option', { name: sectionPages[1].title, exact: true }),
         ).toHaveCount(0)
         await managerPage.getByRole('option', { name: sectionPages[0].title, exact: true }).click()
+        await expect(
+          managerPage.getByRole('region', { name: 'Getting started', exact: true }),
+        ).toContainText('Parent in an assigned section')
         const createResponsePromise = managerPage.waitForResponse(
           (response) =>
             new URL(response.url()).pathname === '/api/pages' &&
             response.request().method() === 'POST' &&
             response.request().headers()['content-type']?.startsWith('multipart/form-data'),
         )
-        await expect(
-          managerPage.getByRole('region', { name: 'Getting started', exact: true }),
-        ).toContainText('Parent in an assigned section')
         await managerPage.getByRole('button', { name: 'Save Draft', exact: true }).click()
         const createResponse = await createResponsePromise
         const created = await createResponse.json()
