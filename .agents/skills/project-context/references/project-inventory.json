@@ -2321,12 +2321,14 @@
       "docs/operations/mongodb-deployment.md",
       "docs/operations/private-form-attachments.md",
       "docs/operations/runtime-and-providers.md",
+      "docs/operations/section-scoped-access.md",
       "docs/operations/starter-clone-checklist.md",
       "docs/operations/storybook.md",
       "next.config.ts",
       "package.json",
       "src/access/adminFeatures.ts",
       "src/access/featureAccess.ts",
+      "src/access/sectionAccess.ts",
       "src/app/(block-thumbnails)/block-thumbnail-previews/[slug]/page.tsx",
       "src/app/(block-thumbnails)/layout.tsx",
       "src/app/(frontend)/ManagedCmsPage.tsx",
@@ -2837,6 +2839,7 @@
       "src/fields/formQuestionFields.ts",
       "src/fields/projectSlugField.ts",
       "src/fields/publicationMetadataFields.ts",
+      "src/fields/sectionOwnership.ts",
       "src/globals/AnalyticsSettings.ts",
       "src/globals/CookieConsentSettings.ts",
       "src/globals/NewsEventsDetailTemplate.ts",
@@ -2847,6 +2850,7 @@
       "src/globals/SystemModeSettings.ts",
       "src/globals/ThemeSettings.ts",
       "src/hooks/createRedirectsForChangedPagePath.ts",
+      "src/hooks/enforcePageSection.ts",
       "src/hooks/enforcePublicationPolicy.ts",
       "src/hooks/enforceReviewModeration.ts",
       "src/hooks/logOperationalAuditEvent.ts",
@@ -3292,6 +3296,7 @@
       "tests/int/search-route.int.spec.ts",
       "tests/int/search-settings-access.int.spec.ts",
       "tests/int/search-suggestions.int.spec.ts",
+      "tests/int/section-access-database.int.spec.ts",
       "tests/int/section-eyebrow.int.spec.tsx",
       "tests/int/semantic-radius-contract.int.spec.ts",
       "tests/int/seo-contract.int.spec.ts",
@@ -3326,12 +3331,13 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "20793138973a95a32b4bc4fb01bd94d047b66365ec6fcbb37b3b039310f8e176"
+    "sha256": "79e636d92f43a8a7b3b6e1eaa61f46a8c6d17ada5bdc117e2dfe8546796d243a"
   },
   "surfaces": {
     "access": [
       "src/access/adminFeatures.ts",
-      "src/access/featureAccess.ts"
+      "src/access/featureAccess.ts",
+      "src/access/sectionAccess.ts"
     ],
     "config": [
       "src/config/applicationOrigin.ts",
@@ -3351,10 +3357,12 @@
       "src/fields/formAppearanceField.ts",
       "src/fields/formQuestionFields.ts",
       "src/fields/projectSlugField.ts",
-      "src/fields/publicationMetadataFields.ts"
+      "src/fields/publicationMetadataFields.ts",
+      "src/fields/sectionOwnership.ts"
     ],
     "hooks": [
       "src/hooks/createRedirectsForChangedPagePath.ts",
+      "src/hooks/enforcePageSection.ts",
       "src/hooks/enforcePublicationPolicy.ts",
       "src/hooks/enforceReviewModeration.ts",
       "src/hooks/logOperationalAuditEvent.ts",
@@ -3732,6 +3740,7 @@
       "tests/int/search-route.int.spec.ts",
       "tests/int/search-settings-access.int.spec.ts",
       "tests/int/search-suggestions.int.spec.ts",
+      "tests/int/section-access-database.int.spec.ts",
       "tests/int/section-eyebrow.int.spec.tsx",
       "tests/int/semantic-radius-contract.int.spec.ts",
       "tests/int/seo-contract.int.spec.ts",

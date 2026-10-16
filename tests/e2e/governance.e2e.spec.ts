@@ -189,10 +189,22 @@ test.describe('governance browser journeys', () => {
     })
     expect(createdAdmin.id).toBeDefined()
 
+    const sectionPages: Array<{ id: string; title: string }> = []
+    for (const title of ['Governance assigned section', 'Governance other section']) {
+      const response = await page.request.post('/api/pages', {
+        headers: await getPayloadAuthHeaders(page),
+        data: { title, layout: [], _status: 'draft' },
+      })
+      expect(response.status()).toBe(201)
+      sectionPages.push((await response.json()).doc)
+    }
+
     const createdManager = await test.step('create a Pages Site Manager', async () => {
       await page.goto('/admin/collections/users/create')
       await fillNewUserCredentials(page, accessManager)
       await chooseSelectOption({ fieldID: '#field-role', label: 'Site Manager', page })
+      await page.locator('#field-sectionRoots').getByRole('combobox').click()
+      await page.getByRole('option', { name: sectionPages[0].title, exact: true }).click()
       await expandContentGrants(page)
       const pagesGrant = page.locator('input[name="features.pages"]')
       await expect(pagesGrant).toBeVisible()
@@ -204,6 +216,7 @@ test.describe('governance browser journeys', () => {
         role: 'siteManager',
       })
       expect((manager.features as Record<string, unknown>).pages).toBe(true)
+      expect(manager.sectionRoots).toEqual([sectionPages[0].id])
       expect(manager.id).toBeDefined()
       await expect(page).toHaveURL(
         (url) => url.pathname === `/admin/collections/users/${String(manager.id)}`,
@@ -230,6 +243,45 @@ test.describe('governance browser journeys', () => {
             })
           ).status(),
         ).toBe(403)
+      })
+
+      await test.step('create a Page within the assigned section and deny the other section', async () => {
+        await managerPage.goto('/admin/collections/pages/create', { waitUntil: 'domcontentloaded' })
+        await expect(managerPage.locator('form[data-form-ready="true"]')).toBeVisible()
+        await managerPage.locator('#field-title').fill('Manager-created scoped Page')
+        await managerPage.locator('#field-parent').getByRole('combobox').click()
+        await expect(
+          managerPage.getByRole('option', { name: sectionPages[1].title, exact: true }),
+        ).toHaveCount(0)
+        await managerPage.getByRole('option', { name: sectionPages[0].title, exact: true }).click()
+        await managerPage.getByRole('button', { name: 'Save Draft', exact: true }).click()
+        await expect(managerPage).toHaveURL((url) =>
+          /\/admin\/collections\/pages\/[a-f0-9]{24}$/.test(url.pathname),
+        )
+        const headers = await getPayloadAuthHeaders(managerPage)
+        const currentID = new URL(managerPage.url()).pathname.split('/').pop()!
+        const saved = await managerPage.request.get(`/api/pages/${currentID}?depth=0&draft=true`, {
+          headers,
+        })
+        expect(saved.status()).toBe(200)
+        const record = await saved.json()
+        expect(record.parent).toBe(sectionPages[0].id)
+        sectionPages.push({ id: currentID, title: record.title })
+        expect(
+          (
+            await managerPage.request.get(`/api/pages/${sectionPages[1].id}?draft=true`, {
+              headers,
+            })
+          ).status(),
+        ).not.toBe(200)
+        expect(
+          (
+            await managerPage.request.patch(`/api/pages/${currentID}`, {
+              headers,
+              data: { parent: sectionPages[1].id },
+            })
+          ).status(),
+        ).not.toBe(200)
       })
 
       await test.step('replace the Pages grant with Reviews', async () => {
@@ -300,6 +352,11 @@ test.describe('governance browser journeys', () => {
       })
     } finally {
       await managerContext.close()
+      for (const sectionPage of [...sectionPages].reverse()) {
+        await page.request.delete(`/api/pages/${sectionPage.id}`, {
+          headers: await getPayloadAuthHeaders(page),
+        })
+      }
     }
   })
 

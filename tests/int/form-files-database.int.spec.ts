@@ -419,6 +419,18 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
         password: 'Test-only-file-password-123!',
       },
     })
+    const inboxRoot = await payload.create({
+      collection: 'pages',
+      user: admin,
+      draft: true,
+      data: { title: 'Private inbox section', layout: [] },
+    })
+    await payload.update({
+      collection: 'form-submissions',
+      id: submission.id,
+      user: admin,
+      data: { sectionRoot: inboxRoot.id },
+    })
     const granted = await payload.create({
       collection: 'users',
       data: {
@@ -426,6 +438,23 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
         email: 'files-inbox@example.test',
         password: 'Test-only-file-password-123!',
         features: { formSubmissions: true },
+        sectionRoots: [inboxRoot.id],
+      },
+    })
+    const otherRoot = await payload.create({
+      collection: 'pages',
+      user: admin,
+      draft: true,
+      data: { title: 'Other inbox section', layout: [] },
+    })
+    const wrongSection = await payload.create({
+      collection: 'users',
+      data: {
+        role: 'siteManager',
+        email: 'files-other-section@example.test',
+        password: 'Test-only-file-password-123!',
+        features: { formSubmissions: true },
+        sectionRoots: [otherRoot.id],
       },
     })
     const download = () =>
@@ -436,7 +465,7 @@ describe('private attachments with real Payload, MongoDB and storage', () => {
         ),
       })
     const auth = vi.spyOn(payload, 'auth')
-    for (const user of [null, manager]) {
+    for (const user of [null, manager, wrongSection]) {
       auth.mockResolvedValue({ user } as never)
       expect((await download()).status).toBe(404)
     }

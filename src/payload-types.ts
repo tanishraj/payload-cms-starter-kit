@@ -194,6 +194,10 @@ export interface Page {
   generateSlug?: boolean | null;
   slug: string;
   /**
+   * Site Managers must choose a parent in an assigned section when creating a Page. Moving between sections and managing section roots require an Admin.
+   */
+  parent?: (string | null) | Page;
+  /**
    * Compose the page using reusable content blocks.
    */
   layout?:
@@ -282,10 +286,6 @@ export interface Page {
    * Resolved from the current saved slug and parent hierarchy.
    */
   publicUrlPreview?: string | null;
-  /**
-   * Use this for nested page hierarchies like /services/web-development.
-   */
-  parent?: (string | null) | Page;
   /**
    * Set automatically when this document is published.
    */
@@ -647,6 +647,10 @@ export interface ReusableSectionBlock {
  */
 export interface ReusableSection {
   id: string;
+  /**
+   * Choose a root Page. Leave empty for an Admin-managed shared resource. Site Managers can create resources only in their assigned sections.
+   */
+  sectionRoot?: (string | null) | Page;
   /**
    * Internal name shown in the admin and in the block picker.
    */
@@ -5061,6 +5065,10 @@ export interface ReviewSubmissionBlock {
  */
 export interface Form {
   id: string;
+  /**
+   * Choose a root Page. Leave empty for an Admin-managed shared resource. Site Managers can create resources only in their assigned sections.
+   */
+  sectionRoot?: (string | null) | Page;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -8392,123 +8400,127 @@ export interface User {
    */
   role?: ('admin' | 'siteManager') | null;
   /**
+   * Choose root Pages: descendants are included automatically. No selection means no access to scoped Pages or submissions. Feature grants are also required. Saving changed sections signs the Site Manager out. Sections currently protect Pages, Forms, Reusable Sections and submissions; other granted destinations remain site-wide.
+   */
+  sectionRoots?: (string | Page)[] | null;
+  /**
    * Choose editable Admin destinations. Required supporting destinations receive read-only access without appearing in navigation. After changed access is saved, the Site Manager is signed out of active sessions.
    */
   features?: {
     /**
-     * Create, edit, preview, publish, version, trash, and restore Pages.
+     * Create, edit, preview, publish, version, trash, and restore Pages. Manageable website sections also apply.
      */
     pages?: boolean | null;
     /**
-     * Create, edit, preview, publish, version, trash, and restore Articles.
+     * Create, edit, preview, publish, version, trash, and restore Articles. This destination currently grants site-wide access.
      */
     articles?: boolean | null;
     /**
-     * Manage Reviews and moderate public review submissions.
+     * Manage Reviews and moderate public review submissions. This destination currently grants site-wide access.
      */
     reviews?: boolean | null;
     /**
-     * Create, edit, version, trash, and restore Reusable Sections.
+     * Create, edit, version, trash, and restore Reusable Sections. Manageable website sections also apply.
      */
     reusableSections?: boolean | null;
     /**
-     * Create, edit, preview, publish, version, trash, and restore News & Events.
+     * Create, edit, preview, publish, version, trash, and restore News & Events. This destination currently grants site-wide access.
      */
     newsEvents?: boolean | null;
     /**
-     * Create, edit, and archive News & Event classifications.
+     * Create, edit, and archive News & Event classifications. This destination currently grants site-wide access.
      */
     newsEventClassifications?: boolean | null;
     /**
-     * Edit, preview, and publish the shared News & Events detail layout.
+     * Edit, preview, and publish the shared News & Events detail layout. This destination currently grants site-wide access.
      */
     newsEventsDetailTemplate?: boolean | null;
     /**
-     * Create, edit, archive, trash, restore, and select Topics.
+     * Create, edit, archive, trash, restore, and select Topics. This destination currently grants site-wide access.
      */
     topics?: boolean | null;
     /**
-     * Create, edit, archive, trash, restore, and select Tags.
+     * Create, edit, archive, trash, restore, and select Tags. This destination currently grants site-wide access.
      */
     tags?: boolean | null;
     /**
-     * Create, edit, publish, version, trash, and restore Navigation Links.
+     * Create, edit, publish, version, trash, and restore Navigation Links. This destination currently grants site-wide access.
      */
     navigationLinks?: boolean | null;
     /**
-     * Create, edit, enable, version, trash, and restore Redirects.
+     * Create, edit, enable, version, trash, and restore Redirects. This destination currently grants site-wide access.
      */
     redirects?: boolean | null;
     /**
-     * Create, edit, preview, publish, version, trash, and restore Headers.
+     * Create, edit, preview, publish, version, trash, and restore Headers. This destination currently grants site-wide access.
      */
     headers?: boolean | null;
     /**
-     * Create, edit, preview, publish, version, trash, and restore Footers.
+     * Create, edit, preview, publish, version, trash, and restore Footers. This destination currently grants site-wide access.
      */
     footers?: boolean | null;
     /**
-     * Create, edit, version, trash, and restore Office Locations.
+     * Create, edit, version, trash, and restore Office Locations. This destination currently grants site-wide access.
      */
     officeLocations?: boolean | null;
     /**
-     * Create, edit, preview, publish, version, trash, and restore System Pages.
+     * Create, edit, preview, publish, version, trash, and restore System Pages. This destination currently grants site-wide access.
      */
     systemPages?: boolean | null;
     /**
-     * Upload, edit, replace, version, trash, and restore Media.
+     * Upload, edit, replace, version, trash, and restore Media. This destination currently grants site-wide access.
      */
     media?: boolean | null;
     /**
-     * Create, edit, reorder, version, trash, and restore Gallery Albums.
+     * Create, edit, reorder, version, trash, and restore Gallery Albums. This destination currently grants site-wide access.
      */
     galleryAlbums?: boolean | null;
     /**
-     * Create, edit, configure, version, trash, and restore Forms.
+     * Create, edit, configure, version, trash, and restore Forms. Manageable website sections also apply.
      */
     forms?: boolean | null;
     /**
-     * Read submissions and update assignment, status, and internal notes.
+     * Read submissions and update assignment, status, and internal notes. Manageable website sections also apply.
      */
     formSubmissions?: boolean | null;
     /**
-     * Read and operate generated tasks for otherwise authorized features.
+     * Read and operate generated tasks for otherwise authorized features. Rows for scoped resources follow website sections; other granted resources remain site-wide.
      */
     actionQueue?: boolean | null;
     /**
-     * Read audit events for otherwise authorized features.
+     * Read audit events for otherwise authorized features. Rows for scoped resources follow website sections; other granted resources remain site-wide.
      */
     auditLog?: boolean | null;
     /**
-     * Edit and publish identity, contact, address, legal, and social settings.
+     * Edit and publish identity, contact, address, legal, and social settings. This destination currently grants site-wide access.
      */
     siteIdentity?: boolean | null;
     /**
-     * Edit and publish theme and color-mode settings.
+     * Edit and publish theme and color-mode settings. This destination currently grants site-wide access.
      */
     appearance?: boolean | null;
     /**
-     * Edit and publish site metadata, robots, and verification settings.
+     * Edit and publish site metadata, robots, and verification settings. This destination currently grants site-wide access.
      */
     seoMetadata?: boolean | null;
     /**
-     * Edit and publish GTM or GA4 settings.
+     * Edit and publish GTM or GA4 settings. This destination currently grants site-wide access.
      */
     analyticsTracking?: boolean | null;
     /**
-     * Edit and publish consent visibility, copy, links, and presentation.
+     * Edit and publish consent visibility, copy, links, and presentation. This destination currently grants site-wide access.
      */
     cookieConsent?: boolean | null;
     /**
-     * Select homepage, Header, Footer, and configure the announcement.
+     * Select homepage, Header, Footer, and configure the announcement. This destination currently grants site-wide access.
      */
     layoutDefaults?: boolean | null;
     /**
-     * Edit and publish suggested-search settings.
+     * Edit and publish suggested-search settings. This destination currently grants site-wide access.
      */
     searchSettings?: boolean | null;
     /**
-     * Configure normal, maintenance, and coming-soon modes.
+     * Configure normal, maintenance, and coming-soon modes. This destination currently grants site-wide access.
      */
     maintenanceModes?: boolean | null;
   };
@@ -8937,6 +8949,10 @@ export interface Review {
  */
 export interface FormSubmission {
   id: string;
+  /**
+   * Access section captured at submission time. Unassigned submissions are Admin-only; moving a Form does not move its old submissions.
+   */
+  sectionRoot?: (string | null) | Page;
   submissionKeyHash?: string | null;
   submissionRequestHash?: string | null;
   submissionConfirmation?: string | null;
@@ -9884,6 +9900,7 @@ export interface PagesSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
+  parent?: T;
   layout?:
     | T
     | {
@@ -9958,7 +9975,6 @@ export interface PagesSelect<T extends boolean = true> {
   ogImage?: T;
   ogDescription?: T;
   publicUrlPreview?: T;
-  parent?: T;
   publishedAt?: T;
   publishedBy?: T;
   updatedAt?: T;
@@ -14471,6 +14487,7 @@ export interface ReviewsSelect<T extends boolean = true> {
  * via the `definition` "reusable-sections_select".
  */
 export interface ReusableSectionsSelect<T extends boolean = true> {
+  sectionRoot?: T;
   title?: T;
   layout?:
     | T
@@ -15031,6 +15048,7 @@ export interface GalleryAlbumsSelect<T extends boolean = true> {
  * via the `definition` "forms_select".
  */
 export interface FormsSelect<T extends boolean = true> {
+  sectionRoot?: T;
   title?: T;
   generateSlug?: T;
   slug?: T;
@@ -15161,6 +15179,7 @@ export interface FormsSelect<T extends boolean = true> {
  * via the `definition` "form-submissions_select".
  */
 export interface FormSubmissionsSelect<T extends boolean = true> {
+  sectionRoot?: T;
   submissionKeyHash?: T;
   submissionRequestHash?: T;
   submissionConfirmation?: T;
@@ -15286,6 +15305,7 @@ export interface OperationalAuditEventsSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
+  sectionRoots?: T;
   features?:
     | T
     | {

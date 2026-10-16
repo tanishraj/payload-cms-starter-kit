@@ -14,7 +14,7 @@ const pageManager = {
 }
 
 const makeRequest = ({
-  body = { recipe: 'landing', title: '  Admissions  ' },
+  body = { recipe: 'landing', title: '  Admissions  ', parent: 'root-a' },
   jsonError,
   user = pageManager,
 }: {
@@ -59,6 +59,7 @@ describe('create Page from recipe endpoint', () => {
           expect.objectContaining({ blockType: 'breadcrumb' }),
         ],
         title: 'Admissions',
+        parent: 'root-a',
       },
       draft: true,
       overrideAccess: false,
@@ -69,7 +70,7 @@ describe('create Page from recipe endpoint', () => {
 
   it('creates an empty Blank draft', async () => {
     const response = await createPageFromRecipeEndpoint.handler(
-      makeRequest({ body: { recipe: 'blank', title: 'Plain Page' } }),
+      makeRequest({ body: { recipe: 'blank', title: 'Plain Page', parent: 'root-a' } }),
     )
 
     expect(response.status).toBe(201)
@@ -83,6 +84,7 @@ describe('create Page from recipe endpoint', () => {
     ['unauthorized', makeRequest({ user: { id: 'writer-1', role: 'siteManager' } }), 403],
     ['malformed JSON', makeRequest({ jsonError: new Error('bad JSON') }), 400],
     ['empty title', makeRequest({ body: { recipe: 'blank', title: '   ' } }), 400],
+    ['missing parent for Manager', makeRequest({ body: { recipe: 'blank', title: 'Page' } }), 400],
     ['unknown recipe', makeRequest({ body: { recipe: 'service', title: 'Services' } }), 400],
   ])('rejects %s without mutation', async (_label, req, status) => {
     const response = await createPageFromRecipeEndpoint.handler(req)

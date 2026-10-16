@@ -1,5 +1,16 @@
 # Forms completion plan
 
+> Superseded sequencing, 16 October 2026: the user accepts the core forms
+> implementation and protected email links. Move to section-scoped Site Manager
+> access, then onboarding. Advanced notification/outbox/retry/webhook/test-mode
+> work is deferred, not required before that move. Historical milestones below
+> remain as evidence; unchecked broad catalogue acceptance stays open.
+> PR #32 merged as `76e3dba2` after exact-head Quality run `38873878285` passed:
+> 2,745 integration tests/one existing Docker skip, both governance and native
+> form journeys passed. Generic Form passed on retry after its initial public-page
+> navigation timed out before export; production private-artifact guard passed.
+
+
 Direction confirmed by the user on 14 October 2026: finish the forms milestone before moving to other website-builder items. Broader scoped page access and onboarding follow forms. Necessary form/inbox/attachment permission prerequisites are part of secure forms acceptance.
 
 This is the delivery sequence for the existing [implementation checklist](feature-implementation-checklist.md), not a second set of completion boxes. That checklist owns status and verification; the full catalogue is retained. Existing working behavior should be verified and reused before replacement. Each bounded increment is tested, committed and merged into develop before the next branch starts.

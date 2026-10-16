@@ -129,10 +129,16 @@ describe('API', () => {
 
     expect(firstAdmin.role).toBe('admin')
 
+    const accessRoot = await payload.create({
+      collection: 'pages',
+      draft: true,
+      data: { title: 'Permission section', layout: [] },
+    })
     const siteManager = await payload.create({
       collection: 'users',
       data: {
         email: 'site-manager@example.test',
+        sectionRoots: [accessRoot.id],
         features: { pages: true },
         password: 'test-password',
         role: 'siteManager',
@@ -413,6 +419,11 @@ describe('API', () => {
     expect(stored.data).toEqual(values)
   })
   it('persists owner-only activity for an authorized Manager and preserves unchanged timestamps and answers', async () => {
+    const activityRoot = await payload.create({
+      collection: 'pages',
+      draft: true,
+      data: { title: 'Activity section', layout: [] },
+    })
     const makeUser = (email: string, granted: boolean) =>
       payload.create({
         collection: 'users',
@@ -422,6 +433,7 @@ describe('API', () => {
           password: 'test-password',
           role: 'siteManager',
           features: { formSubmissions: granted },
+          sectionRoots: [activityRoot.id],
         },
       })
     const operator = await makeUser('activity-operator@example.test', true)
@@ -444,6 +456,7 @@ describe('API', () => {
       collection: 'form-submissions',
       data: {
         form: form.id,
+        sectionRoot: activityRoot.id,
         data: { question: 'Original answer' },
         submissionIntent: 'general',
         submittedAt: new Date().toISOString(),

@@ -10,8 +10,14 @@ The user moved implementation from Forma to this repository on October 6, 2026.
 Read `docs/planning/feature-implementation-checklist.md` for the current priorities,
 acceptance checklist and work log; `feature-scope-reference.md` beside it preserves
 all carried-forward requirements and deferrals. Use Payload's native editing and
-Live Preview; do not implement a separate visual editor. Dynamic forms and generic
-submissions are the first selected enhancement. Preserve and verify existing
+Live Preview; do not implement a separate visual editor. The user accepted the core forms implementation on October 16, 2026 and selected
+section-scoped Site Manager access next, followed by onboarding. Do not continue
+advanced forms, notification outbox/retries, webhooks or test mode without renewed
+prioritization. Secure email links must require authorized submission access; never
+make attachments public. The only roles remain Admin and Site Manager.
+Read `docs/operations/section-scoped-access.md` for the bounded first rollout
+(Pages, Forms, Reusable Sections, submissions and related operational rows); other
+feature grants remain site-wide and are explicitly labelled. Preserve and verify existing
 functionality before replacing it. Update affected checklist entries with actual
 source/test evidence and commit/PR status in each implementation. Native feature
 presence alone is not completion of the broader requirement.

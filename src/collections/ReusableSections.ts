@@ -1,13 +1,10 @@
+import { scopedResourceAccess } from '@/access/sectionAccess'
+import { enforceSectionOwnership, sectionOwnershipField } from '@/fields/sectionOwnership'
 import type { CollectionConfig } from 'payload'
 
 import { reusableSectionBuilderBlocks } from '@/blocks/blockCatalog'
 import { validateUniqueBlockAnchorIDs } from '@/blocks/shared/blockAnchor'
-import {
-  allowPublishedReadOrFeature,
-  deleteFeatureOrAdmin,
-  hideUnlessFeature,
-  requireFeature,
-} from '@/access/featureAccess'
+import { hideUnlessFeature } from '@/access/featureAccess'
 import { createCollectionAuditHook } from '@/hooks/logOperationalAuditEvent'
 import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 
@@ -26,13 +23,15 @@ export const ReusableSections: CollectionConfig = {
     defaultColumns: ['title', 'updatedAt'],
   },
   access: {
-    create: requireFeature('reusableSections'),
-    delete: deleteFeatureOrAdmin('reusableSections'),
-    read: allowPublishedReadOrFeature('reusableSections'),
-    readVersions: requireFeature('reusableSections'),
-    update: requireFeature('reusableSections'),
+    create: scopedResourceAccess('reusable-sections', 'reusableSections', 'create'),
+    delete: scopedResourceAccess('reusable-sections', 'reusableSections', 'delete'),
+    read: scopedResourceAccess('reusable-sections', 'reusableSections', 'read'),
+    readVersions: scopedResourceAccess('reusable-sections', 'reusableSections', 'versions'),
+    update: scopedResourceAccess('reusable-sections', 'reusableSections', 'update'),
   },
   hooks: {
+    beforeChange: [enforceSectionOwnership],
+    beforeValidate: [enforceSectionOwnership],
     afterChange: [
       revalidateGlobalsCache,
       createCollectionAuditHook({
@@ -46,6 +45,7 @@ export const ReusableSections: CollectionConfig = {
   versions: { drafts: true },
   timestamps: true,
   fields: [
+    sectionOwnershipField(),
     {
       name: 'title',
       type: 'text',

@@ -1,3 +1,4 @@
+import { sectionAuditWhere } from '@/access/sectionAccess'
 import type { CollectionConfig } from 'payload'
 
 import { ADMIN_FEATURE_KEYS, ADMIN_FEATURES } from '@/access/adminFeatures'
@@ -25,11 +26,13 @@ export const OperationalAuditEvents: CollectionConfig = {
   access: {
     create: () => false,
     delete: () => false,
-    read: ({ req }) => {
+    read: async ({ req }) => {
       if (isAdmin(req.user)) return true
       if (!hasFeature(req.user, 'auditLog')) return false
       const features = getGrantedFeatureKeys(req.user).filter((key) => key !== 'auditLog')
-      return features.length > 0 ? { feature: { in: features } } : false
+      return features.length > 0
+        ? { and: [{ feature: { in: features } }, await sectionAuditWhere(req)] }
+        : false
     },
     update: () => false,
   },

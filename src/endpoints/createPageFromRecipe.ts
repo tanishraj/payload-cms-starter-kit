@@ -1,11 +1,12 @@
 import type { Endpoint, PayloadRequest } from 'payload'
 import { formatAdminURL } from 'payload/shared'
 
-import { hasFeature } from '@/access/featureAccess'
+import { hasFeature, isSiteManager } from '@/access/featureAccess'
 import { createPageRecipeLayout, isPageRecipeID } from '@/page-recipes/pageRecipes'
 import type { User } from '@/payload-types'
 
 type RecipeRequestBody = {
+  parent?: unknown
   recipe?: unknown
   title?: unknown
 }
@@ -41,12 +42,16 @@ export const createPageFromRecipeEndpoint: Endpoint = {
     if (!title) return jsonMessage('Page title is required.', 400)
     if (!isPageRecipeID(body.recipe)) return jsonMessage('Choose a valid Page recipe.', 400)
 
+    const parent = typeof body.parent === 'string' && body.parent ? body.parent : undefined
+    if (isSiteManager(user) && !parent)
+      return jsonMessage('Choose a parent Page in your assigned section.', 400)
     try {
       const page = await req.payload.create({
         collection: 'pages',
         data: {
           layout: createPageRecipeLayout(body.recipe, title),
           title,
+          ...(parent ? { parent } : {}),
         },
         draft: true,
         overrideAccess: false,
@@ -67,6 +72,9 @@ export const createPageFromRecipeEndpoint: Endpoint = {
         error,
         message: 'Page recipe draft creation failed.',
       })
+      const status = (error as { status?: number })?.status
+      if (status === 403 || status === 404)
+        return jsonMessage('Choose a parent Page you are allowed to manage.', 403)
       return jsonMessage('Unable to create the Page draft.', 500)
     }
   },

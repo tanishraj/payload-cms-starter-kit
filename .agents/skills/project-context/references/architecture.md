@@ -277,3 +277,13 @@ required. Hidden answers and private upload tokens are cleared client-side, excl
 from normalized intake, and rejected when nonempty in a forged request. Conditions enter
 published revisions, and stale recovery explains answers that are newly hidden. See
 the [conditional question contract](../../../../docs/planning/form-conditional-rules.md).
+
+
+Section access uses Payload-native field, collection and version policies with
+request-local current ownership queries. Site Managers use the default Page editor
+with an assigned Parent; Admins retain guided recipes. Protected email links do
+not grant access themselves: private downloads require the submission's inbox
+feature and section (or Admin). The first rollout covers Pages, Forms, Reusable
+Sections, submissions and related operational rows; other feature grants are
+site-wide. No provider/environment/schema migration or separate editor is added.
+See [scope boundary and limits](../../../../docs/operations/section-scoped-access.md).

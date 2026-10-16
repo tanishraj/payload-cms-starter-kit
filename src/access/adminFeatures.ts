@@ -260,6 +260,7 @@ export const ADMIN_FEATURES: Record<AdminFeatureKey, AdminFeatureDefinition> = {
     description: 'Read submissions and update assignment, status, and internal notes.',
     resource: { kind: 'collection', slug: 'form-submissions' },
     policyKind: 'internal',
+    dependencyReads: ['pages'],
   }),
   actionQueue: feature({
     key: 'actionQueue',

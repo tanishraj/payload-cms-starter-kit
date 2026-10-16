@@ -329,6 +329,7 @@ export async function POST(
         campaign: submissionMetadata.campaign,
         email: submitterEmail,
         form: form.id,
+        sectionRoot: typeof form.sectionRoot === 'object' ? form.sectionRoot?.id : form.sectionRoot,
         landingPage: submissionMetadata.landingPage,
         source: submissionMetadata.source,
         status: 'new',

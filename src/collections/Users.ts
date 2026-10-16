@@ -6,9 +6,11 @@ import type {
   CollectionBeforeDeleteHook,
   CollectionConfig,
   Field,
+  FieldAccess,
   Where,
 } from 'payload'
 import { APIError } from 'payload'
+import { normalizeSectionRoots, rootPageFilter } from '@/access/sectionAccess'
 
 import {
   ADMIN_FEATURE_GROUPS,
@@ -39,6 +41,7 @@ type UserAccessDocument = {
   features?: AdminFeatureGrants | null
   id?: number | string
   role?: string | null
+  sectionRoots?: unknown
 }
 
 const roleOptions = [
@@ -69,6 +72,14 @@ const sameFeatures = (left: unknown, right: unknown) =>
     (key) => normalizeFeatureGrants(left)[key] === normalizeFeatureGrants(right)[key],
   )
 
+const featureScopeHelp = (key: (typeof ADMIN_FEATURE_KEYS)[number]) => {
+  if (['pages', 'forms', 'reusableSections', 'formSubmissions'].includes(key))
+    return 'Manageable website sections also apply.'
+  if (key === 'actionQueue' || key === 'auditLog')
+    return 'Rows for scoped resources follow website sections; other granted resources remain site-wide.'
+  return 'This destination currently grants site-wide access.'
+}
+
 const createFeatureRows = (keys: readonly (typeof ADMIN_FEATURE_KEYS)[number][]): Field[] => {
   const fields = keys.map<Field>((key) => ({
     name: key,
@@ -76,7 +87,7 @@ const createFeatureRows = (keys: readonly (typeof ADMIN_FEATURE_KEYS)[number][])
     defaultValue: false,
     label: ADMIN_FEATURES[key].label,
     admin: {
-      description: ADMIN_FEATURES[key].description,
+      description: `${ADMIN_FEATURES[key].description} ${featureScopeHelp(key)}`,
       width: '50%',
     },
   }))
@@ -124,6 +135,9 @@ const adminOrSelfAccess = ({ id, req }: { id?: number | string; req: { user?: un
   if (id != null) return String(req.user.id) === String(id)
   return { id: { equals: req.user.id } }
 }
+
+const adminOrSelfFieldRead: FieldAccess = ({ req, id, doc }) =>
+  isAdmin(req.user) || (req.user?.id != null && String(req.user.id) === String(id ?? doc?.id))
 
 const canUseAssignmentControls = (user: unknown) =>
   hasFeature(user, 'formSubmissions') || hasFeature(user, 'actionQueue')
@@ -210,12 +224,14 @@ export const normalizeUserAccessFields: CollectionBeforeChangeHook = async ({
     })
 
     if (totalDocs === 0) {
+      data.sectionRoots = []
       data.role = 'admin'
       data.features = normalizeFeatureGrants(null)
       return data
     }
 
     const role = normalizeRole(data.role)
+    data.sectionRoots = role === 'siteManager' ? normalizeSectionRoots(data.sectionRoots) : []
     data.role = role
     data.features =
       role === 'siteManager' ? normalizeFeatureGrants(data.features) : normalizeFeatureGrants(null)
@@ -235,7 +251,17 @@ export const normalizeUserAccessFields: CollectionBeforeChangeHook = async ({
     nextRole === 'siteManager'
       ? normalizeFeatureGrants(data.features ?? previous.features)
       : normalizeFeatureGrants(null)
-  const accessChanged = nextRole !== previousRole || !sameFeatures(nextFeatures, previous.features)
+  const nextSections =
+    nextRole === 'siteManager'
+      ? normalizeSectionRoots(
+          Object.hasOwn(data, 'sectionRoots') ? data.sectionRoots : previous.sectionRoots,
+        )
+      : []
+  const sameSections =
+    JSON.stringify(nextSections) === JSON.stringify(normalizeSectionRoots(previous.sectionRoots))
+  const accessChanged =
+    nextRole !== previousRole || !sameFeatures(nextFeatures, previous.features) || !sameSections
+  data.sectionRoots = nextSections
 
   data.role = nextRole
   data.features = nextFeatures
@@ -268,7 +294,9 @@ const auditUserAuthorizationChange: CollectionAfterChangeHook = async ({
   const lifecycleChanged = current.deletedAt !== previous?.deletedAt
   const authorizationChanged =
     normalizeRole(current.role) !== normalizeRole(previous?.role) ||
-    !sameFeatures(current.features, previous?.features)
+    !sameFeatures(current.features, previous?.features) ||
+    JSON.stringify(normalizeSectionRoots(current.sectionRoots)) !==
+      JSON.stringify(normalizeSectionRoots(previous?.sectionRoots))
 
   if (operation !== 'create' && !lifecycleChanged && !authorizationChanged) return doc
 
@@ -296,7 +324,7 @@ const auditUserAuthorizationChange: CollectionAfterChangeHook = async ({
       entityTitle: `User #${current.id ?? 'unknown'}`,
       entityType: 'user',
       req,
-      summary: `Authorization changed from ${before} to ${after}.`,
+      summary: `Authorization changed from ${before} to ${after}. Section roots: [${normalizeSectionRoots(previous?.sectionRoots).join(', ')}] → [${normalizeSectionRoots(current.sectionRoots).join(', ')}].`,
     })
   }
 
@@ -374,7 +402,7 @@ export const Users: CollectionConfig = {
       options: [...roleOptions],
       required: true,
       saveToJWT: true,
-      access: { create: adminFieldAccess, read: adminFieldAccess, update: adminFieldAccess },
+      access: { create: adminFieldAccess, read: adminOrSelfFieldRead, update: adminFieldAccess },
       admin: {
         condition: (_data, _siblingData, { user }) => isAdmin(user),
         description: 'Admins have full access. Site Managers receive only selected features.',
@@ -382,10 +410,49 @@ export const Users: CollectionConfig = {
       },
     },
     {
+      name: 'sectionRoots',
+      label: 'Manageable website sections',
+      type: 'relationship',
+      relationTo: 'pages',
+      hasMany: true,
+      saveToJWT: true,
+      access: {
+        create: adminFieldAccess,
+        update: adminFieldAccess,
+        read: adminOrSelfFieldRead,
+      },
+      filterOptions: rootPageFilter,
+      validate: async (value, { req }) => {
+        const roots = normalizeSectionRoots(value)
+        if (roots.length > 50) return 'Assign at most 50 website sections.'
+        if (!roots.length) return true
+        const found = await req.payload.find({
+          collection: 'pages',
+          req,
+          overrideAccess: true,
+          draft: true,
+          depth: 0,
+          limit: 51,
+          pagination: false,
+          select: { parent: true },
+          where: { and: [{ id: { in: roots } }, rootPageFilter] },
+        })
+        return (
+          found.docs.length === roots.length ||
+          'Choose active root Pages; nested or trashed Pages cannot define sections.'
+        )
+      },
+      admin: {
+        condition: showFeatureAccess,
+        description:
+          'Choose root Pages: descendants are included automatically. No selection means no access to scoped Pages or submissions. Feature grants are also required. Saving changed sections signs the Site Manager out. Sections currently protect Pages, Forms, Reusable Sections and submissions; other granted destinations remain site-wide.',
+      },
+    },
+    {
       name: 'features',
       type: 'group',
       saveToJWT: true,
-      access: { create: adminFieldAccess, read: adminFieldAccess, update: adminFieldAccess },
+      access: { create: adminFieldAccess, read: adminOrSelfFieldRead, update: adminFieldAccess },
       admin: {
         condition: showFeatureAccess,
         description:

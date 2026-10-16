@@ -60,12 +60,18 @@ describe('historical exports through native REST and real MongoDB', () => {
       collection: 'users',
       data: { email: 'export-admin@example.test', role: 'admin', password },
     })
+    const exportRoot = await payload.create({
+      collection: 'pages',
+      draft: true,
+      data: { title: 'Export section', layout: [] },
+    })
     const manager = await payload.create({
       collection: 'users',
       data: {
         email: 'export-manager@example.test',
         role: 'siteManager',
         features: { formSubmissions: true },
+        sectionRoots: [exportRoot.id],
         password,
       },
     })
@@ -114,6 +120,7 @@ describe('historical exports through native REST and real MongoDB', () => {
         collection: 'form-submissions',
         data: {
           form: item.id,
+          sectionRoot: exportRoot.id,
           submissionIntent: 'general',
           data: values,
           submittedAt: '2026-10-16T00:00:00.000Z',
