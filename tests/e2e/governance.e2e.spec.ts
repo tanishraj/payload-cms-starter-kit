@@ -708,7 +708,12 @@ test.describe('governance browser journeys', () => {
           r.request().method() === 'POST',
       )
       await page.getByRole('button', { name: 'Save Draft', exact: true }).click()
-      expect((await savingAppearance).ok()).toBe(true)
+      const savedAppearance = await savingAppearance
+      expect(savedAppearance.ok()).toBe(true)
+      expect((await savedAppearance.json()).result).toMatchObject({
+        themeColor: theme === 'SNMIH-Blue' ? 'snmih-blue' : 'snmih-green',
+        _status: 'draft',
+      })
       await expect(guide.getByRole('link', { name: 'Return to Dashboard' })).toBeVisible()
       expect(
         (await visitor.request.get(globalURL('theme-settings')).then((r) => r.json())).themeColor,

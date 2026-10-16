@@ -73,3 +73,9 @@ five governance/onboarding journeys pass without retries, and production build
 plus private-artifact checks pass (73 traces, private uploads excluded). Generators,
 TypeScript, lint (one existing warning), approved audit and deterministic context
 pass. Exact-head CI/merge evidence is recorded in the checklist and feature PR.
+
+
+The final strengthened native case also inspects the saved Appearance response
+for the exact selected preset and `draft` status; it passed without retries in
+16.8 seconds. [PR #37](https://github.com/tanishraj/payload-cms-starter-kit/pull/37)
+owns final exact-head CI and merge evidence.
