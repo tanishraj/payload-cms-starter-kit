@@ -1,10 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { SiteSettings } from '@/globals/SiteSettings'
-import {
-  normalizeSiteOfficeLocations,
-  validateHttpsUrl,
-} from '@/lib/siteOfficesShared'
+import { normalizeSiteOfficeLocations, validateHttpsUrl } from '@/lib/siteOfficesShared'
 
 const getNamedField = <T>(fields: unknown[], name: string) =>
   fields.find(
@@ -14,10 +11,11 @@ const getNamedField = <T>(fields: unknown[], name: string) =>
 
 describe('site office directory', () => {
   it('defines a complete ordered office array under Contact', () => {
-    const tabs = SiteSettings.fields[0] as {
+    const tabs = SiteSettings.fields.find((field) => field.type === 'tabs') as {
       tabs?: Array<{ fields: unknown[]; label: string }>
     }
     const contact = tabs.tabs?.find((tab) => tab.label === 'Contact')
+    expect(contact).toBeDefined()
     const offices = getNamedField<{
       admin?: { initCollapsed?: boolean }
       fields?: Array<{ name?: string; required?: boolean; type?: string }>

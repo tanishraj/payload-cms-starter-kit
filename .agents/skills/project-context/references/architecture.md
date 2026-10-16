@@ -189,8 +189,10 @@ so moving that Page beneath a parent does not leave consent UI pointing at its l
   option with the fixed Payload/TypeScript import flags, and starts a fresh development server.
   The focused runtime-import config proves that boundary in a real worker without a server or
   database connection.
-- Run `pnpm test:e2e:governance` for the two critical feature-grant/revocation and submitted-Review
-  moderation journeys. GitHub CI also runs `pnpm test:e2e:forms`; the full E2E suite remains local.
+- Run `pnpm test:e2e:governance` for feature-grant/revocation, dashboard onboarding, first-draft
+  editing/preview, site setup and submitted-Review moderation. The Page journey awaits native
+  server field state before expanding a newly added block; its placeholder is not edit-ready.
+  GitHub CI also runs `pnpm test:e2e:forms`; the full E2E suite remains local.
 - Run `pnpm generate:types` after schema changes.
 - Run `pnpm generate:importmap` after custom Admin component changes.
 - Run `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` in proportion to risk.
@@ -331,3 +333,12 @@ selects Lexical 0.50's matching static development/production exports to avoid i
 asynchronous Node wrappers. Explicit conditions and every unrelated package remain
 unchanged; neither application resolution nor dependencies are modified. Public form navigation and authenticated preview each have a 120-second cold
 compilation allowance within the unchanged seven-minute form journey budget.
+
+
+Native Site Identity and Appearance include the same sourced optional guide used
+for Dashboard/Page help. Explicit non-persisted UI fields observe current native
+form and lock state; forward links are unavailable while dirty or processing.
+The server reads only account-owned preferences and capability flags, not another
+copy of global settings. Admin quick actions open Site Identity; Manager links
+respect existing feature grants. Public global reads and native draft/publication
+authority are unchanged. See [site setup](../../../../docs/operations/site-setup-guide.md).

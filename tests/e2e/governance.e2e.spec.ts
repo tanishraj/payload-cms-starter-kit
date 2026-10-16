@@ -1,6 +1,6 @@
 import axe from 'axe-core'
 import { writeFile } from 'node:fs/promises'
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, request as standaloneRequest, type Page } from '@playwright/test'
 
 import {
   accessManager,
@@ -566,8 +566,26 @@ test.describe('governance browser journeys', () => {
     await expect(guide.getByRole('heading', { name: 'Add your first block' })).toBeVisible()
     await guide.getByRole('link', { name: 'Go to page blocks' }).click()
     await page.getByRole('button', { name: 'Add Block', exact: true }).first().click()
+    // ADD_ROW creates a placeholder before Payload's debounced server state arrives.
+    // Expanding it early can be overwritten by that response on slower CI workers.
+    const editorPath = new URL(page.url()).pathname
+    const blockState = page.waitForResponse(async (response) => {
+      const request = response.request()
+      return (
+        new URL(response.url()).pathname === editorPath &&
+        request.method() === 'POST' &&
+        Boolean(request.headers()['next-action']) &&
+        (await response.text()).includes('layout.0.title')
+      )
+    })
     await page.getByRole('button', { name: /Page Header/ }).click()
-    await page.getByRole('button', { name: 'Show All', exact: true }).click()
+    expect((await blockState).ok()).toBe(true)
+    const block = page.locator('#layout-row-0')
+    await expect(block.locator('.blocks-field__block-pill-pageHeader')).toBeVisible()
+    const toggle = block.locator('button.collapsible__toggle').first()
+    if ((await toggle.getAttribute('class'))?.includes('collapsible__toggle--collapsed')) {
+      await toggle.click()
+    }
     const heading = page.locator('#field-layout__0__title')
     await expect(heading).toBeVisible()
     await heading.fill('A first draft worth previewing')
@@ -638,6 +656,130 @@ test.describe('governance browser journeys', () => {
       headers: await getPayloadAuthHeaders(page),
     })
     expect((await current.json())._status).toBe('draft')
+  })
+
+  test('Site setup uses native drafts, keeps public settings and shares optional help across globals', async ({
+    page,
+    browser,
+  }) => {
+    if (!fixture) throw new Error('Expected governance fixture.')
+    await login({ page, user: fixture.admin })
+    const headers = await getPayloadAuthHeaders(page)
+    const globalURL = (slug: string) => `/api/globals/${slug}`
+    const read = async (slug: string, draft: boolean) => {
+      const response = await page.request.get(
+        `${globalURL(slug)}?depth=0${draft ? '&draft=true' : ''}`,
+        { headers, timeout: 20_000 },
+      )
+      expect(response.ok()).toBe(true)
+      return response.json()
+    }
+    const identity = await read('site-settings', true)
+    const appearance = await read('theme-settings', true)
+    const visitor = await browser.newContext()
+    const publicIdentity = await visitor.request
+      .get(globalURL('site-settings'))
+      .then((r) => r.json())
+    const publicAppearance = await visitor.request
+      .get(globalURL('theme-settings'))
+      .then((r) => r.json())
+    try {
+      await page.getByRole('link', { name: 'Review site settings', exact: true }).click()
+      await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
+      const guide = page.getByRole('region', { name: 'Site setup', exact: true })
+      await expect(guide.getByRole('heading', { name: 'Review your site identity' })).toBeVisible()
+      await expect(page.locator('#field-siteName')).toHaveValue(identity.siteName ?? '')
+      const name = `Site setup acceptance ${Date.now()}`
+      await page.locator('#field-siteName').fill(name)
+      await expect(guide.getByRole('button', { name: 'Review website appearance' })).toBeDisabled()
+      await page.getByRole('button', { name: 'Regional', exact: true }).click()
+      const zone = identity.timeZone === 'Asia/Dubai' ? 'UTC' : 'Asia/Dubai'
+      await chooseSelectOption({ fieldID: '#field-timeZone', label: zone, page })
+      const savingIdentity = page.waitForResponse(
+        (r) =>
+          new URL(r.url()).pathname === globalURL('site-settings') &&
+          r.request().method() === 'POST',
+      )
+      await page.getByRole('button', { name: 'Save Draft', exact: true }).click()
+      const savedIdentity = await savingIdentity
+      expect(savedIdentity.ok()).toBe(true)
+      expect((await savedIdentity.json()).result).toMatchObject({
+        siteName: name,
+        timeZone: zone,
+        _status: 'draft',
+      })
+      await expect(guide.getByRole('link', { name: 'Review website appearance' })).toBeVisible()
+      expect(
+        (await visitor.request.get(globalURL('site-settings')).then((r) => r.json())).siteName,
+      ).toBe(publicIdentity.siteName)
+      await guide.getByRole('link', { name: 'Review website appearance' }).click()
+      await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
+      await expect(
+        guide.getByRole('heading', { name: 'Review your website appearance' }),
+      ).toBeVisible()
+      const theme = appearance.themeColor === 'snmih-green' ? 'SNMIH-Blue' : 'SNMIH-Green'
+      await chooseSelectOption({ fieldID: '#field-themeColor', label: theme, page })
+      await expect(guide.getByRole('button', { name: 'Return to Dashboard' })).toBeDisabled()
+      const savingAppearance = page.waitForResponse(
+        (r) =>
+          new URL(r.url()).pathname === globalURL('theme-settings') &&
+          r.request().method() === 'POST',
+      )
+      await page.getByRole('button', { name: 'Save Draft', exact: true }).click()
+      const savedAppearance = await savingAppearance
+      expect(savedAppearance.ok()).toBe(true)
+      expect((await savedAppearance.json()).result).toMatchObject({
+        themeColor: theme === 'SNMIH-Blue' ? 'snmih-blue' : 'snmih-green',
+        _status: 'draft',
+      })
+      await expect(guide.getByRole('link', { name: 'Return to Dashboard' })).toBeVisible()
+      expect(
+        (await visitor.request.get(globalURL('theme-settings')).then((r) => r.json())).themeColor,
+      ).toBe(publicAppearance.themeColor)
+      await guide.scrollIntoViewIfNeeded()
+      await checkPageGuideAccessibility(page, 'site-setup-light-a11y.json')
+      await page.screenshot({ path: test.info().outputPath('site-setup-desktop.png') })
+      await page.setViewportSize({ width: 390, height: 844 })
+      await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'))
+      await checkPageGuideAccessibility(page, 'site-setup-dark-a11y.json')
+      await page.screenshot({ path: test.info().outputPath('site-setup-mobile.png') })
+      await guide.getByRole('button', { name: 'Hide guide' }).click()
+      await expect(guide.getByRole('button', { name: 'Site setup', exact: true })).toBeVisible()
+      await page.goto('/admin/globals/site-settings')
+      await expect(guide.getByRole('button', { name: 'Site setup', exact: true })).toBeVisible()
+      await guide.getByRole('button', { name: 'Site setup', exact: true }).click()
+      await expect(guide.getByRole('heading', { name: 'Review your site identity' })).toBeVisible()
+      await page.goto('/admin')
+      await expect(page.getByRole('region', { name: 'Getting started', exact: true })).toBeVisible()
+    } finally {
+      await visitor.close()
+      // Restore only touched test-global fields, even if the browser fixture has closed.
+      const restore = await standaloneRequest.newContext({
+        baseURL: 'http://127.0.0.1:3000',
+        extraHTTPHeaders: headers,
+        timeout: 10_000,
+      })
+      try {
+        const restoredIdentity = await restore.post(`${globalURL('site-settings')}?draft=true`, {
+          data: {
+            siteName: identity.siteName ?? '',
+            timeZone: identity.timeZone ?? 'Asia/Kolkata',
+            _status: 'draft',
+          },
+        })
+        expect(restoredIdentity.ok()).toBe(true)
+        const restoredAppearance = await restore.post(`${globalURL('theme-settings')}?draft=true`, {
+          data: {
+            themeColor: appearance.themeColor ?? 'snmih-blue',
+            colorScheme: appearance.colorScheme ?? 'system',
+            _status: 'draft',
+          },
+        })
+        expect(restoredAppearance.ok()).toBe(true)
+      } finally {
+        await restore.dispose()
+      }
+    }
   })
 
   test('Reviews Site Manager approves a submitted Review', async ({ browser, page }) => {

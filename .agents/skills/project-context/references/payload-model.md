@@ -261,3 +261,12 @@ editors still enforce permission on entry/save. Recent work reads latest saved
 draft state. There is no new collection/schema/migration/environment setting,
 bootstrap wizard, invitation or automatic content/publication operation. See
 [onboarding scope](../../../../docs/operations/admin-getting-started.md).
+
+
+SiteSettings and ThemeSettings explicitly register a non-persisted `siteSetupGuide`
+UI field. Their shared `forma-site-setup-guide-v1` preference is account-owned and
+independent of Dashboard/Page visibility. Only granted update features see the
+server adapter; it threads the current request through access-enforced preference
+reads. No stored setting path/default, access policy, version behavior or migration
+changes. Native dirty/processing facts govern guidance, never permissions or
+claimed completion. See [setup contract](../../../../docs/operations/site-setup-guide.md).

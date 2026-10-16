@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { useState } from 'react'
+import { getSiteSetupTask } from '@/lib/siteSetupGuide'
 import { getPageEditingTask } from '@/lib/pageEditingGuide'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { OnboardingPanel, type OnboardingPanelProps } from '@/components/revamp/onboarding-panel'
@@ -30,6 +31,7 @@ const meta = {
     onToggle: fn(),
   },
   argTypes: {
+    guideLabel: { control: 'text', description: 'Accessible region and reopen button label.' },
     title: {
       control: 'text',
       description: 'Current next-task title, derived by the server in production.',
@@ -153,4 +155,47 @@ export const PageSaving: Story = {
 export const PageSavedDraft: Story = { args: getPageEditingTask(pageState) }
 export const PageWithPublicVersion: Story = {
   args: getPageEditingTask({ ...pageState, hasPublishedDoc: true }),
+}
+
+// Site settings share the same sourced presentation, rather than a second catalogue entry.
+const siteSetupState = {
+  globalSlug: 'site-settings' as const,
+  canOpenAppearance: true,
+  modified: false,
+  processing: false,
+  hasPublishedDoc: false,
+  collapsed: false,
+}
+export const SiteIdentity: Story = { args: getSiteSetupTask(siteSetupState) }
+export const SiteAppearance: Story = {
+  args: getSiteSetupTask({ ...siteSetupState, globalSlug: 'theme-settings' }),
+}
+export const SiteSetupUnsaved: Story = {
+  args: getSiteSetupTask({ ...siteSetupState, modified: true }),
+  play: async ({ canvasElement }) => {
+    await expect(
+      within(canvasElement).getByRole('button', { name: 'Review website appearance' }),
+    ).toBeDisabled()
+    await expect(within(canvasElement).queryByRole('link')).not.toBeInTheDocument()
+  },
+}
+export const SiteSetupSaving: Story = {
+  args: getSiteSetupTask({ ...siteSetupState, processing: true }),
+}
+export const SiteSetupPublicVersion: Story = {
+  args: getSiteSetupTask({ ...siteSetupState, hasPublishedDoc: true }),
+}
+export const SiteSetupLimitedAccess: Story = {
+  args: getSiteSetupTask({ ...siteSetupState, canOpenAppearance: false }),
+}
+export const SiteSetupHideAndReopen: Story = {
+  args: getSiteSetupTask(siteSetupState),
+  render: (args) => <InteractivePanel {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: 'Hide guide' }))
+    await expect(canvas.getByRole('button', { name: 'Site setup' })).toHaveFocus()
+    await userEvent.click(canvas.getByRole('button', { name: 'Site setup' }))
+    await expect(canvas.getByRole('heading', { name: 'Review your site identity' })).toBeVisible()
+  },
 }

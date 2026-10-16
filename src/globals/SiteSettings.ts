@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { siteSetupGuideField } from '@/fields/siteSetupGuide'
 
 import { allowPublicReadOrFeature, hideUnlessFeature, requireFeature } from '@/access/featureAccess'
 import { revalidateSiteSettingsCache } from '@/hooks/revalidateCmsContent'
@@ -27,6 +28,8 @@ export const SiteSettings: GlobalConfig = {
   label: 'Site Identity',
   admin: {
     group: 'Settings',
+    description:
+      'Set your website identity in Brand and review its timezone in Regional. Save a draft before publishing changes.',
     hidden: hideUnlessFeature('siteIdentity'),
   },
   access: {
@@ -41,6 +44,7 @@ export const SiteSettings: GlobalConfig = {
     afterChange: [revalidateSiteSettingsCache],
   },
   fields: [
+    siteSetupGuideField('site-settings'),
     {
       type: 'tabs',
       tabs: [
@@ -51,6 +55,9 @@ export const SiteSettings: GlobalConfig = {
               name: 'siteName',
               type: 'text',
               required: true,
+              admin: {
+                description: 'The website name used in shared branding and default metadata.',
+              },
             },
             {
               name: 'siteDescription',
