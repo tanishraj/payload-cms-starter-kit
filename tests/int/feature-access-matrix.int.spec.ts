@@ -64,7 +64,19 @@ const resources = {
 } as const
 
 const accessArgs = (user: unknown, data?: Record<string, unknown>) =>
-  ({ req: { user }, data }) as never
+  ({
+    req: {
+      user,
+      context: {},
+      payload: {
+        find: async (args: { collection: string; where?: { and?: unknown[] } }) => ({
+          docs:
+            args.collection === 'pages' && args.where?.and ? [{ id: 'root-a', parent: null }] : [],
+        }),
+      },
+    },
+    data,
+  }) as never
 
 describe('feature access matrix', () => {
   it('binds every grantable destination exactly once', () => {
@@ -82,6 +94,7 @@ describe('feature access matrix', () => {
     const without = { role: 'siteManager', features: {} }
     const withFeature = {
       role: 'siteManager',
+      sectionRoots: ['root-a'],
       features: {
         [key]: true,
         ...((key === 'actionQueue' || key === 'auditLog') && { pages: true }),
@@ -129,11 +142,11 @@ describe('feature access matrix', () => {
   })
 
   it('allows only soft deletion for an authorized Site Manager', async () => {
-    const manager = { role: 'siteManager', features: { pages: true } }
+    const manager = { role: 'siteManager', sectionRoots: ['root-a'], features: { pages: true } }
     expect(await Pages.access?.delete?.(accessArgs(manager))).toBe(false)
     expect(
       await Pages.access?.delete?.(accessArgs(manager, { deletedAt: new Date().toISOString() })),
-    ).toBe(true)
+    ).toEqual({ id: { in: [] } })
     expect(await Pages.access?.delete?.(accessArgs({ role: 'admin' }))).toBe(true)
   })
 
@@ -151,8 +164,10 @@ describe('feature access matrix', () => {
   })
 
   it('sanitizes Form Submission dependency reads for Reviews operators', async () => {
-    const manager = { role: 'siteManager', features: { reviews: true } }
-    expect(await FormSubmissions.access?.read?.(accessArgs(manager))).toBe(true)
+    const manager = { role: 'siteManager', sectionRoots: ['root-a'], features: { reviews: true } }
+    expect(await FormSubmissions.access?.read?.(accessArgs(manager))).toEqual({
+      sectionRoot: { in: ['root-a'] },
+    })
 
     const afterRead = FormSubmissions.hooks?.afterRead?.[0]
     if (!afterRead) throw new Error('Expected Form Submission dependency sanitizer.')

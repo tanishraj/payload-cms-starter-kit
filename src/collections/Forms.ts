@@ -1,15 +1,15 @@
+import { scopedResourceAccess } from '@/access/sectionAccess'
+import {
+  enforceSectionOwnership,
+  sectionOwnershipField,
+  scopedFormPrivateRead,
+} from '@/fields/sectionOwnership'
 import { formAppearanceField } from '@/fields/formAppearanceField'
 import { formEndpoints } from '@/endpoints/formEndpoints'
 import { requireFormAttachmentStorage } from '@/hooks/requireFormAttachmentStorage'
 import { type CollectionConfig } from 'payload'
 
-import {
-  allowPublishedReadOrFeature,
-  deleteFeatureOrAdmin,
-  featureFieldReadAccess,
-  hideUnlessFeature,
-  requireFeature,
-} from '@/access/featureAccess'
+import { hideUnlessFeature } from '@/access/featureAccess'
 import { projectSlugField } from '@/fields/projectSlugField'
 import { revalidateDeletedFormCache, revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 import { FORM_MAX_FIELDS, formSubmissionIntentOptions } from '@/lib/forms'
@@ -59,22 +59,24 @@ export const Forms: CollectionConfig = {
     listSearchableFields: ['title', 'slug'],
   },
   access: {
-    create: requireFeature('forms'),
-    delete: deleteFeatureOrAdmin('forms'),
-    read: allowPublishedReadOrFeature('forms'),
-    readVersions: requireFeature('forms'),
-    update: requireFeature('forms'),
+    create: scopedResourceAccess('forms', 'forms', 'create'),
+    delete: scopedResourceAccess('forms', 'forms', 'delete'),
+    read: scopedResourceAccess('forms', 'forms', 'read'),
+    readVersions: scopedResourceAccess('forms', 'forms', 'versions'),
+    update: scopedResourceAccess('forms', 'forms', 'update'),
   },
   versions: {
     drafts: true,
   },
   hooks: {
-    beforeChange: [requireFormAttachmentStorage],
+    beforeValidate: [enforceSectionOwnership],
+    beforeChange: [enforceSectionOwnership, requireFormAttachmentStorage],
     afterChange: [revalidateGlobalsCache],
     afterDelete: [revalidateDeletedFormCache],
   },
   timestamps: true,
   fields: [
+    sectionOwnershipField(),
     {
       name: 'title',
       type: 'text',
@@ -88,7 +90,7 @@ export const Forms: CollectionConfig = {
       label: 'Internal Notes',
       type: 'textarea',
       access: {
-        read: featureFieldReadAccess('forms'),
+        read: scopedFormPrivateRead,
       },
       admin: {
         description: 'Optional notes for editors. This is not shown on the website.',
@@ -134,7 +136,7 @@ export const Forms: CollectionConfig = {
       label: 'Notification Recipients',
       type: 'array',
       access: {
-        read: featureFieldReadAccess('forms'),
+        read: scopedFormPrivateRead,
       },
       labels: {
         singular: 'Recipient',
@@ -157,6 +159,7 @@ export const Forms: CollectionConfig = {
       name: 'submitterReply',
       label: 'Submitter Confirmation',
       type: 'group',
+      access: { read: scopedFormPrivateRead },
       admin: {
         description:
           'Optional confirmation email sent automatically to the person who submitted the form.',

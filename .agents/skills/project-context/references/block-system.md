@@ -16,7 +16,7 @@ The catalog imports schema config only. Production and live-preview renderer swi
 
 [pageRecipes.ts](../../../../src/page-recipes/pageRecipes.ts) defines the two code-owned full-page creation recipes. Blank produces an empty layout. Landing produces `pageHeader` followed by `breadcrumb`; it copies the Page title into Page Header, selects an empty eyebrow as its top content to suppress the header's built-in breadcrumb, and configures the standalone Breadcrumb for automatic hierarchy resolution.
 
-Recipes create editable drafts and never restrict the canonical 61-block registry. After creation, editors can remove or reorder recipe blocks and add any Page block. The guided setup replaces only full-page Page creation; relationship-drawer creation delegates to Payload's native form so the parent relationship workflow remains intact.
+Recipes create editable drafts and never restrict the canonical 61-block registry. After creation, editors can remove or reorder recipe blocks and add any Page block. The guided setup serves full-page Admin creation. Site Manager creation and relationship drawers delegate to Payload's native form; Managers must choose a parent inside an assigned section. The same collection policies protect direct recipe requests.
 
 Restricted shell/system registries are separate:
 
@@ -627,3 +627,11 @@ form-container breakpoint, keeping narrow cards/phones stacked and display/compo
 controls full width. Compact gaps and upstream submit variants/sizes/Pill shape
 are scoped props, not new stylesheets or a palette. Canonical Storybook appearance
 controls/states remain in the same Blocks entries. See [contract](../../../../docs/planning/form-appearance-controls.md).
+
+
+Forms and Reusable Sections now carry optional `sectionRoot` ownership. Managers
+may author only assigned resources and select published Admin-managed shared
+definitions through existing read dependencies. Placing a Form never grants inbox
+or file access. The block schema/presentation catalogue remains unchanged; native
+relationship drawers keep the section field in context. See
+[section rollout](../../../../docs/operations/section-scoped-access.md).

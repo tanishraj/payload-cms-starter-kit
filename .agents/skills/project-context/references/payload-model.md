@@ -220,3 +220,26 @@ returns a recoverable error without partial CSV; start-time creation cutoff and
 ID cursors avoid offset drift. Workflow status/membership are best-effort, not an
 atomic backup. Test-mode exclusion and configurable webhooks remain future work.
 See [contract](../../../../docs/planning/form-revision-exports.md).
+
+## Bounded section authorization rollout
+
+Only Admin and Site Manager roles exist. Users own Admin-managed `sectionRoots`
+(root Page relationships) as well as feature grants. Saving changed grants clears
+sessions. Accounts may read their own authorization metadata; changes remain
+Admin-only and other-user assignment projections remain sanitized.
+
+`sectionAccess.ts` combines features with current latest-draft Page ancestry or
+Form/Reusable Section ownership. Page IDs, not URL prefixes, define scope. Managers
+create children and owned resources but cannot create/move/trash roots or move
+content between sections; Admins control shared published definitions. ReadVersions
+constraints use version parent IDs in Payload 3.90.2; restore writes recheck ownership
+in beforeChange as well as normal beforeValidate. No legacy ownership is guessed.
+
+Published Form ownership is copied at intake to FormSubmissions. Inbox access is
+independent of placement, and CSV/files inherit submission access. Moving Forms
+does not move old answers. Unassigned submissions are Admin-only. Related queue
+and audit rows use current source scope; other feature grants remain site-wide,
+including Media and globals. This is a bounded first rollout, not complete tenant
+isolation. Limits: 50 roots, 5,000 effective source IDs and 100 Page levels; overflows
+fail closed. Request-only permission memoization is not an authorization cache
+across requests. See [runbook](../../../../docs/operations/section-scoped-access.md).

@@ -1,13 +1,9 @@
+import { scopedSubmissionAccess, hideUnlessSectionFeature } from '@/access/sectionAccess'
+import { sectionOwnershipField } from '@/fields/sectionOwnership'
 import { formSubmissionEndpoints } from '@/endpoints/formEndpoints'
 import type { CollectionAfterReadHook, CollectionConfig } from 'payload'
 
-import {
-  adminOnlyAccess,
-  canReadFeature,
-  hasFeature,
-  hideUnlessFeature,
-  requireFeature,
-} from '@/access/featureAccess'
+import { adminOnlyAccess, hasFeature } from '@/access/featureAccess'
 import { releaseFormAttachments } from '@/hooks/releaseFormAttachments'
 import { syncFormSubmissionToWorkQueue } from '@/hooks/syncFormSubmissionToWorkQueue'
 import { updateFormSubmissionActivity } from '@/hooks/updateFormSubmissionActivity'
@@ -39,7 +35,7 @@ export const FormSubmissions: CollectionConfig = {
     components: {
       beforeListTable: ['/components/admin/FormSubmissionExport#FormSubmissionExport'],
     },
-    hidden: hideUnlessFeature('formSubmissions'),
+    hidden: hideUnlessSectionFeature('formSubmissions'),
     useAsTitle: 'submitterEmail',
     defaultColumns: [
       'status',
@@ -65,8 +61,8 @@ export const FormSubmissions: CollectionConfig = {
   access: {
     create: () => false,
     delete: adminOnlyAccess,
-    read: ({ req }) => canReadFeature(req.user, 'formSubmissions'),
-    update: requireFeature('formSubmissions'),
+    read: scopedSubmissionAccess('read'),
+    update: scopedSubmissionAccess('update'),
   },
   hooks: {
     afterChange: [syncFormSubmissionToWorkQueue],
@@ -76,6 +72,7 @@ export const FormSubmissions: CollectionConfig = {
   },
   timestamps: true,
   fields: [
+    sectionOwnershipField(true),
     ...(['submissionKeyHash', 'submissionRequestHash', 'submissionConfirmation'] as const).map(
       (name) => ({
         name,

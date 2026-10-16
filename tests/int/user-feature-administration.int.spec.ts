@@ -214,17 +214,22 @@ describe('two-role user administration', () => {
     )
   })
 
-  it('allows an Admin to create multiple accounts while keeping role and grants Admin-only', async () => {
+  it('allows an Admin to create multiple accounts while keeping role and grant changes Admin-only', async () => {
     const admin = { id: 1, role: 'admin' }
     await expect(Users.access?.create?.({ req: reqWithCount(4, admin) } as never)).resolves.toBe(
       true,
     )
 
-    for (const name of ['role', 'features']) {
+    for (const name of ['role', 'features', 'sectionRoots']) {
       const field = fieldNamed(name)
       if (!field || !('access' in field) || !field.access) {
         throw new Error(`Expected ${name} field access.`)
       }
+      const manager = { id: 'manager-self', role: 'siteManager' }
+      expect(field.access.read?.({ id: manager.id, req: { user: manager } } as never)).toBe(true)
+      expect(field.access.read?.({ id: 'someone-else', req: { user: manager } } as never)).toBe(
+        false,
+      )
       expect(field.access.create?.({ req: { user: admin } } as never)).toBe(true)
       expect(field.access.update?.({ req: { user: admin } } as never)).toBe(true)
       expect(field.access.create?.({ req: { user: { role: 'siteManager' } } } as never)).toBe(false)

@@ -117,7 +117,16 @@ describe('work queue collection', () => {
           user: { features: { actionQueue: true, pages: true }, role: 'siteManager' },
         },
       } as never),
-    ).toEqual({ feature: { in: ['pages'] } })
+    ).toMatchObject({
+      and: [
+        { feature: { in: ['pages'] } },
+        {
+          or: expect.arrayContaining([
+            { and: [{ sourceCollection: { equals: 'pages' } }, { sourceID: { in: [] } }] },
+          ]),
+        },
+      ],
+    })
   })
 
   it('builds stable dedupe keys per source condition', () => {

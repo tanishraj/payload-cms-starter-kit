@@ -1,14 +1,10 @@
 import { type CollectionConfig, type RelationshipFieldSingleValidation } from 'payload'
+import { scopedPageAccess, hideUnlessSectionFeature } from '@/access/sectionAccess'
+import { enforcePageSection } from '@/hooks/enforcePageSection'
 
 import { pageBuilderBlocks } from '@/blocks/blockCatalog'
 import { validateUniqueBlockAnchorIDs } from '@/blocks/shared/blockAnchor'
 import type { Page } from '@/payload-types'
-import {
-  allowPublishedReadOrFeature,
-  deleteFeatureOrAdmin,
-  hideUnlessFeature,
-  requireFeature,
-} from '@/access/featureAccess'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { runtimeConfig } from '@/config/runtime.server'
 import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
@@ -119,7 +115,7 @@ export const Pages: CollectionConfig = {
       },
     },
     group: 'Content',
-    hidden: hideUnlessFeature('pages'),
+    hidden: hideUnlessSectionFeature('pages'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     description:
@@ -137,14 +133,15 @@ export const Pages: CollectionConfig = {
     },
   },
   access: {
-    create: requireFeature('pages'),
-    delete: deleteFeatureOrAdmin('pages'),
-    read: allowPublishedReadOrFeature('pages'),
-    readVersions: requireFeature('pages'),
-    update: requireFeature('pages'),
+    create: scopedPageAccess('create'),
+    delete: scopedPageAccess('delete'),
+    read: scopedPageAccess('read'),
+    readVersions: scopedPageAccess('versions'),
+    update: scopedPageAccess('update'),
   },
   endpoints: [createPageFromRecipeEndpoint],
   hooks: {
+    beforeValidate: [enforcePageSection],
     afterRead: [populatePageUrlPreview],
     afterChange: [
       revalidatePagesCache,
@@ -160,6 +157,7 @@ export const Pages: CollectionConfig = {
     ],
     afterDelete: [syncNavigationLinkAfterDelete, revalidateDeletedPageCache],
     beforeChange: [
+      enforcePageSection,
       validateSEOContract(),
       enforcePublicationPolicy('pages', 'pages'),
       preventReferencedPageUnpublish,
@@ -178,6 +176,28 @@ export const Pages: CollectionConfig = {
     projectSlugField({
       useAsSlug: 'title',
     }),
+    {
+      name: 'parent',
+      type: 'relationship',
+      index: true,
+      relationTo: 'pages',
+      filterOptions: ({ id }) => {
+        if (id == null) {
+          return true
+        }
+
+        return {
+          id: {
+            not_equals: id,
+          },
+        }
+      },
+      validate: validateParentRelationship,
+      admin: {
+        description:
+          'Site Managers must choose a parent in an assigned section when creating a Page. Moving between sections and managing section roots require an Admin.',
+      },
+    },
     {
       type: 'tabs',
       tabs: [
@@ -213,26 +233,6 @@ export const Pages: CollectionConfig = {
               admin: {
                 readOnly: true,
                 description: 'Resolved from the current saved slug and parent hierarchy.',
-              },
-            },
-            {
-              name: 'parent',
-              type: 'relationship',
-              relationTo: 'pages',
-              filterOptions: ({ id }) => {
-                if (id == null) {
-                  return true
-                }
-
-                return {
-                  id: {
-                    not_equals: id,
-                  },
-                }
-              },
-              validate: validateParentRelationship,
-              admin: {
-                description: 'Use this for nested page hierarchies like /services/web-development.',
               },
             },
           ],

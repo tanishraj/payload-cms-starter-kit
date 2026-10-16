@@ -13,22 +13,33 @@ describe('operational audit collection', () => {
     expect(OperationalAuditEvents.access?.update?.({} as never)).toBe(false)
   })
 
-  it('scopes Site Manager reads to events for directly granted source features', () => {
+  it('scopes Site Manager reads to events for directly granted source features', async () => {
     const read = OperationalAuditEvents.access?.read
     if (!read) throw new Error('Expected Audit Log read access.')
 
     expect(
-      read({
+      await read({
         req: {
+          payload: { find: async () => ({ docs: [] }) },
+          context: {},
           user: {
             role: 'siteManager',
             features: { auditLog: true, pages: true },
           },
         },
       } as never),
-    ).toEqual({ feature: { in: ['pages'] } })
+    ).toMatchObject({
+      and: [
+        { feature: { in: ['pages'] } },
+        {
+          or: expect.arrayContaining([
+            { and: [{ entityType: { equals: 'page' } }, { entityId: { in: [] } }] },
+          ]),
+        },
+      ],
+    })
     expect(
-      read({
+      await read({
         req: { user: { role: 'siteManager', features: { auditLog: true } } },
       } as never),
     ).toBe(false)

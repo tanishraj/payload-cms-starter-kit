@@ -1,6 +1,6 @@
 # Website feature implementation checklist
 
-Updated: 15 October 2026 (Asia/Dubai).
+Updated: 16 October 2026 (Asia/Dubai).
 
 ## Current direction
 
@@ -27,6 +27,21 @@ The [complete-catalogue Wayfinder map](../../.scratch/website-builder-catalogue/
 tracks remaining planning decisions. Its [coverage index](../../.scratch/website-builder-catalogue/coverage.md)
 routes all 242 groups and ten separate DF proof steps. Planning tickets and confirmed
 directions do not complete feature acceptance; this file remains the implementation tracker.
+
+## Latest sequencing decision — 16 October 2026
+
+The user accepts the current core forms implementation and protected email links,
+and asks to move beyond forms. Start section-scoped Site Manager access, then
+onboarding. Notification outbox/retries, advanced notification mappings, webhooks,
+safe test mode and advanced controls stay deferred; their broad boxes are not
+claimed complete. This supersedes the earlier forms-first exit sequence below.
+Only Admin and Site Manager roles exist. A secure link is permission-checked on
+access, not a bearer/public URL. See the [section access runbook](../operations/section-scoped-access.md).
+
+The first scope increment covers Pages, Forms, Reusable Sections, submissions and
+related operational rows. Other destinations retain explicitly labelled site-wide
+feature grants. Full ACCESS-02/05/06/07/09 acceptance remains open for broader
+collections/media, diagnostics and entry-point evidence.
 
 ## How to maintain the checklist
 
@@ -125,8 +140,8 @@ The user reaffirmed on 2026-10-14: finish the forms milestone before other build
 
 | Order | Work | Gate |
 | --- | --- | --- |
-| 1 — Selected | Dynamic forms and generic submissions: DF-01–10, FORM and SUBMIT | Custom field → public render → validated submission → revision-aware inbox/export. Include required security/access prerequisites. |
-| 2 — Recommended next | Section-scoped Site Manager permissions: ACCESS, applicable PAGE/SEC/VERIFY | Allowed operations succeed; direct cross-scope API/preview/history/file operations fail. |
+| 1 — Core accepted; advanced work deferred | Dynamic forms and generic submissions: DF-01–10, FORM and SUBMIT | Custom field → public render → validated submission → revision-aware inbox/export. Include required security/access prerequisites. |
+| 2 — Selected; in progress | Section-scoped Site Manager permissions: ACCESS, applicable PAGE/SEC/VERIFY | Allowed operations succeed; direct cross-scope API/preview/history/file operations fail. |
 | 3 | Draft/publication/history reliability and shared changes | Conflict, restore-as-draft, shared draft isolation and failed delivery behavior verified. |
 | 4 | Theme/props/Storybook, reusable data and remaining content capabilities | Extend verified existing behavior; new presentations follow Storybook-first revamp conventions. |
 | 5 | Media/search/SEO/site experiences and operational gaps | Assess and verify starter coverage before adding functionality. |
@@ -768,7 +783,7 @@ exclusions and complete source traceability are in the local scope reference.
   optional field-selected reply-to and inbox title; team notifications and optional
   submitter confirmation. Submitted values never choose arbitrary recipients.
 
-  Work: In progress · Priority: First enhancement · Baseline: Partial.
+  Work: Deferred · Priority: Later · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
   Increment evidence: [dynamic-form history audit](dynamic-forms-implementation.md). Full feature acceptance remains incomplete.
 
@@ -776,7 +791,7 @@ exclusions and complete source traceability are in the local scope reference.
   notifications; retry failed notifications without losing/duplicating answers.
   Display delivery state separately from successful submission storage.
 
-  Work: Assess · Priority: First enhancement · Baseline: Partial.
+  Work: Deferred · Priority: Later · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 - [ ] **SUBMIT-10 — Operational inbox.** Separately scoped access, owner, internal notes,
@@ -800,7 +815,7 @@ exclusions and complete source traceability are in the local scope reference.
 - [ ] **SUBMIT-12 — Test mode.** Clearly labelled form testing without real notifications
   or ordinary production submissions; Storybook never calls production services.
 
-  Work: Assess · Priority: First enhancement · Baseline: Partial.
+  Work: Deferred · Priority: Later · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
 ### Accounts, roles and scoped permissions
@@ -818,26 +833,32 @@ exclusions and complete source traceability are in the local scope reference.
   plus separate collection/record scopes. Multiple grants combine additively;
   deny outside assigned scope. Do not authorize by URL prefix alone.
 
-  Work: Assess · Priority: Backlog · Baseline: Gap.
-  Initial finding: Page create/update/readVersions currently use feature-wide grants; implement requested page-root/descendant constraints.
+  Work: In progress · Priority: Selected · Baseline: Gap.
+  Initial finding: Page-root/descendant constraints are implemented for this bounded increment; broader collection/record scopes remain open. See the section access runbook.
   Evidence: [src/collections/Pages.ts](../../src/collections/Pages.ts), [src/access/featureAccess.ts](../../src/access/featureAccess.ts).
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+
+  Current increment: [section scope contract](../operations/section-scoped-access.md). Native root grants, current hierarchy/resource ownership, separate inbox/file access and session revocation are implemented. Full feature acceptance stays open beyond this bounded rollout; final verification/merge evidence is in the work log.
 
 - [ ] **ACCESS-03 — Manager autonomy.** Within scope, create pages, add/configure/
   reorder blocks, save, preview and publish directly. No designer-only structural
   privilege or mandatory Admin/Publisher approval.
 
-  Work: Assess · Priority: Backlog · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Initial finding: Feature-granted Page writes exist; check scoped autonomy and existing publication issue/approval policy.
   Evidence: [src/collections/Pages.ts](../../src/collections/Pages.ts), [src/access/featureAccess.ts](../../src/access/featureAccess.ts).
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+
+  Current increment: [section scope contract](../operations/section-scoped-access.md). Native root grants, current hierarchy/resource ownership, separate inbox/file access and session revocation are implemented. Full feature acceptance stays open beyond this bounded rollout; final verification/merge evidence is in the work log.
 
 - [ ] **ACCESS-04 — Inheritance and moves.** New descendants inherit the authorized
   parent scope. New roots, scope reassignment and cross-scope moves are Admin-only
   by default. Slug changes cannot expand permissions.
 
-  Work: Assess · Priority: Backlog · Baseline: Gap.
+  Work: In progress · Priority: Selected · Baseline: Gap.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+
+  Current increment: [section scope contract](../operations/section-scoped-access.md). Native root grants, current hierarchy/resource ownership, separate inbox/file access and session revocation are implemented. Full feature acceptance stays open beyond this bounded rollout; final verification/merge evidence is in the work log.
 
 - [ ] **ACCESS-05 — Shared resources.** Users, grants, integrations, site settings and
   global header/footer default to Admin-only. Managers may select approved shared
@@ -846,37 +867,48 @@ exclusions and complete source traceability are in the local scope reference.
   Forms and reusable content; Admins control resources shared across sections.
   Detailed sharing/move/migration policy and enforcement remain unverified.
 
-  Work: Assess · Priority: Backlog · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+
+  Current increment: [section scope contract](../operations/section-scoped-access.md). Native root grants, current hierarchy/resource ownership, separate inbox/file access and session revocation are implemented. Full feature acceptance stays open beyond this bounded rollout; final verification/merge evidence is in the work log.
 
 - [ ] **ACCESS-06 — Separate resource permissions.** Scoped media upload/use, protected
   shared-asset replacement/deletion, collection publication and form-inbox access
   independent from permission to place a Form block.
 
-  Work: Assess · Priority: Backlog · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+
+  Current increment: [section scope contract](../operations/section-scoped-access.md). Native root grants, current hierarchy/resource ownership, separate inbox/file access and session revocation are implemented. Full feature acceptance stays open beyond this bounded rollout; final verification/merge evidence is in the work log.
 
 - [ ] **ACCESS-07 — Every entry point.** Enforce scope for Payload Admin, REST, enabled
   GraphQL, user-acting Local API, preview/history/restore, upload, jobs and any future
   import route. Hidden navigation is not access control.
 
-  Work: Assess · Priority: Backlog · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+
+  Current increment: [section scope contract](../operations/section-scoped-access.md). Native root grants, current hierarchy/resource ownership, separate inbox/file access and session revocation are implemented. Full feature acceptance stays open beyond this bounded rollout; final verification/merge evidence is in the work log.
 
 - [ ] **ACCESS-08 — Grant changes.** Managers cannot self-assign scope. Revocation
   applies to subsequent saves, publication, restore and scheduled execution.
 
-  Work: Assess · Priority: Backlog · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
+
+  Current increment: [section scope contract](../operations/section-scoped-access.md). Native root grants, current hierarchy/resource ownership, separate inbox/file access and session revocation are implemented. Full feature acceptance stays open beyond this bounded rollout; final verification/merge evidence is in the work log.
 
 - [ ] **ACCESS-09 — Permission diagnostics [Recommended].** Effective-access summary
   for Admin; manageable sections and scoped tasks for Managers. Relationship pickers,
   counts and impact summaries must not expose private out-of-scope records.
 
-  Work: Assess · Priority: Candidate · Baseline: Partial.
+  Work: In progress · Priority: Selected · Baseline: Partial.
   Owner: — · Commit/PR: — · Verified on: — · Acceptance/test evidence: —.
 
+  Current increment: [section scope contract](../operations/section-scoped-access.md). Native root grants, current hierarchy/resource ownership, separate inbox/file access and session revocation are implemented. Full feature acceptance stays open beyond this bounded rollout; final verification/merge evidence is in the work log.
+
 ### Drafts, autosave, conflicts, publication and history
+
 
 - [ ] **PUBLISH-01 — Native lifecycle.** Use Payload drafts, autosave, explicit Save
   Draft, preview, publish and unpublish; configure/verify them instead of building
@@ -2071,3 +2103,7 @@ Exact-head Quality/merge evidence remains pending.
 | 2026-10-16 | DF-08; FORM-07; VERIFY | Conditions merged; historical export increment started | Codex | PR #31 merged after exact-head Quality; verified feature branch deleted. Continue forms on fresh `feat/form-revision-exports`, based on `e18690eb`, with native filtered/search CSV export from captured question metadata. | [PR #31](https://github.com/tanishraj/payload-cms-starter-kit/pull/31); new export PR pending | [Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38861826953) passed on `311fec42`; all four native governance/form journeys passed first attempt, integration/build/private-artifact gates passed. Export focused tests pass; current full release verification remains pending. No new environment/provider/dependency/style; broad forms acceptance stays open. |
 
 | 2026-10-16 | SUBMIT-02/11; ADMINUX-15; VERIFY | Historical CSV increment implemented and locally verified | Codex | Native inbox filters/search across pages; original captured identity/labels/names/options/typed values; honest legacy rows; file-token/staff-note omission; spreadsheet safety; explicit access, invalid-filter and size failures. | [Feature PR](https://github.com/tanishraj/payload-cms-starter-kit/pulls?q=is%3Apr+head%3Afeat%2Fform-revision-exports) | 41 focused tests; final full integration 2,745 passed/one existing Docker-dependent skip; both native form journeys (3.4m) and both governance journeys (31.3s) passed first attempt. Final production build inspected 73 traces/no private uploads; Storybook and required generators/type/lint/context/audit pass. Singular/plural feedback has focused coverage. Exact-head GitHub Quality is required before merge. Webhook mappings, notification reliability and safe test mode remain open. |
+
+| 2026-10-16 | ACCESS-02–09; PAGE; SUBMIT-05/10 | Implemented and locally verified; merge governed by PR | Codex | User accepts core forms and protected email links; advanced forms deferred. Add native section roots, descendant Page policies, section-owned Forms/Reusable Sections, intake-captured submission scope, protected CSV/files and related operational rows. Other feature grants stay explicitly site-wide. | [Feature PR](https://github.com/tanishraj/payload-cms-starter-kit/pulls?q=is%3Apr+head%3Afeat%2Fsection-scoped-access) | Local full regression: 2,757 passed/one existing Docker-dependent skip; both governance journeys pass (39.1s), final frozen-source native form journeys pass (3.0m). Production build: 73 traces/no private uploads. Generators, TypeScript, full lint (one existing warning), dependency policy and context pass; 49 final access/context contracts pass. An earlier Contact6 authoring wait timed out while server source was edited; the final source-frozen run passed, without weakening assertions. Exact-head CI and merge status are governed by the linked PR. See [runbook](../operations/section-scoped-access.md). No environment/provider/dependency change or ownership backfill. |
+
+| 2026-10-16 | SUBMIT-02/11; VERIFY | Export increment merged; advanced forms deferred | Codex | PR #32 merged as `76e3dba2`; user accepts core forms and protected email links. Section access is selected next. | [PR #32](https://github.com/tanishraj/payload-cms-starter-kit/pull/32) | [Exact-head Quality](https://github.com/tanishraj/payload-cms-starter-kit/actions/runs/38873878285) passed: 2,745 integration tests/one existing Docker skip, both governance and both native form journeys, production private-artifact guard. Generic Form passed on retry after its initial public navigation timed out; broader repeatability remains open. No claim that the earlier pending checks or all broad forms boxes are complete. |

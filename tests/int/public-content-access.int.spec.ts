@@ -58,11 +58,11 @@ const expectAnonymousFieldReadDenied = (collection: CollectionConfig, fieldName:
 }
 
 describe('public content access', () => {
-  it('uses Payload publication as the public boundary for governed content', () => {
+  it('uses Payload publication as the public boundary for governed content', async () => {
     const expected = { _status: { equals: 'published' } }
 
     for (const collection of [Pages, Articles, SystemPages]) {
-      expect(readAccess(collection), collection.slug).toEqual(expected)
+      expect(await readAccess(collection), collection.slug).toEqual(expected)
     }
 
     expect(readAccess(Reviews)).toEqual({
@@ -79,7 +79,7 @@ describe('public content access', () => {
     })
   })
 
-  it('requires Payload publication for draft-only public records', () => {
+  it('requires Payload publication for draft-only public records', async () => {
     const expected = { _status: { equals: 'published' } }
 
     for (const collection of [
@@ -93,7 +93,7 @@ describe('public content access', () => {
       Media,
       GalleryAlbums,
     ]) {
-      expect(readAccess(collection), collection.slug).toEqual(expected)
+      expect(await readAccess(collection), collection.slug).toEqual(expected)
     }
   })
 

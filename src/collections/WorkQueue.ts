@@ -1,3 +1,4 @@
+import { sectionQueueWhere } from '@/access/sectionAccess'
 import type { CollectionBeforeChangeHook, CollectionConfig } from 'payload'
 
 import { ADMIN_FEATURE_KEYS, ADMIN_FEATURES, isAdminFeatureKey } from '@/access/adminFeatures'
@@ -79,13 +80,15 @@ const priorityOptions = [
   },
 ] as const
 
-const scopedQueueAccess = ({ req }: { req: { user?: unknown } }) => {
+const scopedQueueAccess: import('payload').Access = async ({ req }) => {
   if (isAdmin(req.user)) return true
   if (!hasFeature(req.user, 'actionQueue')) return false
   const features = getGrantedFeatureKeys(req.user).filter(
     (key) => key !== 'actionQueue' && key !== 'auditLog',
   )
-  return features.length > 0 ? { feature: { in: features } } : false
+  return features.length > 0
+    ? { and: [{ feature: { in: features } }, await sectionQueueWhere(req)] }
+    : false
 }
 
 const systemManagedFieldAccess = {
