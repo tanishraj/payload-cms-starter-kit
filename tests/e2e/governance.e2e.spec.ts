@@ -343,6 +343,9 @@ test.describe('governance browser journeys', () => {
       await test.step('create a Page within the assigned section and deny the other section', async () => {
         await managerPage.goto('/admin', { waitUntil: 'domcontentloaded' })
         await managerPage.getByRole('link', { name: '+ New Page', exact: true }).click()
+        await managerPage
+          .getByRole('link', { name: 'Use the native Page editor', exact: true })
+          .click()
         await expect(managerPage.locator('form[data-form-ready="true"]')).toBeVisible()
         await managerPage.locator('#field-title').fill('Manager-created scoped Page')
         await managerPage.locator('#field-parent').getByRole('combobox').click()
@@ -574,6 +577,159 @@ test.describe('governance browser journeys', () => {
     }
   })
 
+  test('Site Manager chooses a scoped recipe, recovers loading and opens the saved native draft', async ({
+    page,
+    browser,
+  }) => {
+    if (!fixture) throw new Error('Expected governance fixture.')
+    const currentFixture = fixture
+    await login({ page, user: currentFixture.admin })
+    const roots: Array<{ id: string; title: string; slug: string }> = []
+    for (const title of ['Recipe Admissions', 'Recipe Campus', 'Recipe Other']) {
+      const result = await page.request.post('/api/pages', {
+        headers: await getPayloadAuthHeaders(page),
+        data: { title, layout: [], _status: 'draft' },
+      })
+      expect(result.status()).toBe(201)
+      const root = (await result.json()).doc
+      currentFixture.pageIDs.push(root.id)
+      roots.push(root)
+    }
+    const manager = await page.request.post('/api/users', {
+      headers: await getPayloadAuthHeaders(page),
+      data: {
+        ...accessManager,
+        role: 'siteManager',
+        features: { pages: true },
+        sectionRoots: [roots[0].id, roots[1].id],
+      },
+    })
+    expect(manager.status()).toBe(201)
+    const managerContext = await browser.newContext()
+    const editor = await managerContext.newPage()
+    try {
+      await managerContext.route('https://www.gravatar.com/**', (route) => route.abort())
+      await login({ page: editor, user: accessManager })
+      const sectionsRoute = (url: URL) =>
+        url.pathname === '/api/pages' && url.searchParams.get('where[parent][exists]') === 'false'
+      await editor.route(sectionsRoute, (route) =>
+        route.fulfill({ status: 500, contentType: 'application/json', body: '{}' }),
+      )
+      await editor.goto('/admin/collections/pages/create')
+      await expect(
+        editor.getByText('Website sections could not be loaded.', { exact: false }),
+      ).toBeVisible()
+      const title = 'A scoped Campus landing'
+      await editor.getByRole('textbox', { name: 'Page title', exact: true }).fill(title)
+      await editor.getByText('Landing Page', { exact: true }).click()
+      await expect(editor.getByRole('button', { name: 'Create draft', exact: true })).toBeDisabled()
+      await editor.unroute(sectionsRoute)
+      const loaded = editor.waitForResponse(
+        (response) => sectionsRoute(new URL(response.url())) && response.status() === 200,
+      )
+      await editor.getByRole('button', { name: 'Try loading sections again', exact: true }).click()
+      expect(
+        (await (await loaded).json()).docs.map((doc: { id: string }) => doc.id).sort(),
+      ).toEqual([roots[0].id, roots[1].id].sort())
+      await expect(editor.getByRole('textbox', { name: 'Page title', exact: true })).toHaveValue(
+        title,
+      )
+      await expect(editor.getByRole('radio', { name: /Landing Page/ })).toBeChecked()
+      const createButton = editor.getByRole('button', { name: 'Create draft', exact: true })
+      await expect(createButton).toBeEnabled()
+      await createButton.click()
+      await expect(editor.getByText('Choose a website section.', { exact: true })).toBeVisible()
+      const select = editor.getByRole('combobox', { name: 'Website section', exact: true })
+      await select.focus()
+      await select.press('Enter')
+      await expect(editor.getByRole('option', { name: new RegExp(roots[2].title) })).toHaveCount(0)
+      await editor
+        .getByRole('option', { name: `${roots[1].title} (/${roots[1].slug})`, exact: true })
+        .click()
+      await editor.addScriptTag({ content: axe.source })
+      const check = async () => {
+        await editor.mouse.move(0, 0)
+        await editor.locator('.page-recipe-setup').evaluate(async (element) => {
+          await Promise.all(
+            element
+              .getAnimations({ subtree: true })
+              .map((animation) => animation.finished.catch(() => {})),
+          )
+        })
+        const violations = await editor.evaluate(async () => {
+          const result = await (window as unknown as { axe: typeof import('axe-core') }).axe.run(
+            '.page-recipe-setup',
+            { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } },
+          )
+          return result.violations.map(({ id, nodes }) => ({
+            id,
+            targets: nodes.map(({ target }) => target),
+          }))
+        })
+        expect(violations).toEqual([])
+      }
+      await check()
+      await editor.screenshot({
+        path: test.info().outputPath('scoped-recipes-desktop.png'),
+        fullPage: true,
+      })
+      await editor.setViewportSize({ width: 390, height: 844 })
+      await editor.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'))
+      await check()
+      await editor.screenshot({
+        path: test.info().outputPath('scoped-recipes-mobile.png'),
+        fullPage: true,
+      })
+      await editor.setViewportSize({ width: 1280, height: 720 })
+      const created = editor.waitForResponse(
+        (response) =>
+          new URL(response.url()).pathname === '/api/pages/create-from-recipe' &&
+          response.request().method() === 'POST',
+      )
+      await createButton.click()
+      const response = await created
+      expect(response.status()).toBe(201)
+      const { id } = await response.json()
+      currentFixture.pageIDs.push(id)
+      await editor.waitForURL((url) => url.pathname === `/admin/collections/pages/${id}`, {
+        waitUntil: 'domcontentloaded',
+      })
+      await expect(editor.locator('#field-title')).toHaveValue(title)
+      const record = await (
+        await editor.request.get(`/api/pages/${id}?draft=true&depth=0`, {
+          headers: await getPayloadAuthHeaders(editor),
+        })
+      ).json()
+      expect(record).toMatchObject({ title, parent: roots[1].id, _status: 'draft' })
+      expect(record.layout.map((block: { blockType: string }) => block.blockType)).toEqual([
+        'pageHeader',
+        'breadcrumb',
+      ])
+      const anonymous = await standaloneRequest.newContext({
+        baseURL: new URL(editor.url()).origin,
+      })
+      try {
+        expect((await anonymous.get(`/api/pages/${id}`)).status()).not.toBe(200)
+      } finally {
+        await anonymous.dispose()
+      }
+      const denied = await editor.request.post('/api/pages/create-from-recipe', {
+        headers: await getPayloadAuthHeaders(editor),
+        data: { title: 'Forbidden recipe', recipe: 'blank', parent: roots[2].id },
+      })
+      expect(denied.status()).toBe(403)
+    } catch (error) {
+      await editor.screenshot({ path: test.info().outputPath('scoped-recipes-failure.png') })
+      await writeFile(
+        test.info().outputPath('scoped-recipes-failure.txt'),
+        `${editor.url()}\n${await editor.locator('body').innerText()}`,
+      )
+      throw error
+    } finally {
+      await managerContext.close()
+    }
+  })
+
   test('Page guide follows a real blank draft through blocks, save and authenticated preview', async ({
     page,
     browser,
@@ -792,7 +948,7 @@ test.describe('governance browser journeys', () => {
       await visitor.close()
       // Restore only touched test-global fields, even if the browser fixture has closed.
       const restore = await standaloneRequest.newContext({
-        baseURL: 'http://127.0.0.1:3000',
+        baseURL: headers.Origin,
         extraHTTPHeaders: headers,
         timeout: 10_000,
       })
@@ -957,7 +1113,7 @@ test.describe('governance browser journeys', () => {
       await manager.close()
       if (touchedLayout) {
         const restore = await standaloneRequest.newContext({
-          baseURL: 'http://127.0.0.1:3000',
+          baseURL: headers.Origin,
           extraHTTPHeaders: headers,
           timeout: 10_000,
         })

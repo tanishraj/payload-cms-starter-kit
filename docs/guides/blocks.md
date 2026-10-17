@@ -27,6 +27,11 @@ Full-page creation starts with **Blank Page** or **Landing Page**. Blank Page ha
 
 Page creation inside a relationship drawer retains Payload's native blank form so the newly created Page can return to and populate the parent field safely.
 
+Site Managers can use these recipes within an assigned Website section. The new
+Page starts directly under that root. Choose **Use the native Page editor** for a
+deeper initial Parent; either path opens the same block editor and keeps drafts
+private. See [section-aware recipes](../operations/scoped-page-recipes.md).
+
 ## Linking To Page Sections
 
 Every Page-compatible block has an optional **Section Anchor ID** field. Use a short, stable value

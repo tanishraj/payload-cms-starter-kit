@@ -3,7 +3,12 @@
 import { useConfig } from '@payloadcms/ui'
 import { useRouter } from 'next/navigation'
 import { formatAdminURL } from 'payload/shared'
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, useEffect, useState } from 'react'
+import {
+  PageSectionSelect,
+  type PageSectionSelectProps,
+} from '@/components/revamp/page-section-select'
+import { parseRecipeSectionOptions, recipeSectionsQuery } from '@/page-recipes/sectionOptions'
 
 import { pageRecipeOptions, type PageRecipeID } from '@/page-recipes/pageRecipes'
 
@@ -14,7 +19,7 @@ type CreatePageResult = {
   message?: unknown
 }
 
-export function PageRecipeSetup() {
+export function PageRecipeSetup({ sectionRequired = false }: { sectionRequired?: boolean }) {
   const { config } = useConfig()
   const router = useRouter()
   const [title, setTitle] = useState('')
@@ -22,6 +27,19 @@ export function PageRecipeSetup() {
   const [error, setError] = useState('')
   const [createdDraftURL, setCreatedDraftURL] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [sections, setSections] = useState<Pick<PageSectionSelectProps, 'status' | 'options'>>({
+    status: 'loading',
+    options: [],
+  })
+  const [selectedSection, setSelectedSection] = useState('')
+  const [sectionAttempt, setSectionAttempt] = useState(0)
+  const parent = sections.options.some((option) => option.id === selectedSection)
+    ? selectedSection
+    : sections.options.length === 1
+      ? sections.options[0].id
+      : ''
+  const sectionsUnavailable = sectionRequired && sections.status !== 'ready'
+  const creationLocked = isSubmitting || Boolean(createdDraftURL)
 
   const endpointURL = formatAdminURL({
     apiRoute: config.routes.api,
@@ -36,9 +54,53 @@ export function PageRecipeSetup() {
     serverURL: config.serverURL,
   })
 
+  const sectionsURL =
+    formatAdminURL({
+      apiRoute: config.routes.api,
+      path: '/pages',
+      relative: true,
+      serverURL: config.serverURL,
+    }) +
+    '?' +
+    recipeSectionsQuery()
+  const nativeEditorURL =
+    formatAdminURL({
+      adminRoute: config.routes.admin,
+      path: '/collections/pages/create',
+      relative: true,
+      serverURL: config.serverURL,
+    }) + '?editor=native'
+
+  useEffect(() => {
+    if (!sectionRequired) return
+    const controller = new AbortController()
+    const load = async () => {
+      try {
+        const response = await fetch(sectionsURL, {
+          credentials: 'include',
+          cache: 'no-store',
+          signal: controller.signal,
+        })
+        // A native access denial is an unavailable assignment, not a successful empty query.
+        if (response.status === 403) {
+          if (!controller.signal.aborted) setSections({ status: 'empty', options: [] })
+          return
+        }
+        if (!response.ok) throw new Error('Section lookup failed.')
+        const options = parseRecipeSectionOptions(await response.json())
+        if (!controller.signal.aborted)
+          setSections({ status: options.length ? 'ready' : 'empty', options })
+      } catch {
+        if (!controller.signal.aborted) setSections({ status: 'error', options: [] })
+      }
+    }
+    void load()
+    return () => controller.abort()
+  }, [sectionRequired, sectionsURL, sectionAttempt])
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (isSubmitting) return
+    if (creationLocked || sectionsUnavailable) return
 
     const normalizedTitle = title.trim()
     if (!normalizedTitle) {
@@ -46,6 +108,10 @@ export function PageRecipeSetup() {
       return
     }
 
+    if (sectionRequired && !parent) {
+      setError('Choose a website section.')
+      return
+    }
     setError('')
     setCreatedDraftURL('')
     setIsSubmitting(true)
@@ -53,7 +119,11 @@ export function PageRecipeSetup() {
 
     try {
       const response = await fetch(endpointURL, {
-        body: JSON.stringify({ recipe, title: normalizedTitle }),
+        body: JSON.stringify({
+          recipe,
+          title: normalizedTitle,
+          ...(sectionRequired ? { parent } : {}),
+        }),
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
@@ -62,9 +132,7 @@ export function PageRecipeSetup() {
 
       if (!response.ok || typeof result.editURL !== 'string') {
         setError(
-          typeof result.message === 'string'
-            ? result.message
-            : 'Unable to create the Page draft.',
+          typeof result.message === 'string' ? result.message : 'Unable to create the Page draft.',
         )
         return
       }
@@ -101,7 +169,7 @@ export function PageRecipeSetup() {
           <input
             autoFocus
             className="page-recipe-setup__title-input"
-            disabled={isSubmitting}
+            disabled={creationLocked}
             id="page-recipe-title"
             onChange={(event) => setTitle(event.target.value)}
             type="text"
@@ -109,7 +177,24 @@ export function PageRecipeSetup() {
           />
         </div>
 
-        <fieldset className="page-recipe-setup__field" disabled={isSubmitting}>
+        {sectionRequired ? (
+          <PageSectionSelect
+            {...sections}
+            value={parent}
+            invalid={error === 'Choose a website section.'}
+            disabled={creationLocked}
+            onChange={(value) => {
+              setSelectedSection(value)
+              setError('')
+            }}
+            onRetry={() => {
+              setSections({ status: 'loading', options: [] })
+              setSectionAttempt((value) => value + 1)
+            }}
+          />
+        ) : null}
+
+        <fieldset className="page-recipe-setup__field" disabled={creationLocked}>
           <legend>Choose a starting point</legend>
           <div className="page-recipe-setup__recipes">
             {pageRecipeOptions.map((option) => (
@@ -142,24 +227,31 @@ export function PageRecipeSetup() {
           {error}
         </p>
 
-        {createdDraftURL && error ? (
+        {createdDraftURL ? (
           <a className="page-recipe-setup__recovery" href={createdDraftURL}>
             Open the created draft
           </a>
         ) : null}
 
         <div className="page-recipe-setup__actions">
-          <button className="page-recipe-setup__submit" disabled={isSubmitting} type="submit">
+          <button
+            className="page-recipe-setup__submit"
+            disabled={creationLocked || sectionsUnavailable}
+            type="submit"
+          >
             {isSubmitting ? 'Creating draft…' : 'Create draft'}
           </button>
           <a
-            aria-disabled={isSubmitting}
+            aria-disabled={creationLocked}
             className="page-recipe-setup__cancel"
-            href={isSubmitting ? undefined : pagesURL}
+            href={creationLocked ? undefined : pagesURL}
           >
             Cancel
           </a>
         </div>
+        <a aria-disabled={creationLocked} href={creationLocked ? undefined : nativeEditorURL}>
+          Use the native Page editor
+        </a>
       </form>
     </main>
   )

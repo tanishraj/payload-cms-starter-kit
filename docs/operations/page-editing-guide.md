@@ -32,7 +32,7 @@ changing visibility. Keyboard focus follows hide/reopen as on the dashboard.
 The guide is absent in relationship drawers and when the document is read-only,
 trashed or locked by another editor. Native fields and controls remain usable
 independently of optional guidance. Admin recipe creation is unchanged; Site
-Managers still create through the native section-aware form. Only Admin and Site
+Managers can use section-aware Blank/Landing recipes or choose the native section-aware form. Only Admin and Site
 Manager roles exist. No examples or Pages are seeded or published by this guide.
 
 On a clean Page with blocks and a public version, a user granted Layout Defaults

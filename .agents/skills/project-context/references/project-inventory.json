@@ -2326,6 +2326,7 @@
       "docs/operations/page-editing-guide.md",
       "docs/operations/private-form-attachments.md",
       "docs/operations/runtime-and-providers.md",
+      "docs/operations/scoped-page-recipes.md",
       "docs/operations/section-scoped-access.md",
       "docs/operations/site-setup-guide.md",
       "docs/operations/starter-clone-checklist.md",
@@ -2771,6 +2772,8 @@
       "src/components/revamp/generic-form.tsx",
       "src/components/revamp/onboarding-panel.css",
       "src/components/revamp/onboarding-panel.tsx",
+      "src/components/revamp/page-section-select.css",
+      "src/components/revamp/page-section-select.tsx",
       "src/components/revamp/ui/button.tsx",
       "src/components/revamp/ui/card.tsx",
       "src/components/revamp/ui/checkbox.tsx",
@@ -2990,6 +2993,7 @@
       "src/migrations/20260902_000000_two_role_feature_permissions.ts",
       "src/migrations/index.ts",
       "src/page-recipes/pageRecipes.ts",
+      "src/page-recipes/sectionOptions.ts",
       "src/payload-types.ts",
       "src/payload.config.ts",
       "src/plugins/withFeatureDeletionAudit.ts",
@@ -3076,6 +3080,7 @@
       "src/stories/revamp/Input.stories.tsx",
       "src/stories/revamp/Label.stories.tsx",
       "src/stories/revamp/OnboardingPanel.stories.tsx",
+      "src/stories/revamp/PageSectionSelect.stories.tsx",
       "src/stories/revamp/Select.stories.tsx",
       "src/stories/revamp/Separator.stories.tsx",
       "src/stories/revamp/Textarea.stories.tsx",
@@ -3281,6 +3286,7 @@
       "tests/int/page-editing-guide.int.spec.tsx",
       "tests/int/page-header-actions.int.spec.tsx",
       "tests/int/page-recipe-endpoint.int.spec.ts",
+      "tests/int/page-recipe-sections.int.spec.ts",
       "tests/int/page-recipe-setup.int.spec.tsx",
       "tests/int/page-recipes.int.spec.ts",
       "tests/int/page-routing.int.spec.ts",
@@ -3372,7 +3378,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "7db2d125b08f686e1e16c06df243f0c79ea1978ae30ed5b543f676e2068ee15e"
+    "sha256": "27a5928504efae01bc65ea09e456b08f8dfcc931d02f5e160b71eed8c900650e"
   },
   "surfaces": {
     "access": [
@@ -3743,6 +3749,7 @@
       "tests/int/page-editing-guide.int.spec.tsx",
       "tests/int/page-header-actions.int.spec.tsx",
       "tests/int/page-recipe-endpoint.int.spec.ts",
+      "tests/int/page-recipe-sections.int.spec.ts",
       "tests/int/page-recipe-setup.int.spec.tsx",
       "tests/int/page-recipes.int.spec.ts",
       "tests/int/page-routing.int.spec.ts",

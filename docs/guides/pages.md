@@ -21,8 +21,10 @@ The parent validator prevents self-parenting and circular hierarchies. Reference
 
 ## First draft to preview
 
-1. Create a Page. Admins can choose Blank Page or Landing Page; Site Managers use
-   the native form and choose a Parent inside an assigned section.
+1. Create a Page from Blank Page or Landing Page. Site Managers choose an assigned
+   Website section; a single available section is preselected. The draft starts
+   directly under that root. For a deeper Parent immediately, choose **Use the
+   native Page editor** before creating. Existing Pages and drawers stay native.
 2. Open Content. In Layout, choose **Add Block**, select a block and expand it if
    collapsed. Fill in its content. **Show All** expands the block rows.
 3. Choose **Save Draft** and wait for Payload's confirmation. Correct any reported
