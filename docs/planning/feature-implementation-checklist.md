@@ -43,6 +43,25 @@ related operational rows. Other destinations retain explicitly labelled site-wid
 feature grants. Full ACCESS-02/05/06/07/09 acceptance remains open for broader
 collections/media, diagnostics and entry-point evidence.
 
+## Client delivery focus — 17 October 2026
+
+The user confirmed team/Admin site setup followed by client editing through
+section-scoped Site Manager accounts. The [client website delivery roadmap](client-website-delivery-roadmap.md)
+organizes existing capabilities, handoff gaps, launch verification and later
+expansion across all 25 catalogue domains. Its detailed release order is proposed,
+not a blanket instruction to implement every open item. Feature acceptance remains
+here; no checkbox changes through that planning review.
+
+## Active release scope — user approved 17 October 2026
+
+Use the [first-client release checklist](first-client-release.md) to choose current
+work. This 242-group catalogue is a reference backlog and detailed acceptance
+archive, not a requirement to implement every open item. First verify the existing
+end-to-end journey; add only a demonstrated blocker or an explicit client need.
+The five active goals are team setup, Page building, publishing/recovery, client
+handoff and launch essentials. Do not restart advanced forms or broaden scope
+merely because catalogue boxes remain open.
+
 ## How to maintain the checklist
 
 - Delivery workflow updated by the user on 2026-10-17: use isolated Git worktrees
@@ -2214,3 +2233,14 @@ Exact-head Quality/merge evidence remains pending.
 | 2026-10-17 | ONBOARD-07; VERIFY | Scoped recipes merged | Codex | Merge PR #40 after exact-head Quality passed, update develop and delete its merged feature branch. Page-history work continues independently in its cleanly based worktree. | [PR #40](https://github.com/tanishraj/payload-cms-starter-kit/pull/40), `19761fce` | CI on `0f301256`: 2,909 integration tests pass/one existing skip; six governance cases including the new recipe journey pass first attempt, existing blank-Page guide passes after one configured retry following a response-wait timeout. Both form journeys pass first attempt; 73 production traces/private uploads excluded. First-attempt trace unavailable and final artifacts contain later form outputs, so the blank-Page failure cause is unconfirmed; staged diagnostics retention is a separate remaining improvement. |
 
 | 2026-10-17 | PUBLISH-11; GLOBAL-09; SEC-07; VERIFY | Page increment locally verified | Codex | Keep native History comparison/confirmation and enforce draft-only restoration on the Pages endpoint and programmatic helper. Preserve current public Page/navigation/shared content, existing section access and ordinary unpublish guards. Record one source-version audit in the native transaction; audit failure rolls restoration back. | `feat/page-history-draft-restore`; [feature PR](https://github.com/tanishraj/payload-cms-starter-kit/pulls?q=is%3Apr+head%3Afeat%2Fpage-history-draft-restore) | Full integration: 2,923 pass/one existing opt-in Docker skip (62.48s). All eight governance journeys pass without retries (2.3m), including the primary native restore button sending draft=false, unchanged public Page and subsequent explicit publication. Focused helper/database/scope contracts: 27 pass; isolated History journey: 17.1s. Production build passes with 73 traces/private uploads excluded; TypeScript, lint (one existing warning), approved production audit and repeat generators pass. The first broader browser attempt failed during server startup with useInsertionEffect; clearing only the temporary QA build cache allowed the complete zero-retry suite to pass. No application source or assertion/time limit was changed for that startup failure. No generated Next route, new visual component, persistence field, migration, dependency or environment change. Other collections/global history remain open; Both existing form journeys pass without retries (3.1m). The deterministic repository/context contracts pass all 15 tests. Final inventory refresh/check passes; exact-head GitHub CI remains the merge gate. |
+
+
+### 17 October 2026 — Client delivery planning
+
+| Date | Feature/task IDs | Status | Owner | Change/decision | Commit/PR | Verification |
+| --- | --- | --- | --- | --- | --- | --- |
+| 2026-10-17 | CORE; PAGE; ACCESS; MEDIA; ONBOARD; ADMINUX; VERIFY | Source assessment and proposed delivery order | Codex | User requests a simpler working website/client-onboarding route. Confirm team/Admin setup and normal client Site Manager editing. Reuse native Payload and shipped guides; propose safe Media, account handoff, observed first-page task, publishing clarity and launch rehearsal before optional catalogue expansion. Keep core forms accepted and advanced forms deferred. Resolve only the AFK composition-baseline task; release-policy tickets stay open. | `docs/client-onboarding-roadmap`; planning PR follows | Source baseline is develop `19761fce`; Page History is separately tracked by its feature PR. Catalogue count: 242 groups, nine checked/233 unchecked; ten separate DF proofs, three checked. Unchecked does not mean missing. Full domain routing, source pointers and proposed task evidence are in the linked roadmap/baseline. Fresh focused contracts: 31 pass. Routing covers all 242 groups exactly once; acceptance boxes are unchanged and new-document local links exist. Wayfinder dependency/frontier query passes. Final project-context check follows. No runtime, environment, data or acceptance-checkbox change. |
+
+| 2026-10-17 | CORE; ONBOARD; ADMINUX; VERIFY | First-client scope approved | Codex | User explicitly accepted five working goals instead of implementing the 242-group catalogue. Make first-client-release.md the active task selector and retain the full catalogue as reference. Verify existing behavior and fix demonstrated handoff blockers; no extra modules without client need. | `docs/client-onboarding-roadmap` | Page History merged after exact-head CI success at `53fea53e`; its branch deleted. CI: 2,923 integration pass/one existing skip, seven governance cases first attempt including History, existing blank-Page case passes after one retry, both forms first attempt, 73 production traces/private uploads excluded. The flaky blank-Page task remains a release evidence gap, not a claimed source fix. |
+
+| 2026-10-17 | ONBOARD; ADMINUX; VERIFY | Bounded local rehearsal passed | Codex | Rehearse the existing core workflow on merged develop while adopting the five-goal first-client checklist. Keep the catalogue as reference and permit new work only for a demonstrated blocker/client need. | `docs/client-onboarding-roadmap`; scope PR follows | Eight existing governance/browser journeys pass without retries (2.0m) on isolated local *_test Mongo/port 3001; 46 focused context/documentation/catalogue/onboarding tests pass. Routing and links validate; existing catalogue boxes are unchanged. No scoped Media, client credential delivery, three-page client build, novice pilot or production restore proof is claimed. Project inventory reflects AGENTS.md; architecture/Payload/block narratives remain current. |
