@@ -221,3 +221,10 @@ Homepage and navigation states extend **Admin / Getting started** using the same
 production task model and sourced panel: missing/selected homepage, limited menu
 access, unsaved/processing, public settings, hide/reopen and the granted
 published-Page transition. See [native guidance](homepage-navigation-guide.md).
+
+
+Team setup extends the same **Admin / Getting started** production presentation
+with role, missing grants/sections, mixed scoped/site-wide selections,
+operational-only access, long selections and saving states. Its pure task model
+uses current feature metadata; native authority is verified separately in
+[the team setup contract](team-setup-guide.md).

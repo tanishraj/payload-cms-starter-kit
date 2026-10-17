@@ -39,8 +39,10 @@ panel each person can operate. The two roles are Admin and Site Manager.
 1. Open **Administration → Users**.
 2. Create the login and choose **Site Manager**.
 3. In **Feature Access**, enable only the destinations required for that person's responsibilities.
-4. Save and ask the user to sign in again.
-5. Verify both the sidebar and a direct URL for one granted and one ungranted feature.
+4. For Pages, Forms, Reusable Sections or submissions, choose active root Pages under **Manageable website sections**; descendants are included. Other grants retain their documented site-wide meaning.
+5. Review the optional **Team setup** preview. Selected values are unconfirmed until Save succeeds; supporting read-only access does not become an editable grant.
+6. Save and ask the user to sign in again.
+7. Verify both the sidebar and a direct URL for one granted and one ungranted feature.
 
 Feature changes clear the affected user's sessions, so an already signed-in user must authenticate
 again. New Site Managers have all 29 features disabled unless the creating Admin selects them.
@@ -84,3 +86,14 @@ Manageable website sections. A feature grant and valid section are both needed
 for scoped authoring or the submission inbox; other destinations retain site-wide
 feature grants. See [section boundaries](../operations/section-scoped-access.md)
 and [dashboard guidance](../operations/admin-getting-started.md).
+
+
+## Team setup preview
+
+The optional guide in native Users editing reacts to the selected role, features
+and section count. It explains missing grants/scope, site-wide destinations and
+source-filtered operational access before saving. Native validation and server
+access checks remain authoritative; the preview does not certify root validity.
+Hide/reopen is saved for the acting Admin, not the person being edited. Account
+settings, drawers and Site Managers omit the guide. See
+[the team setup contract](../operations/team-setup-guide.md).

@@ -357,3 +357,14 @@ Published Page deletion honors the existing explicit server-only
 cleanup can therefore delete its recorded published Pages outside Next's request
 context. Ordinary published deletion still immediately invalidates Page/sitemap
 tags; no client-provided data or feature grant can set that server context.
+
+
+Native Users adds an Admin-only optional team-selection preview through an
+explicit UI field. Stable form selectors observe role, feature bits and unique
+root count without subscribing to credentials or copying account data. Selected
+access stays unconfirmed until native Save succeeds; the preview is not an
+authorization audit. `sectionScope.ts` is the browser-safe owner of existing
+scope keys/normalization, reexported by server `sectionAccess.ts`. The shared grant
+summary lives in `adminFeatures.ts` with its prior presentation export preserved.
+Server enforcement, session revocation and last-Admin/bootstrap policy are
+unchanged. See [team setup](../../../../docs/operations/team-setup-guide.md).

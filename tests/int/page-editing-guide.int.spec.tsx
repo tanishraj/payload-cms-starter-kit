@@ -95,6 +95,12 @@ describe('page editing guidance facts', () => {
 })
 
 describe('native page guide adapter', () => {
+  it('keeps new Page guidance when native lock state has no saved record to lock', () => {
+    Object.assign(state, { documentIsLocked: true, currentEditor: undefined })
+    render(<PageEditingGuide collapsed={false} preferenceUnavailable={false} />)
+    expect(screen.getByRole('heading', { name: 'Create your first draft' })).toBeTruthy()
+  })
+
   it('shows the site-wide settings route only for a granted clean public Page', () => {
     Object.assign(state, {
       id: 'page-1',
@@ -135,7 +141,10 @@ describe('native page guide adapter', () => {
       if (kind === 'drawer') state.drawerSlug = 'pages-drawer'
       if (kind === 'readOnly') state.hasSavePermission = false
       if (kind === 'trashed') state.isTrashed = true
-      if (kind === 'locked') state.documentIsLocked = true
+      if (kind === 'locked') {
+        state.id = 'saved-page'
+        state.documentIsLocked = true
+      }
       const { container } = render(
         <PageEditingGuide collapsed={false} preferenceUnavailable={false} />,
       )

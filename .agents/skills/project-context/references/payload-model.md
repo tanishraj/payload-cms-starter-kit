@@ -280,3 +280,13 @@ edit links require their management grants, never dependency-read access. Existi
 Page scope, site-wide settings grants, field paths/defaults, homepage validation
 and publication authority remain unchanged. Collection/field descriptions clarify
 menu ownership; generated type changes are documentation only.
+
+
+Users registers a non-persisted `teamSetupGuide` UI field. Its server adapter
+requires the acting Admin and loads only that account's
+`forma-team-setup-guide-v1` visibility with current request/access enforcement.
+The native client summarizes selected grants/sections and distinguishes
+section-scoped, site-wide, supporting-read and source-filtered operation access.
+It neither grants permission nor validates root topology; native Save and
+server access remain authoritative. No data field, role, credential, migration or
+account lifecycle change is introduced.

@@ -1,19 +1,11 @@
 import { APIError, type Access, type PayloadRequest, type Where } from 'payload'
 import type { AdminFeatureKey } from '@/access/adminFeatures'
+import { normalizeSectionRoots, relationshipID, scopedSourceFeatures } from './sectionScope'
 import { canReadFeature, hasFeature, isAdmin, isSiteManager } from '@/access/featureAccess'
+export { normalizeSectionRoots, relationshipID, scopedSourceFeatures } from './sectionScope'
 
 export const SECTION_SCOPE_LIMIT = 5000
 const cacheKey = Symbol('section-access-request-cache')
-export const relationshipID = (value: unknown): string | null => {
-  if (typeof value === 'string' && value.length) return value
-  if (typeof value === 'number' && Number.isFinite(value)) return String(value)
-  if (value && typeof value === 'object' && 'id' in value) return relationshipID(value.id)
-  return null
-}
-export const normalizeSectionRoots = (value: unknown): string[] =>
-  Array.isArray(value)
-    ? [...new Set(value.map(relationshipID).filter((id): id is string => id !== null))].sort()
-    : []
 const rootsOf = (user: unknown) =>
   normalizeSectionRoots(
     user && typeof user === 'object' && 'sectionRoots' in user ? user.sectionRoots : [],
@@ -172,12 +164,6 @@ export const scopedSubmissionAccess =
     return submissionSectionWhere(req)
   }
 
-export const scopedSourceFeatures = [
-  'pages',
-  'forms',
-  'reusableSections',
-  'formSubmissions',
-] as const
 async function scopedSourceIDs(req: PayloadRequest): Promise<Record<string, string[]>> {
   const [pages, forms, reusable, roots] = await Promise.all([
     hasFeature(req.user, 'pages') ? scopedPageIDs(req) : [],

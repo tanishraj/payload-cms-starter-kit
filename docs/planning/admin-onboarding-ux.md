@@ -6,7 +6,7 @@ Updated: 17 October 2026 (Asia/Dubai). Status: broad acceptance plan; optional d
 
 Core forms are accepted by the user; advanced forms work is deferred. Section
 access merged in PR #33. The optional, account-owned dashboard guide shipped in PR #34 with current
-scope/draft facts and no-assignment recovery. The [developer quickstart and read-only prerequisite checks](../operations/developer-quickstart.md) shipped in PR #35. [Native Page editing guidance](../operations/page-editing-guide.md) shipped in PR #36. [Native site setup guidance](../operations/site-setup-guide.md) for identity, timezone and appearance shipped in PR #37. The current increment connects published Pages to [homepage/navigation guidance](../operations/homepage-navigation-guide.md), preserving site-wide grants and explicit native publication.
+scope/draft facts and no-assignment recovery. The [developer quickstart and read-only prerequisite checks](../operations/developer-quickstart.md) shipped in PR #35. [Native Page editing guidance](../operations/page-editing-guide.md) shipped in PR #36. [Native site setup guidance](../operations/site-setup-guide.md) for identity, timezone and appearance shipped in PR #37. [Homepage/navigation guidance](../operations/homepage-navigation-guide.md) is in PR #38, preserving site-wide grants and explicit native publication. The next increment runs concurrently in an isolated worktree: [native team setup and selection preview](../operations/team-setup-guide.md).
 See [getting started contract](../operations/admin-getting-started.md). Historical
 forms-first sequencing below is superseded. No broad onboarding box or usability
 study target is complete merely because the guide exists.
