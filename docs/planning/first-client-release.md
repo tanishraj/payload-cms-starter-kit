@@ -79,6 +79,21 @@ The production build and existing approved dependency audit pass. This complemen
 operator path. Each change still requires its own exact-head CI and merge; no real
 email delivery, novice task observation or production readiness is claimed.
 
+## Three-page rehearsal — 17 October 2026
+
+A fresh fictional Home/Information/Contact site was built through native Admin
+and separate scoped Site Manager browsers, including branding, homepage/Header
+assignment, Rich Text editing, saved preview, deliberate publication, a reusable
+custom-question Form and anonymous submission. Supporting Form edit access stayed
+denied. See the [task evidence and findings](client-site-rehearsal-2026-10-17.md).
+
+The rehearsal found a blocker: linked published Pages could not save draft
+revisions. A bounded fix now preserves live Page/navigation during native drafting
+and retains actual unpublish protection. Its final tests/PR status are recorded
+in the feature checklist. The pending scoped Media and account-recovery PRs are
+separate; the five release outcomes remain open until their missing human,
+email, scope and production evidence is demonstrated.
+
 ## Work next
 
 1. **Demonstrate the complete existing journey.** Use a representative three-page

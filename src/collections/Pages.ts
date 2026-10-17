@@ -1,3 +1,4 @@
+import { scopePageDraftSave } from '@/lib/pageDraftSave'
 import { type CollectionConfig, type RelationshipFieldSingleValidation } from 'payload'
 import { scopedPageAccess, hideUnlessSectionFeature } from '@/access/sectionAccess'
 import { enforcePageSection } from '@/hooks/enforcePageSection'
@@ -156,7 +157,7 @@ export const Pages: CollectionConfig = {
   },
   endpoints: [createPageFromRecipeEndpoint, restorePageVersionEndpoint],
   hooks: {
-    beforeOperation: [requireSafePageRestoration],
+    beforeOperation: [scopePageDraftSave, requireSafePageRestoration],
     afterOperation: [auditPageRestoration],
     beforeValidate: [markRestoredPageDraft, enforcePageSection],
     afterRead: [populatePageUrlPreview],

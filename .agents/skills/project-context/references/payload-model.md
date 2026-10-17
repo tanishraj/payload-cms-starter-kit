@@ -324,3 +324,12 @@ resend throttling, sessions and 2FA retain upstream server authority. UI cooldow
 and confirmation change only after a successful parsed acknowledgement; failures
 retain retry controls and do not imply delivery. See
 [native feedback](../../../../docs/operations/native-password-reset-feedback.md).
+
+
+Native Page Save Draft is distinguished from unpublishing through a private
+operation-scoped request context derived from Payload update arguments. A draft
+revision preserves the live document and skips shared navigation synchronization;
+explicit publication resumes synchronization. Real unpublishing checks the main
+published Page even when its latest version is already a draft. Client query or
+serializable context flags cannot grant this draft-only path. See the
+[client rehearsal and boundary](../../../../docs/operations/linked-page-draft-saving.md).

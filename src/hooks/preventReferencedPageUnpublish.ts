@@ -3,6 +3,7 @@ import { APIError } from 'payload'
 
 import type { NavigationLink, Page, Redirect } from '@/payload-types'
 
+import { isPageDraftSave } from '@/lib/pageDraftSave'
 import { isPageDraftRestoration } from '@/lib/pageDraftRestoration'
 import { getPageID } from '@/lib/pagePaths'
 
@@ -100,9 +101,9 @@ export const preventReferencedPageUnpublish: CollectionBeforeChangeHook<Page> = 
   originalDoc,
   req,
 }) => {
-  if (isPageDraftRestoration(context)) return data
+  if (isPageDraftRestoration(context) || isPageDraftSave(context)) return data
 
-  if (operation !== 'update' || !originalDoc || originalDoc._status !== 'published') {
+  if (operation !== 'update' || !originalDoc) {
     return data
   }
 
@@ -113,6 +114,22 @@ export const preventReferencedPageUnpublish: CollectionBeforeChangeHook<Page> = 
   }
 
   const pageID = originalDoc.id
+  // The latest version can already be a draft while the main document remains
+  // published. Real unpublishing must still protect those public references.
+  const publicPage =
+    originalDoc._status === 'published'
+      ? originalDoc
+      : await req.payload.findByID({
+          collection: 'pages',
+          id: pageID,
+          draft: false,
+          depth: 0,
+          select: { _status: true },
+          overrideAccess: true,
+          req,
+        })
+  if (publicPage._status !== 'published') return data
+
   const usage = await getReferencedPageUsage(pageID, req)
 
   if (usage.length > 0) {
