@@ -152,7 +152,9 @@ describe('feature access matrix', () => {
 
   it('grants relationship reads without exposing the supporting destination', async () => {
     const manager = { role: 'siteManager', features: { articles: true } }
-    expect(await Media.access?.read?.(accessArgs(manager))).toBe(true)
+    expect(await Media.access?.read?.(accessArgs(manager))).toEqual({
+      or: [{ id: { in: [] } }, { and: [{ id: { in: [] } }, { _status: { equals: 'published' } }] }],
+    })
     expect(await Categories.access?.read?.(accessArgs(manager))).toBe(true)
     expect(await Media.access?.update?.(accessArgs(manager))).toBe(false)
     expect(await Categories.access?.update?.(accessArgs(manager))).toBe(false)

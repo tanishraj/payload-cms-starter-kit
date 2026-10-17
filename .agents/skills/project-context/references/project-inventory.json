@@ -2327,6 +2327,7 @@
       "docs/operations/page-history-restoration.md",
       "docs/operations/private-form-attachments.md",
       "docs/operations/runtime-and-providers.md",
+      "docs/operations/scoped-media-access.md",
       "docs/operations/scoped-page-recipes.md",
       "docs/operations/section-scoped-access.md",
       "docs/operations/site-setup-guide.md",
@@ -2894,6 +2895,7 @@
       "src/hooks/requireFormAttachmentStorage.ts",
       "src/hooks/resolveNewsEventClassification.ts",
       "src/hooks/revalidateCmsContent.ts",
+      "src/hooks/scopedMedia.ts",
       "src/hooks/syncDraftPublishToWorkQueue.ts",
       "src/hooks/syncFormSubmissionToWorkQueue.ts",
       "src/hooks/syncMediaToWorkQueue.ts",
@@ -3333,6 +3335,7 @@
       "tests/int/route-transition-scroll-guard.int.spec.tsx",
       "tests/int/runtime-config.int.spec.ts",
       "tests/int/runtime-import-boundary.int.spec.ts",
+      "tests/int/scoped-media-database.int.spec.ts",
       "tests/int/scrollable-content-tab-rail.int.spec.tsx",
       "tests/int/search-dialog-design.int.spec.ts",
       "tests/int/search-hierarchical-routes.int.spec.tsx",
@@ -3383,7 +3386,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "fe01c4ad178307cfa0dcd6e10c3f678cc101076fadda65045de1b624cafd77e9"
+    "sha256": "df731affad983b7c005105db2bc6783d9ce0bb31a5c3d1576325b7c0aa772328"
   },
   "surfaces": {
     "access": [
@@ -3433,6 +3436,7 @@
       "src/hooks/requireFormAttachmentStorage.ts",
       "src/hooks/resolveNewsEventClassification.ts",
       "src/hooks/revalidateCmsContent.ts",
+      "src/hooks/scopedMedia.ts",
       "src/hooks/syncDraftPublishToWorkQueue.ts",
       "src/hooks/syncFormSubmissionToWorkQueue.ts",
       "src/hooks/syncMediaToWorkQueue.ts",
@@ -3799,6 +3803,7 @@
       "tests/int/route-transition-scroll-guard.int.spec.tsx",
       "tests/int/runtime-config.int.spec.ts",
       "tests/int/runtime-import-boundary.int.spec.ts",
+      "tests/int/scoped-media-database.int.spec.ts",
       "tests/int/scrollable-content-tab-rail.int.spec.tsx",
       "tests/int/search-dialog-design.int.spec.ts",
       "tests/int/search-hierarchical-routes.int.spec.tsx",

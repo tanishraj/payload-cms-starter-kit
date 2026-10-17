@@ -311,7 +311,7 @@ request-local current ownership queries. Site Managers use the default Page edit
 with an assigned Parent, optionally chosen through section-aware Blank/Landing recipes. Protected email links do
 not grant access themselves: private downloads require the submission's inbox
 feature and section (or Admin). The first rollout covers Pages, Forms, Reusable
-Sections, submissions and related operational rows; other feature grants are
+Sections, Media, submissions and related operational rows; other feature grants are
 site-wide. No provider/environment/schema migration or separate editor is added.
 See [scope boundary and limits](../../../../docs/operations/section-scoped-access.md).
 
@@ -385,3 +385,10 @@ normalize status before publication checks, preserve live navigation/reference
 semantics and record a single source-version audit atomically. Other collection/
 global restoration remains outside this increment. See the
 [history contract](../../../../docs/operations/page-history-restoration.md).
+
+Media reuses section resource access and native upload/relationship controls. Private
+shared metadata is field-protected; detailed usage is Admin-only. Public file delivery
+is distinguished from scoped metadata access so editor cookies cannot break published
+images. File/ownership preflight precedes Payload upload side effects, and Media writes
+invalidate request-local ownership lookups used by subsequent native permissions.
+See [Media rollout](../../../../docs/operations/scoped-media-access.md).

@@ -17,6 +17,14 @@ const memo = <T>(req: PayloadRequest, key: string, read: () => Promise<T>): Prom
   if (!context[cacheKey].has(userKey)) context[cacheKey].set(userKey, read())
   return context[cacheKey].get(userKey) as Promise<T>
 }
+/** Nested native operations can reuse this request; writes must invalidate prior ownership reads. */
+export const invalidateSectionAccessCache = (req: PayloadRequest): void => {
+  const cache = (req.context as Record<symbol, Map<string, Promise<unknown>>> | undefined)?.[
+    cacheKey
+  ]
+  cache?.clear()
+}
+
 export const rootPageFilter: Where = {
   or: [{ parent: { exists: false } }, { parent: { equals: null } }],
 }
@@ -71,7 +79,7 @@ export const scopedPageIDs = (req: PayloadRequest): Promise<string[]> =>
     return [...ids]
   })
 
-export type OwnedSectionCollection = 'forms' | 'reusable-sections'
+export type OwnedSectionCollection = 'forms' | 'reusable-sections' | 'media'
 export const ownedSectionIDs = (
   req: PayloadRequest,
   collection: OwnedSectionCollection,
@@ -146,6 +154,17 @@ export const scopedResourceAccess =
     }
   }
 
+/** Public image/file bytes remain public even when the visitor has an editor cookie. */
+export const scopedMediaRead: Access = async (args) => {
+  const { req, isReadingStaticFile } = args
+  if (!isReadingStaticFile) return scopedResourceAccess('media', 'media', 'read')(args)
+  if (isAdmin(req.user)) return true
+  const published: Where = { _status: { equals: 'published' } }
+  if (!isSiteManager(req.user) || !canReadFeature(req.user, 'media')) return published
+  const roots = await grantedSectionRoots(req)
+  return roots.length ? { or: [published, { sectionRoot: { in: roots } }] } : published
+}
+
 export const submissionSectionWhere = async (req: PayloadRequest): Promise<Where> => ({
   sectionRoot: { in: await grantedSectionRoots(req) },
 })
@@ -165,10 +184,11 @@ export const scopedSubmissionAccess =
   }
 
 async function scopedSourceIDs(req: PayloadRequest): Promise<Record<string, string[]>> {
-  const [pages, forms, reusable, roots] = await Promise.all([
+  const [pages, forms, reusable, media, roots] = await Promise.all([
     hasFeature(req.user, 'pages') ? scopedPageIDs(req) : [],
     hasFeature(req.user, 'forms') ? ownedSectionIDs(req, 'forms') : [],
     hasFeature(req.user, 'reusableSections') ? ownedSectionIDs(req, 'reusable-sections') : [],
+    hasFeature(req.user, 'media') ? ownedSectionIDs(req, 'media') : [],
     hasFeature(req.user, 'formSubmissions') ? grantedSectionRoots(req) : [],
   ])
   let submissions: string[] = []
@@ -190,7 +210,7 @@ async function scopedSourceIDs(req: PayloadRequest): Promise<Record<string, stri
       )
     submissions = result.docs.map((doc) => String(doc.id))
   }
-  return { pages, forms, 'reusable-sections': reusable, 'form-submissions': submissions }
+  return { pages, forms, media, 'reusable-sections': reusable, 'form-submissions': submissions }
 }
 export const sectionQueueWhere = async (req: PayloadRequest): Promise<Where> => {
   const ids = await scopedSourceIDs(req)
@@ -221,6 +241,7 @@ export const sectionAuditWhere = async (req: PayloadRequest): Promise<Where> => 
     pages: 'page',
     forms: 'form',
     'reusable-sections': 'reusable-section',
+    media: 'media',
     'form-submissions': 'form-submission',
   }
   return {

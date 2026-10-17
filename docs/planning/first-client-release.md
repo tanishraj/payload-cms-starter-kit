@@ -39,7 +39,7 @@ not source presence, passing docs tests or a completed planning decision.
 | Goal | Existing foundation | Evidence still needed / blocker |
 | --- | --- | --- |
 | Team setup | Native Users, two roles, grant/section validation, site/team/homepage guides and automated Admin/Manager journeys | Full client-site setup rehearsal and actual client task observation |
-| Page building | 61 Page blocks, Blank/Landing recipes, assigned-section Page creation, accepted forms and native editing | Media mutation remains site-wide; close the ownership/selection gap before claiming section-limited client upload. Investigate the blank-Page browser case that needed retries in CI. |
+| Page building | 61 Page blocks, Blank/Landing recipes, assigned-section Page creation, accepted forms and native editing | Section-owned Media is implemented on `feat/section-scoped-media`: native assigned upload, read-only published shared selection and cross-section rejection pass locally. Exact-head CI/merge and the representative client build remain required. Investigate the separate blank-Page browser case that needed retries in CI. |
 | Publishing/recovery | Native save/preview/publish and public routes; Page restore-as-draft merged in the [Page History feature](https://github.com/tanishraj/payload-cms-starter-kit/pull/41) | Observe an unfamiliar editor completing the flow, verify the chosen site's public navigation and recoverable failure states |
 | Handoff | Team guide and native account/security foundation | Decide and demonstrate credential activation/recovery, including the supported email-disabled operator path; no invitation feature is assumed |
 | Launch | Existing provider validation, setup checks, deployment/backup/security runbooks and CI | Site-specific production rehearsal and restore proof; no production system was accessed in this scope change |
@@ -70,7 +70,7 @@ not been diagnosed or fixed merely because this local repeat passed.
    site (Home, Information, Contact) in disposable local/staging data. Reuse current
    blocks/forms and account flows. Record missing capability separately from
    confusing copy, a test timing problem or an operational setup error.
-2. **Fix the first demonstrated blocker.** Known candidates are scoped Media,
+2. **Fix the first demonstrated blocker.** Complete the scoped Media CI gate first. Remaining candidates are
    account activation/recovery and the intermittent blank-Page browser journey.
    Diagnose before choosing a fix; do not merely increase waits or add more guides.
 3. **Repeat the affected task and hand off to a real client editor.** Record
@@ -92,3 +92,16 @@ libraries; configurable breakpoints; advanced workflow/scheduling/localization;
 new providers, tenant switching, a separate visual editor or a replacement admin.
 Existing optional content modules may be enabled for a real need after verification;
 none is deleted. Existing security/privacy constraints remain required throughout.
+
+## Scoped Media increment — 17 October 2026
+
+The Media gap is addressed through existing section policies and native controls;
+see [operator workflow and limits](../operations/scoped-media-access.md). The new
+local browser task passes without retries (52.5s), including upload, saved-editor
+transition, shared selection in a Page and metadata/write boundaries. Eleven new
+database cases cover ownership, private projections, published file delivery,
+file replacement, history, revoked sessions and native permission/form-state calls.
+Full integration passes 2,934 tests with one existing opt-in Docker skip. All nine
+governance journeys pass without retries (3.7m). Production build and the private
+upload artifact guard pass (73 traces). Both accepted form journeys pass without retries (3.1m). Exact-head CI is the merge gate. This
+does not complete the Page-building outcome or replace a client usability pilot.

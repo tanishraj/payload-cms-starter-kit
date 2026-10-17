@@ -63,7 +63,7 @@ beforeAll(async () => {
 
   lifecyclePayload = await getPayload({
     config: await buildConfig({
-      collections: [lifecycleMedia],
+      collections: [lifecycleMedia, { slug: 'pages', fields: [] }],
       db: mongooseAdapter({ transactionOptions: false, url: mongoServer.uri }),
       secret: 'media-lifecycle-test-secret',
       sharp,
@@ -92,7 +92,7 @@ describe('media collection upload validation', () => {
 
   it('validates uploaded bytes before preserving existing media field validation', async () => {
     const beforeOperation = Media.hooks?.beforeOperation?.[0]
-    const beforeValidate = Media.hooks?.beforeValidate?.[0]
+    const beforeValidate = Media.hooks?.beforeValidate?.at(-1)
     if (!beforeOperation) throw new Error('Expected Media beforeOperation hook.')
     if (!beforeValidate) throw new Error('Expected Media beforeValidate hook.')
 

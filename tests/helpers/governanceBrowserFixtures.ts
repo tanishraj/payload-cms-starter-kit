@@ -7,7 +7,7 @@ import type { GovernanceFixture } from './governanceFixtures'
 export { accessManager, governanceSecondAdmin } from './governanceAccounts'
 export type { GovernanceFixture } from './governanceFixtures'
 
-type CleanupFixture = Pick<GovernanceFixture, 'queueSources' | 'pageIDs'>
+type CleanupFixture = Pick<GovernanceFixture, 'queueSources' | 'pageIDs' | 'mediaIDs'>
 type WorkerMessage =
   | { type: 'stage'; stage: string }
   | { type: 'result'; result?: GovernanceFixture }
