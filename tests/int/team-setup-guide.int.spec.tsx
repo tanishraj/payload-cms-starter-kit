@@ -155,7 +155,7 @@ describe('native account selection preview', () => {
       features: Object.fromEntries(ADMIN_FEATURE_KEYS.map((key) => [key, true])),
       sectionCount: 1,
     })
-    expect(task.description).toContain('and 20 more')
+    expect(task.description).toContain('and 19 more')
     expect(task.description).toContain('1 selected section,')
     expect(task.description.length).toBeLessThan(650)
   })

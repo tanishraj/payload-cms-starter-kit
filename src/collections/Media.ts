@@ -1,3 +1,15 @@
+import {
+  scopedResourceAccess,
+  scopedMediaRead,
+  invalidateSectionAccessCache,
+} from '@/access/sectionAccess'
+import { sectionOwnershipField } from '@/fields/sectionOwnership'
+import {
+  enforceMediaOwnership,
+  protectMediaUploadBeforeOperation,
+  protectReferencedMediaFile,
+  scopedMediaPrivateRead,
+} from '@/hooks/scopedMedia'
 import { revalidateGlobalsCache } from '@/hooks/revalidateCmsContent'
 import {
   APIError,
@@ -7,14 +19,7 @@ import {
   type CollectionConfig,
 } from 'payload'
 
-import {
-  allowPublishedReadOrFeature,
-  deleteFeatureOrAdmin,
-  featureFieldReadAccess,
-  hasFeature,
-  hideUnlessFeature,
-  requireFeature,
-} from '@/access/featureAccess'
+import { hasFeature, isAdmin, hideUnlessFeature } from '@/access/featureAccess'
 import { ALLOWED_MEDIA_MIME_TYPES } from '@/config/uploadLimits'
 import { validateUploadedMedia } from '@/domains/media/uploadPolicy'
 import {
@@ -109,6 +114,12 @@ const populateMediaUsage: CollectionAfterReadHook<MediaWithUsage> = async ({
   if (findMany || doc.id == null || !hasFeature(req.user, 'media')) {
     return doc
   }
+  if (!isAdmin(req.user)) {
+    delete doc.usageDetails
+    doc.usageSummary =
+      'Usage is checked before deletion or file replacement. Ask an Admin for full usage details.'
+    return doc
+  }
 
   const usageDetails = await findMediaUsage({
     mediaID: doc.id,
@@ -123,37 +134,62 @@ const populateMediaUsage: CollectionAfterReadHook<MediaWithUsage> = async ({
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  forceSelect: { sectionRoot: true, createdAt: true },
   admin: {
+    description:
+      'Manage assets in your assigned website section. Published shared assets are Admin-managed and selectable without edit access.',
     group: 'Media',
     hidden: hideUnlessFeature('media'),
     useAsTitle: 'title',
-    defaultColumns: ['filename', 'alt', 'assetType', 'updatedAt'],
+    defaultColumns: ['filename', 'alt', 'sectionRoot', 'updatedAt'],
     listSearchableFields: ['title', 'alt', 'filename'],
   },
   access: {
-    create: requireFeature('media'),
-    delete: deleteFeatureOrAdmin('media'),
-    read: allowPublishedReadOrFeature('media'),
-    readVersions: requireFeature('media'),
-    update: requireFeature('media'),
+    create: scopedResourceAccess('media', 'media', 'create'),
+    delete: scopedResourceAccess('media', 'media', 'delete'),
+    read: scopedMediaRead,
+    readVersions: scopedResourceAccess('media', 'media', 'versions'),
+    update: scopedResourceAccess('media', 'media', 'update'),
   },
   hooks: {
-    afterChange: [revalidateGlobalsCache, syncMediaToWorkQueue],
+    afterChange: [
+      ({ doc, req }) => {
+        invalidateSectionAccessCache(req)
+        return doc
+      },
+      revalidateGlobalsCache,
+      syncMediaToWorkQueue,
+    ],
+    afterDelete: [
+      ({ doc, req }) => {
+        invalidateSectionAccessCache(req)
+        return doc
+      },
+    ],
     afterRead: [populateMediaUsage],
     beforeDelete: [preventMediaDeletionWhileInUse],
-    beforeOperation: [validateUploadBeforeOperation],
-    beforeValidate: [beforeValidate],
+    beforeOperation: [validateUploadBeforeOperation, protectMediaUploadBeforeOperation],
+    beforeValidate: [enforceMediaOwnership, beforeValidate],
+    beforeChange: [enforceMediaOwnership, protectReferencedMediaFile],
   },
   versions: {
     drafts: true,
   },
   fields: [
     {
+      ...sectionOwnershipField(),
+      admin: {
+        ...sectionOwnershipField().admin,
+        description:
+          'Admins may leave this empty for shared assets. For Site Managers, a blank section uses the only assigned section when saved; choose a section if several are assigned.',
+      },
+    },
+    {
       name: 'storageStatus',
       label: 'Storage Status',
       type: 'select',
       access: {
-        read: featureFieldReadAccess('media'),
+        read: scopedMediaPrivateRead,
       },
       defaultValue: 'unchecked',
       options: [
@@ -189,7 +225,7 @@ export const Media: CollectionConfig = {
       label: 'Storage Checked At',
       type: 'date',
       access: {
-        read: featureFieldReadAccess('media'),
+        read: scopedMediaPrivateRead,
       },
       admin: {
         description: 'Most recent storage verification time.',
@@ -202,7 +238,7 @@ export const Media: CollectionConfig = {
       label: 'Missing Since',
       type: 'date',
       access: {
-        read: featureFieldReadAccess('media'),
+        read: scopedMediaPrivateRead,
       },
       admin: {
         description: 'When this asset was first detected missing from object storage.',
@@ -215,7 +251,7 @@ export const Media: CollectionConfig = {
       label: 'Storage Issue',
       type: 'textarea',
       access: {
-        read: featureFieldReadAccess('media'),
+        read: scopedMediaPrivateRead,
       },
       admin: {
         description: 'Read-only diagnostic detail from the last storage verification.',
@@ -227,7 +263,7 @@ export const Media: CollectionConfig = {
       name: 'title',
       type: 'text',
       access: {
-        read: featureFieldReadAccess('media'),
+        read: scopedMediaPrivateRead,
       },
       admin: {
         description: 'Internal asset name used in the admin panel.',
@@ -238,7 +274,7 @@ export const Media: CollectionConfig = {
       label: 'Asset Type',
       type: 'select',
       access: {
-        read: featureFieldReadAccess('media'),
+        read: scopedMediaPrivateRead,
       },
       defaultValue: 'general',
       options: [...mediaAssetTypeOptions],
@@ -259,7 +295,7 @@ export const Media: CollectionConfig = {
       name: 'tags',
       type: 'array',
       access: {
-        read: featureFieldReadAccess('media'),
+        read: scopedMediaPrivateRead,
       },
       labels: {
         singular: 'Tag',
@@ -282,7 +318,7 @@ export const Media: CollectionConfig = {
       name: 'notes',
       type: 'textarea',
       access: {
-        read: featureFieldReadAccess('media'),
+        read: scopedMediaPrivateRead,
       },
       admin: {
         description:
@@ -293,7 +329,7 @@ export const Media: CollectionConfig = {
       name: 'isCriticalAsset',
       type: 'checkbox',
       access: {
-        read: featureFieldReadAccess('media'),
+        read: scopedMediaPrivateRead,
       },
       defaultValue: false,
       admin: {
@@ -305,7 +341,7 @@ export const Media: CollectionConfig = {
       name: 'replacementNotes',
       type: 'textarea',
       access: {
-        read: featureFieldReadAccess('media'),
+        read: scopedMediaPrivateRead,
       },
       admin: {
         description:

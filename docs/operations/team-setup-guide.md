@@ -45,7 +45,7 @@ receive the server guide.
 
 The existing feature/dependency summary is now canonical in `adminFeatures.ts`,
 with the old presentation export retained. Browser-safe `sectionScope.ts` owns
-the unchanged four scoped feature keys and relationship/root normalization;
+the five scoped feature keys (including Media) and relationship/root normalization;
 `sectionAccess.ts` reexports them and retains all server enforcement. No competing
 permission engine or client import of Payload server access code is introduced.
 
