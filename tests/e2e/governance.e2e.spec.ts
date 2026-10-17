@@ -948,6 +948,27 @@ test.describe('governance browser journeys', () => {
     expect(update.status()).toBe(200)
     const anonymous = await standaloneRequest.newContext({ baseURL: new URL(page.url()).origin })
     try {
+      await test.step('save a linked published Page revision privately before restoring History', async () => {
+        await page.goto(`/admin/collections/pages/${doc.id}`)
+        await expect(page.locator('form[data-form-ready="true"]')).toBeVisible()
+        await page.locator('#field-title').fill(`${title} private revision`)
+        const saved = page.waitForResponse(
+          (response) =>
+            new URL(response.url()).pathname === `/api/pages/${doc.id}` &&
+            response.request().method() === 'PATCH',
+        )
+        await page.getByRole('button', { name: 'Save Draft', exact: true }).click()
+        const response = await saved
+        expect(response.status()).toBe(200)
+        expect(new URL(response.url()).searchParams.get('draft')).toBe('true')
+        expect(await response.json()).toMatchObject({
+          doc: { title: `${title} private revision`, _status: 'draft' },
+        })
+        await expect(page.getByRole('button', { name: 'Save Draft', exact: true })).toBeDisabled()
+        expect((await (await anonymous.get(`/api/pages/${doc.id}?depth=0`)).json()).title).toBe(
+          liveTitle,
+        )
+      })
       await page.goto(`/admin/collections/pages/${doc.id}/versions/${version.id}`)
       const restore = page.getByRole('button', { name: 'Restore this version', exact: true })
       await expect(restore).toBeVisible()

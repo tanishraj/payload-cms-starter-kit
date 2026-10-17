@@ -2322,6 +2322,7 @@
       "docs/operations/developer-workflows.md",
       "docs/operations/editorial-governance.md",
       "docs/operations/homepage-navigation-guide.md",
+      "docs/operations/linked-page-draft-saving.md",
       "docs/operations/mongodb-deployment.md",
       "docs/operations/page-editing-guide.md",
       "docs/operations/page-history-restoration.md",
@@ -2956,6 +2957,7 @@
       "src/lib/operationalAudit.ts",
       "src/lib/pageBreadcrumbs.ts",
       "src/lib/pageDraftRestoration.ts",
+      "src/lib/pageDraftSave.ts",
       "src/lib/pageEditingGuide.ts",
       "src/lib/pagePaths.ts",
       "src/lib/recoverFormAnswers.ts",
@@ -3289,6 +3291,7 @@
       "tests/int/page-breadcrumbs.int.spec.tsx",
       "tests/int/page-create-view.int.spec.tsx",
       "tests/int/page-draft-restoration.int.spec.ts",
+      "tests/int/page-draft-save.int.spec.ts",
       "tests/int/page-editing-guide.int.spec.tsx",
       "tests/int/page-header-actions.int.spec.tsx",
       "tests/int/page-history-database.int.spec.ts",
@@ -3386,7 +3389,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "df731affad983b7c005105db2bc6783d9ce0bb31a5c3d1576325b7c0aa772328"
+    "sha256": "d943eea92234557e6e1a132351f823aed2a97279a32e8e9b9a5c49fcb70da56b"
   },
   "surfaces": {
     "access": [
@@ -3499,6 +3502,7 @@
       "src/lib/operationalAudit.ts",
       "src/lib/pageBreadcrumbs.ts",
       "src/lib/pageDraftRestoration.ts",
+      "src/lib/pageDraftSave.ts",
       "src/lib/pageEditingGuide.ts",
       "src/lib/pagePaths.ts",
       "src/lib/recoverFormAnswers.ts",
@@ -3757,6 +3761,7 @@
       "tests/int/page-breadcrumbs.int.spec.tsx",
       "tests/int/page-create-view.int.spec.tsx",
       "tests/int/page-draft-restoration.int.spec.ts",
+      "tests/int/page-draft-save.int.spec.ts",
       "tests/int/page-editing-guide.int.spec.tsx",
       "tests/int/page-header-actions.int.spec.tsx",
       "tests/int/page-history-database.int.spec.ts",
