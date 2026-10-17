@@ -2289,3 +2289,14 @@ resolves #45 against them, retaining all features and regenerating inventory.
 The exception does not mark CI successful, change permanent merge/security policy,
 or complete the five client-release outcomes. Combined local verification follows
 the final merge; preserve develop and delete only confirmed-merged branches.
+
+### 17 October 2026 — Combined merge verification follow-up
+
+PRs #43–#46 are merged into develop (`f9c352b7`) and their feature branches were
+deleted only after confirmed merges; develop is preserved. The approved CI
+exception was limited to #43–#45 and did not mark their checks successful.
+The first combined integration run passed 2,948 tests but hit one onboarding
+focus assertion race; all 15 onboarding cases passed in isolation. The test waited
+for the heading to render, then synchronously checked focus set by a React effect.
+A fresh follow-up branch waits for the same focus assertion itself; no UI, timeout,
+retry or assertion requirement changes. Final combined verification follows.
