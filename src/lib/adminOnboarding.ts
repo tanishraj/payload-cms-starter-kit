@@ -150,7 +150,7 @@ export async function loadDashboardOnboarding(
       : ''
   const missingScope =
     !isAdmin(user) && sections.status === 'missing'
-      ? ' Pages, Forms and submissions need an assigned website section; ask an Admin for that access.'
+      ? ' Pages, Forms, Reusable Sections, Media and submissions need an assigned website section; ask an Admin for that access.'
       : ''
   const base = {
     collapsed: preference.collapsed,

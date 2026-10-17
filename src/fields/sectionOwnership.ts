@@ -1,4 +1,9 @@
-import { APIError, type CollectionBeforeValidateHook, type Field, type FieldAccess } from 'payload'
+import {
+  APIError,
+  type CollectionBeforeValidateHook,
+  type SingleRelationshipField,
+  type FieldAccess,
+} from 'payload'
 import { hasFeature, isAdmin, isSiteManager } from '@/access/featureAccess'
 import {
   grantedSectionRoots,
@@ -7,7 +12,7 @@ import {
   rootPageFilter,
 } from '@/access/sectionAccess'
 
-export const sectionOwnershipField = (submission = false): Field => ({
+export const sectionOwnershipField = (submission = false): SingleRelationshipField => ({
   name: 'sectionRoot',
   label: 'Website section',
   type: 'relationship',

@@ -10,7 +10,7 @@ import type {
   Where,
 } from 'payload'
 import { APIError } from 'payload'
-import { normalizeSectionRoots, rootPageFilter } from '@/access/sectionAccess'
+import { normalizeSectionRoots, rootPageFilter, scopedSourceFeatures } from '@/access/sectionAccess'
 
 import {
   ADMIN_FEATURE_GROUPS,
@@ -73,7 +73,7 @@ const sameFeatures = (left: unknown, right: unknown) =>
   )
 
 const featureScopeHelp = (key: (typeof ADMIN_FEATURE_KEYS)[number]) => {
-  if (['pages', 'forms', 'reusableSections', 'formSubmissions'].includes(key))
+  if (scopedSourceFeatures.some((feature) => feature === key))
     return 'Manageable website sections also apply.'
   if (key === 'actionQueue' || key === 'auditLog')
     return 'Rows for scoped resources follow website sections; other granted resources remain site-wide.'
@@ -453,7 +453,7 @@ export const Users: CollectionConfig = {
       admin: {
         condition: showFeatureAccess,
         description:
-          'Choose root Pages: descendants are included automatically. No selection means no access to scoped Pages or submissions. Feature grants are also required. Saving changed sections signs the Site Manager out. Sections currently protect Pages, Forms, Reusable Sections and submissions; other granted destinations remain site-wide.',
+          'Choose root Pages: descendants are included automatically. No selection means no access to scoped Pages or submissions. Feature grants are also required. Saving changed sections signs the Site Manager out. Sections currently protect Pages, Forms, Reusable Sections, Media and submissions; other granted destinations remain site-wide.',
       },
     },
     {

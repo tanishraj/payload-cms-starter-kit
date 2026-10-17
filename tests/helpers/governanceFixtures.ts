@@ -30,6 +30,7 @@ export type GovernanceQueueSource = {
 export type GovernanceFixture = {
   admin: GovernanceAccount
   pageIDs: string[]
+  mediaIDs?: string[]
   pendingReview: {
     id: string
     slug: string
@@ -274,7 +275,7 @@ async function deleteGovernanceQueueItemsWithPayload(
 
 async function deleteExactDocument(
   payload: Payload,
-  collection: 'categories' | 'forms' | 'form-submissions' | 'pages' | 'reviews' | 'users',
+  collection: 'categories' | 'forms' | 'form-submissions' | 'pages' | 'reviews' | 'users' | 'media',
   document: FixtureDocument | undefined,
   context?: Record<string, unknown>,
 ): Promise<void> {
@@ -291,7 +292,7 @@ async function deleteExactDocument(
 
 async function cleanupGovernanceFixturesWithPayload(
   payload: Payload,
-  fixture?: Pick<GovernanceFixture, 'queueSources' | 'pageIDs'>,
+  fixture?: Pick<GovernanceFixture, 'queueSources' | 'pageIDs' | 'mediaIDs'>,
 ): Promise<void> {
   // Browser contexts may already be closed after a timeout. Delete only the
   // recorded fixture IDs through the guarded Local API, children before roots.
@@ -304,6 +305,9 @@ async function cleanupGovernanceFixturesWithPayload(
         [SKIP_CACHE_REVALIDATION_CONTEXT]: true,
       },
     )
+  }
+  for (const id of fixture?.mediaIDs ?? []) {
+    await deleteExactDocument(payload, 'media', { id })
   }
   const records = await findGovernanceRecords(payload, fixture?.queueSources)
   const recoveredQueueSources =
@@ -503,7 +507,7 @@ export async function seedGovernanceBase(): Promise<GovernanceFixture> {
 }
 
 export async function cleanupGovernanceFixtures(
-  fixture?: Pick<GovernanceFixture, 'queueSources' | 'pageIDs'>,
+  fixture?: Pick<GovernanceFixture, 'queueSources' | 'pageIDs' | 'mediaIDs'>,
 ): Promise<void> {
   const testDatabaseURI = getRequiredTestDatabaseURI()
   process.env.MONGODB_URI = testDatabaseURI

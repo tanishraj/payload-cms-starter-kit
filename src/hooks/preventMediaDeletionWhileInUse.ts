@@ -1,3 +1,4 @@
+import { isAdmin } from '@/access/featureAccess'
 import type { CollectionBeforeDeleteHook } from 'payload'
 
 import { findMediaUsage, formatMediaUsageLocation } from '@/lib/mediaUsage'
@@ -19,6 +20,11 @@ export const preventMediaDeletionWhileInUse: CollectionBeforeDeleteHook = async 
   if (references.length === 0) {
     return
   }
+
+  if (!isAdmin(req.user))
+    throw new Error(
+      'This asset is in use and cannot be deleted. Ask an Admin to review its references.',
+    )
 
   throw new Error(
     `Cannot delete media asset because it is still referenced in: ${formatUsageList(

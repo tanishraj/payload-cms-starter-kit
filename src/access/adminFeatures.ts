@@ -231,9 +231,11 @@ export const ADMIN_FEATURES: Record<AdminFeatureKey, AdminFeatureDefinition> = {
     key: 'media',
     label: 'Media',
     group: 'Media',
-    description: 'Upload, edit, replace, version, trash, and restore Media.',
+    description:
+      'Upload and manage Media in assigned website sections; select published Admin-managed shared assets.',
     resource: { kind: 'collection', slug: 'media' },
     policyKind: 'draftContent',
+    dependencyReads: ['pages'],
   }),
   galleryAlbums: feature({
     key: 'galleryAlbums',

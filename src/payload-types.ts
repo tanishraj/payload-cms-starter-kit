@@ -465,11 +465,17 @@ export interface PageHeaderBlock {
   blockType: 'pageHeader';
 }
 /**
+ * Manage assets in your assigned website section. Published shared assets are Admin-managed and selectable without edit access.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: string;
+  /**
+   * Admins may leave this empty for shared assets. For Site Managers, a blank section uses the only assigned section when saved; choose a section if several are assigned.
+   */
+  sectionRoot?: (string | null) | Page;
   /**
    * Read-only storage health set by the media reconciliation process.
    */
@@ -8403,7 +8409,7 @@ export interface User {
    */
   role?: ('admin' | 'siteManager') | null;
   /**
-   * Choose root Pages: descendants are included automatically. No selection means no access to scoped Pages or submissions. Feature grants are also required. Saving changed sections signs the Site Manager out. Sections currently protect Pages, Forms, Reusable Sections and submissions; other granted destinations remain site-wide.
+   * Choose root Pages: descendants are included automatically. No selection means no access to scoped Pages or submissions. Feature grants are also required. Saving changed sections signs the Site Manager out. Sections currently protect Pages, Forms, Reusable Sections, Media and submissions; other granted destinations remain site-wide.
    */
   sectionRoots?: (string | Page)[] | null;
   /**
@@ -8471,7 +8477,7 @@ export interface User {
      */
     systemPages?: boolean | null;
     /**
-     * Upload, edit, replace, version, trash, and restore Media. This destination currently grants site-wide access.
+     * Upload and manage Media in assigned website sections; select published Admin-managed shared assets. Manageable website sections also apply.
      */
     media?: boolean | null;
     /**
@@ -14992,6 +14998,7 @@ export interface SystemComingSoonBlockSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  sectionRoot?: T;
   storageStatus?: T;
   storageCheckedAt?: T;
   storageMissingSince?: T;

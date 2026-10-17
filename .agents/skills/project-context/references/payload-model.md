@@ -236,7 +236,7 @@ sessions. Accounts may read their own authorization metadata; changes remain
 Admin-only and other-user assignment projections remain sanitized.
 
 `sectionAccess.ts` combines features with current latest-draft Page ancestry or
-Form/Reusable Section ownership. Page IDs, not URL prefixes, define scope. Managers
+Form/Reusable Section/Media ownership. Page IDs, not URL prefixes, define scope. Managers
 create children and owned resources but cannot create/move/trash roots or move
 content between sections; Admins control shared published definitions. ReadVersions
 constraints use version parent IDs in Payload 3.90.2; restore writes recheck ownership
@@ -246,7 +246,7 @@ Published Form ownership is copied at intake to FormSubmissions. Inbox access is
 independent of placement, and CSV/files inherit submission access. Moving Forms
 does not move old answers. Unassigned submissions are Admin-only. Related queue
 and audit rows use current source scope; other feature grants remain site-wide,
-including Media and globals. This is a bounded first rollout, not complete tenant
+including globals. This is a bounded first rollout, not complete tenant
 isolation. Limits: 50 roots, 5,000 effective source IDs and 100 Page levels; overflows
 fail closed. Request-only permission memoization is not an authorization cache
 across requests. See [runbook](../../../../docs/operations/section-scoped-access.md).
@@ -317,6 +317,14 @@ One source-version audit is committed with restoration; audit failure rolls both
 back. No fields/migration/provider/env changes. Other collections/globals retain
 their existing restoration behavior. See the
 [history contract](../../../../docs/operations/page-history-restoration.md).
+
+Media uses native section ownership, create-only single-root inference and request-local
+access-cache invalidation after writes. Published unassigned assets are selectable
+read-only shared resources; internal shared metadata and detailed usage are protected.
+Raw ownership/file preflight runs before upload side effects; in-use manager replacement
+and trash fail with a generic message. Public published bytes remain accessible with
+editor cookies. Native Media history retains the current binary. See
+[Media contract](../../../../docs/operations/scoped-media-access.md).
 
 
 Native Page Save Draft is distinguished from unpublishing through a private

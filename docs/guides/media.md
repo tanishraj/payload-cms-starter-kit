@@ -4,6 +4,16 @@
 
 `Media` is the shared asset library for uploaded files. In North Valley Medical College, this includes campus photos, faculty portraits, logos, brochure PDFs, hero images, and default social-sharing assets.
 
+## Section access
+
+Admins manage shared assets and ownership. Site Managers manage assets in assigned
+website sections and can select published shared assets without editing them. With
+one assigned section, a blank Website section is assigned on creation; with several,
+choose one. In a Page, use Choose from existing to reuse permitted assets. See the
+[section-owned Media workflow](../operations/scoped-media-access.md) for safe replacement,
+private metadata and rollout limits. Media files are public website assets; private
+form documents belong in Form Attachments.
+
 ## When To Use It
 
 Use `Media` whenever a file should be uploaded once and reused across the website.
