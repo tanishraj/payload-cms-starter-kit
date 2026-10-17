@@ -317,3 +317,12 @@ One source-version audit is committed with restoration; audit failure rolls both
 back. No fields/migration/provider/env changes. Other collections/globals retain
 their existing restoration behavior. See the
 [history contract](../../../../docs/operations/page-history-restoration.md).
+
+
+Native Page Save Draft is distinguished from unpublishing through a private
+operation-scoped request context derived from Payload update arguments. A draft
+revision preserves the live document and skips shared navigation synchronization;
+explicit publication resumes synchronization. Real unpublishing checks the main
+published Page even when its latest version is already a draft. Client query or
+serializable context flags cannot grant this draft-only path. See the
+[client rehearsal and boundary](../../../../docs/operations/linked-page-draft-saving.md).
