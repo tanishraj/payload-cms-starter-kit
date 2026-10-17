@@ -44,20 +44,20 @@ access a file: all authorized Admins and granted managers can access it.
 
 ## Rollout boundary
 
-Section constraints currently cover Pages, Forms, Reusable Sections,
+Section constraints currently cover Pages, Forms, Reusable Sections, Media,
 Form Submissions, their history/restore operations and related Action Queue/Audit
 Log rows. The existing feature filters still apply to operational rows. Own-role,
 feature and section metadata is readable by the account itself for client UI;
 only Admins can change grants. Other users' assignment labels remain sanitized.
 
 **Other destinations remain governed by site-wide feature grants.** These include
-Media, Articles, News & Events, navigation, shell presets and globals. Grant them
+Articles, News & Events, navigation, shell presets and globals. Grant them
 only when site-wide access is intended. The Users field help labels this explicitly.
-Section-owned public Media and broader cross-feature ownership are later work;
+Section-owned Media follows the [native Media workflow](scoped-media-access.md); broader cross-feature ownership is later work;
 this release is not complete multi-tenant isolation. Public published website
 content stays public; scoped authorization protects editing and private records.
 
-Legacy/unassigned Forms and Reusable Sections become Admin-managed shared
+Legacy/unassigned Forms, Reusable Sections and Media become Admin-managed shared
 resources. Legacy/unassigned submissions become Admin-only. Before rollout,
 Admins should review existing managers and assign roots and intended resources.
 There is no guessed ownership, database migration, automatic publication or change
@@ -74,7 +74,7 @@ GraphQL remains disabled. Native relationships and recipe creation use the same
 collection policies. No extra visual editor or custom authorization endpoint exists.
 
 A user may have at most 50 active root grants. Traversal supports at most 5,000
-Pages and 100 hierarchy levels per effective scope; Forms/Reusable Sections and
+Pages and 100 hierarchy levels per effective scope; Forms/Reusable Sections/Media and
 operational source-ID joins are bounded to 5,000 records. Exceeding a bound fails
 closed with 503 rather than returning partial access. The inbox itself uses a
 section query, while its Action Queue/Audit Log source joins have that 5,000 bound.

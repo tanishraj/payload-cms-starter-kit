@@ -201,6 +201,46 @@ test.describe('governance browser journeys', () => {
     }
   })
 
+  test('password help explains Admin-assisted recovery when outgoing email is unavailable', async ({
+    page,
+  }) => {
+    await page.goto('/admin/forgot')
+    await expect(page).toHaveURL(/\/admin\/login$/)
+    const message =
+      'Email password recovery is unavailable. Ask the website Admin who created your account for help.'
+    await expect(page.getByText(message, { exact: true })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Forgot password?' })).toHaveCount(0)
+    await expect(page.locator('input[name="email"]')).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Log in', exact: true })).toBeVisible()
+    for (const email of [fixture!.admin.email, 'not-an-account@example.test']) {
+      const response = await page.request.post('/api/users/forgot-password', { data: { email } })
+      expect(response.status()).toBe(503)
+      expect(await response.text()).toContain(message)
+    }
+    for (const [width, colorScheme] of [
+      [1280, 'light'],
+      [390, 'dark'],
+    ] as const) {
+      await page.setViewportSize({ width, height: 844 })
+      await page.emulateMedia({ colorScheme })
+      await page
+        .context()
+        .addCookies([
+          { name: 'payload-theme', value: colorScheme, url: new URL(page.url()).origin },
+        ])
+      await page.reload()
+      await expect(page.locator('html')).toHaveAttribute('data-theme', colorScheme)
+      await expect(page.getByText(message, { exact: true })).toBeVisible()
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      )
+      await page.screenshot({
+        path: test.info().outputPath(`account-help-${width}-${colorScheme}.png`),
+        fullPage: true,
+      })
+    }
+  })
+
   test('Admin grants and revokes a Site Manager feature', async ({ browser, page }) => {
     if (!fixture) throw new Error('Expected governance fixture.')
     const currentFixture = fixture
@@ -727,6 +767,192 @@ test.describe('governance browser journeys', () => {
       throw error
     } finally {
       await managerContext.close()
+    }
+  })
+
+  test('Site Manager uploads scoped Media and selects a read-only shared asset in the native page editor', async ({
+    page,
+    browser,
+  }) => {
+    if (!fixture) throw new Error('Expected governance fixture.')
+    const current = fixture
+    current.mediaIDs = []
+    await login({ page, user: current.admin })
+    const headers = await getPayloadAuthHeaders(page)
+    const roots: { id: string; title: string }[] = []
+    for (const title of ['Media editor section', 'Media other section']) {
+      const response = await page.request.post('/api/pages', {
+        headers,
+        data: { title, layout: [], _status: 'draft' },
+      })
+      expect(response.status()).toBe(201)
+      const doc = (await response.json()).doc
+      current.pageIDs.push(doc.id)
+      roots.push(doc)
+    }
+    const createdUser = await page.request.post('/api/users', {
+      headers,
+      data: {
+        ...accessManager,
+        role: 'siteManager',
+        sectionRoots: [roots[0].id],
+        features: { pages: true, media: true },
+      },
+    })
+    expect(createdUser.status()).toBe(201)
+    const image = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+      'base64',
+    )
+    const assets: { id: string; filename: string }[] = []
+    for (const [name, root] of [
+      ['shared-selection', null],
+      ['foreign-selection', roots[1].id],
+    ] as const) {
+      const response = await page.request.post('/api/media', {
+        headers,
+        multipart: {
+          file: { name: `${name}.png`, mimeType: 'image/png', buffer: image },
+          _payload: JSON.stringify({
+            title: name,
+            alt: name,
+            sectionRoot: root,
+            notes: 'Admin-only shared metadata',
+            _status: 'published',
+          }),
+        },
+      })
+      expect(response.status(), await response.text()).toBe(201)
+      const doc = (await response.json()).doc
+      current.mediaIDs.push(doc.id)
+      assets.push(doc)
+    }
+    const createdPage = await page.request.post('/api/pages', {
+      headers,
+      data: { title: 'Media selection Page', parent: roots[0].id, layout: [], _status: 'draft' },
+    })
+    expect(createdPage.status()).toBe(201)
+    const doc = (await createdPage.json()).doc
+    current.pageIDs.push(doc.id)
+    const context = await browser.newContext()
+    const editor = await context.newPage()
+    const clientErrors: string[] = []
+    editor.on('pageerror', (error) => clientErrors.push(error.message))
+    editor.on('console', (message) => {
+      if (message.type() === 'error') clientErrors.push(message.text())
+    })
+    try {
+      await context.route('https://www.gravatar.com/**', (route) => route.abort())
+      await login({ page: editor, user: accessManager })
+      await editor.goto('/admin/collections/media/create')
+      await expect(editor.locator('form[data-form-ready="true"]')).toBeVisible()
+      await editor
+        .locator('input[type="file"]')
+        .setInputFiles({ name: 'manager-owned.png', mimeType: 'image/png', buffer: image })
+      await editor.locator('#field-alt').fill('A section-owned image')
+      await expect(editor.locator('#field-title')).toBeVisible()
+      await editor.locator('#field-title').fill('Manager-owned image')
+      const openingSaved = editor.waitForResponse((response) => {
+        const pathname = new URL(response.url()).pathname
+        return (
+          response.request().method() === 'GET' &&
+          pathname.startsWith('/admin/collections/media/') &&
+          pathname !== '/admin/collections/media/create'
+        )
+      })
+      const saving = editor.waitForResponse(
+        (r) => new URL(r.url()).pathname === '/api/media' && r.request().method() === 'POST',
+      )
+      await editor.getByRole('button', { name: /^Publish(?: changes)?$/i }).click()
+      const saved = await saving
+      const savedBody = await saved.json()
+      if (savedBody.doc?.id) current.mediaIDs.push(savedBody.doc.id)
+      expect(saved.status(), JSON.stringify(savedBody)).toBe(201)
+      expect(savedBody.doc.sectionRoot.id ?? savedBody.doc.sectionRoot).toBe(roots[0].id)
+      const freshAsset = await editor.request.get(`/api/media/${savedBody.doc.id}?depth=0`, {
+        headers: await getPayloadAuthHeaders(editor),
+      })
+      expect(freshAsset.status()).toBe(200)
+      expect((await freshAsset.json()).sectionRoot).toBe(roots[0].id)
+      const openingResponse = await openingSaved
+      await openingResponse.finished()
+      const flight = await openingResponse.text()
+      for (const line of flight.split('\n')) {
+        const marker = line.indexOf(':E{')
+        if (marker !== -1) {
+          try {
+            const error = JSON.parse(line.slice(marker + 2))
+            clientErrors.push(String(error.message ?? error.digest))
+          } catch {}
+        }
+      }
+      await expect(editor).toHaveURL(
+        new RegExp(`/admin/collections/media/${savedBody.doc.id}(?:\\?|$)`),
+      )
+      await expect(editor.locator('form[data-form-ready="true"]')).toBeVisible()
+      await expect(editor.locator('#field-sectionRoot')).toContainText(roots[0].title)
+      await editor.goto(`/admin/collections/pages/${doc.id}`)
+      await expect(editor.locator('form[data-form-ready="true"]')).toBeVisible()
+      await editor.getByRole('button', { name: 'SEO', exact: true }).click()
+      await editor
+        .locator('#field-ogImage')
+        .getByRole('button', { name: /choose from existing/i })
+        .click()
+      const picker = editor.getByRole('dialog').last()
+      await expect(picker).toBeVisible()
+      await expect(picker.getByText(assets[1].filename, { exact: true })).toHaveCount(0)
+      await picker.getByText(assets[0].filename, { exact: true }).click()
+      await expect(picker).not.toBeVisible()
+      const savePage = editor.waitForResponse(
+        (r) =>
+          new URL(r.url()).pathname === `/api/pages/${doc.id}` && r.request().method() === 'PATCH',
+      )
+      await editor.getByRole('button', { name: 'Save Draft', exact: true }).click()
+      const pageResult = await savePage
+      expect(pageResult.ok()).toBe(true)
+      const pageBody = await pageResult.json()
+      expect(pageBody.doc.ogImage.id ?? pageBody.doc.ogImage).toBe(assets[0].id)
+      await editor.goto(`/admin/collections/media/${assets[0].id}`)
+      await expect(editor.locator('form[data-form-ready="true"]')).toBeVisible()
+      await expect(editor.locator('#field-alt')).not.toBeEditable()
+      await expect(editor.locator('body')).not.toContainText('Admin-only shared metadata')
+      const denied = await editor.request.patch(`/api/media/${assets[0].id}`, {
+        headers: await getPayloadAuthHeaders(editor),
+        data: { alt: 'Shared asset must stay read-only' },
+      })
+      expect(denied.status()).toBe(403)
+      expect(
+        (
+          await editor.request.get(`/api/media/${assets[1].id}`, {
+            headers: await getPayloadAuthHeaders(editor),
+          })
+        ).status(),
+      ).toBe(404)
+      expect(
+        (
+          await editor.request.get(`/api/media/file/${assets[1].filename}`, {
+            headers: await getPayloadAuthHeaders(editor),
+          })
+        ).status(),
+      ).toBe(200)
+    } catch (error) {
+      await writeFile(
+        test.info().outputPath('media-client-errors.json'),
+        JSON.stringify(clientErrors, null, 2),
+      )
+      await writeFile(
+        test.info().outputPath('media-editor-state.txt'),
+        await editor
+          .locator('body')
+          .innerText()
+          .catch(() => 'Page unavailable'),
+      )
+      await editor
+        .screenshot({ path: test.info().outputPath('media-editor-failure.png') })
+        .catch(() => {})
+      throw error
+    } finally {
+      await context.close()
     }
   })
 

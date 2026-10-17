@@ -15,7 +15,8 @@
     max-width: 30rem;
     margin: 0 auto;
   }
-  &--auth > a {
+  &--auth > a,
+  &--auth > .two-factor__help {
     display: inline-block;
     margin-top: 24px;
   }

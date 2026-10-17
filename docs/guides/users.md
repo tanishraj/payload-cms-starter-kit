@@ -1,5 +1,14 @@
 # Users Guide
 
+## Set a password and recover access
+
+Use the login URL and account email supplied by your website Admin. If Forgot
+password is available, request a link and choose your own password. If login says
+email recovery is unavailable, ask the Admin who created your account; another
+Site Manager cannot reset it for you. Password recovery preserves your assigned
+access and does not remove two-factor authentication. See the
+[client handoff steps](../operations/client-account-handoff.md).
+
 ## Two-factor authentication
 
 Two-factor authentication is optional for each Admin and Site Manager. Open your own account at
@@ -41,7 +50,7 @@ panel each person can operate. The two roles are Admin and Site Manager.
 3. In **Feature Access**, enable only the destinations required for that person's responsibilities.
 4. For Pages, Forms, Reusable Sections or submissions, choose active root Pages under **Manageable website sections**; descendants are included. Other grants retain their documented site-wide meaning.
 5. Review the optional **Team setup** preview. Selected values are unconfirmed until Save succeeds; supporting read-only access does not become an editable grant.
-6. Save and ask the user to sign in again.
+6. Save and complete the [password handoff](../operations/client-account-handoff.md); saving does not send an invitation. Ask an existing user to sign in again.
 7. Verify both the sidebar and a direct URL for one granted and one ungranted feature.
 
 Feature changes clear the affected user's sessions, so an already signed-in user must authenticate

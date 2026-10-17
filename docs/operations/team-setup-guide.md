@@ -45,7 +45,7 @@ receive the server guide.
 
 The existing feature/dependency summary is now canonical in `adminFeatures.ts`,
 with the old presentation export retained. Browser-safe `sectionScope.ts` owns
-the unchanged four scoped feature keys and relationship/root normalization;
+the five scoped feature keys (including Media) and relationship/root normalization;
 `sectionAccess.ts` reexports them and retains all server enforcement. No competing
 permission engine or client import of Payload server access code is introduced.
 
@@ -75,3 +75,10 @@ Focused contracts cover current selections, server ownership, shared dependency
 semantics and lock/exclusion behavior. Full regression/build/CI results are owned
 by the implementation checklist and feature PR; broader novice-user observation
 and comprehensive permission diagnostics remain separate acceptance items.
+
+## Password handoff
+
+Saving a User does not send an invitation. Follow the
+[client account handoff](client-account-handoff.md) for native email reset or
+Admin-assisted recovery when outgoing mail is unavailable. Access preview does
+not confirm credential delivery.

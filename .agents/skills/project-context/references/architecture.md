@@ -311,7 +311,7 @@ request-local current ownership queries. Site Managers use the default Page edit
 with an assigned Parent, optionally chosen through section-aware Blank/Landing recipes. Protected email links do
 not grant access themselves: private downloads require the submission's inbox
 feature and section (or Admin). The first rollout covers Pages, Forms, Reusable
-Sections, submissions and related operational rows; other feature grants are
+Sections, Media, submissions and related operational rows; other feature grants are
 site-wide. No provider/environment/schema migration or separate editor is added.
 See [scope boundary and limits](../../../../docs/operations/section-scoped-access.md).
 
@@ -393,3 +393,23 @@ acknowledgement. The dedicated captured-request browser fixture preserves the
 guarded local test database and never sends reset requests to the server.
 Runtime patch files and their workspace registration enter the deterministic
 source digest. See [contract](../../../../docs/operations/native-password-reset-feedback.md).
+
+Client password recovery derives availability from existing email configuration.
+A Users beforeOperation guard blocks forgotPassword before account lookup/token
+creation when Resend is unavailable or recipient-overridden. Disabled deployments
+route /admin/forgot to the existing login view with actionable Admin-help copy;
+enabled deployments retain Payload native ForgotPassword. Only a boolean crosses
+to the existing client auth form; no secrets or new presentation dependency.
+See [handoff](../../../../docs/operations/client-account-handoff.md).
+
+The isolated two-factor browser harness now registers the same fixture-only
+static Lexical resolver used by governance workers before importing Payload config.
+This avoids the reproduced pre-server config-import stall without application
+package, timeout or retry changes.
+
+Media reuses section resource access and native upload/relationship controls. Private
+shared metadata is field-protected; detailed usage is Admin-only. Public file delivery
+is distinguished from scoped metadata access so editor cookies cannot break published
+images. File/ownership preflight precedes Payload upload side effects, and Media writes
+invalidate request-local ownership lookups used by subsequent native permissions.
+See [Media rollout](../../../../docs/operations/scoped-media-access.md).

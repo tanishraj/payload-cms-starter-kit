@@ -4,6 +4,7 @@ export const scopedSourceFeatures = [
   'forms',
   'reusableSections',
   'formSubmissions',
+  'media',
 ] as const
 
 export const relationshipID = (value: unknown): string | null => {

@@ -52,6 +52,10 @@ const isolatedEnvironment: NodeJS.ProcessEnv = {
 }
 Object.assign(process.env, isolatedEnvironment)
 
+// Reuse the fixture-only static Lexical resolver already used by governance workers.
+const { register } = await import('node:module')
+register('./lexicalFixtureLoader.mjs', import.meta.url, { data: 'development' })
+
 const { getPayload } = await import('payload')
 const { default: config } = await import('../../src/payload.config')
 const payload = await getPayload({ config })

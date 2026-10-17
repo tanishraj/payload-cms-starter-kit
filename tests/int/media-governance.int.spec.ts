@@ -293,7 +293,7 @@ describe('media governance resolver', () => {
   })
 
   it('requires alt text for images but allows documents without alt text', async () => {
-    const beforeValidate = Media.hooks?.beforeValidate?.[0]
+    const beforeValidate = Media.hooks?.beforeValidate?.at(-1)
 
     expect(beforeValidate).toBeDefined()
 
@@ -348,6 +348,7 @@ describe('media governance resolver', () => {
         id: 7,
         req: {
           payload: referencedPayload,
+          user: { role: 'admin' },
         },
       } as never),
     ).rejects.toThrow(
