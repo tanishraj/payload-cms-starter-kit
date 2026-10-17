@@ -349,6 +349,101 @@ describe('Page history draft boundary through real Payload and MongoDB', () => {
     ).toBe(sharedVersions.totalDocs)
   })
 
+  it.each(['admin', 'manager'] as const)(
+    'saves linked Page revisions privately through Local API and REST for %s, then still blocks actual unpublishing',
+    async (role) => {
+      const user = role === 'admin' ? admin : manager
+      const item = await historyPage(`Linked draft ${role}`)
+      const linkBefore = (
+        await payload.find({
+          collection: 'navigation-links',
+          where: { syncPage: { equals: item.doc.id } },
+          depth: 0,
+        })
+      ).docs[0]
+      expect(linkBefore).toBeDefined()
+      const localDraft = await payload.update({
+        collection: 'pages',
+        id: item.doc.id,
+        user,
+        overrideAccess: false,
+        draft: true,
+        data: { title: `Private local revision ${role}`, _status: 'draft' },
+      })
+      expect(localDraft).toMatchObject({
+        _status: 'draft',
+        title: `Private local revision ${role}`,
+      })
+      const saved = await dispatch(`pages/${item.doc.id}?draft=true&depth=0`, await login(user), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: `Private REST revision ${role}`, _status: 'draft' }),
+      })
+      expect(saved.status).toBe(200)
+      expect(await saved.json()).toMatchObject({
+        doc: { _status: 'draft', title: `Private REST revision ${role}` },
+      })
+      expect((await (await dispatch(`pages/${item.doc.id}?depth=0`)).json()).title).toBe(
+        item.liveTitle,
+      )
+      expect(
+        (await payload.findByID({ collection: 'pages', id: item.doc.id, draft: true, depth: 0 }))
+          .title,
+      ).toBe(`Private REST revision ${role}`)
+      expect(
+        await payload.findByID({
+          collection: 'navigation-links',
+          id: linkBefore.id,
+          draft: false,
+          depth: 0,
+        }),
+      ).toMatchObject({ title: linkBefore.title, updatedAt: linkBefore.updatedAt })
+      const req = await requestFor(user)
+      req.query = { ...req.query, draft: 'true' }
+      req.context = { ...req.context, pageDraftSave: true }
+      await expect(
+        payload.update({
+          collection: 'pages',
+          id: item.doc.id,
+          user,
+          overrideAccess: false,
+          req,
+          draft: false,
+          data: { _status: 'draft' },
+        }),
+      ).rejects.toThrow('cannot be unpublished')
+      const denied = await dispatch(`pages/${item.doc.id}?draft=false`, await login(user), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ _status: 'draft' }),
+      })
+      expect(denied.status).toBe(400)
+      expect((await (await dispatch(`pages/${item.doc.id}?depth=0`)).json()).title).toBe(
+        item.liveTitle,
+      )
+      await payload.update({
+        collection: 'pages',
+        id: item.doc.id,
+        user,
+        overrideAccess: false,
+        data: { title: `Private REST revision ${role}`, _status: 'published' },
+      })
+      expect((await (await dispatch(`pages/${item.doc.id}?depth=0`)).json()).title).toBe(
+        `Private REST revision ${role}`,
+      )
+      expect(
+        (
+          await payload.findByID({
+            collection: 'navigation-links',
+            id: linkBefore.id,
+            draft: false,
+            depth: 0,
+          })
+        ).title,
+      ).toBe(`Private REST revision ${role}`)
+    },
+  )
+
   it('rolls back restoration when source-version audit persistence fails', async () => {
     const item = await historyPage('Audit atomicity')
     const before = await payload.countVersions({
