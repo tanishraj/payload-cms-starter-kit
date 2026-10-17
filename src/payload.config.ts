@@ -1,3 +1,4 @@
+import { canDeliverPasswordRecovery } from './lib/accountRecovery'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -76,6 +77,14 @@ export default buildConfig({
           Component: '@/components/admin/TwoFactorLoginView#TwoFactorLoginView',
           path: '/login',
         },
+        ...(!canDeliverPasswordRecovery(runtimeConfig.email)
+          ? {
+              forgot: {
+                Component: '@/components/admin/TwoFactorLoginView#TwoFactorLoginView',
+                path: '/forgot' as const,
+              },
+            }
+          : {}),
       },
     },
   },

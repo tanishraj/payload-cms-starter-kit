@@ -41,7 +41,7 @@ not source presence, passing docs tests or a completed planning decision.
 | Team setup | Native Users, two roles, grant/section validation, site/team/homepage guides and automated Admin/Manager journeys | Full client-site setup rehearsal and actual client task observation |
 | Page building | 61 Page blocks, Blank/Landing recipes, assigned-section Page creation, accepted forms and native editing | Section-owned Media is implemented on `feat/section-scoped-media`: native assigned upload, read-only published shared selection and cross-section rejection pass locally. Exact-head CI/merge and the representative client build remain required. Investigate the separate blank-Page browser case that needed retries in CI. |
 | Publishing/recovery | Native save/preview/publish and public routes; Page restore-as-draft merged in the [Page History feature](https://github.com/tanishraj/payload-cms-starter-kit/pull/41) | Observe an unfamiliar editor completing the flow, verify the chosen site's public navigation and recoverable failure states |
-| Handoff | Team guide and native account/security foundation | Decide and demonstrate credential activation/recovery, including the supported email-disabled operator path; no invitation feature is assumed |
+| Handoff | Team guide and native account/security foundation | The bounded recovery increment is locally verified on `feat/client-account-recovery`, including honest disabled-email help and Admin-assisted changes. Real sender delivery, native HTTP-error feedback and client observation remain open; no invitation feature is assumed |
 | Launch | Existing provider validation, setup checks, deployment/backup/security runbooks and CI | Site-specific production rehearsal and restore proof; no production system was accessed in this scope change |
 
 The merged Page-history commit was tested by exact-head CI: 2,923 integration
@@ -107,6 +107,19 @@ libraries; configurable breakpoints; advanced workflow/scheduling/localization;
 new providers, tenant switching, a separate visual editor or a replacement admin.
 Existing optional content modules may be enabled for a real need after verification;
 none is deleted. Existing security/privacy constraints remain required throughout.
+
+## Account recovery increment — 17 October 2026
+
+The [handoff contract](../operations/client-account-handoff.md) documents native
+email reset and Admin-assisted recovery. Disabled/recipient-overridden email now
+gets honest login guidance and a uniform reset-request rejection before token
+creation. Existing native enabled-email reset, permissions, password changes and
+2FA remain authoritative. Six captured-email/database cases and the new native
+help task pass locally; no real client email was sent. Full integration: 2,929
+pass/one existing skip. Nine governance and two form journeys pass without retries;
+both security browser cases pass after the test-only loader correction, with a
+MongoMemory cleanup warning recorded separately. Exact-head CI, real sender
+delivery, native HTTP-error feedback and observed client usability remain open.
 
 ## Scoped Media increment — 17 October 2026
 

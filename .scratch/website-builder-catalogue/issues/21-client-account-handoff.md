@@ -27,3 +27,9 @@ dependencies, not a new identity provider or deployment migration.
 ## Comments
 
 Charted on 17 October 2026. No activation or invitation implementation is promised.
+
+17 October 2026: the bounded `feat/client-account-recovery` increment verifies
+native token/password behavior with capture-only email and adds honest disabled/
+recipient-overridden email help. See [handoff contract](../../../docs/operations/client-account-handoff.md).
+Keep this issue open: actual sender delivery, native HTTP-error confirmation and
+client task evidence remain. No invitation system was introduced.

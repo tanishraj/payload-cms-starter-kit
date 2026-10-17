@@ -386,6 +386,19 @@ semantics and record a single source-version audit atomically. Other collection/
 global restoration remains outside this increment. See the
 [history contract](../../../../docs/operations/page-history-restoration.md).
 
+Client password recovery derives availability from existing email configuration.
+A Users beforeOperation guard blocks forgotPassword before account lookup/token
+creation when Resend is unavailable or recipient-overridden. Disabled deployments
+route /admin/forgot to the existing login view with actionable Admin-help copy;
+enabled deployments retain Payload native ForgotPassword. Only a boolean crosses
+to the existing client auth form; no secrets or new presentation dependency.
+See [handoff](../../../../docs/operations/client-account-handoff.md).
+
+The isolated two-factor browser harness now registers the same fixture-only
+static Lexical resolver used by governance workers before importing Payload config.
+This avoids the reproduced pre-server config-import stall without application
+package, timeout or retry changes.
+
 Media reuses section resource access and native upload/relationship controls. Private
 shared metadata is field-protected; detailed usage is Admin-only. Public file delivery
 is distinguished from scoped metadata access so editor cookies cannot break published

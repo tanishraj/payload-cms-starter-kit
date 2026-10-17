@@ -318,6 +318,14 @@ back. No fields/migration/provider/env changes. Other collections/globals retain
 their existing restoration behavior. See the
 [history contract](../../../../docs/operations/page-history-restoration.md).
 
+Users adds requirePasswordRecoveryEmail beforeOperation for forgotPassword only.
+The existing email policy determines availability; disabled/recipient-overridden
+delivery returns a uniform 503 before user lookup or token creation. Native reset
+completion, Admin/self password changes, sessions, grants and 2FA are unchanged.
+Payload retains enabled-email reset expiry/throttling/single-use authority.
+See [client account handoff](../../../../docs/operations/client-account-handoff.md)
+for operator recovery and the retained native HTTP-error confirmation limitation.
+
 Media uses native section ownership, create-only single-root inference and request-local
 access-cache invalidation after writes. Published unassigned assets are selectable
 read-only shared resources; internal shared metadata and detailed usage are protected.
