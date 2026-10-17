@@ -9,9 +9,11 @@ an assigned website section. There are two role types, with any number of accoun
 2. Open a Site Manager in Users, choose **Manageable website sections**, and grant
    the required destinations. Saving changed sections or feature grants signs the
    manager out of existing sessions; have them sign in again.
-3. For page building, grant Pages. The manager uses Payload's native editor, chooses
-   a Parent Page in their section, adds blocks, saves drafts and publishes under
-   the existing publication rules. Admins retain guided Page Recipes.
+3. For page building, grant Pages. The manager can choose Blank/Landing and an
+   assigned Website section, then open the new draft in Payload's native editor.
+   **Use the native Page editor** remains available for a deeper Parent immediately;
+   both paths enforce the same section policy. Add blocks, save and publish under
+   the existing rules. See [section-aware recipes](scoped-page-recipes.md).
 4. Grant Forms or Reusable Sections for authoring those resources. A manager must
    choose an assigned Website section at creation. Leaving ownership empty creates
    an Admin-managed shared resource; managers may select its published definition

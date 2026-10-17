@@ -22,7 +22,7 @@ The catalog imports schema config only. Production and live-preview renderer swi
 
 [pageRecipes.ts](../../../../src/page-recipes/pageRecipes.ts) defines the two code-owned full-page creation recipes. Blank produces an empty layout. Landing produces `pageHeader` followed by `breadcrumb`; it copies the Page title into Page Header, selects an empty eyebrow as its top content to suppress the header's built-in breadcrumb, and configures the standalone Breadcrumb for automatic hierarchy resolution.
 
-Recipes create editable drafts and never restrict the canonical 61-block registry. After creation, editors can remove or reorder recipe blocks and add any Page block. The guided setup serves full-page Admin creation. Site Manager creation and relationship drawers delegate to Payload's native form; Managers must choose a parent inside an assigned section. The same collection policies protect direct recipe requests.
+Recipes create editable drafts and never restrict the canonical 61-block registry. After creation, editors can remove or reorder recipe blocks and add any Page block. The optional guided setup serves full-page Admin and Site Manager creation; Managers choose an assigned section root, inferred only for a single available choice. The existing draft endpoint enforces that Parent. `?editor=native` preserves immediate native creation/deeper Parent selection for either role; existing Pages and relationship drawers stay native. The same collection policies protect direct recipe requests.
 
 Restricted shell/system registries are separate:
 

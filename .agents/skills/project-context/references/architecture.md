@@ -68,11 +68,14 @@ React Server Components load public CMS data. Focused client components own inte
   historical answers, never current Form definitions or private file tokens. Original meaning
   survives question changes/deleted Forms; legacy rows are explicit. See the Payload model
   and historical export contract for limits, spreadsheet safety and operational consistency.
-- Full-page Page creation uses a guided Admin setup with code-owned Blank and Landing recipes. The
-  authenticated `POST /api/pages/create-from-recipe` collection endpoint accepts only a Page title
-  and approved recipe ID, creates through Payload with `draft: true` and access enforcement, and
+- Full-page Page creation uses an optional guided setup for Admins and Site Managers with code-owned Blank and Landing recipes. The
+  authenticated `POST /api/pages/create-from-recipe` collection endpoint accepts a Page title, approved recipe ID and optional Parent (required for Managers), creates through Payload with `draft: true` and access enforcement, and
   returns the native edit destination. Existing Page editing and relationship-drawer creation keep
-  Payload's native document view. A non-persisted UI field before Page Layout observes native
+  Payload's native document view; `?editor=native` also allows ordinary full-page native creation.
+  Managers choose an assigned root from minimal, uncached, root-only native Pages REST reads
+  (at most 50; partial reads fail closed), with a single choice inferred. Draft creation remains
+  access-enforced on the server, independent of the available client options. See
+  [section-aware recipes](../../../../docs/operations/scoped-page-recipes.md). A non-persisted UI field before Page Layout observes native
   dirty/processing/public-version facts and reuses the sourced optional getting-started panel.
   Saved preview opens the access-enforced preview route in a separate tab; it does not transport
   unsaved form values. Dashboard/Page visibility use independent account-owned preference keys
@@ -115,8 +118,8 @@ CI-only controller creates an owner-labeled MongoDB 8.0.29 container on loopback
 `rs0` member as `127.0.0.1:27017`, and waits for the exact version and writable-primary state. The
 controller accepts only a matching GitHub run identity and safe `_test` database URIs. The job
 installs bundled Chromium, regenerates Payload types and the Admin import map and rejects either
-drift, runs TypeScript, lint, the complete integration suite, four native Admin/Site Manager
-access, dashboard guidance, first-draft guidance and Review-moderation browser journeys, the Generic Form/Contact6
+drift, runs TypeScript, lint, the complete integration suite, seven native Admin/Site Manager
+access, scoped-recipe creation, dashboard/Page/site/homepage guidance and Review-moderation browser journeys, the Generic Form/Contact6
 journeys, and the Node 22 Vercel production build. The job supplies fixed non-secret values; isolated
 browser configuration may load only the
 tracked non-secret `test.env` fixture, never ignored developer `.env` or `.env.atlas.local`, a
@@ -305,7 +308,7 @@ the [conditional question contract](../../../../docs/planning/form-conditional-r
 
 Section access uses Payload-native field, collection and version policies with
 request-local current ownership queries. Site Managers use the default Page editor
-with an assigned Parent; Admins retain guided recipes. Protected email links do
+with an assigned Parent, optionally chosen through section-aware Blank/Landing recipes. Protected email links do
 not grant access themselves: private downloads require the submission's inbox
 feature and section (or Admin). The first rollout covers Pages, Forms, Reusable
 Sections, submissions and related operational rows; other feature grants are

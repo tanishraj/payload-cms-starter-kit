@@ -290,3 +290,15 @@ section-scoped, site-wide, supporting-read and source-filtered operation access.
 It neither grants permission nor validates root topology; native Save and
 server access remain authoritative. No data field, role, credential, migration or
 account lifecycle change is introduced.
+
+
+## Section-aware recipe entry
+
+The existing Page create view now offers Blank/Landing to Managers, using a selected
+assigned root as Parent. Minimal native REST reads are access-controlled and
+no-store; 403/empty availability and failed/partial reads are distinct. A single
+root is inferred; multiple choices require selection. The existing recipe endpoint
+still creates drafts with user/current request/access enforcement. Explicit native
+creation, existing editing and drawers retain the same collection policies.
+No persisted field, migration, provider or environment variable changes. See the
+[recipe contract](../../../../docs/operations/scoped-page-recipes.md).

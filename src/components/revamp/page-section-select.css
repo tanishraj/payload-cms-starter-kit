@@ -1,0 +1,39 @@
+/* Sourced field/select, scoped to native admin; workshop uses official Neutral. */
+@reference "tailwindcss/theme.css";
+@source "./page-section-select.tsx";
+@source "./ui/field.tsx";
+@source "./ui/label.tsx";
+@source "./ui/separator.tsx";
+@source "./ui/select.tsx";
+@source "./ui/button.tsx";
+@custom-variant dark (&:is(.dark *, [data-theme="dark"] *));
+@theme inline {
+  --color-background: var(--theme-elevation-0, var(--background));
+  --color-foreground: var(--theme-text, var(--foreground));
+  --color-popover: var(--theme-elevation-0, var(--popover));
+  --color-popover-foreground: var(--theme-text, var(--popover-foreground));
+  --color-primary: var(--theme-text, var(--primary));
+  --color-primary-foreground: var(--theme-elevation-0, var(--primary-foreground));
+  --color-secondary: var(--theme-elevation-100, var(--secondary));
+  --color-secondary-foreground: var(--theme-text, var(--secondary-foreground));
+  --color-muted: var(--theme-elevation-100, var(--muted));
+  --color-muted-foreground: var(--theme-elevation-600, var(--muted-foreground));
+  --color-accent: var(--theme-elevation-100, var(--accent));
+  --color-accent-foreground: var(--theme-text, var(--accent-foreground));
+  --color-border: var(--theme-elevation-150, var(--border));
+  --color-input: var(--theme-elevation-150, var(--input));
+  --color-ring: var(--theme-elevation-800, var(--ring));
+  --color-destructive: var(--theme-error-500, var(--destructive));
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+.page-section-select {
+  --radius: 0.625rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@scope (.page-section-select) {
+  @import 'tailwindcss/preflight.css';
+  @tailwind utilities source(none);
+}

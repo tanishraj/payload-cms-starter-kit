@@ -228,3 +228,15 @@ with role, missing grants/sections, mixed scoped/site-wide selections,
 operational-only access, long selections and saving states. Its pure task model
 uses current feature metadata; native authority is verified separately in
 [the team setup contract](team-setup-guide.md).
+
+
+## Section-aware Page creation
+
+**Admin / Page section** imports production PageSectionSelect, sourced from
+`@shadcnblocks/field-field-selects-2` and `@shadcnblocks/select-select-full-width`.
+Docs/Default and the interactive Playground expose authorized option labels,
+selected ID, current availability, pending creation and validation. Single Section,
+Loading, No Sections, Load Failed, Creating Draft, Missing Choice and Long Section
+use synthetic data. Default verifies selection; Load Failed verifies retry. The
+native adapter owns requests and permission enforcement. See the
+[recipe contract](scoped-page-recipes.md). No duplicate block story is introduced.

@@ -4,6 +4,7 @@ import { beforeAll, afterAll, describe, expect, it, vi } from 'vitest'
 import { createTestMongoServer } from '../helpers/mongoMemoryServer'
 import type { User, Page, Form } from '@/payload-types'
 import { loadDashboardOnboarding, loadDashboardSections } from '@/lib/adminOnboarding'
+import { recipeSectionsQuery, parseRecipeSectionOptions } from '@/page-recipes/sectionOptions'
 import { ONBOARDING_PREFERENCE_KEY } from '@/lib/adminOnboardingShared'
 
 vi.mock('next/cache', () => ({ revalidateTag: vi.fn(), revalidatePath: vi.fn() }))
@@ -120,6 +121,54 @@ describe('section boundaries through real Payload and MongoDB', () => {
     await payload?.destroy()
     await stop?.()
   }, 30000)
+
+  it('lists only assigned roots through the native recipe query and creates access-enforced recipe drafts', async () => {
+    const headers = await login(manager)
+    const rootsResponse = await dispatch(`pages?${recipeSectionsQuery()}`, headers)
+    expect(rootsResponse.status).toBe(200)
+    const roots = parseRecipeSectionOptions(await rootsResponse.json())
+    expect(roots).toEqual([{ id: a.id, label: 'Section A (/section-a)' }])
+    const createdIDs: string[] = []
+    try {
+      for (const recipe of ['blank', 'landing']) {
+        const result = await dispatch('pages/create-from-recipe', headers, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ recipe, title: `Scoped ${recipe} recipe`, parent: a.id }),
+        })
+        expect(result.status).toBe(201)
+        const { id } = await result.json()
+        createdIDs.push(id)
+        const saved = await payload.findByID({
+          collection: 'pages',
+          id,
+          ...asManager(),
+          draft: true,
+          depth: 0,
+        })
+        expect(saved.parent).toBe(a.id)
+        expect(saved._status).toBe('draft')
+        expect(saved.layout?.map((block) => block.blockType)).toEqual(
+          recipe === 'blank' ? [] : ['pageHeader', 'breadcrumb'],
+        )
+        const publicResult = await dispatch(`pages/${id}`)
+        expect(publicResult.status).not.toBe(200)
+      }
+      const denied = await dispatch('pages/create-from-recipe', headers, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipe: 'landing', title: 'Forged recipe', parent: b.id }),
+      })
+      expect(denied.status).toBe(403)
+      const absent = await payload.find({
+        collection: 'pages',
+        where: { title: { equals: 'Forged recipe' } },
+      })
+      expect(absent.docs).toHaveLength(0)
+    } finally {
+      for (const id of createdIDs) await payload.delete({ collection: 'pages', id, user: admin })
+    }
+  })
 
   it('lists only root and descendants, including new descendants and renamed URLs', async () => {
     const result = await payload.find({

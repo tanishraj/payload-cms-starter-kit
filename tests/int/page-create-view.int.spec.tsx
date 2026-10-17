@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   drawerSlug: '',
   id: undefined as string | undefined,
   role: 'admin',
+  editor: '',
 }))
 
 vi.mock('@payloadcms/ui', () => ({
@@ -15,7 +16,12 @@ vi.mock('@payloadcms/ui', () => ({
   useAuth: () => ({ user: { role: mocks.role } }),
 }))
 vi.mock('@/components/admin/PageRecipeSetup', () => ({
-  PageRecipeSetup: () => <div>Guided Page setup</div>,
+  PageRecipeSetup: ({ sectionRequired }: { sectionRequired?: boolean }) => (
+    <div>Guided Page setup{sectionRequired ? ' with section selection' : ''}</div>
+  ),
+}))
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams({ editor: mocks.editor }),
 }))
 
 import { Pages } from '@/collections/Pages'
@@ -26,6 +32,7 @@ const props = {} as DocumentViewClientProps
 describe('Page create view', () => {
   beforeEach(() => {
     mocks.role = 'admin'
+    mocks.editor = ''
     mocks.drawerSlug = ''
     mocks.id = undefined
   })
@@ -45,8 +52,15 @@ describe('Page create view', () => {
     expect(screen.getByText('Guided Page setup')).toBeTruthy()
   })
 
-  it('uses native section-aware creation for Site Managers', () => {
+  it('offers section-aware recipes to Site Managers', () => {
     mocks.role = 'siteManager'
+    render(<PageCreateView {...props} />)
+    expect(screen.getByText('Guided Page setup with section selection')).toBeTruthy()
+  })
+
+  it.each(['admin', 'siteManager'])('keeps optional native creation for %s', (role) => {
+    mocks.role = role
+    mocks.editor = 'native'
     render(<PageCreateView {...props} />)
     expect(screen.getByText('Native Page editor')).toBeTruthy()
   })
