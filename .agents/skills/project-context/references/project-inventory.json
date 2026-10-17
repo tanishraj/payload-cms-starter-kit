@@ -2324,6 +2324,7 @@
       "docs/operations/homepage-navigation-guide.md",
       "docs/operations/mongodb-deployment.md",
       "docs/operations/page-editing-guide.md",
+      "docs/operations/page-history-restoration.md",
       "docs/operations/private-form-attachments.md",
       "docs/operations/runtime-and-providers.md",
       "docs/operations/scoped-page-recipes.md",
@@ -2855,6 +2856,7 @@
       "src/endpoints/forms/exportSubmissions.ts",
       "src/endpoints/forms/submit.ts",
       "src/endpoints/forms/uploadAttachment.ts",
+      "src/endpoints/restorePageVersion.ts",
       "src/endpoints/twoFactor.ts",
       "src/fields/bodyEditorConfig.ts",
       "src/fields/buildSEOFields.ts",
@@ -2951,6 +2953,7 @@
       "src/lib/openGraphImages.tsx",
       "src/lib/operationalAudit.ts",
       "src/lib/pageBreadcrumbs.ts",
+      "src/lib/pageDraftRestoration.ts",
       "src/lib/pageEditingGuide.ts",
       "src/lib/pagePaths.ts",
       "src/lib/recoverFormAnswers.ts",
@@ -3283,8 +3286,10 @@
       "tests/int/page-blocks.int.spec.ts",
       "tests/int/page-breadcrumbs.int.spec.tsx",
       "tests/int/page-create-view.int.spec.tsx",
+      "tests/int/page-draft-restoration.int.spec.ts",
       "tests/int/page-editing-guide.int.spec.tsx",
       "tests/int/page-header-actions.int.spec.tsx",
+      "tests/int/page-history-database.int.spec.ts",
       "tests/int/page-recipe-endpoint.int.spec.ts",
       "tests/int/page-recipe-sections.int.spec.ts",
       "tests/int/page-recipe-setup.int.spec.tsx",
@@ -3378,7 +3383,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "27a5928504efae01bc65ea09e456b08f8dfcc931d02f5e160b71eed8c900650e"
+    "sha256": "fbfc0747ae1596c232b4cde811c50491e615de54a36e09867cb15c065ab97de8"
   },
   "surfaces": {
     "access": [
@@ -3489,6 +3494,7 @@
       "src/lib/openGraphImages.tsx",
       "src/lib/operationalAudit.ts",
       "src/lib/pageBreadcrumbs.ts",
+      "src/lib/pageDraftRestoration.ts",
       "src/lib/pageEditingGuide.ts",
       "src/lib/pagePaths.ts",
       "src/lib/recoverFormAnswers.ts",
@@ -3746,8 +3752,10 @@
       "tests/int/page-blocks.int.spec.ts",
       "tests/int/page-breadcrumbs.int.spec.tsx",
       "tests/int/page-create-view.int.spec.tsx",
+      "tests/int/page-draft-restoration.int.spec.ts",
       "tests/int/page-editing-guide.int.spec.tsx",
       "tests/int/page-header-actions.int.spec.tsx",
+      "tests/int/page-history-database.int.spec.ts",
       "tests/int/page-recipe-endpoint.int.spec.ts",
       "tests/int/page-recipe-sections.int.spec.ts",
       "tests/int/page-recipe-setup.int.spec.tsx",

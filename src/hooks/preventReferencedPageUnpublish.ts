@@ -1,11 +1,9 @@
-import type {
-  CollectionBeforeChangeHook,
-  PayloadRequest,
-} from 'payload'
+import type { CollectionBeforeChangeHook, PayloadRequest } from 'payload'
 import { APIError } from 'payload'
 
 import type { NavigationLink, Page, Redirect } from '@/payload-types'
 
+import { isPageDraftRestoration } from '@/lib/pageDraftRestoration'
 import { getPageID } from '@/lib/pagePaths'
 
 const getLinkTargetLabel = (link: NavigationLink): string => {
@@ -97,10 +95,13 @@ const getReferencedPageUsage = async (pageID: string | number, req: PayloadReque
 
 export const preventReferencedPageUnpublish: CollectionBeforeChangeHook<Page> = async ({
   data,
+  context,
   operation,
   originalDoc,
   req,
 }) => {
+  if (isPageDraftRestoration(context)) return data
+
   if (operation !== 'update' || !originalDoc || originalDoc._status !== 'published') {
     return data
   }

@@ -371,3 +371,17 @@ scope keys/normalization, reexported by server `sectionAccess.ts`. The shared gr
 summary lives in `adminFeatures.ts` with its prior presentation export preserved.
 Server enforcement, session revocation and last-Admin/bootstrap policy are
 unchanged. See [team setup](../../../../docs/operations/team-setup-guide.md).
+
+
+## Page history recovery
+
+Pages override only the native POST `/versions/:id` collection endpoint; generated
+Next routes and comparison/confirmation UI stay intact. The supported helper uses
+Payload's public native `restoreVersionOperation` with `draft: true` and access
+enforcement because the pinned Local API wrapper drops that option. An isolated
+request frame protects restoration-specific context/query settings and shares the
+native transaction. Raw unsafe Page restore operations fail closed. Page hooks
+normalize status before publication checks, preserve live navigation/reference
+semantics and record a single source-version audit atomically. Other collection/
+global restoration remains outside this increment. See the
+[history contract](../../../../docs/operations/page-history-restoration.md).

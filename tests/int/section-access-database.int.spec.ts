@@ -1,8 +1,9 @@
 // @vitest-environment node
-import { getPayload, handleEndpoints, type Payload } from 'payload'
+import { getPayload, handleEndpoints, createLocalReq, type Payload } from 'payload'
 import { beforeAll, afterAll, describe, expect, it, vi } from 'vitest'
 import { createTestMongoServer } from '../helpers/mongoMemoryServer'
 import type { User, Page, Form } from '@/payload-types'
+import { restorePageVersionAsDraft } from '@/lib/pageDraftRestoration'
 import { loadDashboardOnboarding, loadDashboardSections } from '@/lib/adminOnboarding'
 import { recipeSectionsQuery, parseRecipeSectionOptions } from '@/page-recipes/sectionOptions'
 import { ONBOARDING_PREFERENCE_KEY } from '@/lib/adminOnboardingShared'
@@ -258,7 +259,10 @@ describe('section boundaries through real Payload and MongoDB', () => {
       payload.findVersionByID({ collection: 'pages', id: versions.docs[0].id, ...asManager() }),
     ).rejects.toThrow()
     await expect(
-      payload.restoreVersion({ collection: 'pages', id: versions.docs[0].id, ...asManager() }),
+      restorePageVersionAsDraft({
+        req: await createLocalReq({ user: manager }, payload),
+        versionID: versions.docs[0].id,
+      }),
     ).rejects.toThrow()
     await expect(
       payload.findByID({ collection: 'pages', id: child.id, ...asManager(), draft: true }),

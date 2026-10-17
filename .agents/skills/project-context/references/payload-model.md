@@ -302,3 +302,18 @@ still creates drafts with user/current request/access enforcement. Explicit nati
 creation, existing editing and drawers retain the same collection policies.
 No persisted field, migration, provider or environment variable changes. See the
 [recipe contract](../../../../docs/operations/scoped-page-recipes.md).
+
+
+## Page version restoration
+
+`restorePageVersionEndpoint` precedes Payload's default Page restore endpoint;
+missing/false/true draft query flags all create a new draft through the native
+operation. Authenticated readVersions and update/section enforcement remain in
+place. A private non-JSON frame is required by the Page beforeOperation guard;
+programmatic callers use `restorePageVersionAsDraft` with a current authenticated
+Payload request. Status normalization and narrowly scoped reference/navigation
+exceptions leave the published Page, redirects and shared records unchanged.
+One source-version audit is committed with restoration; audit failure rolls both
+back. No fields/migration/provider/env changes. Other collections/globals retain
+their existing restoration behavior. See the
+[history contract](../../../../docs/operations/page-history-restoration.md).

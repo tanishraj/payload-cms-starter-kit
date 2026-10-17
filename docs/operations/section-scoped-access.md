@@ -100,3 +100,11 @@ weakened. Production build passes with 73 traces and no private uploads included
 Final access/context contracts, generators, TypeScript, lint (one existing
 warning), dependency policy and project context pass. Exact-head CI and merge
 status are authoritative on the feature PR.
+
+
+Page version restoration now uses the native History UI with a draft-only server
+policy. Current read-version/update scope still applies, and restored historical
+parents cannot bypass section movement rules. The current public Page/navigation
+and shared records remain unchanged until explicit publication. See
+[Page history](page-history-restoration.md). Other collection/global restore
+behavior is unchanged by this Page-only increment.
