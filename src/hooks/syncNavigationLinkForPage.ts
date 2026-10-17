@@ -1,5 +1,6 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
+import { isPageDraftSave } from '@/lib/pageDraftSave'
 import { isPageDraftRestoration } from '@/lib/pageDraftRestoration'
 import type { Page } from '@/payload-types'
 import {
@@ -12,7 +13,7 @@ export const syncNavigationLinkAfterChange: CollectionAfterChangeHook<Page> = as
   req,
   context,
 }) => {
-  if (isPageDraftRestoration(context)) return doc
+  if (isPageDraftRestoration(context) || isPageDraftSave(context)) return doc
   await ensureSyncedNavigationLinkForPage({
     page: doc,
     req,
