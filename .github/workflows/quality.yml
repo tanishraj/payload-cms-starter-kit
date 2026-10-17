@@ -73,6 +73,8 @@ jobs:
         run: pnpm test:int
       - name: Run critical governance journeys
         run: pnpm test:e2e:governance
+      - name: Run native password-recovery feedback checks
+        run: pnpm test:e2e:password-recovery
       - name: Run native dynamic-form journey
         run: pnpm test:e2e:forms
       # Browser journeys generate dev-only route types; production owns fresh output.

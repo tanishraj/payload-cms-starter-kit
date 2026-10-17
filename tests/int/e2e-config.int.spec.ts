@@ -300,3 +300,24 @@ describe('E2E login navigation', () => {
     expect(page.waitForURL).toHaveBeenCalledWith('/admin', { waitUntil: 'domcontentloaded' })
   })
 })
+
+describe('native password recovery feedback fixture', () => {
+  it('reuses the guarded test database and replaces parent email credentials with reserved fixtures', async () => {
+    process.env.RESEND_API_KEY = 'parent-secret-must-not-be-used'
+    process.env.RESEND_FROM_EMAIL = 'parent@example.invalid'
+    process.env.RESEND_OVERRIDE_TO_EMAIL = 'parent-override@example.invalid'
+    const { default: config } = await import('../../playwright.password-recovery.config')
+    expect(config.testMatch).toBe('password-recovery.e2e.spec.ts')
+    expect(config.webServer).toMatchObject({
+      reuseExistingServer: false,
+      env: {
+        EMAIL_PROVIDER: 'resend',
+        RESEND_API_KEY: 'test-only-password-recovery-key',
+        RESEND_FROM_EMAIL: 'site@example.test',
+        RESEND_OVERRIDE_TO_EMAIL: '',
+        MONGODB_URI:
+          'mongodb://127.0.0.1:27017/payload-cms-starter-kit_test?replicaSet=rs0&directConnection=true',
+      },
+    })
+  })
+})

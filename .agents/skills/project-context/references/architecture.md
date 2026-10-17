@@ -386,6 +386,14 @@ semantics and record a single source-version audit atomically. Other collection/
 global restoration remains outside this increment. See the
 [history contract](../../../../docs/operations/page-history-restoration.md).
 
+The pinned Payload Next package has a pnpm-managed native password-reset feedback
+patch. Native Form owns HTTP errors, JSON parsing and processing reset; the page
+uses onSuccess only to update confirmation and resend cooldown after a parsed
+acknowledgement. The dedicated captured-request browser fixture preserves the
+guarded local test database and never sends reset requests to the server.
+Runtime patch files and their workspace registration enter the deterministic
+source digest. See [contract](../../../../docs/operations/native-password-reset-feedback.md).
+
 Client password recovery derives availability from existing email configuration.
 A Users beforeOperation guard blocks forgotPassword before account lookup/token
 creation when Resend is unavailable or recipient-overridden. Disabled deployments

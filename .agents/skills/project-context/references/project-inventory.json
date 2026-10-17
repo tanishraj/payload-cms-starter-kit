@@ -2263,6 +2263,7 @@
       "test:e2e",
       "test:e2e:forms",
       "test:e2e:governance",
+      "test:e2e:password-recovery",
       "test:e2e:two-factor",
       "test:int",
       "test:project-context",
@@ -2325,6 +2326,7 @@
       "docs/operations/homepage-navigation-guide.md",
       "docs/operations/linked-page-draft-saving.md",
       "docs/operations/mongodb-deployment.md",
+      "docs/operations/native-password-reset-feedback.md",
       "docs/operations/page-editing-guide.md",
       "docs/operations/page-history-restoration.md",
       "docs/operations/private-form-attachments.md",
@@ -2338,6 +2340,9 @@
       "docs/operations/team-setup-guide.md",
       "next.config.ts",
       "package.json",
+      "patches/@payloadcms__next@3.90.2.patch",
+      "playwright.password-recovery.config.ts",
+      "pnpm-workspace.yaml",
       "src/access/adminFeatures.ts",
       "src/access/featureAccess.ts",
       "src/access/sectionAccess.ts",
@@ -3104,6 +3109,7 @@
       "tests/e2e/frontend.e2e.spec.ts",
       "tests/e2e/generic-form.e2e.spec.ts",
       "tests/e2e/governance.e2e.spec.ts",
+      "tests/e2e/password-recovery.e2e.spec.ts",
       "tests/helpers/governanceAccounts.ts",
       "tests/helpers/governanceBrowserFixtures.ts",
       "tests/helpers/governanceFixtures.ts",
@@ -3393,7 +3399,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "0adf01d1c16c8838ed7bcb6ea60dc3403d4c53e707d2ebee28e736c2c228c5c4"
+    "sha256": "f357ae7d8339d6706e128e950daec738201895eecaab8db2aa48b700a7e688f1"
   },
   "surfaces": {
     "access": [
@@ -3591,6 +3597,7 @@
       "tests/e2e/frontend.e2e.spec.ts",
       "tests/e2e/generic-form.e2e.spec.ts",
       "tests/e2e/governance.e2e.spec.ts",
+      "tests/e2e/password-recovery.e2e.spec.ts",
       "tests/int/about-section.int.spec.tsx",
       "tests/int/academic-programmes-client.int.spec.tsx",
       "tests/int/academic-programmes.int.spec.tsx",

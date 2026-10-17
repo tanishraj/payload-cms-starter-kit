@@ -64,6 +64,21 @@ Media upload, demonstrate client credential delivery or observe a new human user
 The five outcome boxes therefore remain open. The CI-only blank-Page failure has
 not been diagnosed or fixed merely because this local repeat passed.
 
+## Native recovery feedback — locally verified increment
+
+The native reset request previously treated HTTP error JSON as successful and
+could leave Submit disabled. A pinned Payload patch now delegates errors and
+processing to native Form, with confirmation/cooldown set only after a readable
+success acknowledgement. See [behavior and maintenance](../operations/native-password-reset-feedback.md).
+
+All four new installed-package browser cases reproduce failures unpatched and
+pass patched without retries. Full integration passes 2,924 tests with one existing
+opt-in skip; all eight governance and both form journeys pass without retries.
+The production build and existing approved dependency audit pass. This complements
+[PR #44](https://github.com/tanishraj/payload-cms-starter-kit/pull/44)'s email-disabled
+operator path. Each change still requires its own exact-head CI and merge; no real
+email delivery, novice task observation or production readiness is claimed.
+
 ## Three-page rehearsal — 17 October 2026
 
 A fresh fictional Home/Information/Contact site was built through native Admin

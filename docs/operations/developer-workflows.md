@@ -15,7 +15,8 @@
 | `pnpm generate:importmap`                                   | Regenerate the Payload admin import map                          |
 | `pnpm test:int`                                             | Run Vitest integration/component tests                           |
 | `pnpm test:e2e`                                             | Run Playwright Admin/frontend journeys                           |
-| `pnpm test:e2e:governance`                                  | Run the two critical authorization/moderation journeys           |
+| `pnpm test:e2e:password-recovery` | Run native reset-request failure, retry and resend feedback checks |
+| `pnpm test:e2e:governance`                                  | Run critical native authorization/onboarding/publication journeys           |
 | `pnpm test`                                                 | Run integration tests, then E2E tests                            |
 | `pnpm ci:mongodb:start`                                     | Start the current GitHub run's isolated MongoDB replica          |
 | `pnpm ci:mongodb:stop`                                      | Remove the current GitHub run's owned MongoDB replica            |
@@ -248,3 +249,10 @@ Run `pnpm test:e2e:two-factor` for the isolated optional-2FA browser journeys. I
 ## Storybook
 
 Run `pnpm storybook` for the interactive component/block catalogue at http://localhost:6006, or `pnpm build-storybook` for a static build. See [Storybook authoring and preview workflow](storybook.md). Every replacement block includes stories using the actual component and sample data.
+
+Native password-recovery feedback is checked with `pnpm test:e2e:password-recovery`.
+The dedicated config inherits the guarded local test database and enables the
+native email form using reserved fixture values. Every reset POST is fulfilled
+in the browser before reaching the server; these checks send no email and prove
+UI response handling rather than provider delivery. See
+[native reset feedback](native-password-reset-feedback.md).

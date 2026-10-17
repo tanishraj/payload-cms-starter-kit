@@ -88,3 +88,14 @@ the document's existence alone never supplies approval.
 ## October 14 approved renewal
 
 The user explicitly approved the exact Braces renewal in [the October 14 review](dependency-audit-remediation-2026-10-14.md), expiring October 21, 2026. The active exception contains that one entry; the evaluator is unchanged. General merge authorization does not approve future renewals.
+
+## Native reset-form feedback patch
+
+`pnpm-workspace.yaml` applies the narrow checked-in
+`patches/@payloadcms__next@3.90.2.patch` to Payload Next 3.90.2. It delegates reset
+request errors and processing state to the native Form lifecycle, and applies
+confirmation/cooldown updates only in its successful-response callback. The lockfile
+records the patch hash; package versions and the audit exception are unchanged.
+Verify with a frozen install and `pnpm test:e2e:password-recovery`. Reassess the
+patch when upgrading Payload; remove it only after the unpatched upstream version
+passes the same response/retry tests. This is not an audit-policy exception.

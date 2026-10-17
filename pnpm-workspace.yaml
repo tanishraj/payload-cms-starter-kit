@@ -8,3 +8,6 @@ allowBuilds:
 # Payload 3.90.2 pins the vulnerable Undici release exactly. Apply its reviewed compatible security patch without changing other consumers.
 overrides:
   'payload@3.90.2>undici': 7.29.1
+
+patchedDependencies:
+  '@payloadcms/next@3.90.2': patches/@payloadcms__next@3.90.2.patch
