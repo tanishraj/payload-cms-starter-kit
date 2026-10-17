@@ -317,3 +317,11 @@ One source-version audit is committed with restoration; audit failure rolls both
 back. No fields/migration/provider/env changes. Other collections/globals retain
 their existing restoration behavior. See the
 [history contract](../../../../docs/operations/page-history-restoration.md).
+
+Users adds requirePasswordRecoveryEmail beforeOperation for forgotPassword only.
+The existing email policy determines availability; disabled/recipient-overridden
+delivery returns a uniform 503 before user lookup or token creation. Native reset
+completion, Admin/self password changes, sessions, grants and 2FA are unchanged.
+Payload retains enabled-email reset expiry/throttling/single-use authority.
+See [client account handoff](../../../../docs/operations/client-account-handoff.md)
+for operator recovery and the retained native HTTP-error confirmation limitation.

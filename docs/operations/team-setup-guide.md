@@ -75,3 +75,10 @@ Focused contracts cover current selections, server ownership, shared dependency
 semantics and lock/exclusion behavior. Full regression/build/CI results are owned
 by the implementation checklist and feature PR; broader novice-user observation
 and comprehensive permission diagnostics remain separate acceptance items.
+
+## Password handoff
+
+Saving a User does not send an invitation. Follow the
+[client account handoff](client-account-handoff.md) for native email reset or
+Admin-assisted recovery when outgoing mail is unavailable. Access preview does
+not confirm credential delivery.

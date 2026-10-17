@@ -29,6 +29,7 @@ import {
 } from '@/access/featureAccess'
 import { recordOperationalAuditEvent } from '@/lib/operationalAudit'
 import { runtimeConfig } from '@/config/runtime.server'
+import { requirePasswordRecoveryEmail } from '@/hooks/requirePasswordRecoveryEmail'
 import {
   deleteTwoFactorCredentials,
   enforceTwoFactorLogin,
@@ -372,6 +373,7 @@ export const Users: CollectionConfig = {
     update: adminOrSelfAccess,
   },
   hooks: {
+    beforeOperation: [requirePasswordRecoveryEmail(runtimeConfig.email)],
     afterChange: [auditUserAuthorizationChange],
     afterDelete: [auditUserDeletion, deleteTwoFactorCredentials],
     afterRead: [sanitizeAssignmentUser, filterTwoFactorSessions],

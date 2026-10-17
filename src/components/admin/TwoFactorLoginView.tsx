@@ -3,6 +3,9 @@ import type { AdminViewServerProps } from 'payload'
 import { getSafeRedirect } from 'payload/shared'
 import { Logo } from '@payloadcms/next/rsc'
 
+import { runtimeConfig } from '@/config/runtime.server'
+import { canDeliverPasswordRecovery } from '@/lib/accountRecovery'
+
 import { TwoFactorAuthForm } from './TwoFactorAuthForm'
 
 export function TwoFactorLoginView({ initPageResult, searchParams, params }: AdminViewServerProps) {
@@ -11,6 +14,8 @@ export function TwoFactorLoginView({ initPageResult, searchParams, params }: Adm
     redirectTo: searchParams?.redirect ?? '/admin',
   })
   if (initPageResult.req.user) redirect(redirectTo)
+  const recoveryAvailable = canDeliverPasswordRecovery(runtimeConfig.email)
+  if (!recoveryAvailable && params?.segments?.[0] === 'forgot') redirect('/admin/login')
   const { locale, permissions, req } = initPageResult
   return (
     <>
@@ -25,7 +30,7 @@ export function TwoFactorLoginView({ initPageResult, searchParams, params }: Adm
           user={req.user ?? undefined}
         />
       </div>
-      <TwoFactorAuthForm redirectTo={redirectTo} />
+      <TwoFactorAuthForm redirectTo={redirectTo} recoveryAvailable={recoveryAvailable} />
     </>
   )
 }

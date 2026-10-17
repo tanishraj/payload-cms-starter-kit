@@ -2313,6 +2313,7 @@
       "docs/guides/users.md",
       "docs/guides/work-queue.md",
       "docs/operations/admin-getting-started.md",
+      "docs/operations/client-account-handoff.md",
       "docs/operations/database-backups.md",
       "docs/operations/dependency-audit-remediation-2026-10-06.md",
       "docs/operations/dependency-audit-remediation-2026-10-07.md",
@@ -2892,6 +2893,7 @@
       "src/hooks/protectNewsEventClassificationSystemFields.ts",
       "src/hooks/releaseFormAttachments.ts",
       "src/hooks/requireFormAttachmentStorage.ts",
+      "src/hooks/requirePasswordRecoveryEmail.ts",
       "src/hooks/resolveNewsEventClassification.ts",
       "src/hooks/revalidateCmsContent.ts",
       "src/hooks/syncDraftPublishToWorkQueue.ts",
@@ -2904,6 +2906,7 @@
       "src/hooks/updateFormSubmissionActivity.ts",
       "src/hooks/validateSEOContract.ts",
       "src/lib/accountGuidePreference.ts",
+      "src/lib/accountRecovery.ts",
       "src/lib/adminOnboarding.ts",
       "src/lib/adminOnboardingShared.ts",
       "src/lib/analyticsConsent.ts",
@@ -3113,6 +3116,7 @@
       "tests/int/about-section.int.spec.tsx",
       "tests/int/academic-programmes-client.int.spec.tsx",
       "tests/int/academic-programmes.int.spec.tsx",
+      "tests/int/account-recovery.int.spec.ts",
       "tests/int/admin-documentation.int.spec.ts",
       "tests/int/admin-features.int.spec.ts",
       "tests/int/admin-information-architecture.int.spec.ts",
@@ -3383,7 +3387,7 @@
       "tests/security/two-factor.e2e.spec.ts",
       "tsconfig.json"
     ],
-    "sha256": "fe01c4ad178307cfa0dcd6e10c3f678cc101076fadda65045de1b624cafd77e9"
+    "sha256": "545339c062fbbe7b55646253b316501779f8caa762d2ac2ae9d8bd94b8c5a893"
   },
   "surfaces": {
     "access": [
@@ -3431,6 +3435,7 @@
       "src/hooks/protectNewsEventClassificationSystemFields.ts",
       "src/hooks/releaseFormAttachments.ts",
       "src/hooks/requireFormAttachmentStorage.ts",
+      "src/hooks/requirePasswordRecoveryEmail.ts",
       "src/hooks/resolveNewsEventClassification.ts",
       "src/hooks/revalidateCmsContent.ts",
       "src/hooks/syncDraftPublishToWorkQueue.ts",
@@ -3445,6 +3450,7 @@
     ],
     "libraries": [
       "src/lib/accountGuidePreference.ts",
+      "src/lib/accountRecovery.ts",
       "src/lib/adminOnboarding.ts",
       "src/lib/adminOnboardingShared.ts",
       "src/lib/analyticsConsent.ts",
@@ -3580,6 +3586,7 @@
       "tests/int/about-section.int.spec.tsx",
       "tests/int/academic-programmes-client.int.spec.tsx",
       "tests/int/academic-programmes.int.spec.tsx",
+      "tests/int/account-recovery.int.spec.ts",
       "tests/int/admin-documentation.int.spec.ts",
       "tests/int/admin-features.int.spec.ts",
       "tests/int/admin-information-architecture.int.spec.ts",

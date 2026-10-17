@@ -2,14 +2,18 @@
 
 import { useState, type FormEvent } from 'react'
 
+import { PASSWORD_RECOVERY_UNAVAILABLE } from '@/lib/accountRecovery'
+
 import './TwoFactor.scss'
 
 export function TwoFactorAuthForm({
   redirectTo = '/admin',
   resetToken,
+  recoveryAvailable = true,
 }: {
   redirectTo?: string
   resetToken?: string
+  recoveryAvailable?: boolean
 }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -101,9 +105,13 @@ export function TwoFactorAuthForm({
           </button>
         </fieldset>
       </form>
-      <a href={isReset ? '/admin/login' : '/admin/forgot'}>
-        {isReset ? 'Back to login' : 'Forgot password?'}
-      </a>
+      {isReset || recoveryAvailable ? (
+        <a href={isReset ? '/admin/login' : '/admin/forgot'}>
+          {isReset ? 'Back to login' : 'Forgot password?'}
+        </a>
+      ) : (
+        <p className="two-factor__help">{PASSWORD_RECOVERY_UNAVAILABLE}</p>
+      )}
     </div>
   )
 }

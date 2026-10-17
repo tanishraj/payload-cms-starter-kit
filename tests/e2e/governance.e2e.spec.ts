@@ -201,6 +201,46 @@ test.describe('governance browser journeys', () => {
     }
   })
 
+  test('password help explains Admin-assisted recovery when outgoing email is unavailable', async ({
+    page,
+  }) => {
+    await page.goto('/admin/forgot')
+    await expect(page).toHaveURL(/\/admin\/login$/)
+    const message =
+      'Email password recovery is unavailable. Ask the website Admin who created your account for help.'
+    await expect(page.getByText(message, { exact: true })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Forgot password?' })).toHaveCount(0)
+    await expect(page.locator('input[name="email"]')).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Log in', exact: true })).toBeVisible()
+    for (const email of [fixture!.admin.email, 'not-an-account@example.test']) {
+      const response = await page.request.post('/api/users/forgot-password', { data: { email } })
+      expect(response.status()).toBe(503)
+      expect(await response.text()).toContain(message)
+    }
+    for (const [width, colorScheme] of [
+      [1280, 'light'],
+      [390, 'dark'],
+    ] as const) {
+      await page.setViewportSize({ width, height: 844 })
+      await page.emulateMedia({ colorScheme })
+      await page
+        .context()
+        .addCookies([
+          { name: 'payload-theme', value: colorScheme, url: new URL(page.url()).origin },
+        ])
+      await page.reload()
+      await expect(page.locator('html')).toHaveAttribute('data-theme', colorScheme)
+      await expect(page.getByText(message, { exact: true })).toBeVisible()
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      )
+      await page.screenshot({
+        path: test.info().outputPath(`account-help-${width}-${colorScheme}.png`),
+        fullPage: true,
+      })
+    }
+  })
+
   test('Admin grants and revokes a Site Manager feature', async ({ browser, page }) => {
     if (!fixture) throw new Error('Expected governance fixture.')
     const currentFixture = fixture
