@@ -4,6 +4,18 @@ Use `.agents/skills/project-context/SKILL.md` for every implementation, review, 
 
 For Payload CMS work, also use `.agents/skills/payload/SKILL.md` and load only the relevant file from `.agents/skills/payload/reference/`.
 
+## Active first-client release
+
+The user approved a bounded first-client release on October 17, 2026. Read
+`docs/planning/first-client-release.md` before selecting work. Its five outcomes
+(team setup, Page building, publishing/recovery, client handoff and launch essentials)
+are the active scope. The 242-group catalogue is a reference backlog, not a delivery
+mandate. Demonstrate the existing end-to-end journey, fix demonstrated blockers,
+and require an explicit client need before adding optional capabilities. Preserve
+security/privacy and the accepted core forms; do not equate source/tests with an
+unaided client pilot or production readiness. Team Admins configure sites; client
+editors normally use section-scoped Site Manager accounts.
+
 ## Current enhancement scope and tracking
 
 The user moved implementation from Forma to this repository on October 6, 2026.

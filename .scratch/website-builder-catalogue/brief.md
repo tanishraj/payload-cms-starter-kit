@@ -35,3 +35,18 @@ The checked-in Braces dependency exception expires on **2026-10-13**. As of this
 ## Completion boundary
 
 This charting session creates open questions and coverage routing. It does not resolve their detailed policies, certify all feature acceptance, change app behavior, migrate data or introduce environment variables. Release assignment and ownership become decisions after baseline evidence and relevant policies are available.
+
+## Current direction addendum — 17 October 2026
+
+The October 14 findings above are historical, not current absence-of-feature claims.
+Core forms were subsequently accepted and advanced forms deferred. Section access,
+scoped recipes and several native onboarding guides have shipped; the maintained
+checklist/source owns their evidence. The user now asks to organize remaining work
+around an uncomplicated working website and client onboarding, and confirmed that
+the team configures sites as Admin while clients normally edit as scoped Site
+Managers. [Current source baseline](../../docs/planning/composition-publishing-baseline-2026-10-17.md)
+and [delivery proposal](../../docs/planning/client-website-delivery-roadmap.md) distinguish
+source presence, recorded runtime evidence and proposed release placement. No
+remaining policy ticket is resolved by this input alone. The historical expired
+Braces observation above is not the current approval status; current dependency
+policy/exception records and exact-head audit remain authoritative.
