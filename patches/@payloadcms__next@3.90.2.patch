@@ -1,0 +1,60 @@
+diff --git a/dist/views/ForgotPassword/ForgotPasswordForm/index.js b/dist/views/ForgotPassword/ForgotPasswordForm/index.js
+index 2b5995ab67ce87bfd5d913f37f7288423a74d695..f806e8af31723609ef6367b236417f620597d980 100644
+--- a/dist/views/ForgotPassword/ForgotPasswordForm/index.js
++++ b/dist/views/ForgotPassword/ForgotPasswordForm/index.js
+@@ -84,27 +84,25 @@ export const ForgotPasswordForm = () => {
+     }, 1050);
+     return () => clearTimeout(timeout);
+   }, [resendDelay]);
+-  const handleResponse = (res, successToast, errorToast) => {
+-    res.json().then(() => {
+-      const nextResendAvailableAt = Date.now() + minRequestInterval;
+-      const nextStoredRequest = submittedIdentifier.current ? {
+-        identifier: submittedIdentifier.current,
+-        resendAvailableAt: nextResendAvailableAt
+-      } : null;
+-      resendAvailableAt.current = nextResendAvailableAt;
+-      setResendDelay(Math.ceil(minRequestInterval / 1000));
+-      setStoredRequest(nextStoredRequest);
+-      setHasSubmitted(true);
+-      if (nextStoredRequest) {
+-        saveStoredRequest({
+-          request: nextStoredRequest,
+-          sessionStorageKey
+-        });
+-      }
+-      successToast(t('general:submissionSuccessful'));
+-    }).catch(() => {
+-      errorToast(loginWithUsername ? t('authentication:usernameNotValid') : t('authentication:emailNotValid'));
+-    });
++  const onSuccess = body => {
++    if (!body || typeof body.message !== 'string') {
++      throw new Error(t('error:unknown'));
++    }
++    const nextResendAvailableAt = Date.now() + minRequestInterval;
++    const nextStoredRequest = submittedIdentifier.current ? {
++      identifier: submittedIdentifier.current,
++      resendAvailableAt: nextResendAvailableAt
++    } : null;
++    resendAvailableAt.current = nextResendAvailableAt;
++    setResendDelay(Math.ceil(minRequestInterval / 1000));
++    setStoredRequest(nextStoredRequest);
++    setHasSubmitted(true);
++    if (nextStoredRequest) {
++      saveStoredRequest({
++        request: nextStoredRequest,
++        sessionStorageKey
++      });
++    }
+   };
+   const initialState = loginWithUsername ? {
+     username: {
+@@ -125,7 +123,7 @@ export const ForgotPasswordForm = () => {
+       path: `/${userSlug}/forgot-password`
+     }),
+     className: baseClass,
+-    handleResponse: handleResponse,
++    onSuccess: onSuccess,
+     initialState: initialState,
+     method: "POST",
+     onSubmit: (_, data) => {

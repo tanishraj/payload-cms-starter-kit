@@ -29,6 +29,7 @@
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:project-context": "vitest run --config ./vitest.config.mts tests/int/project-context-lib.int.spec.ts tests/int/project-context-repository.int.spec.ts",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.config.ts",
+    "test:e2e:password-recovery": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.password-recovery.config.ts",
     "test:e2e:governance": "cross-env NODE_OPTIONS=\"--no-deprecation --conditions=react-server --import=tsx/esm\" playwright test --config=playwright.config.ts tests/e2e/governance.e2e.spec.ts",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation NEXT_PUBLIC_SERVER_URL= ALLOW_FIRST_ADMIN_CREATION= vitest run --config ./vitest.config.mts",
     "verify:docker-image": "tsx scripts/verify-production-image.ts",

@@ -467,6 +467,7 @@ async function getSourceDigest(projectRoot) {
   const monitoredFiles = [
     ...(await walkFiles(projectRoot, 'src', (filePath) => /\.(ts|tsx|css|scss)$/.test(filePath))),
     ...(await walkFiles(projectRoot, 'tests', (filePath) => /\.(ts|tsx)$/.test(filePath))),
+    ...(await walkFiles(projectRoot, 'patches', (filePath) => filePath.endsWith('.patch'))),
     ...(await walkFiles(projectRoot, 'docs/architecture', (filePath) => filePath.endsWith('.md'))),
     ...(await walkFiles(projectRoot, 'docs/guides', (filePath) => filePath.endsWith('.md'))),
     ...(await walkFiles(projectRoot, 'docs/operations', (filePath) => filePath.endsWith('.md'))),
@@ -475,6 +476,8 @@ async function getSourceDigest(projectRoot) {
     'README.md',
     'next.config.ts',
     'package.json',
+    'pnpm-workspace.yaml',
+    'playwright.password-recovery.config.ts',
     'tsconfig.json',
   ]
   const files = [...new Set(monitoredFiles)].sort()

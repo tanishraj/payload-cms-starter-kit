@@ -317,3 +317,10 @@ One source-version audit is committed with restoration; audit failure rolls both
 back. No fields/migration/provider/env changes. Other collections/globals retain
 their existing restoration behavior. See the
 [history contract](../../../../docs/operations/page-history-restoration.md).
+
+Native password-recovery feedback is corrected by a pinned pnpm package patch,
+without collection/schema/authentication changes. Reset tokens, account privacy,
+resend throttling, sessions and 2FA retain upstream server authority. UI cooldown
+and confirmation change only after a successful parsed acknowledgement; failures
+retain retry controls and do not imply delivery. See
+[native feedback](../../../../docs/operations/native-password-reset-feedback.md).

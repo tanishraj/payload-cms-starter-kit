@@ -27,6 +27,7 @@ const expectedRunSteps = [
   ['Lint', 'pnpm lint'],
   ['Run integration tests', 'pnpm test:int'],
   ['Run critical governance journeys', 'pnpm test:e2e:governance'],
+  ['Run native password-recovery feedback checks', 'pnpm test:e2e:password-recovery'],
   ['Run native dynamic-form journey', 'pnpm test:e2e:forms'],
   ['Clean generated Next output', 'rm -rf .next'],
   ['Build the Vercel production application', 'pnpm build'],
@@ -183,6 +184,7 @@ describe('quality workflow contract', () => {
     expect(driftIndex).toBe(importMapIndex + 1)
     expect(runCommands.filter((command) => command.includes('test:e2e'))).toEqual([
       'pnpm test:e2e:governance',
+      'pnpm test:e2e:password-recovery',
       'pnpm test:e2e:forms',
     ])
 

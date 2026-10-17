@@ -26,6 +26,10 @@ describe('Docker standalone deployment contract', () => {
     expect(dockerfileSource).not.toMatch(/yarn|npm ci|package-lock/)
     expect(packageJSON.packageManager).toBe('pnpm@11.17.0')
     expect(dockerfileSource).toContain('COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./')
+    expect(dockerfileSource.indexOf('COPY patches ./patches')).toBeGreaterThan(-1)
+    expect(dockerfileSource.indexOf('COPY patches ./patches')).toBeLessThan(
+      dockerfileSource.indexOf('RUN pnpm install --frozen-lockfile'),
+    )
     expect(pnpmWorkspaceSource).toContain('allowBuilds:')
     expect(pnpmWorkspaceSource).toContain('esbuild: true')
     expect(pnpmWorkspaceSource).toContain('unrs-resolver: true')
@@ -81,7 +85,9 @@ describe('Docker standalone deployment contract', () => {
             PATH: `${directory}:/usr/bin:/bin`,
             BUILD_MARKER: marker,
             NEXT_PUBLIC_SERVER_URL: mode === 'environment' ? '' : 'https://test.example.com',
-            ...(mode === 'environment' ? { PAYLOAD_BUILD_SERVER_URL: 'https://test.example.com' } : {}),
+            ...(mode === 'environment'
+              ? { PAYLOAD_BUILD_SERVER_URL: 'https://test.example.com' }
+              : {}),
             ...(mode !== 'file' && mode !== 'missing-uri' ? { MONGODB_URI: 'fixture-uri' } : {}),
             ...(mode !== 'file' && mode !== 'missing-secret'
               ? { PAYLOAD_SECRET: 'fixture-secret' }
