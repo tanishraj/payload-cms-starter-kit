@@ -209,7 +209,9 @@ describe('guide preference persistence and recovery', () => {
       expect.any(String),
       expect.objectContaining({ body: JSON.stringify({ value: { dismissed: false } }) }),
     )
-    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Hide guide' }))
+    await waitFor(() =>
+      expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Hide guide' })),
+    )
     expect(fetch).toHaveBeenCalledTimes(2)
   })
   it('preserves the guide after a rejected save and permits a deliberate retry', async () => {
