@@ -8,6 +8,13 @@ import type { Page } from '@/payload-types'
 import { buildSEOFields } from '@/fields/buildSEOFields'
 import { runtimeConfig } from '@/config/runtime.server'
 import { publicationMetadataFields } from '@/fields/publicationMetadataFields'
+import { restorePageVersionEndpoint } from '@/endpoints/restorePageVersion'
+import {
+  requireSafePageRestoration,
+  markRestoredPageDraft,
+  auditPageRestoration,
+  isPageDraftRestoration,
+} from '@/lib/pageDraftRestoration'
 import { createPageFromRecipeEndpoint } from '@/endpoints/createPageFromRecipe'
 import { projectSlugField } from '@/fields/projectSlugField'
 import { enforcePublicationPolicy } from '@/hooks/enforcePublicationPolicy'
@@ -98,6 +105,14 @@ const previewBreakpoints = [
   },
 ] as const
 
+const auditPageChange = createCollectionAuditHook({
+  entityType: 'page',
+  feature: 'pages',
+  getSummary: ({ doc, previousDoc }) =>
+    `Publication status changed from ${previousDoc?._status ?? 'draft'} to ${doc._status ?? 'draft'}.`,
+  titleField: 'title',
+})
+
 export const Pages: CollectionConfig = {
   slug: 'pages',
   labels: {
@@ -119,7 +134,7 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     description:
-      'Flexible website pages with reusable layout blocks, SEO controls, and publishing settings.',
+      'Flexible website pages with reusable layout blocks, SEO controls, and publishing settings. History restores create drafts; review them before publishing.',
     listSearchableFields: ['title', 'slug'],
     livePreview: {
       breakpoints: [...previewBreakpoints],
@@ -139,21 +154,17 @@ export const Pages: CollectionConfig = {
     readVersions: scopedPageAccess('versions'),
     update: scopedPageAccess('update'),
   },
-  endpoints: [createPageFromRecipeEndpoint],
+  endpoints: [createPageFromRecipeEndpoint, restorePageVersionEndpoint],
   hooks: {
-    beforeValidate: [enforcePageSection],
+    beforeOperation: [requireSafePageRestoration],
+    afterOperation: [auditPageRestoration],
+    beforeValidate: [markRestoredPageDraft, enforcePageSection],
     afterRead: [populatePageUrlPreview],
     afterChange: [
       revalidatePagesCache,
       syncNavigationLinkAfterChange,
       createRedirectsForChangedPagePath,
-      createCollectionAuditHook({
-        entityType: 'page',
-        feature: 'pages',
-        getSummary: ({ doc, previousDoc }) =>
-          `Publication status changed from ${previousDoc?._status ?? 'draft'} to ${doc._status ?? 'draft'}.`,
-        titleField: 'title',
-      }),
+      (args) => (isPageDraftRestoration(args.context) ? args.doc : auditPageChange(args)),
     ],
     afterDelete: [syncNavigationLinkAfterDelete, revalidateDeletedPageCache],
     beforeChange: [

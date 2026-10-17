@@ -730,6 +730,85 @@ test.describe('governance browser journeys', () => {
     }
   })
 
+  test('Page History restores a published version as a draft until explicit publication', async ({
+    page,
+  }) => {
+    if (!fixture) throw new Error('Expected governance fixture.')
+    const currentFixture = fixture
+    await login({ page, user: currentFixture.admin })
+    const title = `History baseline ${Date.now()}`
+    const create = await page.request.post('/api/pages', {
+      headers: await getPayloadAuthHeaders(page),
+      data: { title, layout: [], _status: 'published' },
+    })
+    expect(create.status()).toBe(201)
+    const doc = (await create.json()).doc
+    currentFixture.pageIDs.push(doc.id)
+    const versions = await page.request.get(
+      `/api/pages/versions?where[parent][equals]=${doc.id}&limit=10&sort=createdAt`,
+      { headers: await getPayloadAuthHeaders(page) },
+    )
+    expect(versions.status()).toBe(200)
+    const version = (await versions.json()).docs.find(
+      (entry: { version: { title: string; _status: string } }) =>
+        entry.version.title === title && entry.version._status === 'published',
+    )
+    expect(version?.id).toBeDefined()
+    const liveTitle = `${title} current live`
+    const update = await page.request.patch(`/api/pages/${doc.id}`, {
+      headers: await getPayloadAuthHeaders(page),
+      data: { title: liveTitle, _status: 'published' },
+    })
+    expect(update.status()).toBe(200)
+    const anonymous = await standaloneRequest.newContext({ baseURL: new URL(page.url()).origin })
+    try {
+      await page.goto(`/admin/collections/pages/${doc.id}/versions/${version.id}`)
+      const restore = page.getByRole('button', { name: 'Restore this version', exact: true })
+      await expect(restore).toBeVisible()
+      await restore.click()
+      const modal = page.getByRole('dialog', { name: 'restore-version', exact: true })
+      await expect(
+        modal.getByRole('heading', { name: 'Confirm Version Restoration', exact: true }),
+      ).toBeVisible()
+      const restored = page.waitForResponse(
+        (response) =>
+          new URL(response.url()).pathname === `/api/pages/versions/${version.id}` &&
+          response.request().method() === 'POST',
+      )
+      await modal.getByRole('button', { name: 'Confirm', exact: true }).click()
+      const response = await restored
+      expect(response.status()).toBe(200)
+      // The primary native button requests draft=false. Server policy remains safe.
+      expect(new URL(response.url()).searchParams.get('draft')).toBe('false')
+      expect(await response.json()).toMatchObject({ id: doc.id, title, _status: 'draft' })
+      await page.waitForURL((url) => url.pathname === `/admin/collections/pages/${doc.id}`, {
+        waitUntil: 'domcontentloaded',
+      })
+      await expect(page.locator('#field-title')).toHaveValue(title)
+      expect((await (await anonymous.get(`/api/pages/${doc.id}?depth=0`)).json()).title).toBe(
+        liveTitle,
+      )
+      const auditResponse = await page.request.get(
+        `/api/operational-audit-events?where[and][0][entityId][equals]=${doc.id}&where[and][1][action][equals]=restore_version_as_draft`,
+        { headers: await getPayloadAuthHeaders(page) },
+      )
+      expect(auditResponse.status()).toBe(200)
+      const events = (await auditResponse.json()).docs
+      expect(events).toHaveLength(1)
+      expect(events[0].summary).toContain(version.id)
+      const published = page.waitForResponse(
+        (response) =>
+          new URL(response.url()).pathname === `/api/pages/${doc.id}` &&
+          response.request().method() === 'PATCH',
+      )
+      await page.getByRole('button', { name: /^Publish(?: changes)?$/i }).click()
+      expect((await published).ok()).toBe(true)
+      expect((await (await anonymous.get(`/api/pages/${doc.id}?depth=0`)).json()).title).toBe(title)
+    } finally {
+      await anonymous.dispose()
+    }
+  })
+
   test('Page guide follows a real blank draft through blocks, save and authenticated preview', async ({
     page,
     browser,

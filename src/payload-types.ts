@@ -180,7 +180,7 @@ export interface UserAuthOperations {
   };
 }
 /**
- * Flexible website pages with reusable layout blocks, SEO controls, and publishing settings.
+ * Flexible website pages with reusable layout blocks, SEO controls, and publishing settings. History restores create drafts; review them before publishing.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".

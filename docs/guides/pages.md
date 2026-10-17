@@ -43,6 +43,17 @@ preference independently of the dashboard guide. Guidance grants no access and
 never publishes content. See the [guide contract](../operations/page-editing-guide.md)
 for exact states and recovery.
 
+## Recover an older version
+
+Use native Versions/History to compare a retained Page version, then choose
+**Restore this version** and confirm. Pages always restore as a new draft; the
+current public Page and its navigation remain unchanged. Review the restored
+layout, SEO, slug/parent and preview before explicitly publishing. Shared Sections
+and globals keep their own current content. An audit entry records the source
+version. See [Page history restoration](../operations/page-history-restoration.md)
+for permissions and programmatic callers. Other collection/global history is a
+separate workflow; this draft-only guarantee applies to Pages.
+
 ## Step-By-Step Medical College Example
 
 Create an `Admissions Overview` page for North Valley Medical College:
